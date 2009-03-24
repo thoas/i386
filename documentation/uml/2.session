@@ -1,0 +1,21 @@
+window_sizes 1600 1151 381 1213 800 82
+diagrams
+  active  classdiagram_ref 128002 // DBDC
+    1213 995 100 4 0 0
+end
+show_stereotypes
+selected attribute_ref 136450 // text_presentation
+open
+  class_ref 128002 // User
+  class_ref 128130 // Profile
+  class_ref 128258 // Chapter
+  class_ref 128386 // Case
+  class_ref 128514 // Invitation
+  class_ref 128642 // Contact
+  class_ref 128770 // ExchangeTopic
+  class_ref 128898 // ExchangePost
+  class_ref 129026 // Compose
+  class_ref 129154 // ParticipateChapter
+  class_ref 129282 // ParticipateCase
+end
+end
