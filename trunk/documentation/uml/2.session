@@ -1,7 +1,7 @@
-window_sizes 1600 1151 381 1213 800 82
+window_sizes 1680 1001 381 1213 800 82
 diagrams
   active  classdiagram_ref 128002 // DBDC
-    1213 995 100 4 0 0
+    1293 845 80 4 0 0
 end
 show_stereotypes
 selected attribute_ref 136450 // text_presentation
