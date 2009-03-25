@@ -29,7 +29,7 @@ TIME_ZONE = 'Europe/Paris'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'fr-FR'
+LANGUAGE_CODE = 'fr'
 
 SITE_ID = 1
 
