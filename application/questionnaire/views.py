@@ -6,6 +6,7 @@ def index(request):
     if request.method == 'POST':
         form = EnqueteForm(request.POST)
         if form.is_valid():
+            form.save()
             return HttpResponseRedirect('/questionnaire/thanks/')
     else:
         form = EnqueteForm()
