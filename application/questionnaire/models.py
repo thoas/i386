@@ -15,7 +15,7 @@ PROFESSION_CHOICES = (
 )
 
 class Enquete(models.Model):
-    coordonnees = models.CharField(_('Nom / Prenom / Pseudonyme'), max_length=255, null=False, blank=False)
+    coordonnees = models.CharField(_('Coordonnees'), max_length=255, null=False, blank=False)
     age = models.CharField(_('Age'), max_length=255, null=True, blank=True)
     email = models.EmailField(_('Mail'), max_length=255, null=False, blank=False)
     profession = models.CharField(_('Profession'), max_length=20, null=True, blank=True)
@@ -30,6 +30,9 @@ class Enquete(models.Model):
     question7 = models.TextField(_('Question 7'), null=True, blank=True)
     
     date_created = models.DateTimeField(_('creation date'), auto_now_add=True)
+    
+    def __unicode__(self):
+        return '%s - %s' % (self.coordonnees, self.email)
     
 class EnqueteForm(ModelForm):
     class Meta:
