@@ -1,0 +1,5 @@
+MySQL : 5.1.x
+Python : 2.5.x
+PIL : 1.1.6
+MySQL-Python (drivers) : 1.2.2
+Django : 1.0.2 (1.x)
