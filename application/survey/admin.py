@@ -1,4 +1,4 @@
-from gobelins_project.application.questionnaire.models import Enquete
+from gobelins_project.application.survey.models import Enquete
 from django.contrib import admin
 
 class EnqueteAdmin(admin.ModelAdmin):

@@ -1,4 +1,4 @@
-from gobelins_project.application.questionnaire.models import *
+from gobelins_project.application.survey.models import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 
@@ -7,7 +7,7 @@ def index(request):
         form = EnqueteForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/questionnaire/thanks/')
+            return HttpResponseRedirect('/survey/thanks/')
     else:
         form = EnqueteForm()
 
