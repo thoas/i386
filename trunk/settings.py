@@ -71,7 +71,7 @@ ROOT_URLCONF = 'gobelins_project.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'templates'),
-    os.path.join(os.path.join(PROJECT_PATH, 'questionnaire'), 'templates'),
+    os.path.join(os.path.join(PROJECT_PATH, 'survey'), 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -80,5 +80,5 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'gobelins_project.application.questionnaire'
+    'gobelins_project.application.survey'
 )
