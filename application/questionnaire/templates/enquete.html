@@ -8,12 +8,8 @@ Envies et motivations des cr&eacute;ateurs dans la cr&eacute;ation collaborative
 
 <form action="/questionnaire/" method="POST">
     <h2 class="left">Vous ...</h2>
-    {{ form.last_name.errors }}
-    <p class="text">{{ form.last_name }}<label for="id_last_name">{{ form.last_name.label_tag }}</label></p>
-    {{ form.first_name.errors }}
-    <p class="text">{{ form.first_name }}<label for="id_first_name">{{ form.first_name.label_tag }}</label></p>
-    {{ form.nickname.errors }}
-    <p class="text">{{ form.nickname }}<label for="id_nick_name">{{ form.nickname.label_tag }}</label></p>
+    {{ form.coordonnees.errors }}
+    <p class="text">{{ form.coordonnees }}<label for="id_last_name">{{ form.coordonnees.label_tag }}</label></p>
     {{ form.age.errors }}
     <p class="text">{{ form.age }}<label for="id_age">{{ form.age.label_tag }}</label></p>
     {{ form.profession.errors }}
