@@ -19,6 +19,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/(.*)', admin.site.root),
-    (r'', 'gobelins_project.application.survey.views.index'),
     (r'^survey/', include('gobelins_project.application.survey.urls')),
+    (r'', 'gobelins_project.application.survey.views.index'),
 )
