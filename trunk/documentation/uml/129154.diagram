@@ -1,0 +1,70 @@
+format 66
+
+classcanvas 128002 class_ref 130434 // Guest
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 59 73 2000
+end
+classcanvas 128130 class_ref 130562 // Creator
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 58 277 2000
+end
+usecasecanvas 128514 usecase_ref 128002 // View uploaded files
+  xyzwh 356 58 3005 64 32 label_xy 340 90
+end
+usecasecanvas 128642 usecase_ref 128130 // Sign up
+  xyzwh 365 133 3005 64 32 label_xy 379 165
+end
+usecasecanvas 128770 usecase_ref 128258 // Log into the website
+  xyzwh 407 265 3005 64 32 label_xy 390 297
+end
+usecasecanvas 128898 usecase_ref 128386 // Edit profile
+  xyzwh 411 354 3005 64 32 label_xy 418 386
+end
+usecasecanvas 129026 usecase_ref 128514 // Forgot password
+  xyzwh 512 215 3005 64 32 label_xy 502 247
+end
+usecasecanvas 129154 usecase_ref 128642 // Send a invitation
+  xyzwh 519 290 3005 64 32 label_xy 512 322
+end
+usecasecanvas 129282 usecase_ref 128770 // Book a square
+  xyzwh 511 354 3005 64 32 label_xy 508 386
+end
+usecasecanvas 129410 usecase_ref 128898 // Send a notification (contact)
+  xyzwh 513 428 3005 64 32 label_xy 477 459
+end
+usecasecanvas 129538 usecase_ref 129026 // Book a square already booked
+  xyzwh 521 492 3005 64 32 label_xy 480 524
+end
+usecasecanvas 129666 usecase_ref 129154 // Upload a work
+  xyzwh 524 558 3005 64 32 label_xy 521 590
+end
+usecasecanvas 129794 usecase_ref 129282 // Put the fullscreen mod
+  xyzwh 637 125 3005 64 32 label_xy 616 157
+end
+usecasecanvas 129922 usecase_ref 129410 // Edit sound atmosphere
+  xyzwh 662 219 3005 64 32 label_xy 639 251
+end
+usecasecanvas 130050 usecase_ref 129538 // Navigate into the grid
+  xyzwh 707 320 3005 64 32 label_xy 689 352
+end
+usecasecanvas 130178 usecase_ref 129666 // Zoom on a particular work
+  xyzwh 706 402 3005 64 32 label_xy 675 434
+end
+usecasecanvas 130306 usecase_ref 129794 // Post a reply into exchange
+  xyzwh 710 575 3005 64 32 label_xy 678 607
+end
+usecasecanvas 130434 usecase_ref 129922 // Post into exchange
+  xyzwh 661 497 3005 64 32 label_xy 647 529
+end
+usecasecanvas 130562 usecase_ref 130050 // Syncate a feed
+  xyzwh 268 541 3005 64 32 label_xy 263 573
+end
+usecasecanvas 130690 usecase_ref 130178 // Download the current chapter's application
+  xyzwh 384 703 3005 64 32 label_xy 313 735
+end
+relationcanvas 128258 relation_ref 131458 // <generalisation>
+  from ref 128130 z 1999 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+end
