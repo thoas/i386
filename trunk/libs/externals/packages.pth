@@ -1,0 +1,13 @@
+dateutil
+elementtree-1.2.6
+feedparser-4.1
+geopy-trunk
+markdown-1.7
+misc
+python-openid-2.1.1
+python-yadis-1.1.0
+pytz-2008b
+simplejson-1.9.1
+textile-2.0.11
+vobject-0.6.6
+ybrowserauth
