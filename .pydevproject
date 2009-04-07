@@ -3,9 +3,9 @@
 
 <pydev_project>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
-<path>/gobelins_project/src</path>
-<path>/gobelins_project/externals</path>
-<path>/gobelins_project/internals</path>
+<path>/u__u/src</path>
+<path>/u__u/externals</path>
+<path>/u__u/internals</path>
 </pydev_pathproperty>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.6</pydev_property>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>

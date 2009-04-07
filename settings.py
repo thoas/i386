@@ -80,7 +80,7 @@ MIDDLEWARE_CLASSES = (
     'pagination.middleware.PaginationMiddleware',
 )
 
-ROOT_URLCONF = 'gobelins_project.urls'
+ROOT_URLCONF = 'u__u.urls'
 
 import os.path
 
