@@ -2,7 +2,7 @@ import sys
 from os.path import abspath, dirname, join
 from site import addsitedir
 
-PROJECT_ROOT = abspath(dirname(__file__))
+PROJECT_ROOT = abspath(dirname(__file__)) + '/..'
 LIB_EXTERNAL_ROOT = join(PROJECT_ROOT, "libs", "externals")
 APPLICATION_ROOT = join(PROJECT_ROOT, 'application')
 
