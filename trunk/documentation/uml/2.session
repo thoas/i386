@@ -1,12 +1,14 @@
 window_sizes 1680 1001 381 1213 844 83
 diagrams
-  active  usecasediagram_ref 129154 // DCU
+  classdiagram_ref 128002 // DBDC
     1293 844 100 4 0 0
+  active  usecasediagram_ref 129154 // DCU
+    1293 844 100 4 375 0
 end
 show_stereotypes
 selected usecasediagram_ref 129154 // DCU
 open
-  class_ref 129282 // ParticipateCase
+  classview_ref 128002 // classes
   usecaseview_ref 128002 // cases
 end
 end
