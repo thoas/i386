@@ -1,4 +1,4 @@
-{% extends "basic_profiles/base.html" %}
+{% extends "profiles/base.html" %}
 
 {% load i18n %}
 
@@ -7,7 +7,7 @@
 {% block body %}
     
     <div class="right_panel">
-        {% include "basic_profiles/profile_right_panel.html" %}
+        {% include "profiles/profile_right_panel.html" %}
     </div>
     
     <h1>{% blocktrans %}Profile for {{ other_user }}{% endblocktrans %}</h1>

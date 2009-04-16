@@ -1,7 +1,7 @@
 from django.conf import settings
 from django import forms
 
-from basic_profiles.models import Profile
+from profiles.models import Profile
 
 try:
     from notification import models as notification

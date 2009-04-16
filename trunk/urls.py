@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     
     (r'^account/', include('account.urls')),
     
-    (r'^profiles/', include('basic_profiles.urls')),
+    (r'^profiles/', include('profiles.urls')),
     
     (r'^notices/', include('notification.urls')),
     
