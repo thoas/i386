@@ -20,12 +20,12 @@ try:
 except ImportError:
     notification = None
 
-def profiles(request, template_name="profiles/profiles.html"):
+def profiles(request, template_name="profiles.html"):
     return render_to_response(template_name, {
         "users": User.objects.all().order_by("-date_joined"),
     }, context_instance=RequestContext(request))
 
-def profile(request, username, template_name="profiles/profile.html"):
+def profile(request, username, template_name="profile.html"):
     other_user = get_object_or_404(User, username=username)
     if request.user.is_authenticated():
         # is_friend = Friendship.objects.are_friends(request.user, other_user)

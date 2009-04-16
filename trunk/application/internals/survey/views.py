@@ -11,9 +11,9 @@ def index(request):
     else:
         form = EnqueteForm()
 
-    return render_to_response('survey/enquete.html', {
+    return render_to_response('enquete.html', {
         'form': form,
     })
 
 def thanks(request):
-    return render_to_response('survey/thanks.html')
+    return render_to_response('thanks.html')
