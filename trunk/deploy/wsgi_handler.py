@@ -1,10 +1,10 @@
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from manage_path import *
-os.environ['DJANGO_SETTINGS_MODULE'] = 'production_settings'
+from settings.global_settings import *
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings.production_settings'
 
 import django.core.handlers.wsgi
 
