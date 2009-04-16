@@ -122,7 +122,6 @@ AUTH_PROFILE_MODULE = 'profiles.Profile'
 NOTIFICATION_LANGUAGE_MODULE = 'account.Account'
 
 EMAIL_CONFIRMATION_DAYS = 2
-CONTACT_EMAIL = "feedback@u__u.com"
 
 SITE_NAME = "u__u"
 LOGIN_URL = "/account/login"
