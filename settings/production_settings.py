@@ -5,6 +5,8 @@ import os
 
 DEBUG = False
 
+CONTACT_EMAIL = "feedback@milshape.cc"
+
 DATABASE_ENGINE = 'mysql'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
 DATABASE_NAME = 'gobelins_project'       # Or path to database file if using sqlite3.
 DATABASE_USER = 'gobelins_project'             # Not used with sqlite3.
