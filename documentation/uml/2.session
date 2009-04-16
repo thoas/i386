@@ -1,14 +1,13 @@
-window_sizes 1680 1001 381 1293 863 83
+window_sizes 1680 1031 381 1293 863 83
 diagrams
-  classdiagram_ref 128002 // DBDC
-    1293 844 100 4 0 0
-  active  usecasediagram_ref 129154 // DCU
-    827 920 120 4 0 0
+  active  classdiagram_ref 128002 // DBDC
+    1293 874 90 4 0 0
+  usecasediagram_ref 129154 // DCU
+    827 920 100 4 0 0
 end
 show_stereotypes
-selected usecasediagram_ref 129154 // DCU
+selected classdiagram_ref 128002 // DBDC
 open
   classview_ref 128002 // classes
-  usecaseview_ref 128002 // cases
 end
 end
