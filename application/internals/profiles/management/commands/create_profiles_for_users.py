@@ -1,5 +1,5 @@
 from django.core.management.base import NoArgsCommand
-from basic_profiles.models import Profile
+from profiles.models import Profile
 from django.contrib.auth.models import User
 from django.conf import settings
 

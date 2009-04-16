@@ -104,7 +104,7 @@ INSTALLED_APPS = (
     'ajax_validation',
     
     # internal (for now)
-    'basic_profiles',
+    'profiles',
     'account',
     'misc',
     
@@ -118,7 +118,7 @@ ABSOLUTE_URL_OVERRIDES = {
     "auth.user": lambda o: "/profiles/%s/" % o.username,
 }
 
-AUTH_PROFILE_MODULE = 'basic_profiles.Profile'
+AUTH_PROFILE_MODULE = 'profiles.Profile'
 NOTIFICATION_LANGUAGE_MODULE = 'account.Account'
 
 EMAIL_CONFIRMATION_DAYS = 2
