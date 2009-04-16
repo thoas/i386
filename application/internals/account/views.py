@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from account.forms import SignupForm, AddEmailForm, LoginForm, ChangePasswordForm, ResetPasswordForm, ChangeTimezoneForm, ChangeLanguageForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
-def login(request, form_class=LoginForm, template_name="account/login.html"):
+def login(request, form_class=LoginForm, template_name="login.html"):
     if request.method == "POST":
         default_redirect_to = getattr(settings, "LOGIN_REDIRECT_URLNAME", None)
         if default_redirect_to:
@@ -33,7 +33,7 @@ def login(request, form_class=LoginForm, template_name="account/login.html"):
     }, context_instance=RequestContext(request))
 
 def signup(request, form_class=SignupForm,
-        template_name="account/signup.html", success_url=None):
+        template_name="signup.html", success_url=None):
     if success_url is None:
         success_url = reverse("what_next")
     if request.method == "POST":
@@ -51,7 +51,7 @@ def signup(request, form_class=SignupForm,
     }, context_instance=RequestContext(request))
 
 def email(request, form_class=AddEmailForm,
-        template_name="account/email.html"):
+        template_name="email.html"):
     if request.method == "POST" and request.user.is_authenticated():
         if request.POST["action"] == "add":
             add_email_form = form_class(request.user, request.POST)
@@ -88,7 +88,7 @@ def email(request, form_class=AddEmailForm,
 email = login_required(email)
 
 def password_change(request, form_class=ChangePasswordForm,
-        template_name="account/password_change.html"):
+        template_name="password_change.html"):
     if request.method == "POST":
         password_change_form = form_class(request.user, request.POST)
         if password_change_form.is_valid():
@@ -102,7 +102,7 @@ def password_change(request, form_class=ChangePasswordForm,
 password_change = login_required(password_change)
 
 def password_reset(request, form_class=ResetPasswordForm,
-        template_name="account/password_reset.html",
+        template_name="password_reset.html",
         template_name_done="account/password_reset_done.html"):
     if request.method == "POST":
         password_reset_form = form_class(request.POST)
@@ -119,7 +119,7 @@ def password_reset(request, form_class=ResetPasswordForm,
     }, context_instance=RequestContext(request))
 
 def timezone_change(request, form_class=ChangeTimezoneForm,
-        template_name="account/timezone_change.html"):
+        template_name="timezone_change.html"):
     if request.method == "POST":
         form = form_class(request.user, request.POST)
         if form.is_valid():
@@ -132,7 +132,7 @@ def timezone_change(request, form_class=ChangeTimezoneForm,
 timezone_change = login_required(timezone_change)
 
 def language_change(request, form_class=ChangeLanguageForm,
-        template_name="account/language_change.html"):
+        template_name="language_change.html"):
     if request.method == "POST":
         form = form_class(request.user, request.POST)
         if form.is_valid():
