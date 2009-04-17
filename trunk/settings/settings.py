@@ -4,7 +4,6 @@
 import os
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 EMAIL_HOST = 'smtp.wanadoo.fr'
 EMAIL_PORT = '25'
 CONTACT_EMAIL = "sybilline.am@wanadoo.fr"
