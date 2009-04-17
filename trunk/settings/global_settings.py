@@ -111,6 +111,9 @@ INSTALLED_APPS = (
     'about',
     'survey',
     'django.contrib.admin',
+    'case',
+    'chapter',
+    'exchange'
 
 )
 
@@ -135,3 +138,8 @@ LOGIN_REDIRECT_URLNAME = 'what_next'
 # File
 FILE_UPLOAD_MAX_MEMORY_SIZE = 8621440 # 8.5 MB
 FILE_UPLOAD_TEMP_DIR = os.path.join(PROJECT_ROOT, 'tmp')
+UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'upload')
+
+# Default values
+DEFAULT_NB_INVITATION = 1
+DEFAULT_MAX_PARTICIPATION = 5
