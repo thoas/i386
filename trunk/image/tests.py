@@ -24,6 +24,13 @@ def thumbnail(files):
 
 def resize(files):
     pass
+    
+def crop(files):
+    for file in files:
+        im = Image.open(os.path.join(BASE_ROOT, file))
+        # tuple : (100, 100, 800, 800) = 100px à gauche, 100px à partir du haut, jusqu'à 800px en bas et à droite.
+        crop = im.crop((100, 100, 800, 800))
+        crop.save(os.path.join(__DIR__, file), quality=95)
 
 if __name__ == '__main__':
     usage = "usage: %prog [options]"
@@ -45,3 +52,5 @@ if __name__ == '__main__':
         thumbnail(files_list)
     elif options.type == 'resize':
         resize(files_list)
+    elif options.type == 'crop':
+        crop(files_list)
