@@ -1,4 +1,4 @@
-window_sizes 1280 968 381 1293 863 83
+window_sizes 1680 1031 381 1293 863 83
 diagrams
   active  classdiagram_ref 128002 // DBDC
     1293 874 80 4 0 0
@@ -8,6 +8,7 @@ end
 show_stereotypes
 selected classdiagram_ref 128002 // DBDC
 open
-  classview_ref 128002 // classes
+  class_ref 128130 // Profile
+  usecaseview_ref 128002 // cases
 end
 end
