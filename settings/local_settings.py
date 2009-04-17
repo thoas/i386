@@ -1,7 +1,5 @@
 import os
 
-TEMPLATE_DEBUG = DEBUG
-
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__)) + '/..'
 TEMPLATE_ROOT = os.path.join(PROJECT_ROOT, 'templates')
 APPLICATION_ROOT = os.path.join(PROJECT_ROOT, 'application')

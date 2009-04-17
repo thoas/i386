@@ -4,6 +4,7 @@
 import os
 
 DEBUG = False
+TEMPLATE_DEBUG = DEBUG
 
 CONTACT_EMAIL = "feedback@milshape.cc"
 
