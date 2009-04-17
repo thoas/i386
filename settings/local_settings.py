@@ -1,9 +1,11 @@
 import os
 
+TEMPLATE_DEBUG = DEBUG
+
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__)) + '/..'
 TEMPLATE_ROOT = os.path.join(PROJECT_ROOT, 'templates')
 APPLICATION_ROOT = os.path.join(PROJECT_ROOT, 'application')
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
 ADMINS = (
      ('Florent Messa', 'florent.messa@gmail.com'),
@@ -32,18 +34,18 @@ SITE_ID = 1
 USE_I18N = True
 
 # Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
+# Example: '/home/media/media.lawrence.com/'
 
 import os.path
 
 
 # URL that handles the media served from MEDIA_ROOT.
-# Example: "http://media.lawrence.com"
+# Example: 'http://media.lawrence.com'
 MEDIA_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
+# Examples: 'http://foo.com/media/', '/media/'.
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Make this unique, and don't share it with anybody.
@@ -73,17 +75,17 @@ TEMPLATE_DIRS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
     
-    "notification.context_processors.notification",
-    "announcements.context_processors.site_wide_announcements",
-    "account.context_processors.account",
-    "misc.context_processors.contact_email",
-    "misc.context_processors.site_name",
+    'notification.context_processors.notification',
+    'announcements.context_processors.site_wide_announcements',
+    'account.context_processors.account',
+    'misc.context_processors.contact_email',
+    'misc.context_processors.site_name',
 )
 
 INSTALLED_APPS = (
@@ -115,7 +117,7 @@ INSTALLED_APPS = (
 )
 
 ABSOLUTE_URL_OVERRIDES = {
-    "auth.user": lambda o: "/profiles/%s/" % o.username,
+    'auth.user': lambda o: '/profiles/%s/' % o.username,
 }
 
 AUTH_PROFILE_MODULE = 'profiles.Profile'
@@ -123,6 +125,15 @@ NOTIFICATION_LANGUAGE_MODULE = 'account.Account'
 
 EMAIL_CONFIRMATION_DAYS = 2
 
-SITE_NAME = "u__u"
-LOGIN_URL = "/account/login"
-LOGIN_REDIRECT_URLNAME = "what_next"
+SESSION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sessions')
+
+SERVER_EMAIL = 'error@milkshape.cc'
+SITE_NAME = 'u__u'
+
+LOGIN_URL = '/account/login'
+LOGOUT_URL = '/account/logout'
+LOGIN_REDIRECT_URLNAME = 'what_next'
+
+# File
+FILE_UPLOAD_MAX_MEMORY_SIZE = 8621440 # 8.5 MB
+FILE_UPLOAD_TEMP_DIR = os.path.join(PROJECT_ROOT, 'tmp')
