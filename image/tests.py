@@ -36,9 +36,12 @@ if __name__ == '__main__':
     files_list = []
     for root, dirs, files in os.walk(BASE_ROOT):
         for file in files:
-            m = re.match(r"(?P<file_name>[A-Za-z0-9\-]*)\.(?P<extension>[a-z]{2,3})$", file) # ça rocks!
-            files_list.append(os.path.join(BASE_ROOT, file))
+            m = re.match(r"(?P<file_name>[A-Za-z0-9\-]*)\."
+                                + "(?P<extension>gif|jpg|png|tif)$", file) # ça rocks!
+            if m:
+                files_list.append(file)
+    
     if options.type == 'thumbnail':
-        thumbnail(files)
+        thumbnail(files_list)
     elif options.type == 'resize':
-        resize(files)
+        resize(files_list)
