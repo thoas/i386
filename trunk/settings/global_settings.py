@@ -111,7 +111,7 @@ INSTALLED_APPS = (
     'about',
     'survey',
     'django.contrib.admin',
-    'case',
+    'square',
     'chapter',
     'exchange'
 
