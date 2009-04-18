@@ -1,4 +1,4 @@
-﻿package src.grid 
+﻿package grid 
 {
 	
 	public class GridLine 
