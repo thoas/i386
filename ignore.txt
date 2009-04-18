@@ -2,3 +2,4 @@
 .project
 *.db
 *.pyc
+*.as3proj
