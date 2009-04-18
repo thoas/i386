@@ -9,8 +9,9 @@
 		// pos : le premier (0, 0)
 		private var _x:int;
 		private var _y:int;
+		private var _color:int;
 		
-		public function Square(x:int, y:int, w:int = 800, h:int = 800) 
+		public function Square(x:int, y:int, w:int = 800, h:int = 800, color:int) 
 		{
 			_x = x;
 			_y = y;

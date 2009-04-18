@@ -4,7 +4,7 @@ package grid.square
 	{
 		public function SquareDisable(x:int, y:int, w:int=800, h:int=800)
 		{
-			super(x, y, w, h);
+			super(x, y, w, h, 0x848484);
 		}
 		
 	}
