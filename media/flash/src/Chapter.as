@@ -14,23 +14,35 @@ package
 		
 		public function Chapter(nbColumn:int = 10, nbLine:int = 5)
 		{
-			var sq1:Object = new Object();
+			var sq1:grid.square.SquareFull = new grid.square.SquareFull();
 			sq1.pos_x = 0;
 			sq1.pos_y = 0;
 			sq1.background_image_path = 'thoas/209320372037_0_0';
 			sq1.status = 1;
 			
-			var sq2:Object = new Object();
+			var sq2:grid.square.SquareFull = new grid.square.SquareFull();
 			sq2.pos_x = 1;
 			sq2.pos_y = 0;
 			sq2.background_image_path = 'jeanjack/209320372038_1_0';
 			sq2.status = 1;
 			
-			var sq3:Object = new Object();
+			var sq3:grid.square.SquareFull = new grid.square.SquareFull();
 			sq3.pos_x = 0;
 			sq3.pos_y = 1;
 			sq3.background_image_path = null;
 			sq3.status = 0;
+			
+			var sq4:grid.square.SquareFull = new grid.square.SquareFull();
+			sq4.pos_x = 1;
+			sq4.pos_y = 1;
+			sq4.background_image_path = null;
+			sq4.status = 0;
+			
+			var sq6:grid.square.SquareBooked = new grid.square.SquareBooked();
+			sq6.pos_x = 1;
+			sq6.pos_y = 2;
+			sq6.background_image_path = null;
+			sq6.status = 0;
 			
 			var chapter:Object = new Object();
 			chapter.title = 'Bac à sable';
@@ -38,7 +50,7 @@ package
 			chapter.nb_square_x = 0;
 			chapter.nb_square_y = 0;
 			chapter.max_participation = 0;
-			chapter.squares = new Array(sq1, sq2, sq3);
+			chapter.squares = new Array(sq1, sq2, sq3, sq4, sq5, sq6);
 			
 			_grid = new Grid(chapter.squares);
 			addChild(_grid);
