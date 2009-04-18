@@ -4,14 +4,14 @@ from django.contrib.auth.models import User
 from chapter.models import Chapter
 from django.utils.translation import ugettext_lazy as _
 
-class Case(models.Model):
+class Square(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
     pos_y = models.IntegerField(_('pos_y'))
     background_image_path = models.ImageField(upload_to=settings.UPLOAD_ROOT)
     date_booked = models.DateField(_('date_booked'), auto_now_add=True)
     date_finished = models.DateField(_('date_finished'))
     
-class ParticipateCase(models.Model):
+class ParticipateSquare(models.Model):
     user = models.ForeignKey(User, verbose_name=_('user'))
     case = models.ForeignKey(Case, verbose_name=_('case'))
     
