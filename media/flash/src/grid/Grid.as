@@ -1,34 +1,41 @@
 ﻿package grid
 {
 	import flash.display.MovieClip;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import grid.square.Square;
-	import grid.square.SquareManager;
-	
+	import grid.square.SquareBooked;
+	import grid.square.SquareFull;
+
 	public class Grid extends MovieClip
 	{
-		private var _nbColumn:int;
-		private var _nbLine:int;
+		private var _nbSquareX:int;
+		private var _nbSquareY:int;
 		
-		public function Grid(nbColumn:int = 10, nbLine:int = 5)
-		{
-			
-			new SquareManager(nbColumn, nbLine);
-			_nbColumn = nbColumn;
-			_nbLine = nbLine;
-			
-			for (var i:int = 0; i < _nbColumn; i++)
+		public function Grid(squares:Array)
+		{		
+			for each(var square:Object in squares)
 			{
-				for (var j:int = 0; j < _nbLine; j++)
+				if(square.status)// if the square is full
 				{
-					addChild(new Square(i, j));
+					var squareObject:Square = new SquareFull(square.pos_x, square.pos_y);
 				}
+				else
+				{
+					var squareObject:Square = new SquareBooked(square.pos_x, square.pos_y);
+					
+				}
+				addChild(squareObject);
 			}
 			
-			addEventListener(MouseEvent.CLICK, _scroll);
+					
+		}
+		
+		private function _createOtherSquares():void
+		{
+			// we need to create open square
+			var squares: Array = SquareManager.getSquare
 			
-			_init();
+			// 
 		}
 		
 		private function _init():void
@@ -36,18 +43,17 @@
 			var stageWidth:int = 960;
 			var stageHeight:int = 600;
 			
-			if(_nbColumn > _nbLine)
+			/*if(_nbColumn > _nbLine)
 			{
 				width = stageWidth;
 				scaleY = scaleX;
-				
 			}
 			else
 			{
 				height = stageHeight;
 				scaleX = scaleY;
 			}
-			
+			*/
 		}
 		
 		private function _scroll(e:MouseEvent):void
