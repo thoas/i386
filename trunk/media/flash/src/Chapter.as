@@ -51,6 +51,10 @@ package
 			chapter.nb_square_y = 0;
 			chapter.max_participation = 0;
 			chapter.squares = new Array(sq1, sq2, sq3, sq4, sq5, sq6);
+			chapter.min_x = -10;
+			chapter.max_x = 5;
+			chapter.min_y = -3;
+			chapter.max_y = 8;
 			
 			_grid = new Grid(chapter.squares);
 			addChild(_grid);
