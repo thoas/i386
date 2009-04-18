@@ -13,8 +13,6 @@
 		{
 			_grid = new Grid(nbColumn, nbLine);
 			addChild(_grid);
-		}
-		
+		}	
 	}
-	
 }

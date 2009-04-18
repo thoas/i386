@@ -13,6 +13,7 @@
 		
 		public function Grid(nbColumn:int = 10, nbLine:int = 5)
 		{
+			
 			new SquareManager(nbColumn, nbLine);
 			_nbColumn = nbColumn;
 			_nbLine = nbLine;
