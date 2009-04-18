@@ -1,6 +1,6 @@
 format 66
-"gobelins_project"
-  revision 3
+"uml"
+  revision 4
   modified_by 2 "thoas"
 
 
@@ -204,7 +204,7 @@ format 66
 	    classrelation_ref 130818 // <association>
 	  b role_name "" private
 	    classrelation_ref 130946 // <association>
-	  association_type class_ref 129282 // ParticipateCase
+	  association_type class_ref 129282 // ParticipateSquare
       end
 
       classrelation 131330 // <composition>
@@ -253,7 +253,7 @@ format 66
 	relation_ref 128002 // <association>
       end
 
-      attribute 129282 "url_website"
+      attribute 129282 "website"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -341,7 +341,7 @@ format 66
 	relation 129922 *-->
 	  a role_name "" private
 	    classrelation_ref 131714 // <directional composition>
-	  b parent class_ref 128386 // Case
+	  b parent class_ref 128386 // Square
 	  association_type class_ref 129026 // Compose
       end
 
@@ -418,7 +418,7 @@ format 66
       end
     end
 
-    class 128386 "Case"
+    class 128386 "Square"
       visibility package 
       cpp_decl ""
       java_decl ""
@@ -939,7 +939,7 @@ format 66
       end
     end
 
-    class 129282 "ParticipateCase"
+    class 129282 "ParticipateSquare"
       visibility package 
       cpp_decl ""
       java_decl ""

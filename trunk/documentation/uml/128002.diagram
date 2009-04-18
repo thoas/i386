@@ -12,9 +12,9 @@ classcanvas 128258 class_ref 128258 // Chapter
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
   xyz 433 570 2000
 end
-classcanvas 128386 class_ref 128386 // Case
+classcanvas 128386 class_ref 128386 // Square
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
-  xyz 97 735 2000
+  xyz 95 733 2000
 end
 classcanvas 128514 class_ref 128514 // Invitation
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
@@ -40,14 +40,14 @@ classcanvas 130818 class_ref 129154 // ParticipateChapter
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
   xyz 516 352 2000
 end
-classcanvas 132738 class_ref 129282 // ParticipateCase
+classcanvas 132738 class_ref 129282 // ParticipateSquare
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
-  xyz 29 404 2004
+  xyz 28 402 2004
 end
 relationcanvas 129026 relation_ref 128002 // <association>
   from ref 128002 z 1999 stereotype "<<have>>" xyz 192 265 3000 to ref 128130
   no_role_a no_role_b
-  multiplicity_a_pos 141 277 3000 multiplicity_b_pos 238 241 3000
+  multiplicity_a_pos 110 245 3000 multiplicity_b_pos 243 206 3000
 end
 relationcanvas 129410 relation_ref 128386 // <association>
   from ref 128002 z 1999 stereotype "<<write>>" xyz 482 200 3000 to ref 128898
