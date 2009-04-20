@@ -13,8 +13,8 @@ class Square(models.Model):
     
 class ParticipateSquare(models.Model):
     user = models.ForeignKey(User, verbose_name=_('user'))
-    case = models.ForeignKey(Case, verbose_name=_('case'))
+    square = models.ForeignKey(Square, verbose_name=_('square'))
     
 class Compose(models.Model):
     chapter = models.ForeignKey(Chapter, verbose_name=_('chapter'))
-    case = models.ForeignKey(Case, verbose_name=_('case'))
+    square = models.ForeignKey(Square, verbose_name=_('square'))
