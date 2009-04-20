@@ -81,10 +81,10 @@ subject 137346 "Gestion du profil"
   color gray  xyzwh 293 752 2000 542 345
 subject 138370 "Zone d'échange"
   color lightgray  xyzwh 404 463 2000 205 182
-subject 141314 "Creation management"
-  color verylightgray  xyzwh 307 779 2000 244 171
+subject 141314 "Gestion des créations"
+  color verylightgray  xyzwh 307 779 2000 296 169
 usecasecanvas 141570 usecase_ref 131714 // Supprimer une création
-  xyzwh 413 861 3005 125 40 label_xy 418 872
+  xyzwh 458 896 3005 125 40 label_xy 463 907
 end
 usecasecanvas 141698 usecase_ref 131842 // S'abonner au flux des créations
   xyzwh 303 3 3005 175 40 label_xy 311 14
@@ -115,6 +115,9 @@ usecasecanvas 144514 usecase_ref 132866 // Télécharger la création finale
 end
 note 144770 "Si l'issue en cours est finie"
   xyzwh 291 147 2004 69 80
+usecasecanvas 145026 usecase_ref 134018 // Accéder aux créations
+  xyzwh 472 834 3005 130 35 label_xy 480 842
+end
 relationcanvas 128258 relation_ref 131458 // <generalisation>
   from ref 128130 z 1999 to ref 128002
   no_role_a no_role_b
@@ -208,7 +211,7 @@ simplerelationcanvas 142722 simplerelation_ref 130690
   line 142850 z 3004 to ref 128770
 end
 simplerelationcanvas 143362 simplerelation_ref 130818
-  from ref 141570 z 3004 stereotype "<<extend>>" xyz 396 850 3000 to ref 128514
+  from ref 141570 z 3004 stereotype "<<extend>>" xyz 419 867 3000 to ref 128514
 end
 simplerelationcanvas 143490 simplerelation_ref 130946
   from ref 143106 z 3004 stereotype "<<extend>>" xyz 344 866 3000 to ref 128514
@@ -223,6 +226,9 @@ simplerelationcanvas 144386 simplerelation_ref 131202
 end
 line 144642 ----
   from ref 128002 z 1999 to ref 144514
+simplerelationcanvas 145154 simplerelation_ref 132354
+  from ref 145026 z 3004 stereotype "<<extend>>" xyz 426 834 3000 to ref 128514
+end
 line 135298 -_-_
   from ref 135170 z 1998 to ref 130946
 line 144898 -_-_
