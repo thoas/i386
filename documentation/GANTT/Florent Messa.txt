@@ -1,4 +1,5 @@
 - Documentation sur Django (framework Python)                                               (2 J, fait)
+- Documentation sur PIL (librarie de manipulation d'images)                                 (2 J, fait)
 - Diagramme de cas d'utilisations                                                           (1 J, fait)
 - Diagramme de classes                                                                      (1 J, fait)
 - Diagramme de base de données                                                              (1 J, fait)
