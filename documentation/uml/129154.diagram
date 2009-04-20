@@ -8,119 +8,113 @@ classcanvas 128130 class_ref 130562 // Creator
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 15 451 2000
 end
-usecasecanvas 128514 usecase_ref 128002 // Manage my creations
-  xyzwh 312 801 3005 149 46 label_xy 335 814
+usecasecanvas 128514 usecase_ref 128002 // Gérer mes créations
+  xyzwh 311 801 3005 127 40 label_xy 326 812
 end
-usecasecanvas 128642 usecase_ref 128130 // Sign up
-  xyzwh 328 443 3005 64 32 label_xy 342 452
+usecasecanvas 128642 usecase_ref 128130 // S'inscrire
+  xyzwh 328 443 3005 64 32 label_xy 337 452
 end
-usecasecanvas 128770 usecase_ref 128258 // Log in
-  xyzwh 772 484 3005 64 32 label_xy 789 493
+usecasecanvas 128770 usecase_ref 128258 // Se connecter
+  xyzwh 761 482 3005 76 38 label_xy 764 492
 end
-usecasecanvas 128898 usecase_ref 128386 // Define profile
-  xyzwh 750 934 3005 79 36 label_xy 757 945
+usecasecanvas 128898 usecase_ref 128386 // Définir son profil
+  xyzwh 741 932 3005 91 36 label_xy 745 942
 end
-usecasecanvas 129026 usecase_ref 128514 // Forgot password
-  xyzwh 54 355 3005 97 44 label_xy 60 370
+usecasecanvas 129026 usecase_ref 128514 // Regénérer son mot de passe
+  xyzwh 50 355 3005 157 45 label_xy 55 370
 end
-usecasecanvas 129154 usecase_ref 128642 // Send a invitation
-  xyzwh 646 856 3005 93 50 label_xy 652 872
+usecasecanvas 129154 usecase_ref 128642 // Envoyer une invitation
+  xyzwh 636 855 3005 120 43 label_xy 642 868
 end
-usecasecanvas 129282 usecase_ref 128770 // Book a square
-  xyzwh 419 392 3005 86 43 label_xy 427 407
+usecasecanvas 129282 usecase_ref 128770 // Réserver une case
+  xyzwh 419 392 3005 106 45 label_xy 424 407
 end
-usecasecanvas 129410 usecase_ref 128898 // Send a notification (contact)
-  xyzwh 38 304 3005 153 42 label_xy 45 316
+usecasecanvas 129410 usecase_ref 128898 // Envoyer une notification (contact)
+  xyzwh 38 304 3005 177 42 label_xy 43 316
 end
-usecasecanvas 129538 usecase_ref 129026 // Book a square already booked
-  xyzwh 461 314 3005 162 50 label_xy 468 331
+usecasecanvas 129666 usecase_ref 129154 // Transférer un travail
+  xyzwh 538 959 3005 110 39 label_xy 539 970
 end
-usecasecanvas 129666 usecase_ref 129154 // Upload a work
-  xyzwh 534 959 3005 97 43 label_xy 543 970
+usecasecanvas 129794 usecase_ref 129282 // Mettre le site en plein écran
+  xyzwh 25 8 3005 150 37 label_xy 33 19
 end
-usecasecanvas 129794 usecase_ref 129282 // Put the fullscreen mod
-  xyzwh 25 8 3005 150 37 label_xy 45 19
+usecasecanvas 129922 usecase_ref 129410 // Modifier l'atmosphère sonore
+  xyzwh 85 227 3005 154 49 label_xy 90 244
 end
-usecasecanvas 129922 usecase_ref 129410 // Edit sound atmosphere
-  xyzwh 85 227 3005 123 50 label_xy 90 244
+usecasecanvas 130050 usecase_ref 129538 // Naviguer dans la grille
+  xyzwh 585 130 3005 121 50 label_xy 590 148
 end
-usecasecanvas 130050 usecase_ref 129538 // Navigate into the grid
-  xyzwh 585 127 3005 116 50 label_xy 592 145
-end
-usecasecanvas 130178 usecase_ref 129666 // Zoom on a specific work
+usecasecanvas 130178 usecase_ref 129666 // Zoomer sur une création
   xyzwh 680 46 3005 145 50 label_xy 693 61
 end
-usecasecanvas 130306 usecase_ref 129794 // Post a reply into exchange
-  xyzwh 415 490 3005 142 56 label_xy 420 509
+usecasecanvas 130306 usecase_ref 129794 // Répondre à un message
+  xyzwh 415 490 3005 142 56 label_xy 425 509
 end
-usecasecanvas 130434 usecase_ref 129922 // Post into exchange
-  xyzwh 466 587 3005 113 46 label_xy 477 602
+usecasecanvas 130434 usecase_ref 129922 // Ecrire un message
+  xyzwh 466 587 3005 113 46 label_xy 478 602
 end
-usecasecanvas 130562 usecase_ref 130050 // Syndicate a feed
-  xyzwh 104 53 3005 100 43 label_xy 110 67
-end
-usecasecanvas 130690 usecase_ref 130178 // Download the current chapter's application
-  xyzwh 310 163 3005 235 47 label_xy 321 178
+usecasecanvas 130562 usecase_ref 130050 // S'abonner au flux d'informations
+  xyzwh 105 52 3005 172 47 label_xy 109 66
 end
 classcanvas 132226 class_ref 131714 // Administrator
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 2 916 2000
 end
-note 135170 "if has a invitation"
-  xyzwh 242 483 2004 106 35
+note 135170 "Si possède une invitation"
+  xyzwh 242 483 2004 106 48
 subject 135426 ""
   xyzwh 883 23 2000 31 31
 subject 135554 ""
   xyzwh 887 40 2000 31 31
 subject 135682 "Navigation"
   color lightgray  xyzwh 571 23 2000 263 179
-usecasecanvas 135810 usecase_ref 131330 // Log out
-  xyzwh 547 236 3005 64 32 label_xy 561 246
+usecasecanvas 135810 usecase_ref 131330 // Se déconnecter
+  xyzwh 547 236 3005 87 35 label_xy 551 246
 end
-usecasecanvas 136450 usecase_ref 131458 // Edit profile
-  xyzwh 647 1015 3005 68 34 label_xy 656 1024
+usecasecanvas 136450 usecase_ref 131458 // Editer son profil
+  xyzwh 632 1014 3005 91 34 label_xy 639 1023
 end
-usecasecanvas 136578 usecase_ref 131586 // Delete profile
-  xyzwh 728 1043 3005 79 38 label_xy 736 1055
+usecasecanvas 136578 usecase_ref 131586 // Supprimer son profil
+  xyzwh 690 1049 3005 115 39 label_xy 697 1060
 end
-subject 137346 "Profile management"
-  color gray  xyzwh 294 752 2000 542 345
-subject 138370 "Exchange"
+subject 137346 "Gestion du profil"
+  color gray  xyzwh 293 752 2000 542 345
+subject 138370 "Zone d'échange"
   color lightgray  xyzwh 404 463 2000 205 182
 subject 141314 "Creation management"
-  color verylightgray  xyzwh 308 779 2000 244 171
-usecasecanvas 141570 usecase_ref 131714 // Delete a creation
-  xyzwh 449 887 3005 95 39 label_xy 454 897
+  color verylightgray  xyzwh 307 779 2000 244 171
+usecasecanvas 141570 usecase_ref 131714 // Supprimer une création
+  xyzwh 413 861 3005 125 40 label_xy 418 872
 end
-usecasecanvas 141698 usecase_ref 131842 // Syndicate creation's feed
-  xyzwh 265 7 3005 143 40 label_xy 276 18
+usecasecanvas 141698 usecase_ref 131842 // S'abonner au flux des créations
+  xyzwh 303 3 3005 175 40 label_xy 311 14
 end
-usecasecanvas 141954 usecase_ref 131970 // Syndicate artist's feed
-  xyzwh 326 49 3010 127 39 label_xy 332 60
+usecasecanvas 141954 usecase_ref 131970 // S'abonner au flux des artistes
+  xyzwh 364 45 3010 158 39 label_xy 369 56
 end
-usecasecanvas 142210 usecase_ref 132098 // Download template
-  xyzwh 530 1041 3005 103 40 label_xy 533 1053
+usecasecanvas 142210 usecase_ref 132098 // Télécharger le template de création
+  xyzwh 453 1043 3005 189 39 label_xy 460 1054
 end
-usecasecanvas 142466 usecase_ref 132226 // View member list
-  xyzwh 408 692 3005 108 42 label_xy 419 706
+usecasecanvas 142466 usecase_ref 132226 // Voir la liste des participants
+  xyzwh 408 692 3005 149 44 label_xy 417 705
 end
-usecasecanvas 143106 usecase_ref 132354 // Upload a creation
-  xyzwh 326 890 3005 104 36 label_xy 334 899
+usecasecanvas 143106 usecase_ref 132354 // Transférer une création
+  xyzwh 310 895 3005 125 40 label_xy 313 906
 end
-usecasecanvas 143618 usecase_ref 132482 // Download the creation of the day
-  xyzwh 173 101 3005 189 42 label_xy 187 113
+usecasecanvas 143618 usecase_ref 132482 // Télécharger la création du jour
+  xyzwh 173 101 3005 189 42 label_xy 193 113
 end
-usecasecanvas 143874 usecase_ref 132610 // Low definition
-  xyzwh 433 85 3005 89 33 label_xy 443 93
+usecasecanvas 143874 usecase_ref 132610 // Basse définition
+  xyzwh 433 85 3005 89 33 label_xy 438 93
 end
-usecasecanvas 144130 usecase_ref 132738 // High definition
-  xyzwh 464 130 3010 91 32 label_xy 475 137
+usecasecanvas 144130 usecase_ref 132738 // Haute définition
+  xyzwh 464 130 3010 91 32 label_xy 472 137
 end
-usecasecanvas 144514 usecase_ref 132866 // Download the chapter's creation
-  xyzwh 185 267 3010 179 42 label_xy 196 279
+usecasecanvas 144514 usecase_ref 132866 // Télécharger la création finale
+  xyzwh 240 236 3010 179 42 label_xy 259 248
 end
-note 144770 "if the current chapter is finished"
-  xyzwh 236 169 2004 69 80
+note 144770 "Si l'issue en cours est finie"
+  xyzwh 291 147 2004 69 80
 relationcanvas 128258 relation_ref 131458 // <generalisation>
   from ref 128130 z 1999 to ref 128002
   no_role_a no_role_b
@@ -137,7 +131,7 @@ line 131586 ----
 line 131714 ----
   from ref 128130 z 1999 to ref 129026
 line 131842 ----
-  from ref 128130 z 1999 to point 419 811
+  from ref 128130 z 1999 to point 418 811
   line 143234 z 1999 to ref 129154
 line 131970 ----
   from ref 128002 z 1999 to ref 130562
@@ -146,14 +140,12 @@ relationcanvas 132354 relation_ref 132610 // <generalisation>
   no_role_a no_role_b
   no_multiplicity_a no_multiplicity_b
 end
-line 132482 ----
-  from ref 128002 z 1999 to ref 130690
 line 132610 ----
   from ref 128130 z 1999 to ref 129282
 line 132866 ----
   from ref 128130 z 1999 to ref 130050
 simplerelationcanvas 133378 simplerelation_ref 128130
-  from ref 130178 z 3004 stereotype "<<extend>>" xyz 686 114 3000 to ref 130050
+  from ref 130178 z 3004 stereotype "<<extend>>" xyz 688 115 3000 to ref 130050
 end
 line 133762 ----
   from ref 128130 z 1999 to ref 130434
@@ -163,66 +155,63 @@ end
 line 134018 ----
   from ref 128002 z 1999 to ref 129410
 simplerelationcanvas 134146 simplerelation_ref 128514
-  from ref 129154 z 3004 stereotype "<<include>>" xyz 648 927 3000 to ref 129666
+  from ref 129154 z 3004 stereotype "<<include>>" xyz 655 923 3000 to ref 129666
 end
 simplerelationcanvas 134658 simplerelation_ref 128770
-  from ref 130434 z 3004 stereotype "<<include>>" xyz 654 555 3000 to ref 128770
+  from ref 130434 z 3004 stereotype "<<include>>" xyz 648 556 3000 to ref 128770
 end
 simplerelationcanvas 134786 simplerelation_ref 128898
-  from ref 129154 z 3004 to point 737 760
-  line 141442 z 3004 stereotype "<<include>>" xyz 763 769 3000 to ref 128770
+  from ref 129154 z 3004 to point 736 760
+  line 141442 z 3004 stereotype "<<include>>" xyz 760 771 3000 to ref 128770
 end
 simplerelationcanvas 134914 simplerelation_ref 129026
-  from ref 128898 z 3004 to point 800 756
-  line 139650 z 3004 stereotype "<<include>>" xyz 718 808 3000 to ref 128770
+  from ref 128898 z 3004 to point 799 756
+  line 139650 z 3004 stereotype "<<include>>" xyz 715 810 3000 to ref 128770
 end
 simplerelationcanvas 135042 simplerelation_ref 129154
-  from ref 129282 z 3004 stereotype "<<include>>" xyz 574 423 3000 to ref 128770
+  from ref 129282 z 3004 stereotype "<<include>>" xyz 578 424 3000 to ref 128770
 end
 line 135938 ----
   from ref 128130 z 1999 to ref 135810
 simplerelationcanvas 136066 simplerelation_ref 129282
-  from ref 135810 z 3004 stereotype "<<include>>" xyz 631 301 3000 to ref 128770
+  from ref 135810 z 3004 stereotype "<<include>>" xyz 634 301 3000 to ref 128770
 end
 line 136706 ----
   from ref 128130 z 1999 to ref 128514
 simplerelationcanvas 136834 simplerelation_ref 129538
   from ref 128514 z 3004 to point 689 679
-  line 139778 z 3004 stereotype "<<include>>" xyz 661 693 3000 to ref 128770
+  line 139778 z 3004 stereotype "<<include>>" xyz 657 695 3000 to ref 128770
 end
 simplerelationcanvas 137090 simplerelation_ref 129794
-  from ref 136578 z 3004 stereotype "<<extend>>" xyz 780 1005 3000 to ref 128898
+  from ref 136578 z 3004 stereotype "<<extend>>" xyz 768 1007 3000 to ref 128898
 end
 simplerelationcanvas 137730 simplerelation_ref 129922
-  from ref 136450 z 3004 stereotype "<<extend>>" xyz 678 975 3000 to ref 128898
+  from ref 136450 z 3004 stereotype "<<extend>>" xyz 675 973 3000 to ref 128898
 end
 simplerelationcanvas 138242 simplerelation_ref 130050
   from ref 130050 z 3004 to point 801 256
-  line 140290 z 3004 stereotype "<<include>>" xyz 743 260 3000 to ref 128770
-end
-simplerelationcanvas 140546 simplerelation_ref 130178
-  from ref 129538 z 3004 stereotype "<<include>>" xyz 427 366 3000 to ref 129282
+  line 140290 z 3004 stereotype "<<include>>" xyz 740 259 3000 to ref 128770
 end
 simplerelationcanvas 141826 simplerelation_ref 130306
-  from ref 141698 z 3004 stereotype "<<extend>>" xyz 205 31 3000 to ref 130562
+  from ref 141698 z 3004 stereotype "<<extend>>" xyz 258 26 3000 to ref 130562
 end
 simplerelationcanvas 142082 simplerelation_ref 130434
-  from ref 141954 z 3004 stereotype "<<extend>>" xyz 235 69 3000 to ref 130562
+  from ref 141954 z 3004 stereotype "<<extend>>" xyz 290 66 3000 to ref 130562
 end
 simplerelationcanvas 142338 simplerelation_ref 130562
-  from ref 129666 z 3004 stereotype "<<include>>" xyz 542 1006 3000 to ref 142210
+  from ref 129666 z 3004 stereotype "<<include>>" xyz 529 1005 3000 to ref 142210
 end
 line 142594 ----
   from ref 128130 z 1999 to ref 142466
 simplerelationcanvas 142722 simplerelation_ref 130690
-  from ref 142466 z 3004 stereotype "<<include>>" xyz 592 664 3000 to point 667 638
+  from ref 142466 z 3004 stereotype "<<include>>" xyz 599 663 3000 to point 667 638
   line 142850 z 3004 to ref 128770
 end
 simplerelationcanvas 143362 simplerelation_ref 130818
-  from ref 141570 z 3004 stereotype "<<extend>>" xyz 415 866 3000 to ref 128514
+  from ref 141570 z 3004 stereotype "<<extend>>" xyz 396 850 3000 to ref 128514
 end
 simplerelationcanvas 143490 simplerelation_ref 130946
-  from ref 143106 z 3004 stereotype "<<extend>>" xyz 352 867 3000 to ref 128514
+  from ref 143106 z 3004 stereotype "<<extend>>" xyz 344 866 3000 to ref 128514
 end
 line 143746 ----
   from ref 128002 z 1999 to ref 143618

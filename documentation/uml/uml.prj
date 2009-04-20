@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 6
+  revision 7
   modified_by 2 "thoas"
 
 
@@ -1034,7 +1034,7 @@ format 66
       end
     end
 
-    usecase 128002 "Manage my creations"
+    usecase 128002 "Gérer mes créations"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1052,23 +1052,23 @@ format 66
       simplerelation 128642
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
 
       simplerelation 129410
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 128386 // Define profile
+	  on usecase_ref 128386 // Définir son profil
       end
 
       simplerelation 129538
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
     end
 
-    usecase 128130 "Sign up"
+    usecase 128130 "S'inscrire"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1085,7 +1085,7 @@ format 66
       show_infonote default drawing_language default show_stereotype_properties default
     end
 
-    usecase 128258 "Log in"
+    usecase 128258 "Se connecter"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1102,7 +1102,7 @@ format 66
       show_infonote default drawing_language default show_stereotype_properties default
     end
 
-    usecase 128386 "Define profile"
+    usecase 128386 "Définir son profil"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1120,11 +1120,11 @@ format 66
       simplerelation 129026
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
     end
 
-    usecase 128514 "Forgot password"
+    usecase 128514 "Regénérer son mot de passe"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1141,7 +1141,7 @@ format 66
       show_infonote default drawing_language default show_stereotype_properties default
     end
 
-    usecase 128642 "Send a invitation"
+    usecase 128642 "Envoyer une invitation"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1159,17 +1159,17 @@ format 66
       simplerelation 128514
 	-_->
 	  stereotype "include"
-	  on usecase_ref 129154 // Upload a work
+	  on usecase_ref 129154 // Transférer un travail
       end
 
       simplerelation 128898
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
     end
 
-    usecase 128770 "Book a square"
+    usecase 128770 "Réserver une case"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1187,11 +1187,11 @@ format 66
       simplerelation 129154
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
     end
 
-    usecase 128898 "Send a notification (contact)"
+    usecase 128898 "Envoyer une notification (contact)"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1226,17 +1226,17 @@ format 66
       simplerelation 128258
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 128770 // Book a square
+	  on usecase_ref 128770 // Réserver une case
       end
 
       simplerelation 130178
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128770 // Book a square
+	  on usecase_ref 128770 // Réserver une case
       end
     end
 
-    usecase 129154 "Upload a work"
+    usecase 129154 "Transférer un travail"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1254,11 +1254,11 @@ format 66
       simplerelation 130562
 	-_->
 	  stereotype "include"
-	  on usecase_ref 132098 // Download template
+	  on usecase_ref 132098 // Télécharger le template de création
       end
     end
 
-    usecase 129282 "Put the fullscreen mod"
+    usecase 129282 "Mettre le site en plein écran"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1275,7 +1275,7 @@ format 66
       show_infonote default drawing_language default show_stereotype_properties default
     end
 
-    usecase 129410 "Edit sound atmosphere"
+    usecase 129410 "Modifier l'atmosphère sonore"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1292,7 +1292,7 @@ format 66
       show_infonote default drawing_language default show_stereotype_properties default
     end
 
-    usecase 129538 "Navigate into the grid"
+    usecase 129538 "Naviguer dans la grille"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1310,11 +1310,11 @@ format 66
       simplerelation 130050
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
     end
 
-    usecase 129666 "Zoom on a specific work"
+    usecase 129666 "Zoomer sur une création"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1332,17 +1332,17 @@ format 66
       simplerelation 128002
 	---|>
 	  stereotype "{complete,overlapping}"
-	  on usecase_ref 129538 // Navigate into the grid
+	  on usecase_ref 129538 // Naviguer dans la grille
       end
 
       simplerelation 128130
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 129538 // Navigate into the grid
+	  on usecase_ref 129538 // Naviguer dans la grille
       end
     end
 
-    usecase 129794 "Post a reply into exchange"
+    usecase 129794 "Répondre à un message"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1360,11 +1360,11 @@ format 66
       simplerelation 128386
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 129922 // Post into exchange
+	  on usecase_ref 129922 // Ecrire un message
       end
     end
 
-    usecase 129922 "Post into exchange"
+    usecase 129922 "Ecrire un message"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1382,11 +1382,11 @@ format 66
       simplerelation 128770
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
     end
 
-    usecase 130050 "Syndicate a feed"
+    usecase 130050 "S'abonner au flux d'informations"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1437,7 +1437,7 @@ format 66
       end
     end
 
-    usecase 131330 "Log out"
+    usecase 131330 "Se déconnecter"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1455,11 +1455,11 @@ format 66
       simplerelation 129282
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
     end
 
-    usecase 131458 "Edit profile"
+    usecase 131458 "Editer son profil"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1477,17 +1477,17 @@ format 66
       simplerelation 129666
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 128386 // Define profile
+	  on usecase_ref 128386 // Définir son profil
       end
 
       simplerelation 129922
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 128386 // Define profile
+	  on usecase_ref 128386 // Définir son profil
       end
     end
 
-    usecase 131586 "Delete profile"
+    usecase 131586 "Supprimer son profil"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1505,11 +1505,11 @@ format 66
       simplerelation 129794
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 128386 // Define profile
+	  on usecase_ref 128386 // Définir son profil
       end
     end
 
-    usecase 131714 "Delete a creation"
+    usecase 131714 "Supprimer une création"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1527,11 +1527,11 @@ format 66
       simplerelation 130818
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 128002 // Manage my creations
+	  on usecase_ref 128002 // Gérer mes créations
       end
     end
 
-    usecase 131842 "Syndicate creation's feed"
+    usecase 131842 "S'abonner au flux des créations"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1549,11 +1549,11 @@ format 66
       simplerelation 130306
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 130050 // Syndicate a feed
+	  on usecase_ref 130050 // S'abonner au flux d'informations
       end
     end
 
-    usecase 131970 "Syndicate artist's feed"
+    usecase 131970 "S'abonner au flux des artistes"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1571,11 +1571,11 @@ format 66
       simplerelation 130434
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 130050 // Syndicate a feed
+	  on usecase_ref 130050 // S'abonner au flux d'informations
       end
     end
 
-    usecase 132098 "Download template"
+    usecase 132098 "Télécharger le template de création"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1592,7 +1592,7 @@ format 66
       show_infonote default drawing_language default show_stereotype_properties default
     end
 
-    usecase 132226 "View member list"
+    usecase 132226 "Voir la liste des participants"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1610,11 +1610,11 @@ format 66
       simplerelation 130690
 	-_->
 	  stereotype "include"
-	  on usecase_ref 128258 // Log in
+	  on usecase_ref 128258 // Se connecter
       end
     end
 
-    usecase 132354 "Upload a creation"
+    usecase 132354 "Transférer une création"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1632,11 +1632,11 @@ format 66
       simplerelation 130946
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 128002 // Manage my creations
+	  on usecase_ref 128002 // Gérer mes créations
       end
     end
 
-    usecase 132482 "Download the creation of the day"
+    usecase 132482 "Télécharger la création du jour"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1653,7 +1653,7 @@ format 66
       show_infonote default drawing_language default show_stereotype_properties default
     end
 
-    usecase 132610 "Low definition"
+    usecase 132610 "Basse définition"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1671,11 +1671,11 @@ format 66
       simplerelation 131074
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 132482 // Download the creation of the day
+	  on usecase_ref 132482 // Télécharger la création du jour
       end
     end
 
-    usecase 132738 "High definition"
+    usecase 132738 "Haute définition"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -1693,11 +1693,11 @@ format 66
       simplerelation 131202
 	-_->
 	  stereotype "extend"
-	  on usecase_ref 132482 // Download the creation of the day
+	  on usecase_ref 132482 // Télécharger la création du jour
       end
     end
 
-    usecase 132866 "Download the chapter's creation"
+    usecase 132866 "Télécharger la création finale"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings

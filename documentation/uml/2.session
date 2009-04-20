@@ -1,12 +1,12 @@
-window_sizes 3150 918 381 1293 893 83
+window_sizes 1680 1001 381 1293 893 83
 diagrams
-  active  classdiagram_ref 128002 // DBDC
+  classdiagram_ref 128002 // DBDC
     2763 761 110 4 300 0
-  usecasediagram_ref 129154 // DCU
-    827 920 100 4 165 0
+  active  usecasediagram_ref 129154 // DCU
+    1293 844 100 4 0 0
 end
 show_stereotypes
-selected attribute_ref 131970 // issue_id
+selected usecasediagram_ref 129154 // DCU
 open
   class_ref 128130 // Profile
   class_ref 128386 // Square
