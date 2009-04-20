@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-from chapter.models import Chapter
+from issue.models import Issue
 from django.utils.translation import ugettext_lazy as _
 
 class Square(models.Model):
@@ -16,5 +16,5 @@ class ParticipateSquare(models.Model):
     square = models.ForeignKey(Square, verbose_name=_('square'))
     
 class Compose(models.Model):
-    chapter = models.ForeignKey(Chapter, verbose_name=_('chapter'))
+    issue = models.ForeignKey(Issue, verbose_name=_('issue'))
     square = models.ForeignKey(Square, verbose_name=_('square'))

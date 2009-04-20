@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 4
+  revision 6
   modified_by 2 "thoas"
 
 
@@ -191,7 +191,7 @@ format 66
 	    classrelation_ref 129794 // <association>
 	  b role_name "" private
 	    classrelation_ref 129922 // <association>
-	  association_type class_ref 129154 // ParticipateChapter
+	  association_type class_ref 129154 // ParticipateIssue
       end
 
       classrelation 130690 // <composition>
@@ -289,7 +289,7 @@ format 66
       end
     end
 
-    class 128258 "Chapter"
+    class 128258 "Issue"
       visibility package 
       cpp_decl ""
       java_decl ""
@@ -489,6 +489,15 @@ format 66
       end
 
       attribute 135170 "date_finished"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 137602 "status"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -712,7 +721,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 131970 "chapter_id"
+      attribute 131970 "issue_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -892,7 +901,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 133634 "chapter_id"
+      attribute 133634 "issue_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -902,7 +911,7 @@ format 66
       end
     end
 
-    class 129154 "ParticipateChapter"
+    class 129154 "ParticipateIssue"
       visibility package 
       cpp_decl ""
       java_decl ""
@@ -929,7 +938,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 134274 "chapter_id"
+      attribute 134274 "issue_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
