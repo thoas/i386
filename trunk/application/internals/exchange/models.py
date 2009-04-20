@@ -1,10 +1,10 @@
-from chapter.models import Chapter
+from issue.models import Issue
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 class ExchangeTopic(models.Model):
-    chapter = models.ForeignKey(Chapter, verbose_name=_('chapter'))
+    issue = models.ForeignKey(Issue, verbose_name=_('issue'))
     title = models.CharField(_('title'), max_length=255)
     date_creation = models.DateField(_('date_creation'),  auto_now_add=True)
 

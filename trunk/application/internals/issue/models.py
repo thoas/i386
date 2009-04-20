@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-class Chapter(models.Model):
+class Issue(models.Model):
     title = models.CharField(_('title'), max_length=255)
     text_presentation = models.TextField(_('title'))
     nb_case_x = models.IntegerField(_('nb_case_x'))
@@ -12,6 +12,6 @@ class Chapter(models.Model):
     date_finished = models.DateField(_('date_finished'))
     max_participation = models.IntegerField(_('max_participation'))
     
-class ParticipateChapter(models.Model):
+class ParticipateIssue(models.Model):
     user = models.ForeignKey(User, verbose_name=_('user'))
-    chapter = models.ForeignKey(Chapter, verbose_name=_('chapter'))
+    issue = models.ForeignKey(Issue, verbose_name=_('chapter'))
