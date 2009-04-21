@@ -2,9 +2,9 @@
 {
 	import flash.display.MovieClip;
 	
-	public class Exchange extends MovieClip
+	public class Issues extends MovieClip
 	{
-		public function Exchange()
+		public function Issues()
 		{
 			
 		}
