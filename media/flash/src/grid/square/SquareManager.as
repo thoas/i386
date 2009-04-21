@@ -1,11 +1,10 @@
 ﻿package grid.square
 {
-	
 	public class SquareManager 
 	{
-		private static var _lstSquare:Array = new Array();
+		private static var _lstSquare:Vector.<Square> = new Vector.<Square>();
 		
-		public static function getSquares():Array
+		public static function getSquares():Vector
 		{
 			return _lstSquare;
 		}
