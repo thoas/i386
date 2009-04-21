@@ -5,14 +5,14 @@ package
 	
 	[SWF(width='960', height='600', frameRate='30', backgroundColor='#ffffff')]
 	
-	public class Chapter extends MovieClip
+	public class Issue extends MovieClip
 	{
 		private var _grid:Grid;
 		private var _maxParticipation:int;
 		private var _title:String;
 		private var _textPresentation:String;
 		
-		public function Chapter(nbColumn:int = 10, nbLine:int = 5)
+		public function Issue(nbColumn:int = 10, nbLine:int = 5)
 		{
 			var sq1:grid.square.SquareFull = new grid.square.SquareFull();
 			sq1.pos_x = 0;
