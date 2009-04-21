@@ -19,13 +19,14 @@
 			_y = y;
 			buttonMode = true;
 			alpha = 0.8;
-			graphics.beginFill(Math.random() * color);
-			graphics.drawRect(x*w, y*h, w, h);
+			graphics.beginFill(color);
+			graphics.drawRect(_x*w, _y*h, w, h);
 			graphics.endFill();
 			SquareManager.add(this);
 			
 			addEventListener(MouseEvent.ROLL_OVER, _rollOver);
 			addEventListener(MouseEvent.ROLL_OUT, _rollOut);
+			trace(this.width + " " + this.height);
 		}
 		
 		public function get X():int { return _x };
