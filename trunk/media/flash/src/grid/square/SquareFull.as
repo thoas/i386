@@ -2,9 +2,11 @@ package grid.square
 {
 	public class SquareFull extends Square
 	{
-		public function SquareFull(x:int, y:int, w:int=800, h:int=800)
+		private var _background:String;
+		public function SquareFull(x:int, y:int, background:String, w:int, h:int)
 		{
-			super(x, y, w, h, 0x000000);
+			_background = background;
+			super(x, y, 0x000000, w, h);
 		}
 		
 	}
