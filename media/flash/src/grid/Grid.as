@@ -5,6 +5,7 @@
 	import grid.square.Square;
 	import grid.square.SquareBooked;
 	import grid.square.SquareFull;
+	import grid.square.SquareManager;
 
 	public class Grid extends MovieClip
 	{
