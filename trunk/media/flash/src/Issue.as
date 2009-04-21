@@ -64,10 +64,7 @@ package
 			issue.min_y = -1;
 			issue.max_y = 1;
 
-			_grid = new Grid(issue.squares, issue.squares_open, issue.min_x, issue.min_y, issue.max_x, issue.max_y);
-			//_grid.scaleX = _grid.scaleY = 0.2;
-			_grid.x = _grid.y = 200;
-			
+			_grid = new Grid(issue.squares, issue.squares_open, issue.min_x, issue.min_y, issue.max_x, issue.max_y);			
 			addChild(_grid);
 		}	
 	}
