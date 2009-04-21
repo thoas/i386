@@ -4,6 +4,7 @@
 	
 	import grid.square.Square;
 	import grid.square.SquareBooked;
+	import grid.square.SquareOpen;
 	import grid.square.SquareFull;
 	import grid.square.SquareManager;
 
@@ -45,8 +46,8 @@
 		private function _addPosition(square:Square):void
 		{
 			addChild(square);
-			ind = SquareManager.length() - 1;
-			_lstPosition[square.pos_x + _minX * -1][square.pos_y + _minY * -1] = ind;
+			var ind:int = SquareManager.length() - 1;
+			_lstPosition[square.X + _minX * -1][square.Y + _minY * -1] = ind;
 		}
 	}
 	
