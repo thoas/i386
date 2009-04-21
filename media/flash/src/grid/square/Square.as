@@ -5,8 +5,8 @@
 	
 	public class Square extends Sprite
 	{
-		public static const SQUARE_WIDTH:int = 800;
-		public static const SQUARE_HEIGHT:int = 800;
+		public static const SQUARE_WIDTH:int = 50;
+		public static const SQUARE_HEIGHT:int = 50;
 		// scale : 26px, 78px, 182px, 416px, 800px (max 1024 Square pour écran 840*840px)
 		// pos : le premier (0, 0)
 		private var _x:int;
@@ -18,8 +18,8 @@
 			_x = x;
 			_y = y;
 			buttonMode = true;
-			alpha = 0.5;
-			graphics.beginFill(Math.random() * 0xFFFFFF);
+			alpha = 0.8;
+			graphics.beginFill(Math.random() * color);
 			graphics.drawRect(x*w, y*h, w, h);
 			graphics.endFill();
 			SquareManager.add(this);
@@ -39,7 +39,7 @@
 		
 		private function _rollOut(e:MouseEvent):void
 		{
-			alpha = 0.5;
+			alpha = 0.8;
 		}
 		
 	}
