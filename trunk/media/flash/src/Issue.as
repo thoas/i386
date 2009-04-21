@@ -51,20 +51,22 @@ package
 			sqo3.pos_x = -1;
 			sqo3.pos_y = 1;
 			
-			var chapter:Object = new Object();
-			chapter.title = 'Bac à sable';
-			chapter.text_presentation = 'Bac à sable desc';
-			chapter.nb_square_x = 5;
-			chapter.nb_square_y = 5;
-			chapter.max_participation = 1;
-			chapter.squares = new Array(sq1, sq2, sq3, sq4);
-			chapter.squares_open = new Array(sqo1, sqo2, sqo3);
-			/*chapter.min_x = 2;
-			chapter.max_x = ;
-			chapter.min_y = -3;
-			chapter.max_y = 8;
-			*/
-			_grid = new Grid(chapter.squares, chapter.squares_open);
+			var issue:Object = new Object();
+			issue.title = 'Bac à sable';
+			issue.text_presentation = 'Bac à sable desc';
+			issue.nb_square_x = 5;
+			issue.nb_square_y = 5;
+			issue.max_participation = 1;
+			issue.squares = new Array(sq1, sq2, sq3, sq4);
+			issue.squares_open = new Array(sqo1, sqo2, sqo3);
+			issue.min_x = -1;
+			issue.max_x = 1;
+			issue.min_y = -1;
+			issue.max_y = 1;
+
+			_grid = new Grid(issue.squares, issue.squares_open, issue.min_x, issue.min_y, issue.max_x, issue.max_y);
+			_grid.width = _grid.height = 300;
+			
 			addChild(_grid);
 		}	
 	}
