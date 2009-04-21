@@ -1,7 +1,5 @@
 ﻿package grid
 {
-	import __AS3__.vec.Vector;
-	
 	import flash.display.MovieClip;
 	
 	import grid.square.Square;
