@@ -1,7 +1,7 @@
 format 66
 "uml"
-  revision 8
-  modified_by 2 "thoas"
+  revision 9
+  modified_by 2 "fmessa"
 
 
   
@@ -415,6 +415,10 @@ format 66
 	php_decl ""
 	python_decl ""
 	idl_decl ""
+      end
+
+      classrelation 136066 // <association>
+	relation_ref 133890 // <association>
       end
     end
 
@@ -892,7 +896,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 133506 "case_id"
+      attribute 133506 "square_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -975,7 +979,97 @@ format 66
 	idl_decl ""
       end
 
-      attribute 134658 "case_id"
+      attribute 134658 "square_id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+    end
+
+    class 132866 "SquareOpen"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 138754 "id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      classrelation 135810 // <generalisation>
+	relation 133762 ---|>
+	  a public
+	    classrelation_ref 135810 // <generalisation>
+	  b parent class_ref 128386 // Square
+      end
+
+      attribute 139010 "pos_x"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 139138 "pos_y"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      classrelation 135938 // <association>
+	relation 133890 ----
+	  a role_name "" private
+	    classrelation_ref 135938 // <association>
+	  b role_name "" private
+	    classrelation_ref 136066 // <association>
+	  association_type class_ref 132994 // ComposeOpen
+      end
+    end
+
+    class 132994 "ComposeOpen"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 139266 "id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 139394 "square_open_id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 139522 "issue_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""

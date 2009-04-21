@@ -4,7 +4,7 @@
 	{
 		private static var _lstSquare:Vector.<Square> = new Vector.<Square>();
 		
-		public static function getSquares():Vector
+		public static function getSquares():Vector.<Square>
 		{
 			return _lstSquare;
 		}
