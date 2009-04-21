@@ -5,8 +5,8 @@
 	
 	public class Square extends Sprite
 	{
-		public static const SQUARE_WIDTH:int = 50;
-		public static const SQUARE_HEIGHT:int = 50;
+		public static const SQUARE_WIDTH:int = 800;
+		public static const SQUARE_HEIGHT:int = 800;
 		// scale : 26px, 78px, 182px, 416px, 800px (max 1024 Square pour écran 840*840px)
 		// pos : le premier (0, 0)
 		private var _x:int;

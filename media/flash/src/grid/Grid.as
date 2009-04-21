@@ -1,7 +1,9 @@
 ﻿package grid
 {
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	
+	import grid.navigation.NavigationController;
 	import grid.square.Square;
 	import grid.square.SquareBooked;
 	import grid.square.SquareFull;
@@ -10,6 +12,7 @@
 
 	public class Grid extends MovieClip
 	{
+		private var _navigationController:NavigationController;
 		private var _minX:int;
 		private var _minY:int;
 		private var _maxX:int;
@@ -41,7 +44,13 @@
 			{
 				_addPosition(new SquareOpen(square.pos_x, square.pos_y));
 			}
-					
+			
+			addEventListener(Event.ADDED_TO_STAGE, _init);		
+		}
+		
+		private function _init(e:Event):void
+		{
+			_navigationController = new NavigationController(this);
 		}
 		
 		private function _addPosition(square:Square):void
