@@ -6,9 +6,9 @@ package mvc
 	
 	public class SquareEvent extends Event
 	{
-		public const SQUARE_CREATION:String = 'SQUARE_CREATION';
+		public static var SQUARE_CREATION:String = 'SQUARE_CREATION';
 		private var _square:Square;
-		public function SquareEvent(eventType:String, square:Square)
+		public function SquareEvent(eventType:String, square:Square):void
 		{
 			_square = square;
 			super(eventType);
