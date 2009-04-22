@@ -1,6 +1,10 @@
 package mvc
 {
-	import mvc.SquareEvent;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	
+	import grid.square.*;
+	
 	public class GridModel extends EventDispatcher 
 	{
 		private var _issueId:int;
@@ -13,9 +17,6 @@ package mvc
 		public function GridModel(issueId:int) 
 		{ 
 			_issueId = issueId;
-			 var gridModel:GridModel = new GridModel(issueId); 
-			 var gridController:GridController = new GridController(gridModel); 
-			 var gridView:GridView = new GridView(gridModel, gridController, this.stage); 
 		}
 		
 		public function get issueId():int
@@ -23,7 +24,7 @@ package mvc
 			return _issueId;
 		}	
 		
-		public function setPosition(squares:Array, squaresOpen:Array, minX:int, minY:int, maxX:int, maxY:int)
+		public function setPosition(squares:Array, squaresOpen:Array, minX:int, minY:int, maxX:int, maxY:int):void
 		{		
 			_minX = minX < _minX ? minX:0;
 			_minY = minY < _minY ? minX:0;
@@ -54,7 +55,7 @@ package mvc
 		{
 			var ind:int = SquareManager.length() - 1;
 			_lstPosition[square.X + _minX * -1][square.Y + _minY * -1] = ind;
-			dispatchEvent(SquareEvent(SquareEvent.SQUARE_CREATION, square));
+			dispatchEvent(new SquareEvent(SquareEvent.SQUARE_CREATION, square));
 		}
 	}
 }
