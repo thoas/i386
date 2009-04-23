@@ -1,8 +1,7 @@
-package mvc
+package grid
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	
 	import grid.square.*;
 	
 	public class GridModel extends EventDispatcher 
@@ -22,7 +21,11 @@ package mvc
 		public function get issueId():int
 		{
 			return _issueId;
-		}	
+		}
+		
+		public function get minX():int { return _minX };
+		
+		public function get minY():int { return _minY };
 		
 		public function setPosition(squares:Array, squaresOpen:Array, minX:int, minY:int, maxX:int, maxY:int):void
 		{		
@@ -48,7 +51,9 @@ package mvc
 			for each(square in squaresOpen)
 			{
 				_addPosition(new SquareOpen(square.pos_x, square.pos_y));
-			}	
+			}
+			
+			dispatchEvent(new GridEvent(GridEvent.GRID_READY));
 		}
 		
 		private function _addPosition(square:Square):void

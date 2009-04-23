@@ -26,7 +26,6 @@
 			
 			addEventListener(MouseEvent.ROLL_OVER, _rollOver);
 			addEventListener(MouseEvent.ROLL_OUT, _rollOut);
-			trace(this.width + " " + this.height);
 		}
 		
 		public function get X():int { return _x };
