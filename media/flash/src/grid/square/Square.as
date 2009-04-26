@@ -7,8 +7,8 @@
 	{
 		public static const SQUARE_WIDTH:int = 800;
 		public static const SQUARE_HEIGHT:int = 800;
-		// scale : 26px, 78px, 182px, 416px, 800px (max 1024 Square pour écran 840*840px)
-		// pos : le premier (0, 0)
+		// thumb scale 25;50;100;200;400;800
+		// first point (0, 0)
 		private var _x:int;
 		private var _y:int;
 		private var _color:int;
@@ -35,6 +35,7 @@
 		private function _rollOver(e:MouseEvent):void
 		{
 			alpha = 1;
+			//trace(_x + ";" + _y);
 		}
 		
 		private function _rollOut(e:MouseEvent):void

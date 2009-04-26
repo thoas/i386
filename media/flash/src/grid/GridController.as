@@ -10,7 +10,7 @@ package grid
 			_gridModel = gridModel;
 		}
 		
-		public function getData(event:Event = null):void
+		public function getData(event:Event = null):Boolean
 		{
 			var issueId:int = _gridModel.issueId;
 			
@@ -66,6 +66,8 @@ package grid
 			issue.max_y = 1;
 			
 			_gridModel.setPosition(issue.squares, issue.squares_open, issue.min_x, issue.min_y, issue.max_x, issue.max_y);
+			
+			return true;
 		}
 	}
 }
