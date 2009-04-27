@@ -1,6 +1,7 @@
 package grid
 {
 	import flash.events.EventDispatcher;
+	
 	import grid.square.*;
 	
 	public class GridModel extends EventDispatcher 
