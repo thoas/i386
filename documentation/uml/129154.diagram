@@ -15,12 +15,15 @@ usecasecanvas 128642 usecase_ref 128130 // S'inscrire
   xyzwh 328 443 3005 64 32 label_xy 337 452
 end
 usecasecanvas 128770 usecase_ref 128258 // Se connecter
+  color mediumblue
   xyzwh 761 482 3005 76 38 label_xy 764 492
 end
 usecasecanvas 128898 usecase_ref 128386 // Définir son profil
+  color mediumblue
   xyzwh 741 932 3005 91 36 label_xy 745 942
 end
 usecasecanvas 129026 usecase_ref 128514 // Regénérer son mot de passe
+  color mediumblue
   xyzwh 50 355 3005 157 45 label_xy 55 370
 end
 usecasecanvas 129154 usecase_ref 128642 // Envoyer une invitation
@@ -69,12 +72,15 @@ subject 135554 ""
 subject 135682 "Navigation"
   color lightgray  xyzwh 571 23 2000 263 179
 usecasecanvas 135810 usecase_ref 131330 // Se déconnecter
+  color mediumblue
   xyzwh 547 236 3005 87 35 label_xy 551 246
 end
 usecasecanvas 136450 usecase_ref 131458 // Editer son profil
+  color mediumblue
   xyzwh 632 1014 3005 91 34 label_xy 639 1023
 end
 usecasecanvas 136578 usecase_ref 131586 // Supprimer son profil
+  color mediumblue
   xyzwh 690 1049 3005 115 39 label_xy 697 1060
 end
 subject 137346 "Gestion du profil"
