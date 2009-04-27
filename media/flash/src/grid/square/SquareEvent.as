@@ -7,6 +7,8 @@ package grid.square
 	public class SquareEvent extends Event
 	{
 		public static const SQUARE_CREATION:String = 'SQUARE_CREATION';
+		public static const SQUARE_FOCUS:String = 'SQUARE_FOCUS';
+		public static const SQUARE_MOVE:String = 'SQUARE_MOVE';
 		private var _square:Square;
 		
 		public function SquareEvent(eventType:String, square:Square):void
