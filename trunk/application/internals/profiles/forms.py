@@ -12,4 +12,4 @@ class ProfileForm(forms.ModelForm):
     
     class Meta:
         model = Profile
-        exclude = ('user',)
+        exclude = ('user', 'nb_invitation', 'max_participation')
