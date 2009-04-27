@@ -25,6 +25,8 @@ TIME_ZONE = 'Europe/Paris'
 # http://blogs.law.harvard.edu/tech/stories/storyReader$15
 LANGUAGE_CODE = 'fr'
 
+LANGUAGE_BIDI = True
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -56,12 +58,13 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',    
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'account.middleware.LocaleMiddleware',
     'django.middleware.doc.XViewMiddleware',
-    'pagination.middleware.PaginationMiddleware',
+    'pagination.middleware.PaginationMiddleware'
 )
 
 ROOT_URLCONF = 'urls'
