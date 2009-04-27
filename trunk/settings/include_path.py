@@ -12,6 +12,7 @@ path = addsitedir(LIB_EXTERNAL_ROOT, set())
 if path:
     sys.path = list(path) + sys.path
 sys.path.insert(0, APPLICATION_ROOT)
+sys.path.insert(0, PROJECT_ROOT)
 sys.path.insert(0, LIB_ROOT)
 sys.path.insert(0, LIB_EXTERNAL_ROOT)
 sys.path.insert(0, join(APPLICATION_ROOT, 'internals'))
