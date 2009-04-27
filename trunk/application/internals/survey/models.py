@@ -21,15 +21,15 @@ class Enquete(models.Model):
     profession = models.CharField(_('Profession'), max_length=20, null=True, blank=True)
     place_to_work = models.CharField(_('Societe'), max_length=255, null=True, blank=True)
     
-    question1 = models.TextField(_('Question 1'), null=True, blank=True)
-    question2 = models.TextField(_('Question 2'), null=True, blank=True)
-    question3 = models.TextField(_('Question 3'), null=True, blank=True)
-    question4 = models.TextField(_('Question 4'), null=True, blank=True)
-    question5 = models.TextField(_('Question 5'), null=True, blank=True)
-    question6 = models.TextField(_('Question 6'), null=True, blank=True)
-    question7 = models.TextField(_('Question 7'), null=True, blank=True)
+    question1 = models.TextField(_('Question_1'), null=True, blank=True)
+    question2 = models.TextField(_('Question_2'), null=True, blank=True)
+    question3 = models.TextField(_('Question_3'), null=True, blank=True)
+    question4 = models.TextField(_('Question_4'), null=True, blank=True)
+    question5 = models.TextField(_('Question_5'), null=True, blank=True)
+    question6 = models.TextField(_('Question_6'), null=True, blank=True)
+    question7 = models.TextField(_('Question_7'), null=True, blank=True)
     
-    date_created = models.DateTimeField(_('creation date'), auto_now_add=True)
+    date_created = models.DateTimeField(_('creation_date'), auto_now_add=True)
     
     def __unicode__(self):
         return '%s - %s' % (self.coordonnees, self.email)
