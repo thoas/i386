@@ -3,7 +3,7 @@ diagrams
   classdiagram_ref 128002 // DBDC
     2763 761 110 4 300 0
   active  usecasediagram_ref 129154 // DCU
-    1293 874 100 4 0 0
+    1289 873 120 4 403 0
 end
 show_stereotypes
 selected usecasediagram_ref 129154 // DCU
