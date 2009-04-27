@@ -21,7 +21,7 @@ Envies et motivations des cr&eacute;ateurs dans la cr&eacute;ation collaborative
     
     <h2 class="right">... et l'art collaboratif</h2>
     {{ form.question1.errors }}
-    <p><label class="none" for="id_question1">Avez vous d&eacute;j&agrave; collabor&eacute; avec d'autres cr&eacute;ateurs par le biais d'Internet ? Si oui, quel en a &eacute;t&eacute; le r&eacute;sultat ? Le projet a t'il &eacute;t&eacute; abandonn&eacute; ou finalis&eacute; ? Comment, pourquoi ? Des d&eacute;tails.</label>{{ form.question1 }}</p>
+    <p><label class="none" for="id_question1">{{ form.question1.label }}</label>{{ form.question1 }}</p>
     {{ form.question2.errors }}
     <p><label class="none" for="id_question2">La finalit&eacute; du projet (impression / publication / distribution) vous int&eacute;resse-elle plus que la d&eacute;marche artistique ?</label>{{ form.question2 }}</p>
     {{ form.question3.errors }}
