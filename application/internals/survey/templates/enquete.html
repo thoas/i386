@@ -26,19 +26,19 @@ Envies et motivations des cr&eacute;ateurs dans la cr&eacute;ation collaborative
     
     <h2 class="right">... et l'art collaboratif</h2>
     {{ form.question1.errors }}
-    <p><label class="none" for="id_question1">{% trans "Question_1" %}</label>{{ form.question1 }}</p>
+    <p><label class="none" for="id_question1">{{ form.question1.label }}</label>{{ form.question1 }}</p>
     {{ form.question2.errors }}
-    <p><label class="none" for="id_question2">La finalit&eacute; du projet (impression / publication / distribution) vous int&eacute;resse-elle plus que la d&eacute;marche artistique ?</label>{{ form.question2 }}</p>
+    <p><label class="none" for="id_question2">{{ form.question2.label }}</label>{{ form.question2 }}</p>
     {{ form.question3.errors }}
-    <p><label class="none" for="id_question3">Qu'attendriez-vous d'une telle exp&eacute;rience (travailler pour le plaisir / voir et donner &agrave; voir / ...) ?</label>{{ form.question3 }}</p>
+    <p><label class="none" for="id_question3">{{ form.question3.label }}</label>{{ form.question3 }}</p>
     {{ form.question4.errors }}
-    <p><label class="none" for="id_question4">Continuer une oeuvre amorc&eacute;e par un autre cr&eacute;ateur vous stimule-t-il ?</label>{{ form.question4 }}</p>
+    <p><label class="none" for="id_question4">{{ form.question4.label }}</label>{{ form.question4 }}</p>
     {{ form.question5.errors }}
-    <p><label class="none" for="id_question5">A l'inverse, seriez-vous dispos&eacute; &agrave; ce que d'autres cr&eacute;ateurs interviennent sur une partie de votre travail ?</label>{{ form.question5 }}</p>
+    <p><label class="none" for="id_question5">{{ form.question5.label }}</label>{{ form.question5 }}</p>
     {{ form.question6.errors }}
-    <p><label class="none" for="id_question6">D'une mani&egrave;re g&eacute;n&eacute;rale, les contraintes de cr&eacute;ation (outils, th&egrave;mes impos&eacute;s) vous stimulent-elles, ou vous rebutent-elles ?</label>{{ form.question6 }}</p>
+    <p><label class="none" for="id_question6">{{ form.question6.label }}</label>{{ form.question6 }}</p>
     {{ form.question7.errors }}
-    <p><label class="none" for="id_question7">Tous les commentaires / remarques / id&eacute;es sont les bienvenu(e)s !</label>{{ form.question7 }}</p>
+    <p><label class="none" for="id_question7">{{ form.question7.label }}</label>{{ form.question7 }}</p>
 	<p class="submit"><input type="submit" value="envoyer" /></p>
 </form>
 {% endblock %}
