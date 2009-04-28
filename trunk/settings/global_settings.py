@@ -1,4 +1,5 @@
 import os
+import os.path
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__)) + '/..'
 TEMPLATE_ROOT = os.path.join(PROJECT_ROOT, 'templates')
@@ -37,12 +38,6 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
-# Absolute path to the directory that holds media.
-# Example: '/home/media/media.lawrence.com/'
-
-import os.path
-
-
 # URL that handles the media served from MEDIA_ROOT.
 # Example: 'http://media.lawrence.com'
 MEDIA_URL = '/media/'
@@ -72,8 +67,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'urls'
-
-import os.path
 
 TEMPLATE_DIRS = (
     TEMPLATE_ROOT,
