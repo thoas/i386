@@ -33,6 +33,7 @@ usecasecanvas 129282 usecase_ref 128770 // Réserver une case
   xyzwh 419 392 3005 106 45 label_xy 424 407
 end
 usecasecanvas 129410 usecase_ref 128898 // Envoyer une notification (contact)
+  color mediumblue
   xyzwh 38 304 3005 177 42 label_xy 43 316
 end
 usecasecanvas 129666 usecase_ref 129154 // Transférer un travail

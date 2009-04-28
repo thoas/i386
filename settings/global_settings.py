@@ -7,8 +7,8 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
 ADMINS = (
      ('Florent Messa', 'florent.messa@gmail.com'),
-     ('Thomas Poblete', 'thomas.pob@gmail.com'),
-     ('Arnaud Guiheneuf', 'arnaud.guiheneuf@gmail.com'),
+     #('Thomas Poblete', 'thomas.pob@gmail.com'),
+     #('Arnaud Guiheneuf', 'arnaud.guiheneuf@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -136,7 +136,7 @@ EMAIL_CONFIRMATION_DAYS = 2
 
 SESSION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sessions')
 
-SERVER_EMAIL = 'error@milkshape.cc'
+SERVER_EMAIL = 'contact@milkshape.cc'
 SITE_NAME = 'u__u'
 
 LOGIN_URL = '/account/login'
@@ -149,5 +149,5 @@ FILE_UPLOAD_TEMP_DIR = os.path.join(PROJECT_ROOT, 'tmp')
 UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'upload')
 
 # Default values
-DEFAULT_NB_INVITATION = 1
+DEFAULT_NB_INVITATION = 0
 DEFAULT_MAX_PARTICIPATION = 5

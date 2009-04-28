@@ -7,13 +7,10 @@ def index(request):
         form = EnqueteForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/survey/thanks/')
+            return redirect('survey_thanks')
     else:
         form = EnqueteForm()
 
     return render_to_response('enquete.html', {
         'form': form,
     })
-
-def thanks(request):
-    return render_to_response('thanks.html')
