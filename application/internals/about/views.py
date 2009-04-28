@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from about.models import Contact
 from about.forms import ContactForm
 
-def contact(request):
+def contact(request, template_name='contact.html'):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -26,6 +26,6 @@ def contact(request):
     else:
         form = ContactForm()
 
-    return render_to_response('contact.html', {
+    return render_to_response(template_name, {
         'form': form,
     })

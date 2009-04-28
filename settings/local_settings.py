@@ -8,7 +8,6 @@ TEMPLATE_DEBUG = DEBUG
 
 EMAIL_HOST = 'mail.fullsix.com'
 EMAIL_PORT = '25'
-CONTACT_EMAIL = "fmessa@fullsix.com"
 EMAIL_DEBUG = DEBUG
 
 DATABASE_ENGINE = 'sqlite3'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
