@@ -5,8 +5,11 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-EMAIL_HOST = 'mail.fullsix.com'
-EMAIL_PORT = '25'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'contact@milkshape.cc'
+EMAIL_HOST_PASSWORD = 'development'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 EMAIL_DEBUG = DEBUG
 
 DATABASE_ENGINE = 'sqlite3'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.

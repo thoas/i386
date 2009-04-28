@@ -99,7 +99,8 @@ class EmailConfirmationManager(models.Manager):
         }
         subject = render_to_string("emailconfirmation/email_confirmation_subject.txt", context)
         message = render_to_string("emailconfirmation/email_confirmation_message.txt", context)
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email_address.email], priority="high")
+        
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [email_address.email], priority="high")
         
         return self.create(email_address=email_address, sent=datetime.now(), confirmation_key=confirmation_key)
     

@@ -98,7 +98,6 @@ INSTALLED_APPS = (
     # external
     'notification', # must be first
     'emailconfirmation',
-    'mailer',
     'announcements',
     'pagination',
     'timezones',
@@ -129,8 +128,7 @@ EMAIL_CONFIRMATION_DAYS = 2
 
 SESSION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sessions')
 
-SERVER_EMAIL = 'contact@milkshape.cc'
-CONTACT_EMAIL = SERVER_EMAIL
+CONTACT_EMAIL = 'sybilline.am@wanadoo.fr'
 SITE_NAME = 'u__u'
 
 LOGIN_URL = '/account/login'
