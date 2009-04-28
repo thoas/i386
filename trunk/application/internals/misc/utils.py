@@ -29,7 +29,7 @@ def get_send_mail():
     A function to return a send_mail function suitable for use in the app. It
     deals with incompatibilities between signatures.
     """
-    # favour django-mailer but fall back to django.core.mail
+    # favour django-mailer but fall back to django.core.mail    
     if "mailer" in settings.INSTALLED_APPS:
         from mailer import send_mail
     else:
@@ -38,3 +38,16 @@ def get_send_mail():
             del kwargs["priority"]
             return _send_mail(*args, **kwargs)
     return send_mail
+
+def transform(source, from_type, to_type):
+    if not isinstance(source, from_type):
+        return source
+    else:
+        return to_type(transform(x, from_type, to_type)
+            for x in source)
+
+def list2tuple(source):
+    return transform(source, list, tuple)
+
+def tuple2list(source):
+    return transform(source, tuple, list)

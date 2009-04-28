@@ -9,12 +9,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
-from account.forms import SignupForm, AddEmailForm, LoginForm, ChangePasswordForm, ResetPasswordForm, ChangeTimezoneForm, ChangeLanguageForm
+from account.forms import SignupForm, AddEmailForm, LoginForm, \
+    ChangePasswordForm, ResetPasswordForm, ChangeTimezoneForm, ChangeLanguageForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
 def login(request, form_class=LoginForm, template_name="login.html"):
     if request.method == "POST":
-        default_redirect_to = getattr(settings, "LOGIN_REDIRECT_URLNAME", None)
+        default_redirect_to = getattr(settings, "LOGIN_REDIRECT_URLNAME", None) 
         if default_redirect_to:
             default_redirect_to = reverse(default_redirect_to)
         else:
