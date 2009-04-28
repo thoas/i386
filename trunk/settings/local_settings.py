@@ -6,9 +6,9 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-EMAIL_HOST = 'smtp.wanadoo.fr'
+EMAIL_HOST = 'mail.fullsix.com'
 EMAIL_PORT = '25'
-CONTACT_EMAIL = "sybilline.am@wanadoo.fr"
+CONTACT_EMAIL = "fmessa@fullsix.com"
 EMAIL_DEBUG = DEBUG
 
 DATABASE_ENGINE = 'sqlite3'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
