@@ -2,10 +2,9 @@
 
 import os
 
+SITE_ID = 2
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
-
-CONTACT_EMAIL = "feedback@milshape.cc"
 
 DATABASE_ENGINE = 'mysql'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
 DATABASE_NAME = 'gobelins_project'       # Or path to database file if using sqlite3.

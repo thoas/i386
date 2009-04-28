@@ -32,8 +32,6 @@ LOCALE_PATHS = (
     os.path.join(PROJECT_ROOT, 'locale')
 )
 
-SITE_ID = 1
-
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -128,8 +126,13 @@ EMAIL_CONFIRMATION_DAYS = 2
 
 SESSION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sessions')
 
-CONTACT_EMAIL = 'sybilline.am@wanadoo.fr'
-SITE_NAME = 'u__u'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'contact@milkshape.cc'
+EMAIL_HOST_PASSWORD = 'development'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+CONTACT_EMAIL = EMAIL_HOST_USER
+SITE_NAME = 'milkshape'
 
 LOGIN_URL = '/account/login'
 LOGOUT_URL = '/account/logout'
