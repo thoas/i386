@@ -10,6 +10,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 
 from emailconfirmation.utils import get_send_mail
+from django.db.models.signals import post_save
 send_mail = get_send_mail()
 
 # this code based in-part on django-registration
@@ -68,6 +69,12 @@ class EmailAddress(models.Model):
             ("user", "email"),
         )
 
+def create_email_address(sender, instance=None, **kwargs):
+    if instance is None:
+        return
+    email_address, created = EmailAddress.objects.get_or_create(user=instance, email=instance.email, verified=instance.is_staff, primary=True)
+
+post_save.connect(create_email_address, sender=User)
 
 class EmailConfirmationManager(models.Manager):
     

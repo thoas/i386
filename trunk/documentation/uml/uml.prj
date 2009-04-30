@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 11
+  revision 12
   modified_by 2 "thoas"
 
 
@@ -619,6 +619,15 @@ format 66
 
       classrelation 132354 // <association>
 	relation_ref 130306 // <association>
+      end
+
+      attribute 140674 "confirmation_key"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
       end
     end
 

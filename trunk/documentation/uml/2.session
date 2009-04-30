@@ -3,10 +3,10 @@ diagrams
   classdiagram_ref 128002 // DBDC
     2763 761 110 4 0 0
   active  usecasediagram_ref 129154 // DCU
-    1351 873 120 4 283 0
+    1351 873 120 4 583 0
 end
 show_stereotypes
-selected usecasediagram_ref 129154 // DCU
+selected classdiagram_ref 128002 // DBDC
 open
   class_ref 128130 // Profile
   class_ref 128386 // Square
