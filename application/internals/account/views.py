@@ -33,7 +33,7 @@ def login(request, form_class=LoginForm, template_name="login.html"):
         "form": form,
     }, context_instance=RequestContext(request))
 
-def signup(request, form_class=SignupForm,
+def signup(request, confirmation_key='', form_class=SignupForm,
         template_name="signup.html", success_url=None):
     if success_url is None:
         success_url = reverse("what_next")
@@ -46,11 +46,29 @@ def signup(request, form_class=SignupForm,
             request.user.message_set.create(message=_("Successfully logged in as %(username)s.") % {'username': user.username})
             return HttpResponseRedirect(success_url)
     else:
-        form = form_class()
+        form = form_class(initial={'confirmation_key': confirmation_key})
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))
+    
+def password_reset(request, form_class=ResetPasswordForm,
+        template_name="password_reset.html",
+        template_name_done="account/password_reset_done.html"):
+    if request.method == "POST":
+        password_reset_form = form_class(request.POST)
+        if password_reset_form.is_valid():
+            email = password_reset_form.save()
+            return render_to_response(template_name_done, {
+                "email": email,
+            }, context_instance=RequestContext(request))
+    else:
+        password_reset_form = form_class()
 
+    return render_to_response(template_name, {
+        "password_reset_form": password_reset_form,
+    }, context_instance=RequestContext(request))
+
+@login_required
 def email(request, form_class=AddEmailForm,
         template_name="email.html"):
     if request.method == "POST" and request.user.is_authenticated():
@@ -86,8 +104,8 @@ def email(request, form_class=AddEmailForm,
     return render_to_response(template_name, {
         "add_email_form": add_email_form,
     }, context_instance=RequestContext(request))
-email = login_required(email)
 
+@login_required
 def password_change(request, form_class=ChangePasswordForm,
         template_name="password_change.html"):
     if request.method == "POST":
@@ -100,25 +118,8 @@ def password_change(request, form_class=ChangePasswordForm,
     return render_to_response(template_name, {
         "password_change_form": password_change_form,
     }, context_instance=RequestContext(request))
-password_change = login_required(password_change)
 
-def password_reset(request, form_class=ResetPasswordForm,
-        template_name="password_reset.html",
-        template_name_done="account/password_reset_done.html"):
-    if request.method == "POST":
-        password_reset_form = form_class(request.POST)
-        if password_reset_form.is_valid():
-            email = password_reset_form.save()
-            return render_to_response(template_name_done, {
-                "email": email,
-            }, context_instance=RequestContext(request))
-    else:
-        password_reset_form = form_class()
-    
-    return render_to_response(template_name, {
-        "password_reset_form": password_reset_form,
-    }, context_instance=RequestContext(request))
-
+@login_required
 def timezone_change(request, form_class=ChangeTimezoneForm,
         template_name="timezone_change.html"):
     if request.method == "POST":
@@ -130,8 +131,8 @@ def timezone_change(request, form_class=ChangeTimezoneForm,
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))
-timezone_change = login_required(timezone_change)
 
+@login_required
 def language_change(request, form_class=ChangeLanguageForm,
         template_name="language_change.html"):
     if request.method == "POST":
@@ -145,4 +146,3 @@ def language_change(request, form_class=ChangeLanguageForm,
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))
-language_change = login_required(language_change)
