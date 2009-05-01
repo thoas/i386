@@ -12,6 +12,7 @@ usecasecanvas 128514 usecase_ref 128002 // Gérer mes créations
   xyzwh 311 801 3005 127 40 label_xy 326 812
 end
 usecasecanvas 128642 usecase_ref 128130 // S'inscrire
+  color mediumblue
   xyzwh 328 443 3005 64 32 label_xy 337 452
 end
 usecasecanvas 128770 usecase_ref 128258 // Se connecter
@@ -103,6 +104,7 @@ usecasecanvas 142210 usecase_ref 132098 // Télécharger le template de création
   xyzwh 453 1043 3005 189 39 label_xy 460 1054
 end
 usecasecanvas 142466 usecase_ref 132226 // Voir la liste des participants
+  color mediumblue
   xyzwh 408 692 3005 149 44 label_xy 417 705
 end
 usecasecanvas 143106 usecase_ref 132354 // Transférer une création

@@ -211,6 +211,10 @@ div.profile_info p {
     list-style-type: none;
 }
 
+ul.none li {
+    list-style-type: none;
+}
+
 #subnav ul a:link, #subnav ul a:visited {
     float: left;
     font-weight: bold;

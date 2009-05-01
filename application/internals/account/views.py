@@ -9,8 +9,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
+from account.models import Invitation
+
 from account.forms import SignupForm, AddEmailForm, LoginForm, \
-    ChangePasswordForm, ResetPasswordForm, ChangeTimezoneForm, ChangeLanguageForm
+    ChangePasswordForm, ResetPasswordForm, ChangeTimezoneForm, ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
 def login(request, form_class=LoginForm, template_name="login.html"):
@@ -145,4 +147,34 @@ def language_change(request, form_class=ChangeLanguageForm,
         form = form_class(request.user)
     return render_to_response(template_name, {
         "form": form,
+    }, context_instance=RequestContext(request))
+    
+@login_required
+def invitations(request, confirmation_key='', form_class=InvitationForm,
+        template_name="invitations.html"):
+        
+    remain_invitation = Invitation.objects.remain_invitation(request.user)
+    users_invited = Invitation.objects.users_invited(request.user)
+    unused_invitations = list(Invitation.objects.unused_invitations(request.user))
+    sent_invitations = Invitation.objects.sent_invitations(request.user)
+    form = form_class()
+    
+    from django.forms.fields import email_re
+    if request.method == "POST":
+        if request.POST['action'] == 'add':
+            if remain_invitation > 0:
+                new_invitation = Invitation.objects.create(user=request.user)
+                unused_invitations.append(new_invitation)
+                remain_invitation -= 1
+        elif request.POST['action'] == 'update':
+            for i in range(int(request.POST['nb_unused_invitations'])):
+                index = str(i)
+                if email_re.match(request.POST['email_' + index]):
+                    pass
+    return render_to_response(template_name, {
+        "form": form,
+        "remain_invitation": remain_invitation,
+        "sent_invitations": sent_invitations,
+        "unused_invitations": unused_invitations,
+        "users_invited": users_invited,
     }, context_instance=RequestContext(request))

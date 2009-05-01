@@ -62,7 +62,7 @@ class EmailAddress(models.Model):
         return True
     
     def __unicode__(self):
-        return u"%s (%s)" % (self.email, self.user)
+        return u"%s (%s - %d)" % (self.email, self.user, self.verified)
     
     class Meta:
         unique_together = (
@@ -72,7 +72,7 @@ class EmailAddress(models.Model):
 def create_email_address(sender, instance=None, **kwargs):
     if instance is None:
         return
-    email_address, created = EmailAddress.objects.get_or_create(user=instance, email=instance.email, verified=instance.is_staff, primary=True)
+    email_address, created = EmailAddress.objects.get_or_create(user=instance, email=instance.email, primary=True)
 
 post_save.connect(create_email_address, sender=User)
 

@@ -35,25 +35,4 @@ def create_profile(sender, instance=None, **kwargs):
         return
     profile, created = Profile.objects.get_or_create(user=instance)
 
-class InvitationManager(models.Manager):
-    """manager for Invitation model"""
-    pass
-
-class Invitation(models.Model):
-    last_name = models.CharField(_('last_name'), max_length=150)
-    first_name = models.CharField(_('first_name'), max_length=150)
-    email = models.EmailField(_('email'), max_length=255)
-    subject = models.CharField(_('subject'), blank=True, null=True, max_length=255)
-    confirmation_key = models.CharField(_('confirmation_key'), max_length=50)
-    content = models.TextField(_('content'))
-    date_sent = models.DateField(_('date_sent'), auto_now_add=True)
-    date_burned = models.DateField(_('date_burned', null=True))
-    user = models.ForeignKey(User, verbose_name=_('user'))
-    
-    objects = InvitationManager()
-    def save(self):
-        """override save"""
-        self.confirmation_key = User.objects.make_password()
-        super.save(self)
-
 post_save.connect(create_profile, sender=User)
