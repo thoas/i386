@@ -19,7 +19,6 @@ def contact(request, template_name='contact.html'):
             
             recipients = [admin[1] for admin in settings.ADMINS]
             
-            print recipients
             from django.core.mail import send_mail
             send_mail(subject, content, sender, recipients)
             
