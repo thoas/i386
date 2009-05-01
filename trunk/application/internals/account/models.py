@@ -68,5 +68,4 @@ class Invitation(models.Model):
     objects = InvitationManager()
     def save(self, force_insert=False, force_update=False):
         """override save"""
-        self.confirmation_key = User.objects.make_random_password()
         super(Invitation, self).save(force_insert, force_update)

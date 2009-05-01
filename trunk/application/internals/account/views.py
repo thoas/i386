@@ -8,9 +8,10 @@ from django.template import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 from account.models import Invitation
-
 from account.forms import SignupForm, AddEmailForm, LoginForm, \
     ChangePasswordForm, ResetPasswordForm, ChangeTimezoneForm, ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
@@ -85,7 +86,7 @@ def email(request, form_class=AddEmailForm,
                 email = request.POST["email"]
                 try:
                     email_address = EmailAddress.objects.get(user=request.user, email=email)
-                    request.user.message_set.create(message="Confirmation email sent to %s" % email)
+                    request.user.message_set.create(message=_("Confirmation email sent to %s") % email)
                     EmailConfirmation.objects.send_confirmation(email_address)
                 except EmailAddress.DoesNotExist:
                     pass
@@ -94,7 +95,7 @@ def email(request, form_class=AddEmailForm,
                 try:
                     email_address = EmailAddress.objects.get(user=request.user, email=email)
                     email_address.delete()
-                    request.user.message_set.create(message="Removed email address %s" % email)
+                    request.user.message_set.create(message=_("Removed email address %s") % email)
                 except EmailAddress.DoesNotExist:
                     pass
             elif request.POST["action"] == "primary":
@@ -155,26 +156,41 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
         
     remain_invitation = Invitation.objects.remain_invitation(request.user)
     users_invited = Invitation.objects.users_invited(request.user)
-    unused_invitations = list(Invitation.objects.unused_invitations(request.user))
+    unused_invitations = {}
+    for unused in Invitation.objects.unused_invitations(request.user):
+        unused_invitations[unused.confirmation_key] = unused
     sent_invitations = Invitation.objects.sent_invitations(request.user)
+    
     form = form_class()
     
     from django.forms.fields import email_re
     if request.method == "POST":
         if request.POST['action'] == 'add':
             if remain_invitation > 0:
-                new_invitation = Invitation.objects.create(user=request.user)
-                unused_invitations.append(new_invitation)
+                new_invitation = Invitation.objects.create(user=request.user, 
+                    confirmation_key=User.objects.make_random_password())
+                unused_invitations[new_invitation.confirmation_key] = new_invitation
                 remain_invitation -= 1
         elif request.POST['action'] == 'update':
+            from datetime import datetime
             for i in range(int(request.POST['nb_unused_invitations'])):
                 index = str(i)
-                if email_re.match(request.POST['email_' + index]):
-                    pass
+                email = request.POST['email_' + index]
+                if email_re.match(email):
+                    try:
+                        invitation = Invitation.objects.get(email=email)
+                        request.user.message_set.create(message=_("%s already exists in our database") % email)
+                    except Invitation.DoesNotExist:
+                        invitation = get_object_or_404(Invitation, 
+                            confirmation_key=request.POST['confirmation_key_' + index])
+                        invitation.email = email
+                        invitation.date_burned = datetime.now()
+                        invitation.save()
+                        del unused_invitations[invitation.confirmation_key]
     return render_to_response(template_name, {
         "form": form,
         "remain_invitation": remain_invitation,
         "sent_invitations": sent_invitations,
-        "unused_invitations": unused_invitations,
+        "unused_invitations": unused_invitations.values(),
         "users_invited": users_invited,
     }, context_instance=RequestContext(request))
