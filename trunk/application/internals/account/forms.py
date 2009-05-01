@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
 from emailconfirmation.models import EmailAddress
-from account.models import Account
+from account.models import Account, Invitation
 
 from timezones.forms import TimeZoneField
 
@@ -83,7 +83,7 @@ class SignupForm(forms.Form):
         """docstring for clean_confirmation_key"""
         from profiles.models import Invitation
         try:
-            invitation = Invitation.objects.get(confirmation_key=self.cleaned_data['confirmation_key'], date_burned=None)
+            invitation = Invitation.objects.get(confirmation_key=self.cleaned_data['confirmation_key'], date_burned__isnull=True)
             return invitation, self.cleaned['confirmation_key']
         except Invitation.DoesNotExist:
             raise forms.ValidationError(_("Invitation key doesn't exist or already burned"))
@@ -99,6 +99,10 @@ class SignupForm(forms.Form):
         email = self.cleaned_data["email"]
         password = self.cleaned_data["password1"]
         invitation, confirmation_key = self.cleaned_data['confirmation_key']
+        
+        from datetime import datetime
+        invitation.date_burned = datetime.now()
+        invitation.save()
         
         new_user = User.objects.create_user(username, email, password)
         new_user.message_set.create(message=ugettext(u"Confirmation email sent to %(email)s") % {'email': email})
@@ -208,3 +212,14 @@ class ChangeLanguageForm(AccountForm):
         self.account.language = self.cleaned_data["language"]
         self.account.save()
         self.user.message_set.create(message=ugettext(u"Language successfully updated."))
+        
+class InvitationForm(forms.ModelForm):
+    email = forms.EmailField()
+    def __init__(self, *args, **kwargs):
+        super(InvitationForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        new_invitation = super(InvitationForm, self).save(commit)
+    class Meta:
+        model = Invitation
+        exclude = ('user', 'date_sent', 'date_burned', 'confirmation_key', 'user_created')

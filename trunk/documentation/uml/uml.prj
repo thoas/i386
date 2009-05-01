@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 12
+  revision 14
   modified_by 2 "thoas"
 
 
@@ -228,6 +228,10 @@ format 66
 	    classrelation_ref 132226 // <association>
 	  b role_name "" private
 	    classrelation_ref 132354 // <association>
+      end
+
+      classrelation 137346 // <association>
+	relation_ref 135042 // <association>
       end
     end
 
@@ -628,6 +632,23 @@ format 66
 	php_decl ""
 	python_decl ""
 	idl_decl ""
+      end
+
+      attribute 141826 "user_created"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      classrelation 137218 // <association>
+	relation 135042 ----
+	  a role_name "" multiplicity "0..1" private
+	    classrelation_ref 137218 // <association>
+	  b role_name "" multiplicity "0..1" private
+	    classrelation_ref 137346 // <association>
       end
     end
 
