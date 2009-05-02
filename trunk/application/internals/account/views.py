@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 
 from account.models import Invitation
@@ -156,9 +157,7 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
         
     remain_invitation = Invitation.objects.remain_invitation(request.user)
     users_invited = Invitation.objects.users_invited(request.user)
-    unused_invitations = {}
-    for unused in Invitation.objects.unused_invitations(request.user):
-        unused_invitations[unused.confirmation_key] = unused
+    unused_invitations = list(Invitation.objects.unused_invitations(request.user))
     sent_invitations = Invitation.objects.sent_invitations(request.user)
     
     form = form_class()
@@ -169,10 +168,13 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
             if remain_invitation > 0:
                 new_invitation = Invitation.objects.create(user=request.user, 
                     confirmation_key=User.objects.make_random_password())
-                unused_invitations[new_invitation.confirmation_key] = new_invitation
+                
+                unused_invitations.append(new_invitation)
                 remain_invitation -= 1
         elif request.POST['action'] == 'update':
             from datetime import datetime
+            current_site = Site.objects.get_current()
+            user_profile = request.user.get_profile()
             for i in range(int(request.POST['nb_unused_invitations'])):
                 index = str(i)
                 email = request.POST['email_' + index]
@@ -184,13 +186,17 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
                         invitation = get_object_or_404(Invitation, 
                             confirmation_key=request.POST['confirmation_key_' + index])
                         invitation.email = email
-                        invitation.date_burned = datetime.now()
+                        invitation.first_name = request.POST['first_name_' + index]
+                        invitation.last_name = request.POST['last_name_' + index]
+                        invitation.subject = request.POST['subject_' + index]
+                        invitation.content = request.POST['content_' + index]
                         invitation.save()
-                        del unused_invitations[invitation.confirmation_key]
+                        unused_invitations.remove(invitation)
+                        Invitation.objects.send_invitation(invitation, request.user, user_profile, current_site)
     return render_to_response(template_name, {
         "form": form,
         "remain_invitation": remain_invitation,
         "sent_invitations": sent_invitations,
-        "unused_invitations": unused_invitations.values(),
+        "unused_invitations": unused_invitations,
         "users_invited": users_invited,
     }, context_instance=RequestContext(request))

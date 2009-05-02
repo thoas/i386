@@ -6,17 +6,14 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.utils.encoding import smart_unicode
-
-from misc.utils import get_send_mail
-send_mail = get_send_mail()
-
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
-from emailconfirmation.models import EmailAddress
+from emailconfirmation.models import EmailAddress, EmailConfirmation
 from account.models import Account, Invitation
-
 from timezones.forms import TimeZoneField
+from misc.utils import get_send_mail
+send_mail = get_send_mail()
 
 class LoginForm(forms.Form):
 
@@ -74,17 +71,16 @@ class SignupForm(forms.Form):
         from emailconfirmation.models import EmailAddress
         try:
             EmailAddress.objects.get(email=self.cleaned_data['email'])
-        except Invitation.DoesNotExist:
+        except EmailAddress.DoesNotExist:
             return self.cleaned_data['email']
         else:
             raise forms.ValidationError(_("This email (%s) already exists in our database") % self.cleaned_data['email'])
         
     def clean_confirmation_key(self):
         """docstring for clean_confirmation_key"""
-        from profiles.models import Invitation
         try:
             invitation = Invitation.objects.get(confirmation_key=self.cleaned_data['confirmation_key'], date_burned__isnull=True)
-            return invitation, self.cleaned['confirmation_key']
+            return invitation, self.cleaned_data['confirmation_key']
         except Invitation.DoesNotExist:
             raise forms.ValidationError(_("Invitation key doesn't exist or already burned"))
 
@@ -100,13 +96,14 @@ class SignupForm(forms.Form):
         password = self.cleaned_data["password1"]
         invitation, confirmation_key = self.cleaned_data['confirmation_key']
         
-        from datetime import datetime
-        invitation.date_burned = datetime.now()
-        invitation.save()
-        
         new_user = User.objects.create_user(username, email, password)
         new_user.message_set.create(message=ugettext(u"Confirmation email sent to %(email)s") % {'email': email})
         EmailAddress.objects.add_email(new_user, email)
+        
+        from datetime import datetime
+        invitation.date_burned = datetime.now()
+        invitation.user_created = new_user
+        invitation.save()
         
         return username, password
 

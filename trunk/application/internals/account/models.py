@@ -3,6 +3,9 @@ from django.conf import settings
 from django.contrib.auth.models import User, AnonymousUser
 from django.db.models.signals import post_save
 from django.utils.translation import get_language_from_request, ugettext_lazy as _
+from django.contrib.sites.models import Site
+from django.template.loader import render_to_string
+from django.core.urlresolvers import reverse
 
 from timezones.fields import TimeZoneField
 
@@ -52,6 +55,36 @@ class InvitationManager(models.Manager):
     def users_invited(self, user):
         """docstring for sent_invitations"""
         return self.filter(user=user, date_burned__isnull=False).select_related('user_created')
+        
+    def send_invitation(self, invitation_instance, user_instance=None, user_profile=None, current_site=None):
+        from emailconfirmation.utils import get_send_mail
+        send_mail = get_send_mail()
+        
+        confirmation_key = invitation_instance.confirmation_key
+        if current_site is None:
+            current_site = Site.objects.get_current()
+        activate_url = u"http://%s%s" % (
+            unicode(current_site.domain),
+            reverse("acct_signup_key", args=(confirmation_key,))
+        )
+        if user_instance is None:
+            user_instance = invitation.user
+        
+        if user_profile is None:
+            user_profile = user_instance.get_profile()
+        context = {
+            "user": user_instance,
+            "user_profile": user_profile,
+            "invitation": invitation_instance,
+            "activate_url": activate_url,
+            "current_site": current_site,
+            "confirmation_key": confirmation_key
+        }
+        
+        subject = render_to_string("email_invitation_subject.txt", context)
+        message = render_to_string("email_invitation_message.txt", context)
+
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority="high")
 
 class Invitation(models.Model):
     last_name = models.CharField(_('last_name'), max_length=150, blank=True, null=True)
