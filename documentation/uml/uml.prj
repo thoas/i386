@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 14
+  revision 15
   modified_by 2 "thoas"
 
 
@@ -204,7 +204,7 @@ format 66
 	    classrelation_ref 130818 // <association>
 	  b role_name "" private
 	    classrelation_ref 130946 // <association>
-	  association_type class_ref 129282 // ParticipateSquare
+	  association_type class_ref 134146 // ParticipateSquare
       end
 
       classrelation 131330 // <composition>
@@ -253,6 +253,24 @@ format 66
 	idl_decl ""
       end
 
+      attribute 144002 "about"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 144130 "name"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
       classrelation 128130 // <association>
 	relation_ref 128002 // <association>
       end
@@ -284,6 +302,24 @@ format 66
       end
 
       attribute 136322 "max_participation"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 143874 "user_id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 143746 "last_updated"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -329,7 +365,7 @@ format 66
 	    classrelation_ref 130050 // <association>
 	  b role_name "" private
 	    classrelation_ref 130178 // <association>
-	  association_type class_ref 129026 // Compose
+	  association_explicit_type "Compose"
       end
 
       classrelation 131074 // <composition>
@@ -338,7 +374,7 @@ format 66
 	    classrelation_ref 131074 // <composition>
 	  b role_name "" private
 	    classrelation_ref 131202 // <composition>
-	  association_type class_ref 129026 // Compose
+	  association_explicit_type "Compose"
       end
 
       classrelation 131714 // <directional composition>
@@ -346,7 +382,7 @@ format 66
 	  a role_name "" private
 	    classrelation_ref 131714 // <directional composition>
 	  b parent class_ref 128386 // Square
-	  association_type class_ref 129026 // Compose
+	  association_explicit_type "Compose"
       end
 
       attribute 135426 "id"
@@ -423,6 +459,13 @@ format 66
 
       classrelation 136066 // <association>
 	relation_ref 133890 // <association>
+      end
+
+      classrelation 138498 // <directional composition>
+	relation 136194 *-->
+	  a role_name "" private
+	    classrelation_ref 138498 // <directional composition>
+	  b parent class_ref 132866 // SquareOpen
       end
     end
 
@@ -513,6 +556,16 @@ format 66
 	python_decl ""
 	idl_decl ""
       end
+
+      attribute 142978 "issue_id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
     end
 
     class 128514 "Invitation"
@@ -908,43 +961,6 @@ format 66
       end
     end
 
-    class 129026 "Compose"
-      visibility package 
-      cpp_decl ""
-      java_decl ""
-      php_decl ""
-      python_2_2 python_decl ""
-      idl_decl ""
-      explicit_switch_type ""
-      
-      attribute 133378 "id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 133506 "square_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 133634 "issue_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-    end
-
     class 129154 "ParticipateIssue"
       visibility package 
       cpp_decl ""
@@ -973,43 +989,6 @@ format 66
       end
 
       attribute 134274 "issue_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-    end
-
-    class 129282 "ParticipateSquare"
-      visibility package 
-      cpp_decl ""
-      java_decl ""
-      php_decl ""
-      python_2_2 python_decl ""
-      idl_decl ""
-      explicit_switch_type ""
-      
-      attribute 134402 "id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 134530 "user_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 134658 "square_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -1068,11 +1047,20 @@ format 66
 	    classrelation_ref 135938 // <association>
 	  b role_name "" private
 	    classrelation_ref 136066 // <association>
-	  association_type class_ref 132994 // ComposeOpen
+	  association_explicit_type "ComposeOpen"
+      end
+
+      attribute 143234 "issue_id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
       end
     end
 
-    class 132994 "ComposeOpen"
+    class 134146 "ParticipateSquare"
       visibility package 
       cpp_decl ""
       java_decl ""
@@ -1081,7 +1069,7 @@ format 66
       idl_decl ""
       explicit_switch_type ""
       
-      attribute 139266 "id"
+      attribute 143362 "id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -1090,7 +1078,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 139394 "square_open_id"
+      attribute 143490 "user_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -1099,7 +1087,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 139522 "issue_id"
+      attribute 143618 "square_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""

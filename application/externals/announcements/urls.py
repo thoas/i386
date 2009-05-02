@@ -13,7 +13,9 @@ announcement_detail_info = {
 urlpatterns = patterns("",
     url(r"^(?P<object_id>\d+)/$", list_detail.object_detail,
         announcement_detail_info, name="announcement_detail"),
+
     url(r"^(?P<object_id>\d+)/hide/$", announcement_hide,
         name="announcement_hide"),
-    url(r"^$", announcement_list, name="announcement_home"),
+
+    url(r"^$", announcement_list, name="announcements"),
 )

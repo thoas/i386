@@ -10,19 +10,12 @@ import os
 
 urlpatterns = patterns('',
     url(r'^$', direct_to_template, {"template": "homepage.html"}, name="home"),
-    
     (r'^about/', include('about.urls')),
-    
     (r'^account/', include('account.urls')),
-    
     (r'^profiles/', include('profiles.urls')),
-    
     (r'^notices/', include('notification.urls')),
-    
     (r'^survey/', include('survey.urls')),
-    
     (r'^announcements/', include('announcements.urls')),
-    
     (r'^admin/(.*)', admin.site.root),
 )
 
