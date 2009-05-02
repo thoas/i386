@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 
 from about.models import Contact
 from about.forms import ContactForm
+from misc.utils import get_send_mail as send_mail
 
 def contact(request, template_name='contact.html'):
     if request.method == 'POST':
@@ -19,7 +20,6 @@ def contact(request, template_name='contact.html'):
             
             recipients = [admin[1] for admin in settings.ADMINS]
             
-            from django.core.mail import send_mail
             send_mail(subject, content, sender, recipients)
             
             return HttpResponseRedirect(reverse('contact_thanks'))

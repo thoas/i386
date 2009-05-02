@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -14,7 +13,8 @@ from django.contrib.auth.models import User
 
 from account.models import Invitation
 from account.forms import SignupForm, AddEmailForm, LoginForm, \
-    ChangePasswordForm, ResetPasswordForm, ChangeTimezoneForm, ChangeLanguageForm, InvitationForm
+    ChangePasswordForm, ResetPasswordForm, ChangeTimezoneForm, \
+        ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
 def login(request, form_class=LoginForm, template_name="login.html"):
@@ -50,11 +50,17 @@ def signup(request, confirmation_key='', form_class=SignupForm,
             request.user.message_set.create(message=_("Successfully logged in as %(username)s.") % {'username': user.username})
             return HttpResponseRedirect(success_url)
     else:
-        form = form_class(initial={'confirmation_key': confirmation_key})
+        initial = {'confirmation_key': confirmation_key}
+        try:
+            invitation = Invitation.objects.get(confirmation_key=confirmation_key)
+            initial['email'] = invitation.email
+        except Invitation.DoesNotExist:
+            pass
+        form = form_class(initial=initial)
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))
-    
+
 def password_reset(request, form_class=ResetPasswordForm,
         template_name="password_reset.html",
         template_name_done="account/password_reset_done.html"):
@@ -150,7 +156,7 @@ def language_change(request, form_class=ChangeLanguageForm,
     return render_to_response(template_name, {
         "form": form,
     }, context_instance=RequestContext(request))
-    
+
 @login_required
 def invitations(request, confirmation_key='', form_class=InvitationForm,
         template_name="invitations.html"):
@@ -192,7 +198,8 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
                         invitation.content = request.POST['content_' + index]
                         invitation.save()
                         unused_invitations.remove(invitation)
-                        Invitation.objects.send_invitation(invitation, request.user, user_profile, current_site)
+                        Invitation.objects.send_invitation(invitation, \
+                            request.user, user_profile, current_site)
     return render_to_response(template_name, {
         "form": form,
         "remain_invitation": remain_invitation,
