@@ -12,13 +12,10 @@ package grid.square
 		
 		public function SquareEvent(eventType:String, square:Square):void
 		{
-			_square = square;
 			super(eventType);
+			_square = square;
 		}
 
-		public function get square():Square
-		{
-			return _square;
-		}
+		public function get square():Square { return _square }
 	}
 }

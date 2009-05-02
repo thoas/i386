@@ -55,8 +55,8 @@ package grid
 			var issue:Object = new Object();
 			issue.title = 'Bac à sable';
 			issue.text_presentation = 'Bac à sable desc';
-			issue.nb_square_x = 20;
-			issue.nb_square_y = 20;
+			issue.nb_square_x = 0;
+			issue.nb_square_y = 0;
 			issue.show_disable_square = 0;
 			issue.max_participation = 1;
 			issue.squares = new Array(sq1, sq2, sq3, sq4);

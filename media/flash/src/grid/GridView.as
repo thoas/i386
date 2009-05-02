@@ -29,6 +29,7 @@ package grid
 		private var _stagePadding:int = 50;
 		private var _lineColor:int = 0x1E1E1E;
 		private var _scaleThumb:Array = new Array(25, 50, 100, 200, 400, 800);
+		private var _speed:Number = 0.6;
 		
 		public function GridView(model:GridModel, controller:GridController, stage:Stage)
 		{
@@ -54,6 +55,8 @@ package grid
 				if(minSquareWidth >= _scaleThumb[i] && minSquareWidth < _scaleThumb[i+1])// on détermine le pas de zoom minimum
 				{
 					_minScale = _currentScale = i;
+					_model.currentScale = _currentScale;
+					_model.update();
 					width = _scaleThumb[_minScale] * _model.nbHSquare;
 					scaleY = scaleX;
 					break;
@@ -82,12 +85,14 @@ package grid
 			if(_currentScale != _futurScale)// Si le zoom change
 			{
 				_currentScale = _futurScale;
+				_model.currentScale = _currentScale;
+				_model.update();
 				Tweener.addTween(
 					this,
 					{
 						width: _scaleThumb[_currentScale] * _model.nbHSquare,
 						height: _scaleThumb[_currentScale] * _model.nbVSquare,
-						time: 1,
+						time: _speed,
 						transition: 'easeOutSine'
 					}
 				);
@@ -104,7 +109,7 @@ package grid
 					{
 						x: -_focusX * _scaleThumb[_currentScale] + _stage.stageWidth / 2 - _scaleThumb[_currentScale] / 2,
 						y: -_focusY * _scaleThumb[_currentScale] + _stage.stageHeight / 2 - _scaleThumb[_currentScale] / 2,
-						time: 1,
+						time: _speed,
 						transition: 'easeOutSine'
 					}
 				);
@@ -116,7 +121,7 @@ package grid
 					{
 						x: Math.round(_stage.stageWidth / 2 - _model.nbHSquare * _scaleThumb[_currentScale] / 2),
 						y: Math.round(_stage.stageHeight / 2 - _model.nbVSquare * _scaleThumb[_currentScale] / 2),
-						time: 1,
+						time: _speed,
 						transition: 'easeOutSine'
 					}
 				);
@@ -165,7 +170,9 @@ package grid
 		
 		private function _onClick(mouseEvent:MouseEvent):void
 		{
-			_zoomTo(mouseEvent.shiftKey ? -1 : 1);
+			_focusX = _overX;
+			_focusY = _overY;
+			_zoomTo(mouseEvent.shiftKey ? -1 : 1);	
 		}
 		
 		private function _onDoubleClick(mouseEvent:MouseEvent):void
