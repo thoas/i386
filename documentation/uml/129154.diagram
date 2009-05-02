@@ -28,6 +28,7 @@ usecasecanvas 129026 usecase_ref 128514 // Regénérer son mot de passe
   xyzwh 50 355 3005 157 45 label_xy 55 370
 end
 usecasecanvas 129154 usecase_ref 128642 // Envoyer une invitation
+  color mediumblue
   xyzwh 636 855 3005 120 43 label_xy 642 868
 end
 usecasecanvas 129282 usecase_ref 128770 // Réserver une case

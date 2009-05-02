@@ -7,8 +7,8 @@
 {% block body %}
     <h1>{% trans "Manage my invitations" %}</h1>
     <div>
-        <h2>{% trans "Unused invitations" %}</h2>
         {% if unused_invitations %}
+        <h2>{% trans "Unused invitations" %}</h2>
         <form method="post" action="{% url acct_invitations %}">
             <input type="hidden" value="update" name="action" />
             <input type="hidden" value="{{ unused_invitations|length }}" name="nb_unused_invitations" />
@@ -55,7 +55,9 @@
             <li>
                 <div class="token sent">{{ sent_invitation.confirmation_key }}</div>
                 <div class="token-info">
-                    {% blocktrans %}Was sent to <strong>{{ sent_invitation.email }}</strong>{% endblocktrans %}
+                    {% trans "Was sent to " %}<strong>{{ sent_invitation.email }}</strong>
+                </div>
+                <div class="token-resend">
                     <a href="{% url acct_invitations_key sent_invitation.confirmation_key %}">{% trans "Send again (or to another address)..." %}</a>
                 </div>
             </li>
