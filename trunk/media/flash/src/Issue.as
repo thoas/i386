@@ -8,7 +8,7 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	
-	[SWF(width='960', height='600', frameRate='60', backgroundColor='#141414')]
+	[SWF(width='960', height='600', frameRate='30', backgroundColor='#141414')]
 	
 	public class Issue extends Sprite
 	{

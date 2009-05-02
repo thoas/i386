@@ -1,6 +1,7 @@
 package grid
 {
 	import flash.events.EventDispatcher;
+	
 	import grid.square.*;
 	
 	public class GridModel extends EventDispatcher 
@@ -15,6 +16,7 @@ package grid
 		private var _lstPosition:Vector.<Array>;
 		private var _focusX:int;
 		private var _focusY:int;
+		private var _currentScale:int;
 	
 		public function GridModel(issueId:int) 
 		{ 
@@ -41,7 +43,7 @@ package grid
 			{
 				_addPosition(
 					square.status ? 
-					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path) : 
+					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, this) : 
 					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY)
 				);
 			}
@@ -63,8 +65,7 @@ package grid
 					}
 				}
 			}
-			
-			dispatchEvent(new GridEvent(GridEvent.GRID_READY));
+			dispatchEvent(new GridEvent(GridEvent.GRID_READY, _currentScale));
 		}
 		
 		private function _addPosition(square:Square):void
@@ -72,6 +73,10 @@ package grid
 			_lstPosition[square.X][square.Y] = SquareManager.length() - 1;
 			dispatchEvent(new SquareEvent(SquareEvent.SQUARE_CREATION, square));
 		}
+		
+		public function update():void { dispatchEvent(new GridEvent(GridEvent.GRID_UPDATE, _currentScale)) }
+		
+		public function set currentScale(scale:int):void { _currentScale = scale };
 		
 		public function get issueId():int { return _issueId };
 		

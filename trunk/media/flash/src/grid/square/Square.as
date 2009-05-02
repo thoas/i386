@@ -15,17 +15,19 @@
 		
 		public function Square(x:int, y:int, color:int, w:int = SQUARE_WIDTH, h:int = SQUARE_HEIGHT) 
 		{
-			doubleClickEnabled = true;
 			buttonMode = true;
+			doubleClickEnabled = true;
 			
 			_x = x;
 			_y = y;
 						
-			alpha = 0.5;
+			alpha = 0.8;
+			
 			
 			graphics.beginFill(color);
 			graphics.drawRect(0, 0, w, h);
 			graphics.endFill();
+			
 			
 			addEventListener(FocusEvent.FOCUS_IN, _focusIn);
 			addEventListener(FocusEvent.FOCUS_OUT, _focusOut);
@@ -47,7 +49,7 @@
 		
 		private function _focusOut(e:Event):void
 		{
-			alpha = 0.5;
+			alpha = 0.8;
 		}
 		
 		private function _rollOver(e:Event):void
