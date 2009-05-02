@@ -1,4 +1,3 @@
-
 import re
 
 from django import forms
@@ -12,8 +11,7 @@ from django.contrib.auth.models import User
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 from account.models import Account, Invitation
 from timezones.forms import TimeZoneField
-from misc.utils import get_send_mail
-send_mail = get_send_mail()
+from misc.utils import get_send_mail as send_mail
 
 class LoginForm(forms.Form):
 

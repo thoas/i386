@@ -10,8 +10,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
-from emailconfirmation.utils import get_send_mail
-send_mail = get_send_mail()
+from emailconfirmation.utils import get_send_mail as send_mail
 
 class EmailAddressManager(models.Manager):
     

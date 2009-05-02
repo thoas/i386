@@ -1,7 +1,8 @@
-from survey.models import *
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
+
+from survey.forms import EnqueteForm
 
 def index(request, template_name='enquete.html'):
     if request.method == 'POST':

@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
 from django.db import models
-from django.forms import forms
-from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 
 PROFESSION_CHOICES = (
@@ -33,11 +30,3 @@ class Enquete(models.Model):
     
     def __unicode__(self):
         return '%s - %s' % (self.coordonnees, self.email)
-    
-class EnqueteForm(ModelForm):
-    class Meta:
-        model = Enquete
-    def __init__(self, *args, **kwargs):
-        super(EnqueteForm, self).__init__(*args, **kwargs)
-        for i in range(7):
-            self.fields['question%d' % (i + 1)].widget.attrs = {'rows': 5, 'cols': 53}
