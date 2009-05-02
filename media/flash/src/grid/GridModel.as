@@ -1,7 +1,6 @@
 package grid
 {
 	import flash.events.EventDispatcher;
-	
 	import grid.square.*;
 	
 	public class GridModel extends EventDispatcher 
@@ -14,36 +13,25 @@ package grid
 		private var _maxX:int;
 		private var _maxY:int;
 		private var _lstPosition:Vector.<Array>;
+		private var _focusX:int;
+		private var _focusY:int;
 	
 		public function GridModel(issueId:int) 
 		{ 
 			_issueId = issueId;
 		}
 		
-		public function get issueId():int
-		{
-			return _issueId;
-		}
-		
-		public function get minX():int { return _minX };
-		
-		public function get minY():int { return _minY };
-		
-		public function get nbHSquare():int { return _nbHSquare };
-		
-		public function get nbVSquare():int { return _nbVSquare };
-		
-		public function setPosition(squares:Array, squaresOpen:Array, minX:int, minY:int, maxX:int, maxY:int):void
+		public function init(squares:Array, squaresOpen:Array, minX:int, minY:int, maxX:int, maxY:int, nbHSquare:int, nbVSquare:int, showDisableSquare:int):void
 		{
 			_maxX = maxX;
 			_maxY = maxY;
 			_minX = minX < 0 ? minX * -1 : 0;
 			_minY = minY < 0 ? minY * -1 : 0;
-			_nbHSquare = _maxX + _minX + 1;
-			_nbVSquare = _maxY + _minY + 1;
+			_nbHSquare = nbHSquare ? nbHSquare : _maxX + _minX + 1;
+			_nbVSquare = nbVSquare ? nbVSquare : _maxY + _minY + 1;
 			
 			_lstPosition = new Vector.<Array>(_nbHSquare);
-			for(var i:int = 0 ; i <= _maxY + 1 ; ++i)
+			for(var i:int = 0 ; i < _nbHSquare ; ++i)
 			{
 				_lstPosition[i] = new Array(_nbVSquare);
 			}
@@ -62,6 +50,20 @@ package grid
 				_addPosition(new SquareOpen(square.pos_x + _minX, square.pos_y + _minY));
 			}
 			
+			if(showDisableSquare)
+			{
+				for(i = 0 ; i < _nbHSquare ; ++i)
+				{
+					for(var j:int = 0 ; j < _nbVSquare ; ++j)
+					{
+						if(_lstPosition[i][j] == null)
+						{
+							_addPosition(new SquareDisable(i, j));;
+						}
+					}
+				}
+			}
+			
 			dispatchEvent(new GridEvent(GridEvent.GRID_READY));
 		}
 		
@@ -70,5 +72,21 @@ package grid
 			_lstPosition[square.X][square.Y] = SquareManager.length() - 1;
 			dispatchEvent(new SquareEvent(SquareEvent.SQUARE_CREATION, square));
 		}
+		
+		public function get issueId():int { return _issueId };
+		
+		public function get minX():int { return _minX };
+		
+		public function get minY():int { return _minY };
+		
+		public function get nbHSquare():int { return _nbHSquare };
+		
+		public function get nbVSquare():int { return _nbVSquare };
+		
+		public function set focusX(x:int):void { _focusX = x };
+		
+		public function set focusY(y:int):void { _focusY = y };
+		
+		public function get focusSquare():int { return _lstPosition[_focusX][_focusY] };
 	}
 }
