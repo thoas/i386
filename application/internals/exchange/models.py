@@ -6,7 +6,7 @@ from django.db import models
 class ExchangeTopic(models.Model):
     issue = models.ForeignKey(Issue, verbose_name=_('issue'))
     title = models.CharField(_('title'), max_length=255)
-    date_creation = models.DateField(_('date_creation'),  auto_now_add=True)
+    date_created = models.DateField(_('date_creation'),  auto_now_add=True)
 
 class ExchangePost(models.Model):
     exchange_topic = models.ForeignKey(ExchangeTopic, 
@@ -16,5 +16,5 @@ class ExchangePost(models.Model):
                                             blank=True, null=True)
     content = models.TextField(_('content'))
     user = models.ForeignKey(User, verbose_name=_('user'))
-    date_creation = models.DateField(_('date_creation'),  auto_now_add=True)
+    date_created = models.DateField(_('date_creation'),  auto_now_add=True)
     date_updated = models.DateField(_('date_updated'),  auto_now_add=True) 

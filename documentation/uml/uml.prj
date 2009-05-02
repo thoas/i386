@@ -430,7 +430,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 135938 "date_creation"
+      attribute 135938 "date_created"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -826,7 +826,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 132226 "date_creation"
+      attribute 132226 "date_created"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -938,7 +938,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 132994 "date_creation"
+      attribute 132994 "date_created"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
