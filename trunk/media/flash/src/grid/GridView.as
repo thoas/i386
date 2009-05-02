@@ -2,98 +2,75 @@ package grid
 {
 	import caurina.transitions.Tweener;
 	
-	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	import flash.ui.Keyboard;
 	
 	import grid.square.Square;
 	import grid.square.SquareEvent;
-	
-	import flash.events.MouseEvent;
-	
+	import grid.square.SquareManager;
 	
 	public class GridView extends Sprite
 	{
 		private var _controller:GridController;
 		private var _model:GridModel;
 		private var _stage:Stage;
-		private var _scaleThumb:Array = new Array(25, 50, 100, 200, 400, 800);
 		private var _minScale:int;
 		private var _maxScale:int;
 		private var _scale:int;
-		private var _squareFocusX:int;
-		private var _squareFocusY:int;
-		private var _currentX:int;
-		private var _currentY:int;
+		private var _overX:int;
+		private var _overY:int;
+		private var _focusX:int;
+		private var _focusY:int;
 		private var _currentScale :int;
+		private var _stagePadding:int = 50;
+		private var _lineColor:int = 0x1E1E1E;
+		private var _scaleThumb:Array = new Array(25, 50, 100, 200, 400, 800);
 		
 		public function GridView(model:GridModel, controller:GridController, stage:Stage)
 		{
 			_controller = controller;
 			_model = model;
-			_stage = stage;	
+			_stage = stage;
+			_stage.stageFocusRect = false;
 			
 			_model.addEventListener(SquareEvent.SQUARE_CREATION, _addSquare);
-			_model.addEventListener(GridEvent.GRID_READY, _initGrid);
+			_model.addEventListener(GridEvent.GRID_READY, _init);
 			_controller.getData();
 		}
 		
-		private function _createBackground():void
+		private function _init(e:GridEvent):void
 		{
-			var nbVSquare:int = _model.nbVSquare;
-            var nbHSquare:int = _model.nbHSquare;
-            
-			var bg:Shape = new Shape();
-            bg.graphics.lineStyle(1, 0x888888);// mémo : LineScaleMode.VERTICAL
-           
-            for(var i:int = 0; i <= nbVSquare; i++)
-  			{
-  				bg.graphics.lineTo(i * Square.SQUARE_HEIGHT, Square.SQUARE_HEIGHT * nbVSquare);
-            	bg.graphics.moveTo((i+1) * Square.SQUARE_HEIGHT, 0);
- 			}
- 			
- 			bg.graphics.moveTo(0, 0);
- 			
-            for(var j:int = 0; j <= nbHSquare; j++)
-  			{
-  				bg.graphics.lineTo(Square.SQUARE_WIDTH * nbHSquare, j * Square.SQUARE_WIDTH);
-            	bg.graphics.moveTo(0, (j+1) * Square.SQUARE_WIDTH);
- 			}
- 			
-            addChild(bg);
-		}
-		
-		private function _initGrid(gridEvent:GridEvent):void
-		{
-			_stage.addEventListener(MouseEvent.MOUSE_WHEEL, _mouseWheel);
-			addEventListener(MouseEvent.CLICK, _onClick);
-			addEventListener(MouseEvent.DOUBLE_CLICK, _onDoubleClick);
-			
-			_currentX = 1;
-			_currentY = 1;
-			_createBackground();
-			
-			var stagePadding:int = 50;// facultatif
-			var minScaleRelatif:Number = _stage.stageWidth > _stage.stageHeight ? (_stage.stageHeight - stagePadding) / _model.nbVSquare : (_stage.stageWidth - stagePadding) / _model.nbHSquare;
+			addChild(new GridLine(_model.nbHSquare, _model.nbVSquare, Square.SQUARE_WIDTH, Square.SQUARE_HEIGHT, _lineColor));
+				
+			var minSquareWidth:Number = _stage.stageWidth > _stage.stageHeight ? (_stage.stageHeight - _stagePadding) / _model.nbVSquare : (_stage.stageWidth - _stagePadding) / _model.nbHSquare;
+
 			_maxScale = _scaleThumb.length-1;
-			
 			for(var i:int = 0; i <= _maxScale; i++)
 			{
-				if(minScaleRelatif >= _scaleThumb[i] && minScaleRelatif < _scaleThumb[i+1])// on détermine le pas de zoom minimum
+				if(minSquareWidth >= _scaleThumb[i] && minSquareWidth < _scaleThumb[i+1])// on détermine le pas de zoom minimum
 				{
-					_minScale = i;
-					_currentScale = i;
+					_minScale = _currentScale = i;
+					width = _scaleThumb[_minScale] * _model.nbHSquare;
+					scaleY = scaleX;
 					break;
 				}
 			}
 			
-			_initZoom();
+			addEventListener(MouseEvent.CLICK, _onClick);
+			addEventListener(MouseEvent.DOUBLE_CLICK, _onDoubleClick);
+			_stage.addEventListener(KeyboardEvent.KEY_DOWN, _keyDownHandler);
+			_stage.addEventListener(MouseEvent.MOUSE_WHEEL, _mouseWheel);
+			_stage.addEventListener(Event.RESIZE, _resize);
+			
+			_resize();
 		}
 		
-		private function _initZoom():void
+		private function _resize(e:Event = null):void
 		{
-			width = _scaleThumb[_minScale] * _model.nbHSquare;
-			scaleY = scaleX;
 			x = Math.round(_stage.stageWidth / 2 - width / 2);
 			y = Math.round(_stage.stageHeight / 2 - height / 2);
 		}
@@ -101,7 +78,8 @@ package grid
 		private function _zoomTo(op:int):void
 		{
 			var _futurScale:int = _currentScale + op < _minScale ? _minScale : _currentScale + op > _maxScale ? _maxScale : _currentScale + op;
-			if(_currentScale != _futurScale)
+			
+			if(_currentScale != _futurScale)// Si le zoom change
 			{
 				_currentScale = _futurScale;
 				Tweener.addTween(
@@ -115,42 +93,74 @@ package grid
 				);
 				_moveTo();
 			}
-			
-			
 		}
 		
 		private function _moveTo():void
 		{
-			_currentX = _squareFocusX;
-			_currentY = _squareFocusY;
-			Tweener.addTween(
-				this,
-				{
-					x: -_currentX * _scaleThumb[_currentScale] + _stage.stageWidth / 2 - _scaleThumb[_currentScale] / 2,
-					y: -_currentY * _scaleThumb[_currentScale] + _stage.stageHeight / 2 - _scaleThumb[_currentScale] / 2,
-					time: 1,
-					transition: 'easeOutSine'
-				}
-			);
+			if(_currentScale != _minScale)// Si on n'est pas au zoom minimal
+			{	
+				Tweener.addTween(
+					this,
+					{
+						x: -_focusX * _scaleThumb[_currentScale] + _stage.stageWidth / 2 - _scaleThumb[_currentScale] / 2,
+						y: -_focusY * _scaleThumb[_currentScale] + _stage.stageHeight / 2 - _scaleThumb[_currentScale] / 2,
+						time: 1,
+						transition: 'easeOutSine'
+					}
+				);
+			}
+			else// Sinon on replace la grille au centre de la scène
+			{
+				Tweener.addTween(
+					this,
+					{
+						x: Math.round(_stage.stageWidth / 2 - _model.nbHSquare * _scaleThumb[_currentScale] / 2),
+						y: Math.round(_stage.stageHeight / 2 - _model.nbVSquare * _scaleThumb[_currentScale] / 2),
+						time: 1,
+						transition: 'easeOutSine'
+					}
+				);
+			}
 		}
 		
-		private function _addSquare(squareEvent:SquareEvent):void
+		private function _addSquare(e:SquareEvent):void
 		{
-			var square:Square = squareEvent.square;
-			square.addEventListener(SquareEvent.SQUARE_FOCUS, _squareFocus);
-			square.addEventListener(SquareEvent.SQUARE_MOVE, _squareMove);// Tabulation
+			var square:Square = e.square;
+			square.x = square.X * Square.SQUARE_WIDTH;
+			square.y = square.Y * Square.SQUARE_HEIGHT;
+			square.tabIndex = _model.nbHSquare * square.Y + square.X;// Numéro tabulation = nombre de colonne * y + x
+			square.addEventListener(SquareEvent.SQUARE_OVER, _squareOver);
+			square.addEventListener(SquareEvent.SQUARE_FOCUS, _squareFocus);// Tabulation
 			addChild(square);
 		}
 		
-		private function _squareFocus(squareEvent:SquareEvent):void
+		private function _squareOver(e:SquareEvent):void
 		{
-			_squareFocusX = squareEvent.square.X;
-			_squareFocusY = squareEvent.square.Y;
+			_overX = e.square.X;
+			_overY = e.square.Y;
 		}
 		
-		private function _squareMove(squareEvent:SquareEvent):void
+		private function _squareFocus(e:SquareEvent):void
 		{
-			_moveTo();
+			_focusX = e.square.X;
+			_focusY = e.square.Y;
+			
+			if(_currentScale != _minScale)// Si on n'est pas au zoom minimal
+			{
+				_moveTo();
+			}
+		}
+		
+		private function _squareMoveTo(X:int, Y:int):void
+		{
+			_model.focusX = _focusX + X < 0 ? 0 : _focusX + X >= _model.nbHSquare ? _model.nbHSquare - 1 : _focusX + X;
+			_model.focusY = _focusY + Y < 0 ? 0 : _focusY + Y >= _model.nbVSquare ? _model.nbVSquare - 1 : _focusY + Y;
+			_squarePutFocus();
+		}
+		
+		private function _squarePutFocus():void
+		{
+			_stage.focus = SquareManager.get(_model.focusSquare);// On mets le focus sur la Square correspondante
 		}
 		
 		private function _onClick(mouseEvent:MouseEvent):void
@@ -165,7 +175,65 @@ package grid
 		
 		private function _mouseWheel(mouseEvent:MouseEvent):void
 		{
+			_model.focusX = _overX;
+			_model.focusY = _overY;
+			_squarePutFocus();
 			_zoomTo(Math.round(mouseEvent.delta/4));
 		}
+		
+		private function _keyDownHandler(e:KeyboardEvent):void
+		{
+			var boost:int = e.shiftKey ? 2 : 1;
+			
+			switch(e.keyCode)
+			{
+				case Keyboard.UP:
+				case 87: // W
+					_squareMoveTo(0, -1 * boost);
+					break;
+
+				case Keyboard.DOWN:
+				case 83: // S
+					_squareMoveTo(0, 1 * boost);
+					break;
+
+				case Keyboard.LEFT:
+				case 65: // A
+					_squareMoveTo(-1 * boost, 0);
+					break;
+
+				case Keyboard.RIGHT:
+				case 68: // D
+					_squareMoveTo(1 * boost, 0);
+					break;
+
+				case Keyboard.PAGE_UP:
+					//_pageUpActivated = value;
+					break;
+					 
+				case Keyboard.PAGE_DOWN:
+					//_pageDownActivated = value;
+					break;
+
+				case Keyboard.HOME:
+					//_homeActivated = value;
+					break;
+
+				case Keyboard.END:
+					//_endActivated = value;
+					break;
+
+				case Keyboard.NUMPAD_ADD:
+				case 73: // I
+					_zoomTo(e.shiftKey ? _maxScale : 1);
+					break;
+
+				case Keyboard.NUMPAD_SUBTRACT:
+				case 79: // O
+					_zoomTo(e.shiftKey ? -_maxScale : -1);
+					break;
+			  }
+		 }
+		
 	}
 }
