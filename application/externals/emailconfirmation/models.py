@@ -8,12 +8,10 @@ from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 
 from emailconfirmation.utils import get_send_mail
 send_mail = get_send_mail()
-
-from django.db.models.signals import post_save
-
 
 class EmailAddressManager(models.Manager):
     
@@ -73,6 +71,8 @@ def create_email_address(sender, instance=None, **kwargs):
     if instance is None:
         return
     email_address, created = EmailAddress.objects.get_or_create(user=instance, email=instance.email, primary=True)
+    if created:
+        EmailConfirmation.objects.send_confirmation(email_address)
 
 post_save.connect(create_email_address, sender=User)
 

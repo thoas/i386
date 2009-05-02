@@ -98,7 +98,6 @@ class SignupForm(forms.Form):
         
         new_user = User.objects.create_user(username, email, password)
         new_user.message_set.create(message=ugettext(u"Confirmation email sent to %(email)s") % {'email': email})
-        EmailAddress.objects.add_email(new_user, email)
         
         from datetime import datetime
         invitation.date_burned = datetime.now()
@@ -129,10 +128,10 @@ class AddEmailForm(UserForm):
 
     def clean_email(self):
         try:
-            EmailAddress.objects.get(user=self.user, email=self.cleaned_data["email"])
+            EmailAddress.objects.get(email=self.cleaned_data["email"])
         except EmailAddress.DoesNotExist:
             return self.cleaned_data["email"]
-        raise forms.ValidationError(_("This email address already associated with this account."))
+        raise forms.ValidationError(_("This email address already associated with an account."))
 
     def save(self):
         self.user.message_set.create(message=ugettext(u"Confirmation email sent to %(email)s") % {'email': self.cleaned_data["email"]})
