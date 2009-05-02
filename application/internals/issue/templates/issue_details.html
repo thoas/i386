@@ -1,7 +1,16 @@
 {% extends "base_issue.html" %}
 
 {% load i18n %}
+{% block head_title %}{{ issue.title }} {% endblock %}
 
 {% block body %}
-details
+<table id="grid">
+    {% for i in nb_case_x %}
+    <tr>
+        {% for j in nb_case_y %}
+        <td>{{ i }} ; {{ j }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

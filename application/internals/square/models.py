@@ -10,7 +10,9 @@ class Square(models.Model):
     background_image_path = models.ImageField(upload_to=settings.UPLOAD_ROOT)
     date_booked = models.DateField(_('date_booked'), auto_now_add=True)
     date_finished = models.DateField(_('date_finished'))
-    issue = models.ForeignKey(Issue, verbose_name=_('issue'))
+    # 1 : full | 0 : booked
+    status = models.BooleanField(_('pos_y'))
+    issue = models.ForeignKey(Issue, verbose_name=_('issue'), blank=True, null=True)
     
 class SquareOpen(models.Model):
     pos_x = models.IntegerField(_('pos_x'))

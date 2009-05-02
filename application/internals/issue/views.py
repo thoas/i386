@@ -12,7 +12,11 @@ def issues(request, template_name='issues.html'):
     return render_to_response(template_name, {
     }, context_instance=RequestContext(request))
     
-def details(request, title, template_name='issue_details.html'):
+def details(request, slug, template_name='issue_details.html'):
     """docstring for issues"""
+    issue = get_object_or_404(Issue, slug=slug)
     return render_to_response(template_name, {
+        'issue': issue,
+        'nb_case_x': range(issue.nb_case_x),
+        'nb_case_y': range(issue.nb_case_y)
     }, context_instance=RequestContext(request))
