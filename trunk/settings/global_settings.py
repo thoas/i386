@@ -86,10 +86,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 INSTALLED_APPS = (
     # included
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.humanize',
     'django_extensions',
     

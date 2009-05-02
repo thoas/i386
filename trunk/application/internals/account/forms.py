@@ -11,7 +11,6 @@ from django.contrib.auth.models import User
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 from account.models import Account, Invitation
 from timezones.forms import TimeZoneField
-from misc.utils import get_send_mail as send_mail
 
 class LoginForm(forms.Form):
 
@@ -178,6 +177,9 @@ class ResetPasswordForm(forms.Form):
                 "user": user,
                 "new_password": new_password,
             })
+            
+            from misc.utils import get_send_mail
+            send_mail = get_send_mail()
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email], priority="high")
         return self.cleaned_data["email"]
 

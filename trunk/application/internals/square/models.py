@@ -10,19 +10,13 @@ class Square(models.Model):
     background_image_path = models.ImageField(upload_to=settings.UPLOAD_ROOT)
     date_booked = models.DateField(_('date_booked'), auto_now_add=True)
     date_finished = models.DateField(_('date_finished'))
-    
-class Compose(models.Model):
     issue = models.ForeignKey(Issue, verbose_name=_('issue'))
-    square = models.ForeignKey(Square, verbose_name=_('square'))
     
 class SquareOpen(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
     pos_y = models.IntegerField(_('pos_y'))
     date_created = models.DateField(_('date_created'), auto_now_add=True)
-
-class ComposeOpen(models.Model):
     issue = models.ForeignKey(Issue, verbose_name=_('issue'))
-    square_open = models.ForeignKey(SquareOpen, verbose_name=_('square_open'))
     
 class ParticipateSquare(models.Model):
     user = models.ForeignKey(User, verbose_name=_('user'))
