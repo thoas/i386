@@ -12,11 +12,14 @@
 		protected var _x:int;
 		protected var _y:int;
 		private var _color:int;
+		private var _nameClass:String;
 		
-		public function Square(x:int, y:int, color:int, w:int = SQUARE_WIDTH, h:int = SQUARE_HEIGHT) 
+		public function Square(x:int, y:int, color:int, nameClass:String, w:int = SQUARE_WIDTH, h:int = SQUARE_HEIGHT) 
 		{
 			buttonMode = true;
 			doubleClickEnabled = true;
+			
+			_nameClass = nameClass;
 			
 			_x = x;
 			_y = y;
@@ -35,6 +38,8 @@
 			
 			SquareManager.add(this);
 		}
+		
+		public function get nameClass():String { return _nameClass };
 		
 		public function get X():int { return _x };
 		

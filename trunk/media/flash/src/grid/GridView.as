@@ -29,7 +29,7 @@ package grid
 		private var _stagePadding:int = 50;
 		private var _lineColor:int = 0x1E1E1E;
 		private var _scaleThumb:Array = new Array(25, 50, 100, 200, 400, 800);
-		private var _speed:Number = 0.6;
+		private var _speed:Number = 0.8;
 		
 		public function GridView(model:GridModel, controller:GridController, stage:Stage)
 		{
@@ -102,6 +102,10 @@ package grid
 		
 		private function _moveTo():void
 		{
+			if(_currentScale == _maxScale)
+			{
+				trace(SquareManager.get(_model.focusSquare).toString());
+			}
 			if(_currentScale != _minScale)// Si on n'est pas au zoom minimal
 			{	
 				Tweener.addTween(
