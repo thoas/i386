@@ -18,9 +18,9 @@ def book(request, pos_x, pos_y):
     #IMAGE_PATH = os.path.join(settings.FILE_UPLOAD_TEMP_DIR, 'test.tif')
     #image.save(IMAGE_PATH, "TIFF")
     
-    buf = StringIO.StringIO()
-    image.save(buf, format='TIFF', quality=90)
-    jpeg = buf.getvalue()
+    buffer = StringIO.StringIO()
+    image.save(buffer, format='TIFF', quality=90)
+    jpeg = buffer.getvalue()
     now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     response = HttpResponse(mimetype="image/tif")
     response['Content-Disposition'] = 'attachment; filename=%s_x%s_y%s_%s_template.tif'\
