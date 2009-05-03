@@ -23,7 +23,7 @@ from square.models import Square
 
 issue, created = Issue.objects.get_or_create(title='300',\
     text_presentation='300',\
-        nb_case_x=300, nb_case_y=300, date_finished=datetime.now(), slug='300')
+        nb_case_x=10, nb_case_y=10, slug='300')
 
 steps = [800, 400, 200, 100, 50, 25]
 
@@ -50,7 +50,6 @@ for file in files_list:
             print '%s created' % thumb_name
             image.save(thumb_name, quality=90)
 
-exit()
 for i in range(issue.nb_case_x):
     for j in range(issue.nb_case_y):
         file = files_list[randint(0, len(files_list) - 1)]
