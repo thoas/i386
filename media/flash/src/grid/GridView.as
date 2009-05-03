@@ -7,11 +7,11 @@ package grid
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.ui.Keyboard;
+	import flash.utils.Timer;
 	
-	import grid.square.Square;
-	import grid.square.SquareEvent;
-	import grid.square.SquareManager;
+	import grid.square.*;
 	
 	public class GridView extends Sprite
 	{
@@ -23,16 +23,16 @@ package grid
 		private var _scale:int;
 		private var _overX:int;
 		private var _overY:int;
-		private var _focusX:int;
-		private var _focusY:int;
-		private var _currentScale :int;
+		private var _currentScale:int;
 		private var _stagePadding:int = 50;
 		private var _lineColor:int = 0x1E1E1E;
 		private var _scaleThumb:Array = new Array(25, 50, 100, 200, 400, 800);
 		private var _speed:Number = 0.8;
+		private var _showSquareTimer:Timer;
 		
 		public function GridView(model:GridModel, controller:GridController, stage:Stage)
 		{
+			_showSquareTimer = new Timer(2000, 1);
 			_controller = controller;
 			_model = model;
 			_stage = stage;
@@ -104,15 +104,29 @@ package grid
 		{
 			if(_currentScale == _maxScale)
 			{
-				trace(SquareManager.get(_model.focusSquare).toString());
+				var square:Square = SquareManager.get(_model.focusSquare);
+				if(square is SquareOpen)
+				{
+					_showSquareTimer.stop();
+					_showSquareTimer.removeEventListener("timer", _showSquareBooked);
+            		_showSquareTimer.addEventListener("timer", _showSquareOpen);
+            		_showSquareTimer.start();
+				}
+				else if(square is SquareBooked)
+				{
+					_showSquareTimer.stop();
+					_showSquareTimer.removeEventListener("timer", _showSquareOpen);
+            		_showSquareTimer.addEventListener("timer", _showSquareBooked);
+            		_showSquareTimer.start();
+				}
 			}
 			if(_currentScale != _minScale)// Si on n'est pas au zoom minimal
 			{	
 				Tweener.addTween(
 					this,
 					{
-						x: -_focusX * _scaleThumb[_currentScale] + _stage.stageWidth / 2 - _scaleThumb[_currentScale] / 2,
-						y: -_focusY * _scaleThumb[_currentScale] + _stage.stageHeight / 2 - _scaleThumb[_currentScale] / 2,
+						x: -_model.focusX * _scaleThumb[_currentScale] + _stage.stageWidth / 2 - _scaleThumb[_currentScale] / 2,
+						y: -_model.focusY * _scaleThumb[_currentScale] + _stage.stageHeight / 2 - _scaleThumb[_currentScale] / 2,
 						time: _speed,
 						transition: 'easeOutSine'
 					}
@@ -130,6 +144,16 @@ package grid
 					}
 				);
 			}
+		}
+		
+		private function _showSquareOpen(e:TimerEvent):void
+		{
+			dispatchEvent(new GridEvent(GridEvent.GRID_OPEN_SQUARE));
+		}
+		
+		private function _showSquareBooked(e:TimerEvent):void
+		{
+			dispatchEvent(new GridEvent(GridEvent.GRID_BOOKED_SQUARE));
 		}
 		
 		private function _addSquare(e:SquareEvent):void
@@ -151,8 +175,8 @@ package grid
 		
 		private function _squareFocus(e:SquareEvent):void
 		{
-			_focusX = e.square.X;
-			_focusY = e.square.Y;
+			_model.focusX = e.square.X;
+			_model.focusY = e.square.Y;
 			
 			if(_currentScale != _minScale)// Si on n'est pas au zoom minimal
 			{
@@ -162,8 +186,8 @@ package grid
 		
 		private function _squareMoveTo(X:int, Y:int):void
 		{
-			_model.focusX = _focusX + X < 0 ? 0 : _focusX + X >= _model.nbHSquare ? _model.nbHSquare - 1 : _focusX + X;
-			_model.focusY = _focusY + Y < 0 ? 0 : _focusY + Y >= _model.nbVSquare ? _model.nbVSquare - 1 : _focusY + Y;
+			_model.focusX = _model.focusX + X < 0 ? 0 : _model.focusX + X >= _model.nbHSquare ? _model.nbHSquare - 1 : _model.focusX + X;
+			_model.focusY = _model.focusY + Y < 0 ? 0 : _model.focusY + Y >= _model.nbVSquare ? _model.nbVSquare - 1 : _model.focusY + Y;
 			_squarePutFocus();
 		}
 		
@@ -174,8 +198,8 @@ package grid
 		
 		private function _onClick(mouseEvent:MouseEvent):void
 		{
-			_focusX = _overX;
-			_focusY = _overY;
+			_model.focusX = _overX;
+			_model.focusY = _overY;
 			_zoomTo(mouseEvent.shiftKey ? -1 : 1);	
 		}
 		

@@ -8,11 +8,13 @@ package
 	import grid.GridController;
 	import grid.GridModel;
 	import grid.GridView;
+	import grid.GridEvent;
 	
 	import utils.Fullscreen;
 	import utils.MemoryIndicator;
 	import utils.MilkshapeContextMenu;
 	import utils.MilkshapeLogo;
+
 	
 	[SWF(width='960', height='600', frameRate='30', backgroundColor='#141414')]
 	
@@ -44,6 +46,9 @@ package
 			
 			stage.addEventListener(Event.RESIZE, _resize);
 			_resize();
+			
+			gridView.addEventListener(GridEvent.GRID_OPEN_SQUARE, _showSquareOpen);
+			gridView.addEventListener(GridEvent.GRID_BOOKED_SQUARE, _showSquareBooked);
 		}
 		
 		private function _resize(e:Event = null):void
@@ -53,6 +58,16 @@ package
 			
 			_memoryIndicator.x = stage.stageWidth - 60;
 			_memoryIndicator.y = stage.stageHeight - 20;
+		}
+		
+		private function _showSquareOpen(e:GridEvent):void
+		{
+			trace('SquareOpen');
+		}
+		
+		private function _showSquareBooked(e:GridEvent):void
+		{
+			trace('SquareBooked');
 		}
 	}
 }
