@@ -54,5 +54,5 @@ for i in range(issue.nb_case_x):
     for j in range(issue.nb_case_y):
         file = files_list[randint(0, len(files_list) - 1)]
         Square.objects.create(pos_x=i, pos_y=j,\
-            background_image_path=file['file_name'] + '.' + file['extension'],\
+            background_image_path=os.path.join(settings.global_settings.UPLOAD_ROOT, file['file_name'] + '.' + file['extension']),\
                 issue=issue, date_finished=datetime.now(), status=1)
