@@ -5,10 +5,10 @@ from issue.models import Issue
 from django.utils.translation import ugettext_lazy as _
 from square.constance import *
 
-class SquareManager(models.Manager):
+class AbstractSquareManager(models.Manager):
     def __init__(self):
         """docstring for __init__"""
-        super(SquareManager, self).__init__()
+        super(AbstractSquareManager, self).__init__()
 
     def neighbors(self, square):
         """docstring for neighbor"""
@@ -16,6 +16,12 @@ class SquareManager(models.Manager):
         neighbors = self.extra(where=['coord IN %s' % str(tuple(neighbor_keys))])\
                     .filter(status=1).order_by('pos_x', 'pos_y')
         return neighbors
+
+class SquareManager(AbstractSquareManager):
+    pass
+
+class SquareOpenManager(AbstractSquareManager):
+    pass
 
 class AbstractSquare(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
@@ -33,8 +39,10 @@ class AbstractSquare(models.Model):
 
     def neighbors(self):
         """docstring for neighbors"""
-        return dict((str((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
-                    for i in range(LEN_POS))
+        if not hasattr(self, 'square_neighbors'):
+            self.square_neighbors = dict((str((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
+                for i in range(LEN_POS))
+        return self.square_neighbors
 
 class Square(AbstractSquare):
     background_image_path = models.ImageField(upload_to=settings.UPLOAD_ROOT, blank=True, null=True)
@@ -51,6 +59,7 @@ class Square(AbstractSquare):
 
 class SquareOpen(AbstractSquare):
     date_created = models.DateField(_('date_created'), auto_now_add=True)
+    objects = SquareOpenManager()
     
 class ParticipateSquare(models.Model):
     user = models.ForeignKey(User, verbose_name=_('user'))

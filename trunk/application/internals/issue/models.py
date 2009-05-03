@@ -15,7 +15,8 @@ class Issue(models.Model):
     nb_case_y = models.IntegerField(_('nb_case_y'))
     date_created = models.DateField(_('date_creation'), auto_now_add=True)
     date_finished = models.DateField(_('date_finished'), blank=True, null=True)
-    max_participation = models.IntegerField(_('max_participation'), default=settings.DEFAULT_MAX_PARTICIPATION)
+    max_participation = models.IntegerField(_('max_participation'),\
+        default=settings.DEFAULT_MAX_PARTICIPATION)
     slug = models.SlugField(unique=True)
     
     objects = IssueManager()
