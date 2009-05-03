@@ -17,14 +17,14 @@ package grid.square
 		private var _loader:Loader;
 		private var _scaleThumb:Array = new Array(25, 50, 100, 200, 400, 800);
 		
-		public function SquareFull(x:int, y:int, url:String, gridModel:GridModel, w:int = Square.SQUARE_WIDTH, h:int = Square.SQUARE_HEIGHT)
+		public function SquareFull(x:int, y:int, url:String, n:String, gridModel:GridModel, w:int = Square.SQUARE_WIDTH, h:int = Square.SQUARE_HEIGHT)
 		{
-			super(x, y, 0x000000, w, h);
+			super(x, y, 0x000000, n, w, h);
 			_url = url;
 			
 			_lstImage = new Vector.<Bitmap>(_scaleThumb.length);
 			
-			_loader = new Loader();
+			_loader = new Loader();// Un seul loader... donc un seul téléchargement possible à la fois
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);
             _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
             

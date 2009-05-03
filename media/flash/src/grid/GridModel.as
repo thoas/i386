@@ -43,13 +43,13 @@ package grid
 			{
 				_addPosition(
 					square.status ? 
-					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, this) : 
-					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY)
+					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, 'full', this) : 
+					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY, 'booked')
 				);
 			}
 			for each(square in squaresOpen)
 			{
-				_addPosition(new SquareOpen(square.pos_x + _minX, square.pos_y + _minY));
+				_addPosition(new SquareOpen(square.pos_x + _minX, square.pos_y + _minY, 'open'));
 			}
 			
 			if(showDisableSquare)
@@ -60,7 +60,7 @@ package grid
 					{
 						if(_lstPosition[i][j] == null)
 						{
-							_addPosition(new SquareDisable(i, j));;
+							_addPosition(new SquareDisable(i, j, 'disable'));;
 						}
 					}
 				}
