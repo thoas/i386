@@ -10,6 +10,8 @@ from about.forms import ContactForm
 from misc.utils import get_send_mail as send_mail
 
 def contact(request, template_name='contact.html'):
+    print request.session.keys()
+    print request.session.items()
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():

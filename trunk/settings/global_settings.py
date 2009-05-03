@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'account.middleware.LocaleMiddleware',
     'django.middleware.doc.XViewMiddleware',
-    'pagination.middleware.PaginationMiddleware'
+    'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -76,12 +76,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
-    
-    'notification.context_processors.notification',
-    'announcements.context_processors.site_wide_announcements',
-    'account.context_processors.account',
     'misc.context_processors.contact_email',
     'misc.context_processors.site_name',
+    
+    #'notification.context_processors.notification',
+    #'announcements.context_processors.site_wide_announcements',
+    #'account.context_processors.account',
 )
 
 INSTALLED_APPS = (
@@ -111,8 +111,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'square',
     'issue',
-    'exchange'
-
+    'exchange',
 )
 
 ABSOLUTE_URL_OVERRIDES = {

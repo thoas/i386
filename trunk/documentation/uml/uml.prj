@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 15
+  revision 16
   modified_by 2 "thoas"
 
 
@@ -377,14 +377,6 @@ format 66
 	  association_explicit_type "Compose"
       end
 
-      classrelation 131714 // <directional composition>
-	relation 129922 *-->
-	  a role_name "" private
-	    classrelation_ref 131714 // <directional composition>
-	  b parent class_ref 128386 // Square
-	  association_explicit_type "Compose"
-      end
-
       attribute 135426 "id"
 	private explicit_type ""
 	cpp_decl ""
@@ -461,11 +453,11 @@ format 66
 	relation_ref 133890 // <association>
       end
 
-      classrelation 138498 // <directional composition>
-	relation 136194 *-->
+      classrelation 139650 // <directional composition>
+	relation 137346 *-->
 	  a role_name "" private
-	    classrelation_ref 138498 // <directional composition>
-	  b parent class_ref 132866 // SquareOpen
+	    classrelation_ref 139650 // <directional composition>
+	  b parent class_ref 135298 // AbstractSquare
       end
     end
 
@@ -487,24 +479,6 @@ format 66
       end
 
       attribute 133250 "id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 133762 "pos_x"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 133890 "pos_y"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -557,15 +531,12 @@ format 66
 	idl_decl ""
       end
 
-      attribute 142978 "issue_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
+      classrelation 139906 // <generalisation>
+	relation 137602 ---|>
+	  a public
+	    classrelation_ref 139906 // <generalisation>
+	  b parent class_ref 135298 // AbstractSquare
       end
-
     end
 
     class 128514 "Invitation"
@@ -1023,24 +994,6 @@ format 66
 	  b parent class_ref 128386 // Square
       end
 
-      attribute 139010 "pos_x"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 139138 "pos_y"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
       classrelation 135938 // <association>
 	relation 133890 ----
 	  a role_name "" private
@@ -1050,13 +1003,20 @@ format 66
 	  association_explicit_type "ComposeOpen"
       end
 
-      attribute 143234 "issue_id"
+      attribute 145794 "date_created"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
 	php_decl ""
 	python_decl ""
 	idl_decl ""
+      end
+
+      classrelation 139778 // <generalisation>
+	relation 137474 ---|>
+	  a public
+	    classrelation_ref 139778 // <generalisation>
+	  b parent class_ref 135298 // AbstractSquare
       end
     end
 
@@ -1088,6 +1048,52 @@ format 66
       end
 
       attribute 143618 "square_id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+    end
+
+    class 135298 "AbstractSquare"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 145282 "pos_x"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 145410 "pos_y"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 145538 "coord"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 145666 "issue_id"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
