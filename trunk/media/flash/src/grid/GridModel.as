@@ -43,13 +43,13 @@ package grid
 			{
 				_addPosition(
 					square.status ? 
-					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, 'full', this) : 
-					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY, 'booked')
+					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, this) : 
+					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY)
 				);
 			}
 			for each(square in squaresOpen)
 			{
-				_addPosition(new SquareOpen(square.pos_x + _minX, square.pos_y + _minY, 'open'));
+				_addPosition(new SquareOpen(square.pos_x + _minX, square.pos_y + _minY));
 			}
 			
 			if(showDisableSquare)
@@ -60,7 +60,7 @@ package grid
 					{
 						if(_lstPosition[i][j] == null)
 						{
-							_addPosition(new SquareDisable(i, j, 'disable'));;
+							_addPosition(new SquareDisable(i, j));;
 						}
 					}
 				}
@@ -78,6 +78,8 @@ package grid
 		
 		public function set currentScale(scale:int):void { _currentScale = scale };
 		
+		public function get currentScale():int { return _currentScale };
+		
 		public function get issueId():int { return _issueId };
 		
 		public function get minX():int { return _minX };
@@ -87,6 +89,10 @@ package grid
 		public function get nbHSquare():int { return _nbHSquare };
 		
 		public function get nbVSquare():int { return _nbVSquare };
+		
+		public function get focusX():int { return _focusX };
+		
+		public function get focusY():int { return _focusY };
 		
 		public function set focusX(x:int):void { _focusX = x };
 		
