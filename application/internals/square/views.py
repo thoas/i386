@@ -18,7 +18,7 @@ from django.conf import settings
 def book(request, pos_x, pos_y):
     INK = "red", "blue", "green", "yellow", 'black'
     image = Image.new("RGB", (1200, 1200), random.choice(INK))
-    response = HttpResponse(mimetype="image/tif")
+    response = HttpResponse(mimetype="image/png")
     square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y)
     neighbors_key = square.neighbors()
     neighbors = Square.objects.neighbors(square)
@@ -35,7 +35,7 @@ def book(request, pos_x, pos_y):
     #response['Content-Disposition'] = 'attachment; filename=%s_x%s_y%s_%s_template.tif'\
     #    % (request.user.username, pos_x, pos_y, now)
     buffer = StringIO.StringIO()
-    image.save(buffer, format='TIFF', quality=90)
+    image.save(buffer, format='PNG', quality=90)
     jpeg = buffer.getvalue()
     now = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     response.write(jpeg)
