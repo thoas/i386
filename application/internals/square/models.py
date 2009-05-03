@@ -10,12 +10,12 @@ class SquareManager(models.Manager):
         """docstring for __init__"""
         super(SquareManager, self).__init__()
 
-    def neighbor(self, square):
+    def neighbors(self, square):
         """docstring for neighbor"""
-        neighbors = square.neighbors()
-        print neighbors
-        return self.extra(where=['coord IN %s' % str(tuple(neighbors.keys()))])\
-                .filter(status=1).order_by('pos_x', 'pos_y')
+        neighbor_keys = square.neighbors()
+        neighbors = self.extra(where=['coord IN %s' % str(tuple(neighbor_keys.keys()))])\
+                    .filter(status=1).order_by('pos_x', 'pos_y')
+        return neighbors
 
 class AbstractSquare(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
@@ -31,6 +31,11 @@ class AbstractSquare(models.Model):
         self.coord = str((self.pos_x, self.pos_y))
         super(AbstractSquare, self).save(force_insert, force_update)
 
+    def neighbors(self):
+        """docstring for neighbors"""
+        return dict((str((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
+                    for i in range(LEN_POS))
+
 class Square(AbstractSquare):
     background_image_path = models.ImageField(upload_to=settings.UPLOAD_ROOT)
     date_booked = models.DateField(_('date_booked'), auto_now_add=True)
@@ -39,10 +44,6 @@ class Square(AbstractSquare):
     status = models.BooleanField(_('status'))
     
     objects = SquareManager()
-
-    def neighbors(self):
-        """docstring for neighbors"""
-        return dict((str((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i) for i in range(LEN_POS))
 
     def __unicode__(self):
         """docstring for __unicode__"""
