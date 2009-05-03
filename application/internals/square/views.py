@@ -1,5 +1,4 @@
 import random
-import os.path
 import StringIO
 
 from PIL import Image

@@ -1,15 +1,13 @@
 from django.conf import settings
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import Site
+from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-from django.contrib.sites.models import Site
-from django.contrib.auth.models import User
 
 from account.models import Invitation
 from account.forms import SignupForm, AddEmailForm, LoginForm, \
@@ -47,7 +45,8 @@ def signup(request, confirmation_key='', form_class=SignupForm,
             username, password = form.save()
             user = authenticate(username=username, password=password)
             auth_login(request, user)
-            request.user.message_set.create(message=_("Successfully logged in as %(username)s.") % {'username': user.username})
+            request.user.message_set.create(message=_("Successfully logged in as %(username)s.") 
+                % {'username': user.username})
             return HttpResponseRedirect(success_url)
     else:
         initial = {'confirmation_key': confirmation_key}
@@ -160,7 +159,7 @@ def language_change(request, form_class=ChangeLanguageForm,
 @login_required
 def invitations(request, confirmation_key='', form_class=InvitationForm,
         template_name="invitations.html"):
-        
+    
     remain_invitation = Invitation.objects.remain_invitation(request.user)
     users_invited = Invitation.objects.users_invited(request.user)
     unused_invitations = list(Invitation.objects.unused_invitations(request.user))

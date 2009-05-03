@@ -12,10 +12,8 @@ class AbstractSquareManager(models.Manager):
 
     def neighbors(self, square):
         """docstring for neighbor"""
-        neighbor_keys = square.neighbors()
-        neighbors = self.extra(where=['coord IN %s' % str(tuple(neighbor_keys))])\
-                    .filter(status=1).order_by('pos_x', 'pos_y')
-        return neighbors
+        return self.extra(where=['coord IN %s' % str(tuple(square.neighbors().keys()))])\
+            .filter(status=1).order_by('pos_x', 'pos_y')
 
 class SquareManager(AbstractSquareManager):
     pass
