@@ -28,7 +28,7 @@ class Issue(models.Model):
     @models.permalink
     def get_absolute_url(self):
         """docstring for get_absolute_url"""
-        return ('issue.views.details', [str(self.slug)])
+        return ('issue.views.issue', [str(self.slug)])
 
 class ParticipateIssue(models.Model):
     user = models.ForeignKey(User, verbose_name=_('user'))

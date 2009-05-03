@@ -14,7 +14,7 @@ def issues(request, template_name='issues.html'):
     }, context_instance=RequestContext(request))
 
 @login_required
-def details(request, slug, template_name='issue_details.html'):
+def issue(request, slug, template_name='issue_details.html'):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
     return render_to_response(template_name, {
