@@ -13,7 +13,7 @@ class SquareManager(models.Manager):
     def neighbors(self, square):
         """docstring for neighbor"""
         neighbor_keys = square.neighbors()
-        neighbors = self.extra(where=['coord IN %s' % str(tuple(neighbor_keys.keys()))])\
+        neighbors = self.extra(where=['coord IN %s' % str(tuple(neighbor_keys))])\
                     .filter(status=1).order_by('pos_x', 'pos_y')
         return neighbors
 
