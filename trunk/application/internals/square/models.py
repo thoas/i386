@@ -43,7 +43,7 @@ class AbstractSquare(models.Model):
         return self.square_neighbors
 
 class Square(AbstractSquare):
-    background_image_path = models.ImageField(upload_to=settings.UPLOAD_ROOT, blank=True, null=True)
+    background_image_path = models.ImageField(upload_to=settings.UPLOAD_DIR, blank=True, null=True)
     date_booked = models.DateField(_('date_booked'), auto_now_add=True)
     date_finished = models.DateField(_('date_finished'), blank=True, null=True)
     # 1 : full | 0 : booked

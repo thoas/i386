@@ -140,7 +140,11 @@ LOGIN_REDIRECT_URLNAME = 'what_next'
 # File
 FILE_UPLOAD_MAX_MEMORY_SIZE = 8621440 # 8.5 MB
 FILE_UPLOAD_TEMP_DIR = os.path.join(PROJECT_ROOT, 'tmp')
-UPLOAD_ROOT = 'upload'
+UPLOAD_DIR = 'upload'
+UPLOAD_ROOT = os.path.join(MEDIA_ROOT, UPLOAD_DIR)
+UPLOAD_HD_ROOT = os.path.join(UPLOAD_ROOT, 'hd')
+UPLOAD_TEMPLATE_ROOT = os.path.join(UPLOAD_ROOT, 'template')
+THUMB_ROOT = os.path.join(UPLOAD_ROOT, 'thumb')
 
 # Default values
 DEFAULT_NB_INVITATION = 1
