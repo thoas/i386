@@ -16,14 +16,17 @@ package grid
 		private var _lstPosition:Vector.<Array>;
 		private var _focusX:int;
 		private var _focusY:int;
+		private var _squareSize:int;
 		private var _currentScale:int;
-	
+		private var _minScale:int;
+		private var _maxScale:int;
+		
 		public function GridModel(issueId:int) 
 		{ 
 			_issueId = issueId;
 		}
 		
-		public function init(squares:Array, squaresOpen:Array, minX:int, minY:int, maxX:int, maxY:int, nbHSquare:int, nbVSquare:int, showDisableSquare:int):void
+		public function init(squares:Array, squaresOpen:Array, minX:int, minY:int, maxX:int, maxY:int, nbHSquare:int, nbVSquare:int, showDisableSquare:int, squareSize:int):void
 		{
 			_maxX = maxX;
 			_maxY = maxY;
@@ -31,6 +34,7 @@ package grid
 			_minY = minY < 0 ? minY * -1 : 0;
 			_nbHSquare = nbHSquare ? nbHSquare : _maxX + _minX + 1;
 			_nbVSquare = nbVSquare ? nbVSquare : _maxY + _minY + 1;
+			_squareSize = squareSize;
 			
 			_lstPosition = new Vector.<Array>(_nbHSquare);
 			for(var i:int = 0 ; i < _nbHSquare ; ++i)
@@ -76,28 +80,43 @@ package grid
 		
 		public function update():void { dispatchEvent(new GridEvent(GridEvent.GRID_UPDATE, _currentScale)) }
 		
-		public function set currentScale(scale:int):void { _currentScale = scale };
+		public function set currentScale(scale:int):void { 
+			_currentScale = scale 
+			dispatchEvent(new GridEvent(GridEvent.GRID_UPDATE, _currentScale))
+		}
 		
-		public function get currentScale():int { return _currentScale };
+		public function get minScale():int { return _minScale }
 		
-		public function get issueId():int { return _issueId };
+		public function get maxScale():int { return _maxScale }
 		
-		public function get minX():int { return _minX };
+		public function get currentScale():int { return _currentScale; }
 		
-		public function get minY():int { return _minY };
+		public function get issueId():int { return _issueId }
 		
-		public function get nbHSquare():int { return _nbHSquare };
+		public function get minX():int { return _minX }
 		
-		public function get nbVSquare():int { return _nbVSquare };
+		public function get minY():int { return _minY }
 		
-		public function get focusX():int { return _focusX };
+		public function get nbHSquare():int { return _nbHSquare }
 		
-		public function get focusY():int { return _focusY };
+		public function get nbVSquare():int { return _nbVSquare }
 		
-		public function set focusX(x:int):void { _focusX = x };
+		public function get focusX():int { return _focusX }
 		
-		public function set focusY(y:int):void { _focusY = y };
+		public function get focusY():int { return _focusY }
 		
-		public function get focusSquare():int { return _lstPosition[_focusX][_focusY] };
+		public function set focusX(x:int):void { _focusX = x }
+		
+		public function set squareSize(squareSize:int):void { _squareSize = squareSize }
+		
+		public function set minScale(minScale:int):void { _minScale = minScale }
+		
+		public function set maxScale(maxScale:int):void { _maxScale = maxScale }		
+		
+		public function get squareSize():int { return _squareSize }
+		
+		public function set focusY(y:int):void { _focusY = y }
+		
+		public function get focusSquare():int { return _lstPosition[_focusX][_focusY] }
 	}
 }
