@@ -74,8 +74,8 @@ def create_email_address(sender, instance=None, **kwargs):
         return
     email_address, created = EmailAddress.objects.get_or_create(user=instance, email=instance.email, primary=True)
     if created:
-		pass
-        #EmailConfirmation.objects.send_confirmation(email_address)
+        pass
+        EmailConfirmation.objects.send_confirmation(email_address)
 
 post_save.connect(create_email_address, sender=User)
 
@@ -110,9 +110,9 @@ class EmailConfirmationManager(models.Manager):
         subject = render_to_string("emailconfirmation/email_confirmation_subject.txt", context)
         message = render_to_string("emailconfirmation/email_confirmation_message.txt", context)
         try:
-        	send_mail(subject, message, settings.EMAIL_HOST_USER, [email_address.email], priority="high")
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [email_address.email], priority="high")
         except socket.error, msg:
-			print 'error (%s) for %s' % (msg, email_address.email)
+            print 'error (%s) for %s' % (msg, email_address.email)
         return self.create(email_address=email_address, sent=datetime.now(), confirmation_key=confirmation_key)
     
     def delete_expired_confirmations(self):

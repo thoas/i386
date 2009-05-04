@@ -13,6 +13,9 @@ class Issue(models.Model):
     text_presentation = models.TextField(_('text_presentation'))
     nb_case_x = models.IntegerField(_('nb_case_x'))
     nb_case_y = models.IntegerField(_('nb_case_y'))
+    nb_step = models.IntegerField(_('nb_step'), default=settings.DEFAULT_NB_STEP)
+    size = models.IntegerField(_('size'), default=settings.DEFAULT_SIZE)
+    margin = models.IntegerField(_('margin'), default=settings.DEFAULT_MARGIN)
     date_created = models.DateField(_('date_creation'), auto_now_add=True)
     date_finished = models.DateField(_('date_finished'), blank=True, null=True)
     max_participation = models.IntegerField(_('max_participation'),\
@@ -20,6 +23,15 @@ class Issue(models.Model):
     slug = models.SlugField(unique=True)
     
     objects = IssueManager()
+    
+    def steps(self):
+        """docstring for steps"""
+        size = self.size
+        steps = []
+        for i in range(self.nb_step):
+            steps.append(size)
+            size /= 2
+        return steps
     
     def __unicode__(self):
         """docstring for __unicode__"""

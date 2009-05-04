@@ -88,7 +88,7 @@ class InvitationManager(models.Manager):
         try:
             send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority="high")
         except socket.error, msg:
-    		print 'error (%s) for %s' % (msg, invitation_instance.email)
+            print 'error (%s) for %s' % (msg, invitation_instance.email)
 
 class Invitation(models.Model):
     last_name = models.CharField(_('last_name'), max_length=150, blank=True, null=True)
