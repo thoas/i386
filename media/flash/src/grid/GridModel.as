@@ -20,14 +20,16 @@ package grid
 		private var _currentScale:int;
 		private var _minScale:int;
 		private var _maxScale:int;
+		private var _showDisableSquare:int;
 		
 		public function GridModel(issueId:int) 
 		{ 
 			_issueId = issueId;
 		}
 		
-		public function init(squares:Array, squaresOpen:Array, minX:int, minY:int, maxX:int, maxY:int, nbHSquare:int, nbVSquare:int, showDisableSquare:int, squareSize:int):void
+		public function init(minX:int, minY:int, maxX:int, maxY:int, nbHSquare:int, nbVSquare:int, showDisableSquare:int, squareSize:int):void
 		{
+			_showDisableSquare = showDisableSquare;
 			_maxX = maxX;
 			_maxY = maxY;
 			_minX = minX < 0 ? minX * -1 : 0;
@@ -36,27 +38,40 @@ package grid
 			_nbVSquare = nbVSquare ? nbVSquare : _maxY + _minY + 1;
 			_squareSize = squareSize;
 			
+			dispatchEvent(new GridEvent(GridEvent.INFO_READY, _nbHSquare, _nbVSquare, _squareSize));
+		}
+		
+		public function initSquares(squares:Array, squaresOpen:Array):void
+		{
 			_lstPosition = new Vector.<Array>(_nbHSquare);
 			for(var i:int = 0 ; i < _nbHSquare ; ++i)
 			{
 				_lstPosition[i] = new Array(_nbVSquare);
 			}
+			for(i = 0; i < 20; i++)
+			{
+				for(var j:int = 0; j < 20; j++)
+				{
+					_addPosition(new SquareFull(i, j, 'http://milkshape.cc/media/file/push/', this, _squareSize));
+				}
+			}
 			
+			/*
 			var square:Object;
 			for each(square in squares)
 			{
 				_addPosition(
 					square.status ? 
-					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, this) : 
-					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY)
+					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, this, _squareSize) : 
+					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY, _squareSize)
 				);
 			}
 			for each(square in squaresOpen)
 			{
-				_addPosition(new SquareOpen(square.pos_x + _minX, square.pos_y + _minY));
+				_addPosition(new SquareOpen(square.pos_x + _minX, square.pos_y + _minY, _squareSize));
 			}
 			
-			if(showDisableSquare)
+			if(_showDisableSquare)
 			{
 				for(i = 0 ; i < _nbHSquare ; ++i)
 				{
@@ -64,26 +79,33 @@ package grid
 					{
 						if(_lstPosition[i][j] == null)
 						{
-							_addPosition(new SquareDisable(i, j));;
+							_addPosition(new SquareDisable(i, j, _squareSize));;
 						}
 					}
 				}
 			}
-			dispatchEvent(new GridEvent(GridEvent.GRID_READY, _currentScale));
+			*/
+			
+			dispatchEvent(new GridEvent(GridEvent.READY));
 		}
 		
 		private function _addPosition(square:Square):void
 		{
 			_lstPosition[square.X][square.Y] = SquareManager.length() - 1;
-			dispatchEvent(new SquareEvent(SquareEvent.SQUARE_CREATION, square));
+			dispatchEvent(new SquareEvent(SquareEvent.CREATION, square));
 		}
 		
-		public function update():void { dispatchEvent(new GridEvent(GridEvent.GRID_UPDATE, _currentScale)) }
+		public function set currentScale(scale:int):void { _currentScale = scale }
 		
-		public function set currentScale(scale:int):void { 
-			_currentScale = scale 
-			dispatchEvent(new GridEvent(GridEvent.GRID_UPDATE, _currentScale))
-		}
+		public function set focusX(x:int):void { _focusX = x }
+
+		public function set focusY(y:int):void { _focusY = y }
+		
+		public function set squareSize(squareSize:int):void { _squareSize = squareSize }
+		
+		public function set minScale(minScale:int):void { _minScale = minScale }
+		
+		public function set maxScale(maxScale:int):void { _maxScale = maxScale }		
 		
 		public function get minScale():int { return _minScale }
 		
@@ -105,17 +127,7 @@ package grid
 		
 		public function get focusY():int { return _focusY }
 		
-		public function set focusX(x:int):void { _focusX = x }
-		
-		public function set squareSize(squareSize:int):void { _squareSize = squareSize }
-		
-		public function set minScale(minScale:int):void { _minScale = minScale }
-		
-		public function set maxScale(maxScale:int):void { _maxScale = maxScale }		
-		
 		public function get squareSize():int { return _squareSize }
-		
-		public function set focusY(y:int):void { _focusY = y }
 		
 		public function get focusSquare():int { return _lstPosition[_focusX][_focusY] }
 	}

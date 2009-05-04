@@ -6,8 +6,6 @@ package grid
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import grid.square.*;
 	
@@ -17,53 +15,61 @@ package grid
 	{
 		private var _controller:GridController;
 		private var _model:GridModel;
-		private var _minScale:int;
-		private var _maxScale:int;
-		private var _scale:int;
-		private var _currentScale:int;
-		private var _stagePadding:int;
-		private var _lineColor:int;
-		private var _scaleThumb:Array;
-		private var _speed:Number;
-		private var _showSquareTimer:Timer;
+		private var _squareSize:int;// Taille des carrés
+		private var _maxScale:int;// Echelle maximum
+		private var _minScale:int;// Echelle minium
+		private var _stagePadding:int;// Espace minimum entre la grille et la scène
+		private var _lineColor:int;// Couleur des lignes de la grille
+		private var _speed:int;// Vitesse en millisecondes
+		private var _nbHSquare:int;// Nombre de carrés à l'horizontal
+		private var _nbVSquare:int;// Nombre de carrés à la vertical
 		
 		public function GridView(model:GridModel, controller:GridController)
 		{
 			_lineColor = 0x1E1E1E;
 			_stagePadding = 50;
-			_speed = 0.8;
-			
+			_speed = 800;
 			_controller = controller;
 			_model = model;
+			
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 		}
 		
 		private function _handlerAddedToStage(e:Event):void
-		{					
-			_showSquareTimer = new Timer(2000, 1);	
-			_model.addEventListener(SquareEvent.SQUARE_CREATION, _addSquare);
-			_model.addEventListener(GridEvent.GRID_READY, _handlerGridReady);
-			_controller.getData();
+		{			
+			_model.addEventListener(GridEvent.INFO_READY, _handlerGridInfoReady);
+			_controller.getGridInfo();
+		}
+		
+		private function _handlerGridInfoReady(e:GridEvent):void
+		{
+			_nbHSquare = e.nbHSquare;
+			_nbVSquare = e.nbVSquare;	
+			_squareSize = e.squareSize;
+			_model.addEventListener(SquareEvent.CREATION, _addSquare);
+			_model.addEventListener(GridEvent.READY, _handlerGridReady);
+			_controller.getGridSquares();
 		}
 		
 		private function _handlerGridReady(e:GridEvent):void
 		{
-			addChild(new GridLine(_model.nbHSquare, _model.nbVSquare, Square.SQUARE_WIDTH, Square.SQUARE_HEIGHT, _lineColor));
-
-			var scales:Array = _controller.defineScale(stage.stageWidth, stage.stageHeight, _stagePadding);
-			_minScale = _currentScale = scales['minScale'];
+			var scales:Array = _controller.defineScale(stage.stageHeight, stage.stageWidth, _stagePadding);
+			_minScale = scales['minScale'];
 			_maxScale = scales['maxScale'];
 			
-			width = Constance.SCALE_THUMB[_minScale] * _model.nbHSquare;
+			addChild(new GridLine(_nbHSquare, _nbVSquare, _squareSize, _lineColor));
+			
+			width = Constance.SCALE_THUMB[_minScale] * _nbHSquare;
 			scaleY = scaleX;
 			
-			_model.addEventListener(GridEvent.GRID_PUT_FOCUS, _squarePutFocus);
-			_model.addEventListener(GridEvent.GRID_MOVE, _moveTo);
-			_model.addEventListener(GridEvent.GRID_UPDATE, _zoomTo);
-			addEventListener(MouseEvent.CLICK, _controller.onClick);
-			addEventListener(MouseEvent.DOUBLE_CLICK, _controller.onDoubleClick);
+			_model.addEventListener(GridFocusEvent.FOCUS, _squarePutFocus);
+			_model.addEventListener(GridMoveEvent.MOVE, _moveTo);
+			_model.addEventListener(GridZoomEvent.ZOOM, _zoomTo);
+			
+			addEventListener(MouseEvent.CLICK, _controller.clickHandler);
+			addEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
-			stage.addEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheel);
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
 			stage.addEventListener(Event.RESIZE, _resize);
 			
 			_resize();
@@ -75,91 +81,47 @@ package grid
 			y = Math.round(stage.stageHeight / 2 - height / 2);
 		}
 		
-		private function _showSquareOpen(e:TimerEvent):void
-		{
-			dispatchEvent(new GridEvent(GridEvent.GRID_OPEN_SQUARE));
-		}
-		
-		private function _showSquareBooked(e:TimerEvent):void
-		{
-			dispatchEvent(new GridEvent(GridEvent.GRID_BOOKED_SQUARE));
-		}
-		
 		private function _addSquare(e:SquareEvent):void
 		{
 			var square:Square = e.square;
-			square.x = square.X * Square.SQUARE_WIDTH;
-			square.y = square.Y * Square.SQUARE_HEIGHT;
-			square.tabIndex = _model.nbHSquare * square.Y + square.X;// Numéro tabulation = nombre de colonne * y + x
-			square.addEventListener(SquareEvent.SQUARE_OVER, _controller.squareOver);
-			square.addEventListener(SquareEvent.SQUARE_FOCUS, _controller.squareFocus);// Tabulation
+			square.x = square.X * _squareSize;
+			square.y = square.Y * _squareSize;
+			square.tabIndex = _nbHSquare * square.Y + square.X;// Numéro tabulation = nombre de colonne * y + x
+			square.addEventListener(SquareEvent.OVER, _controller.rollOverHandler);
+			square.addEventListener(SquareEvent.FOCUS, _controller.onFocusHandler);// Focus : tabulation, clic, double clic, clavier...
 			addChild(square);
 		}
 		
-		private function _zoomTo(e:GridEvent):void
+		private function _zoomTo(e:GridZoomEvent):void
 		{
-			_currentScale = e.currentScale;
 			Tweener.addTween(
 				this,
 				{
-					width: Constance.SCALE_THUMB[_currentScale] * _model.nbHSquare,
-					height: Constance.SCALE_THUMB[_currentScale] * _model.nbVSquare,
-					time: _speed,
+					width: Constance.SCALE_THUMB[e.currentScale] * _nbHSquare,
+					height: Constance.SCALE_THUMB[e.currentScale] * _nbVSquare,
+					time: _speed/1000,
 					transition: 'easeOutSine'
 				}
 			);
-			_moveTo();
 		}
 		
-		private function _moveTo(e:GridEvent = null):void
-		{
-			_showSquareTimer.stop();
-			if(_currentScale == _maxScale)
-			{
-				var square:Square = _controller.getFocusSquare();
-				if(square is SquareOpen)
+		private function _moveTo(e:GridMoveEvent):void
+		{			
+			Tweener.addTween(
+				this,
 				{
-					_showSquareTimer.removeEventListener("timer", _showSquareBooked);
-            		_showSquareTimer.addEventListener("timer", _showSquareOpen);
-            		_showSquareTimer.start();
+					x: Math.round(stage.stageWidth / 2 - e.decalX),
+					y: Math.round(stage.stageHeight / 2 - e.decalY),
+					time: _speed/1000,
+					transition: 'easeOutSine'
 				}
-				else if(square is SquareBooked)
-				{
-					_showSquareTimer.removeEventListener("timer", _showSquareOpen);
-            		_showSquareTimer.addEventListener("timer", _showSquareBooked);
-            		_showSquareTimer.start();
-				}
-			}
-			
-			if(_currentScale != _minScale)// Si on n'est pas au zoom minimal
-			{	
-				Tweener.addTween(
-					this,
-					{
-						x: -_model.focusX * Constance.SCALE_THUMB[_currentScale] + stage.stageWidth / 2 - Constance.SCALE_THUMB[_currentScale] / 2,
-						y: -_model.focusY * Constance.SCALE_THUMB[_currentScale] + stage.stageHeight / 2 - Constance.SCALE_THUMB[_currentScale] / 2,
-						time: _speed,
-						transition: 'easeOutSine'
-					}
-				);
-			}
-			else// Sinon on replace la grille au centre de la scène
-			{
-				Tweener.addTween(
-					this,
-					{
-						x: Math.round(stage.stageWidth / 2 - _model.nbHSquare * Constance.SCALE_THUMB[_currentScale] / 2),
-						y: Math.round(stage.stageHeight / 2 - _model.nbVSquare * Constance.SCALE_THUMB[_currentScale] / 2),
-						time: _speed,
-						transition: 'easeOutSine'
-					}
-				);
-			}
+			);
 		}
 		
-		private function _squarePutFocus(e:GridEvent):void
+		private function _squarePutFocus(e:GridFocusEvent):void
 		{
 			stage.focus = _controller.getFocusSquare();// On mets le focus sur la Square correspondante
 		}
+		
 	}
 }
