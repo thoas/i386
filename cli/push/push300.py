@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from site import addsitedir
-from random import randint
 
+import random
 import sys
+import shutil
 import Image
 import os.path
 import re
 
 BASE_ROOT = os.path.abspath(os.path.dirname(__file__))
-IMG_ROOT = os.path.join(BASE_ROOT, 'img')
 
 sys.path.insert(0, BASE_ROOT + '/../..')
 from settings.include_path import *
@@ -18,6 +18,7 @@ from django.core.management import setup_environ
 import settings.local_settings
 setup_environ(settings.local_settings)
 
+from django.conf import settings
 from issue.models import Issue
 from square.models import Square
 
@@ -39,20 +40,27 @@ for root, dirs, files in os.walk(BASE_ROOT):
 if len(files_list) == 0:
     exit()
 
-for file in files_list:
-    old_name = os.path.join(IMG_ROOT, file['file_name'] + '.' + file['extension'])
-    image = Image.open(old_name)
-    for step in steps:
-        thumb_name = os.path.join(IMG_ROOT, 'thumb',\
-            file['file_name'] + '_' + str(step) + '.' + file['extension'])
-        if not os.path.exists(thumb_name):
-            image.thumbnail((step, step))
-            print '%s created' % thumb_name
-            image.save(thumb_name, quality=90)
+if os.path.exists(settings.THUMB_ROOT):
+    shutil.rmtree(settings.THUMB_ROOT)
+
+os.mkdir(settings.THUMB_ROOT)
+
+for step in steps:
+    os.mkdir(os.path.join(settings.THUMB_ROOT, str(step)))
 
 for i in range(issue.nb_case_x):
     for j in range(issue.nb_case_y):
-        file = files_list[randint(0, len(files_list) - 1)]
+        file = random.choice(files_list)
+        old_name = os.path.join(BASE_ROOT, '%s.%s' % (file['file_name'], file['extension']))
+        image = Image.open(old_name)
+        new_filename = '%s_%d_%d.%s' % (file['file_name'], i, j, file['extension'])
         Square.objects.create(pos_x=i, pos_y=j,\
-            background_image_path=os.path.join(settings.global_settings.UPLOAD_ROOT, file['file_name'] + '.' + file['extension']),\
+            background_image_path=os.path.join('upload', new_filename),\
                 issue=issue, date_finished=datetime.now(), status=1)
+
+        for step in steps:
+            thumb_name = os.path.join(settings.THUMB_ROOT, str(step), new_filename)
+            if not os.path.exists(thumb_name):
+                image.thumbnail((step, step))
+                print '%s created' % thumb_name
+                image.save(thumb_name, quality=90)
