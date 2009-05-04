@@ -1,14 +1,17 @@
 package
 {
-	import flash.events.Event;
+	import com.dosites.debug.FBConsole;
+	import com.dosites.debug.FPSMeter;
+	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.events.Event;
 	
 	import grid.GridController;
 	import grid.GridModel;
 	import grid.GridView;
-	import grid.GridEvent;
+	import grid.square.SquareFormEvent;
 	
 	import utils.Fullscreen;
 	import utils.MemoryIndicator;
@@ -25,6 +28,9 @@ package
 		
 		public function Issue(issueId:int = 0)
 		{
+			//new FBConsole();
+			//new FPSMeter(stage);
+			
 			stage.align = StageAlign.TOP_LEFT;
         	stage.scaleMode = StageScaleMode.NO_SCALE;
         	stage.stageFocusRect = false;
@@ -41,8 +47,9 @@ package
 			_fullscreen = new Fullscreen();
 			
 			stage.addEventListener(Event.RESIZE, _resize);
-			gridView.addEventListener(GridEvent.GRID_OPEN_SQUARE, _showSquareOpen);
-			gridView.addEventListener(GridEvent.GRID_BOOKED_SQUARE, _showSquareBooked);
+			gridModel.addEventListener(SquareFormEvent.SHOW_OPEN, _showOpenForm);
+			gridModel.addEventListener(SquareFormEvent.SHOW_BOOKED, _showBookedForm);
+			gridModel.addEventListener(SquareFormEvent.CLOSE, _closeForm);
 
 			addChild(gridView);
 			addChild(_memoryIndicator);
@@ -60,15 +67,42 @@ package
 			_memoryIndicator.x = stage.stageWidth - 60;
 			_memoryIndicator.y = stage.stageHeight - 20;
 		}
-		
-		private function _showSquareOpen(e:GridEvent):void
+		/*
+		import flash.events.TimerEvent;
+		import flash.utils.Timer;
+		private var _showSquareTimer:Timer;
+		_showSquareTimer = new Timer(2000, 1);
+		_showSquareTimer.stop();
+		if(_currentScale == _maxScale)
 		{
-			trace('SquareOpen');
+			var square:Square = _controller.getFocusSquare();
+			if(square is SquareOpen)
+			{
+				_showSquareTimer.removeEventListener('timer', _showSquareBooked);
+        		_showSquareTimer.addEventListener('timer', _showSquareOpen);
+        		_showSquareTimer.start();
+			}
+			else if(square is SquareBooked)
+			{
+				_showSquareTimer.removeEventListener('timer', _showSquareOpen);
+        		_showSquareTimer.addEventListener('timer', _showSquareBooked);
+        		_showSquareTimer.start();
+			}
+		}
+		*/
+		private function _showOpenForm(e:SquareFormEvent):void
+		{
+			trace('show open');
 		}
 		
-		private function _showSquareBooked(e:GridEvent):void
+		private function _showBookedForm(e:SquareFormEvent):void
 		{
-			trace('SquareBooked');
+			trace('show booked');
+		}
+		
+		private function _closeForm(e:SquareFormEvent):void
+		{
+			trace('close');
 		}
 	}
 }

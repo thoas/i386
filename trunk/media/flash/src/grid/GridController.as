@@ -1,13 +1,10 @@
 package grid
 {
-	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
 	
-	import grid.square.Square;
-	import grid.square.SquareEvent;
-	import grid.square.SquareManager;
+	import grid.square.*;
 	
 	import utils.Constance;
 	
@@ -16,18 +13,38 @@ package grid
 		private var _gridModel:GridModel;
 		private var _overX:int;
 		private var _overY:int;
+		private var _isShowForm:Boolean;
 		
 		public function GridController(gridModel:GridModel)
 		{
 			_gridModel = gridModel;
+			_isShowForm = false;
 		}
 		
-		public function getData(event:Event = null):Boolean
+		public function getGridInfo():void
 		{
-			var issueId:int = _gridModel.issueId;
-			
 			// On envoit une requête en POST avec issue_id
-			// On reçoit des beaux modèles hots.
+			// On reçoit les infos de l'issue
+			var issue:Object = new Object();
+			issue.title = 'Bac à sable';
+			issue.text_presentation = 'Bac à sable desc';
+			issue.nb_square_x = 20;
+			issue.nb_square_y = 20;
+			issue.show_disable_square = 0;
+			issue.max_participation = 1;
+			issue.min_x = -1;
+			issue.max_x = 1;
+			issue.min_y = -1;
+			issue.max_y = 1;
+			issue.square_size = 800;
+			
+			_gridModel.init(issue.min_x, issue.min_y, issue.max_x, issue.max_y, issue.nb_square_x, issue.nb_square_y, issue.show_disable_square, issue.square_size);
+		}
+		
+		public function getGridSquares():void
+		{
+			// On envoit une requête en POST avec issue_id
+			// On reçoit des les squares correspondants
 			var sq1:Object = new Object();
 			sq1.pos_x = 0;
 			sq1.pos_y = 0;
@@ -64,33 +81,9 @@ package grid
 			sqo3.pos_x = -1;
 			sqo3.pos_y = 1;
 			
-			var issue:Object = new Object();
-			issue.title = 'Bac à sable';
-			issue.text_presentation = 'Bac à sable desc';
-			issue.nb_square_x = 0;
-			issue.nb_square_y = 0;
-			issue.show_disable_square = 0;
-			issue.max_participation = 1;
-			issue.squares = new Array(sq1, sq2, sq3, sq4);
-			issue.squares_open = new Array(sqo1, sqo2, sqo3);
-			issue.min_x = -1;
-			issue.max_x = 1;
-			issue.min_y = -1;
-			issue.max_y = 1;
-			issue.square_size = 800;
-			
-			_gridModel.init(issue.squares, issue.squares_open, issue.min_x, issue.min_y, issue.max_x, issue.max_y, issue.nb_square_x, issue.nb_square_y, issue.show_disable_square, issue.square_size);
-			
-			return true;
+			_gridModel.initSquares(new Array(sq1, sq2, sq3, sq4), new Array(sqo1, sqo2, sqo3));
 		}
 		
-		public function mouseWheel(mouseEvent:MouseEvent):void
-		{
-			_gridModel.focusX = _overX;
-			_gridModel.focusY = _overY;
-			_gridModel.dispatchEvent(new GridEvent(GridEvent.GRID_PUT_FOCUS));
-			zoomTo(Math.round(mouseEvent.delta/4));
-		}
 		public function defineScale(stageHeight:int, stageWidth:int, stagePadding:int):Array
 		{
 			var scales:Array = new Array();
@@ -109,6 +102,7 @@ package grid
 				}
 			}
 			_gridModel.currentScale = _gridModel.minScale = scales['minScale'];
+			_gridModel.dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, scales['minScale']));
 			return scales;
 		}
 		
@@ -118,76 +112,125 @@ package grid
 			
 			if(_gridModel.currentScale != futurScale)// Si le zoom change
 			{
+				if(_isShowForm)
+				{
+					_isShowForm = false;
+					_gridModel.dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE));
+				}
 				_gridModel.currentScale = futurScale;
-				_gridModel.dispatchEvent(new GridEvent(GridEvent.GRID_MOVE));
+				_gridModel.dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, futurScale));
+				_moveTo();
 			}
 		}
 		
-		public function onClick(mouseEvent:MouseEvent):void
+		private function _moveTo():void
 		{
-			_gridModel.focusX = _overX;
-			_gridModel.focusY = _overY;
-			zoomTo(mouseEvent.shiftKey ? -1 : 1);	
+			if(_gridModel.currentScale == _gridModel.maxScale)// Si on est au zoom maximal
+			{
+				var square:Square = getFocusSquare();
+				if(square is SquareOpen)
+				{
+					_isShowForm = true;
+					_gridModel.dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_OPEN));
+				}
+				else if(square is SquareBooked)
+				{
+					_isShowForm = true;
+					_gridModel.dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_BOOKED));
+				}
+				else if(_isShowForm)
+				{
+					_isShowForm = false;
+					_gridModel.dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE));
+				}
+			}
+				
+			if(_gridModel.currentScale != _gridModel.minScale)// Si on n'est pas au zoom minimal
+			{
+				_gridModel.dispatchEvent(new GridMoveEvent(
+						GridMoveEvent.MOVE, 
+						_gridModel.focusX * Constance.SCALE_THUMB[_gridModel.currentScale] + Constance.SCALE_THUMB[_gridModel.currentScale] / 2, 
+						_gridModel.focusY * Constance.SCALE_THUMB[_gridModel.currentScale] + Constance.SCALE_THUMB[_gridModel.currentScale] / 2
+					)
+				);
+			}
+			else
+			{
+				_gridModel.dispatchEvent(new GridMoveEvent(
+						GridMoveEvent.MOVE, 
+						_gridModel.nbVSquare * Constance.SCALE_THUMB[_gridModel.currentScale] / 2, 
+						_gridModel.nbHSquare * Constance.SCALE_THUMB[_gridModel.currentScale] / 2
+					)
+				);
+			}
 		}
 		
-		private function _squareMoveTo(X:int, Y:int):void
-		{
-			_gridModel.focusX = _gridModel.focusX + X < 0 ? 0 : _gridModel.focusX + X >= _gridModel.nbHSquare ? _gridModel.nbHSquare - 1 : _gridModel.focusX + X;
-			_gridModel.focusY = _gridModel.focusY + Y < 0 ? 0 : _gridModel.focusY + Y >= _gridModel.nbVSquare ? _gridModel.nbVSquare - 1 : _gridModel.focusY + Y;
-			_gridModel.dispatchEvent(new GridEvent(GridEvent.GRID_PUT_FOCUS));	
-		}
-		
-		public function getFocusSquare():Square
+		public function getFocusSquare():Square// Renvoit le carré ayant le focus
 		{
 			return SquareManager.get(_gridModel.focusSquare);
 		}
 		
-		public function squareFocus(e:SquareEvent):void
+		private function _setFocusSquare(X:int, Y:int):void
 		{
-			_gridModel.focusX = e.square.X;
-			_gridModel.focusY = e.square.Y;
-			
-			if(_gridModel.currentScale != _gridModel.minScale)// Si on n'est pas au zoom minimal
-			{
-				_gridModel.dispatchEvent(new GridEvent(GridEvent.GRID_MOVE));
-			}
+			_gridModel.focusX = X;
+			_gridModel.focusY = Y;
 		}
 		
-		public function squareOver(e:SquareEvent):void
+		public function rollOverHandler(e:SquareEvent):void
 		{
 			_overX = e.square.X;
 			_overY = e.square.Y;
 		}
 		
-		public function onDoubleClick(mouseEvent:MouseEvent):void
+		public function onFocusHandler(e:SquareEvent):void
+		{
+			_setFocusSquare(e.square.X, e.square.Y);
+			_moveTo();
+		}
+		
+		public function mouseWheelHandler(mouseEvent:MouseEvent):void
+		{
+			_setFocusSquare(_overX, _overY);
+			_gridModel.dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));;
+			zoomTo(Math.round(mouseEvent.delta/4));
+		}
+		
+		public function clickHandler(mouseEvent:MouseEvent):void
+		{
+			_setFocusSquare(_overX, _overY);
+			zoomTo(mouseEvent.shiftKey ? -1 : 1);	
+		}
+		
+		public function doubleClickHandler(mouseEvent:MouseEvent):void
 		{
 			zoomTo(mouseEvent.shiftKey ? -_gridModel.maxScale : _gridModel.maxScale);
 		}
 		
 		public function keyDownHandler(e:KeyboardEvent):void
 		{
-			var boost:int = e.shiftKey ? 2 : 1;
-			
+			var x:int = 0;
+			var y:int = 0;
+				
 			switch(e.keyCode)
 			{
 				case Keyboard.UP:
 				case 87: // W
-					_squareMoveTo(0, -1 * boost);
+					y = -1 * (e.shiftKey ? _gridModel.nbVSquare : 1);
 					break;
 
 				case Keyboard.DOWN:
 				case 83: // S
-					_squareMoveTo(0, 1 * boost);
+					y = 1 * (e.shiftKey ? _gridModel.nbVSquare : 1);
 					break;
 
 				case Keyboard.LEFT:
 				case 65: // A
-					_squareMoveTo(-1 * boost, 0);
+					x = -1 * (e.shiftKey ? _gridModel.nbHSquare : 1);
 					break;
 
 				case Keyboard.RIGHT:
 				case 68: // D
-					_squareMoveTo(1 * boost, 0);
+					x = 1 * (e.shiftKey ? _gridModel.nbHSquare : 1);
 					break;
 
 				case Keyboard.PAGE_UP:
@@ -215,7 +258,16 @@ package grid
 				case 79: // O
 					zoomTo(e.shiftKey ? -_gridModel.maxScale : -1);
 					break;
-			  }
+			}
+			
+			_setFocusSquare(
+			  	_gridModel.focusX + x < 0 ? 0 : _gridModel.focusX + x >= _gridModel.nbHSquare ? _gridModel.nbHSquare - 1 : _gridModel.focusX + x,
+			  	_gridModel.focusY = _gridModel.focusY + y < 0 ? 0 : _gridModel.focusY + y >= _gridModel.nbVSquare ? _gridModel.nbVSquare - 1 : _gridModel.focusY + y
+			);
+			
+			_gridModel.dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));
+			  
 		 }
+		 
 	}
 }

@@ -7,13 +7,11 @@
 	
 	public class Square extends Sprite
 	{
-		public static const SQUARE_WIDTH:int = 800;
-		public static const SQUARE_HEIGHT:int = 800;
 		protected var _x:int;
 		protected var _y:int;
 		private var _color:int;
 		
-		public function Square(x:int, y:int, color:int, w:int = SQUARE_WIDTH, h:int = SQUARE_HEIGHT) 
+		public function Square(x:int, y:int, color:int, size:int) 
 		{
 			buttonMode = true;
 			doubleClickEnabled = true;
@@ -23,9 +21,8 @@
 						
 			alpha = 0.8;
 			
-			
 			graphics.beginFill(color);
-			graphics.drawRect(0, 0, w, h);
+			graphics.drawRect(0, 0, size, size);
 			graphics.endFill();
 			
 			
@@ -43,7 +40,7 @@
 		private function _focusIn(e:Event):void
 		{
 			alpha = 1;
-			dispatchEvent(new SquareEvent(SquareEvent.SQUARE_FOCUS, this));
+			dispatchEvent(new SquareEvent(SquareEvent.FOCUS, this));
 			//trace("tabIndex : "+ tabIndex + " pos : "+_x + ";" + _y);
 		}
 		
@@ -54,7 +51,7 @@
 		
 		private function _rollOver(e:Event):void
 		{
-			dispatchEvent(new SquareEvent(SquareEvent.SQUARE_OVER, this));			
+			dispatchEvent(new SquareEvent(SquareEvent.OVER, this));			
 		}
 		
 	}

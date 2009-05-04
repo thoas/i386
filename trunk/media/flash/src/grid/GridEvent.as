@@ -4,21 +4,23 @@ package grid
 	
 	public class GridEvent extends Event
 	{
-		public static const GRID_READY:String = 'GRID_READY';
-		public static const GRID_MOVE:String = 'GRID_MOVE';
-		public static const GRID_PUT_FOCUS:String = 'GRID_PUT_FOCUS';
-		public static const GRID_UPDATE:String = 'GRID_UPDATE';
-		public static const GRID_OPEN_SQUARE:String = 'GRID_OPEN_SQUARE';
-		public static const GRID_BOOKED_SQUARE:String = 'GRID_BOOKED_SQUARE';
-		private var _currentScale:int;
+		public static const INFO_READY:String = 'INFO_READY';
+		public static const READY:String = 'READY';
+		private var _nbHSquare:int;
+		private var _nbVSquare:int;
+		private var _squareSize:int;
 		
-		public function GridEvent(eventType:String, currentScale:int = void):void
+		public function GridEvent(eventType:String, nbHSquare:int = 0, nbVSquare:int = 0, squareSize:int = 0):void
 		{
 			super(eventType);
-			_currentScale = currentScale;
+			_nbHSquare = nbHSquare;
+			_nbVSquare = nbVSquare;
+			_squareSize = squareSize;
 		}
 		
-		public function get currentScale():int { return _currentScale }
+		public function get nbHSquare():int { return _nbHSquare }
+		public function get nbVSquare():int { return _nbVSquare }
+		public function get squareSize():int { return _squareSize }
 	}
 }
 

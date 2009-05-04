@@ -1,13 +1,12 @@
 package grid.square
 {
 	import flash.events.Event;
-	import grid.square.Square;
 	
 	public class SquareEvent extends Event
 	{
-		public static const SQUARE_CREATION:String = 'SQUARE_CREATION';
-		public static const SQUARE_FOCUS:String = 'SQUARE_FOCUS';
-		public static const SQUARE_OVER:String = 'SQUARE_OVER';
+		public static const CREATION:String = 'CREATION';
+		public static const FOCUS:String = 'FOCUS';
+		public static const OVER:String = 'OVER';
 		private var _square:Square;
 		
 		public function SquareEvent(eventType:String, square:Square):void
@@ -15,7 +14,7 @@ package grid.square
 			super(eventType);
 			_square = square;
 		}
-
+		
 		public function get square():Square { return _square }
 	}
 }
