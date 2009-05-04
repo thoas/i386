@@ -74,7 +74,8 @@ def create_email_address(sender, instance=None, **kwargs):
         return
     email_address, created = EmailAddress.objects.get_or_create(user=instance, email=instance.email, primary=True)
     if created:
-        EmailConfirmation.objects.send_confirmation(email_address)
+		pass
+        #EmailConfirmation.objects.send_confirmation(email_address)
 
 post_save.connect(create_email_address, sender=User)
 
