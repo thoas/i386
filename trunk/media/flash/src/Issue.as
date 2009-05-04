@@ -15,8 +15,7 @@ package
 	import utils.MilkshapeContextMenu;
 	import utils.MilkshapeLogo;
 
-	
-	[SWF(width='960', height='600', frameRate='30', backgroundColor='#141414')]
+	[SWF(width='960', height='600', frameRate='31', backgroundColor='#141414')]// 31 plus efficace
 	
 	public class Issue extends Sprite
 	{

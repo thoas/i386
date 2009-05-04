@@ -1,7 +1,6 @@
 package grid
 {
-	import caurina.transitions.Tweener;
-	
+	import caurina.transitions.Tweener;	
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -102,19 +101,18 @@ package grid
 		
 		private function _moveTo():void
 		{
+			_showSquareTimer.stop();
 			if(_currentScale == _maxScale)
 			{
 				var square:Square = SquareManager.get(_model.focusSquare);
 				if(square is SquareOpen)
 				{
-					_showSquareTimer.stop();
 					_showSquareTimer.removeEventListener("timer", _showSquareBooked);
             		_showSquareTimer.addEventListener("timer", _showSquareOpen);
             		_showSquareTimer.start();
 				}
 				else if(square is SquareBooked)
 				{
-					_showSquareTimer.stop();
 					_showSquareTimer.removeEventListener("timer", _showSquareOpen);
             		_showSquareTimer.addEventListener("timer", _showSquareBooked);
             		_showSquareTimer.start();

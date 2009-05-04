@@ -1,6 +1,8 @@
+import sha
+import socket
+
 from datetime import datetime, timedelta
 from random import random
-import sha
 
 from django.conf import settings
 from django.db import models, IntegrityError
@@ -106,9 +108,10 @@ class EmailConfirmationManager(models.Manager):
         }
         subject = render_to_string("emailconfirmation/email_confirmation_subject.txt", context)
         message = render_to_string("emailconfirmation/email_confirmation_message.txt", context)
-        
-        send_mail(subject, message, settings.EMAIL_HOST_USER, [email_address.email], priority="high")
-        
+        try:
+        	send_mail(subject, message, settings.EMAIL_HOST_USER, [email_address.email], priority="high")
+        except socket.error, msg:
+			print 'error (%s) for %s' % (msg, email_address.email)
         return self.create(email_address=email_address, sent=datetime.now(), confirmation_key=confirmation_key)
     
     def delete_expired_confirmations(self):
