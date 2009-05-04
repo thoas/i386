@@ -27,27 +27,29 @@ package
 		{
 			stage.align = StageAlign.TOP_LEFT;
         	stage.scaleMode = StageScaleMode.NO_SCALE;
+        	stage.stageFocusRect = false;
         	
 			var mct:MilkshapeContextMenu = new MilkshapeContextMenu();// Menu contextuel personnalisé
 			contextMenu = mct.cm;
 			
 			var gridModel:GridModel = new GridModel(issueId);
 			var gridController:GridController = new GridController(gridModel);
-			var gridView:GridView = new GridView(gridModel, gridController, this.stage);
-			addChild(gridView);
+			var gridView:GridView = new GridView(gridModel, gridController);
 			
 			_memoryIndicator = new MemoryIndicator();
 			_milkshapeLogo = new MilkshapeLogo();
 			_fullscreen = new Fullscreen();
+			
+			stage.addEventListener(Event.RESIZE, _resize);
+			gridView.addEventListener(GridEvent.GRID_OPEN_SQUARE, _showSquareOpen);
+			gridView.addEventListener(GridEvent.GRID_BOOKED_SQUARE, _showSquareBooked);
+
+			addChild(gridView);
 			addChild(_memoryIndicator);
 			addChild(_milkshapeLogo);
 			addChild(_fullscreen);
 			
-			stage.addEventListener(Event.RESIZE, _resize);
 			_resize();
-			
-			gridView.addEventListener(GridEvent.GRID_OPEN_SQUARE, _showSquareOpen);
-			gridView.addEventListener(GridEvent.GRID_BOOKED_SQUARE, _showSquareBooked);
 		}
 		
 		private function _resize(e:Event = null):void

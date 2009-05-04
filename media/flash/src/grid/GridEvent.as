@@ -5,6 +5,8 @@ package grid
 	public class GridEvent extends Event
 	{
 		public static const GRID_READY:String = 'GRID_READY';
+		public static const GRID_MOVE:String = 'GRID_MOVE';
+		public static const GRID_PUT_FOCUS:String = 'GRID_PUT_FOCUS';
 		public static const GRID_UPDATE:String = 'GRID_UPDATE';
 		public static const GRID_OPEN_SQUARE:String = 'GRID_OPEN_SQUARE';
 		public static const GRID_BOOKED_SQUARE:String = 'GRID_BOOKED_SQUARE';
