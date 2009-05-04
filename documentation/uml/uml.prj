@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 16
+  revision 17
   modified_by 2 "thoas"
 
 
@@ -414,6 +414,33 @@ format 66
       end
 
       attribute 135810 "nb_case_y"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 147074 "nb_step"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 146946 "size"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 147202 "margin"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
