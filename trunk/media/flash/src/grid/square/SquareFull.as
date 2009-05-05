@@ -40,8 +40,7 @@ package grid.square
 			
 			if(_lstImage[scale] == null)// si l'image n'est pas déjà chargé
 			{
-            	//_loader.load(new URLRequest("img/"+_url+"_"+_scaleThumb[scale]+".jpg"));
-            	_loader.load(new URLRequest(_url+(20*_y+_x)+"_file.jpg"));
+            	_loader.load(new URLRequest("img/"+_url+"_"+_scaleThumb[scale]+".jpg"));
    			}
    			else
    			{

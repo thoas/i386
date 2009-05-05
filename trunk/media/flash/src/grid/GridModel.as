@@ -48,15 +48,6 @@ package grid
 			{
 				_lstPosition[i] = new Array(_nbVSquare);
 			}
-			for(i = 0; i < 20; i++)
-			{
-				for(var j:int = 0; j < 20; j++)
-				{
-					_addPosition(new SquareFull(i, j, 'http://milkshape.cc/media/file/push/', this, _squareSize));
-				}
-			}
-			
-			/*
 			var square:Object;
 			for each(square in squares)
 			{
@@ -84,7 +75,6 @@ package grid
 					}
 				}
 			}
-			*/
 			
 			dispatchEvent(new GridEvent(GridEvent.READY));
 		}
