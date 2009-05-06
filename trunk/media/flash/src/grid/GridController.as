@@ -32,10 +32,10 @@ package grid
 			issue.nb_square_y = 0;
 			issue.show_disable_square = 0;
 			issue.max_participation = 1;
-			issue.min_x = -1;
-			issue.max_x = 1;
-			issue.min_y = -1;
-			issue.max_y = 1;
+			issue.min_x = -2;
+			issue.max_x = 2;
+			issue.min_y = -2;
+			issue.max_y = 2;
 			issue.square_size = 800;
 			
 			_gridModel.init(issue.min_x, issue.min_y, issue.max_x, issue.max_y, issue.nb_square_x, issue.nb_square_y, issue.show_disable_square, issue.square_size);
@@ -46,42 +46,75 @@ package grid
 			// On envoit une requête en POST avec issue_id
 			// On reçoit des les squares correspondants
 			var sq1:Object = new Object();
-			sq1.pos_x = 0;
-			sq1.pos_y = 0;
-			sq1.background_image_path = 'jeanjack/209320372038';
+			sq1.pos_x = -1;
+			sq1.pos_y = -1;
+			sq1.background_image_path = 'exempleIssue/1_1';
 			sq1.status = 1;
 			
 			var sq2:Object = new Object();
-			sq2.pos_x = 1;
-			sq2.pos_y = 0;
-			sq2.background_image_path = 'jeanjack/209320372038';
+			sq2.pos_x = 0;
+			sq2.pos_y = -1;
+			sq2.background_image_path = 'exempleIssue/1_2';
 			sq2.status = 1;
 			
 			var sq3:Object = new Object();
 			sq3.pos_x = 1;
 			sq3.pos_y = -1;
-			sq3.background_image_path = null;
-			sq3.status = 0;
+			sq3.background_image_path = 'exempleIssue/1_3';
+			sq3.status = 1;
 			
 			var sq4:Object = new Object();
-			sq4.pos_x = 1;
-			sq4.pos_y = 1;
-			sq4.background_image_path = null;
-			sq4.status = 0;
+			sq4.pos_x = -1;
+			sq4.pos_y = 0;
+			sq4.background_image_path = 'exempleIssue/2_1';
+			sq4.status = 1;
+			
+			var sq5:Object = new Object();
+			sq5.pos_x = 0;
+			sq5.pos_y = 0;
+			sq5.background_image_path = 'exempleIssue/2_2';
+			sq5.status = 1;
+			
+			var sq6:Object = new Object();
+			sq6.pos_x = 1;
+			sq6.pos_y = 0;
+			sq6.background_image_path = 'exempleIssue/2_3';
+			sq6.status = 1;
+			
+			var sq7:Object = new Object();
+			sq7.pos_x = -1;
+			sq7.pos_y = 1;
+			sq7.background_image_path = 'exempleIssue/3_1';
+			sq7.status = 1;
+			
+			var sq8:Object = new Object();
+			sq8.pos_x = 0;
+			sq8.pos_y = 1;
+			sq8.background_image_path = 'exempleIssue/3_2';
+			sq8.status = 1;
+			
+			var sq9:Object = new Object();
+			sq9.pos_x = 1;
+			sq9.pos_y = 1;
+			sq9.background_image_path = 'exempleIssue/3_3';
+			sq9.status = 1;
+			
+			var sq10:Object = new Object();
+			sq10.pos_x = -2;
+			sq10.pos_y = 0;
+			sq10.background_image_path = null;
+			sq10.status = 0;
 			
 			var sqo1:Object = new Object();
-			sqo1.pos_x = -1;
-			sqo1.pos_y = -1;
+			sqo1.pos_x = -2;
+			sqo1.pos_y = -2;
 			
 			var sqo2:Object = new Object();
-			sqo2.pos_x = -1;
-			sqo2.pos_y = 0;
+			sqo2.pos_x = 2;
+			sqo2.pos_y = 2;
 			
-			var sqo3:Object = new Object();
-			sqo3.pos_x = -1;
-			sqo3.pos_y = 1;
 			
-			_gridModel.initSquares(new Array(sq1, sq2, sq3, sq4), new Array(sqo1, sqo2, sqo3));
+			_gridModel.initSquares(new Array(sq1, sq2, sq3, sq4, sq5, sq6, sq7, sq8, sq9, sq10), new Array(sqo1, sqo2));
 		}
 		
 		public function defineScale(stageHeight:int, stageWidth:int, stagePadding:int):Array
