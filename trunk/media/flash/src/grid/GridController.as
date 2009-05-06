@@ -48,55 +48,55 @@ package grid
 			var sq1:Object = new Object();
 			sq1.pos_x = -1;
 			sq1.pos_y = -1;
-			sq1.background_image_path = 'exempleIssue/1_1';
+			sq1.background_image_path = '1_1';
 			sq1.status = 1;
 			
 			var sq2:Object = new Object();
 			sq2.pos_x = 0;
 			sq2.pos_y = -1;
-			sq2.background_image_path = 'exempleIssue/1_2';
+			sq2.background_image_path = '1_2';
 			sq2.status = 1;
 			
 			var sq3:Object = new Object();
 			sq3.pos_x = 1;
 			sq3.pos_y = -1;
-			sq3.background_image_path = 'exempleIssue/1_3';
+			sq3.background_image_path = '1_3';
 			sq3.status = 1;
 			
 			var sq4:Object = new Object();
 			sq4.pos_x = -1;
 			sq4.pos_y = 0;
-			sq4.background_image_path = 'exempleIssue/2_1';
+			sq4.background_image_path = '2_1';
 			sq4.status = 1;
 			
 			var sq5:Object = new Object();
 			sq5.pos_x = 0;
 			sq5.pos_y = 0;
-			sq5.background_image_path = 'exempleIssue/2_2';
+			sq5.background_image_path = '2_2';
 			sq5.status = 1;
 			
 			var sq6:Object = new Object();
 			sq6.pos_x = 1;
 			sq6.pos_y = 0;
-			sq6.background_image_path = 'exempleIssue/2_3';
+			sq6.background_image_path = '2_3';
 			sq6.status = 1;
 			
 			var sq7:Object = new Object();
 			sq7.pos_x = -1;
 			sq7.pos_y = 1;
-			sq7.background_image_path = 'exempleIssue/3_1';
+			sq7.background_image_path = '3_1';
 			sq7.status = 1;
 			
 			var sq8:Object = new Object();
 			sq8.pos_x = 0;
 			sq8.pos_y = 1;
-			sq8.background_image_path = 'exempleIssue/3_2';
+			sq8.background_image_path = '3_2';
 			sq8.status = 1;
 			
 			var sq9:Object = new Object();
 			sq9.pos_x = 1;
 			sq9.pos_y = 1;
-			sq9.background_image_path = 'exempleIssue/3_3';
+			sq9.background_image_path = '3_3';
 			sq9.status = 1;
 			
 			var sq10:Object = new Object();
