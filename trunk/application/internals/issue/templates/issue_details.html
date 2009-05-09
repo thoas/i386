@@ -1,6 +1,8 @@
 {% extends "base_issue.html" %}
 
 {% load i18n %}
+{% load smart_if %}
+{% load captureas %}
 {% block head_title %}{{ issue.title }} {% endblock %}
 
 {% block body %}
@@ -8,7 +10,14 @@
     {% for i in nb_case_x %}
     <tr>
         {% for j in nb_case_y %}
-        <td>{{ i }} ; {{ j }}</td>
+        {% captureas coord %}({{ i }}, {{ j }}){% endcaptureas %}
+        <td>
+            {% if coord in t_squares_open %}
+            <a href="{% url square_book pos_x=i pos_y=j issue_slug=issue.slug %}">{{ coord }}</a>
+            {% else %}
+                {{ coord }}
+            {% endif %}
+        </td>
         {% endfor %}
     </tr>
     {% endfor %}
