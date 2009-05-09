@@ -35,6 +35,7 @@ try:
         'debug_toolbar.panels.sql.SQLDebugPanel',
         'debug_toolbar.panels.logger.LoggingPanel',
     )
+    
 	
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False
