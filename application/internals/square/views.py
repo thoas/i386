@@ -1,8 +1,8 @@
-import random
 import StringIO
 
 from PIL import Image
-from square.models import Square, SquareOpen
+from square.models import Square, SquareOpen, ParticipateSquare
+from issue.models import Issue
 from datetime import datetime
 from square.constance import *
 
@@ -14,14 +14,20 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
 @login_required
-def book(request, pos_x, pos_y):
-    INK = "red", "blue", "green", "yellow", 'black'
-    image = Image.new("RGB", (1200, 1200), random.choice(INK))
+def book(request, pos_x, pos_y, issue_slug):
+    image = Image.new("RGB", (1200, 1200), 'black')
     response = HttpResponse(mimetype="image/png")
-    square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y)
-    neighbors_key = square.neighbors()
-    neighbors = Square.objects.neighbors(square)
+    issue = get_object_or_404(Issue, slug=issue_slug)
+    print issue
+    square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y)
+    neighbors_key = square_open.neighbors()
+    neighbors = Square.objects.neighbors(square_open)
     
+    # creation d'un square
+    square = Square.objects.create(pos_x=square_open.pos_x, pos_y=square_open.pos_y,\
+                status=0, issue=issue)
+    participate_square = ParticipateSquare.objects.create(square=square, user=request.user)
+    square_open.delete()
     for neighbor in neighbors:
         index = neighbors_key[neighbor.coord]
         im = Image.open(neighbor.background_image_path.path)
