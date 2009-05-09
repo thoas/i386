@@ -11,6 +11,7 @@ from issue.models import Issue, ParticipateIssue
 def issues(request, template_name='issues.html'):
     """docstring for issues"""
     return render_to_response(template_name, {
+        'issues': Issue.objects.all()
     }, context_instance=RequestContext(request))
 
 @login_required
