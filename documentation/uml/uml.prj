@@ -204,7 +204,7 @@ format 66
 	    classrelation_ref 130818 // <association>
 	  b role_name "" private
 	    classrelation_ref 130946 // <association>
-	  association_type class_ref 134146 // ParticipateSquare
+	  association_explicit_type "ParticipateSquare"
       end
 
       classrelation 131330 // <composition>
@@ -563,6 +563,33 @@ format 66
 	  a public
 	    classrelation_ref 139906 // <generalisation>
 	  b parent class_ref 135298 // AbstractSquare
+      end
+
+      attribute 148482 "user_id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 148610 "square_parent"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 148738 "template_name"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
       end
     end
 
@@ -1007,52 +1034,6 @@ format 66
 	  a public
 	    classrelation_ref 139778 // <generalisation>
 	  b parent class_ref 135298 // AbstractSquare
-      end
-    end
-
-    class 134146 "ParticipateSquare"
-      visibility package 
-      cpp_decl ""
-      java_decl ""
-      php_decl ""
-      python_2_2 python_decl ""
-      idl_decl ""
-      explicit_switch_type ""
-      
-      attribute 143362 "id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 143490 "user_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 143618 "square_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 148354 "template_name"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
       end
     end
 

@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load smart_if %}
 {% load captureas %}
+{% load dict_get %}
 {% block head_title %}{{ issue.title }} {% endblock %}
 
 {% block body %}
@@ -15,7 +16,16 @@
             {% if coord in t_squares_open %}
             <a href="{% url square_book pos_x=i pos_y=j issue_slug=issue.slug %}">{{ coord }}</a>
             {% else %}
-                {{ coord }}
+                {% if coord in t_squares %}
+                    {% with t_squares|get:coord as square %}
+                        {% if square.user == user %}
+                            {{ user }}
+                        {% endif %}
+                    {{ coord }}
+                    {% endwith %}
+                {% else %}
+                    {{ coord }}
+                {% endif %}
             {% endif %}
         </td>
         {% endfor %}

@@ -12,10 +12,10 @@
             {% for participation in participations %}
                 <tr>
                     <td>
-                        <a href="{% url square_template participation.template_name %}">{{ participation.square }}</a>&nbsp;
+                        <a href="{% url square_template participation.template_name %}">{{ participation }}</a>&nbsp;
                     </td>
                     <td>
-                        <a href="{% url square_release participation.square.pos_x participation.square.pos_y issue.slug %}">{% trans "release" %}</a>
+                        <a href="{% url square_release participation.pos_x participation.pos_y issue.slug %}">{% trans "release" %}</a>
                     </td>
                 </tr>
             {% endfor %}

@@ -160,10 +160,11 @@ def language_change(request, form_class=ChangeLanguageForm,
 def invitations(request, confirmation_key='', form_class=InvitationForm,
         template_name="invitations.html"):
     
-    remain_invitation = Invitation.objects.remain_invitation(request.user)
-    users_invited = Invitation.objects.users_invited(request.user)
-    unused_invitations = list(Invitation.objects.unused_invitations(request.user))
-    sent_invitations = Invitation.objects.sent_invitations(request.user)
+    user = request.user
+    remain_invitation = user.get_profile().remain_invitation()
+    users_invited = user.get_profile().users_invited()
+    unused_invitations = list(user.get_profile().unused_invitations())
+    sent_invitations = user.get_profile().sent_invitations()
     
     form = form_class()
     

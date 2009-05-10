@@ -4,11 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.db.models.signals import post_save
 
-from square.models import ParticipateSquare
-
 class Profile(models.Model):
 
-    user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
+    user = models.ForeignKey(User, unique=True, verbose_name=_('user'), related_name=_('profile'))
     name = models.CharField(_('name'), max_length=50, null=True, blank=True)
     about = models.TextField(_('about'), null=True, blank=True)
     location = models.CharField(_('location'), max_length=40, 
@@ -23,15 +21,40 @@ class Profile(models.Model):
     
     def __unicode__(self):
         return self.user.username
-    
+
     @models.permalink
     def get_absolute_url(self):
         return ('profile_detail', None, {'username': self.user.username})
-        
+
+    def remain_invitation(self):
+        """docstring for remain_invitation"""
+        if self.user.participations.filter(status=1).count() < 1:
+            return 0
+        return self.nb_invitation - self.user.invitations.count()
+
+    def unused_invitations(self):
+        """docstring for unused_invitation"""
+        return self.user.invitations.filter(email__isnull=True)
+
+    def sent_invitations(self):
+        """docstring for sent_invitations"""
+        return self.user.invitations.filter(email__isnull=False, date_burned__isnull=True)
+
+    def users_invited(self):
+        """docstring for sent_invitations"""
+        return self.user.invitations.filter(date_burned__isnull=False)\
+                    .select_related('user_created')
+
     def participations_by_issues(self):
-        """docstring for participations"""
-        return ParticipateSquare.objects.participations_by_issues(self.user)
-    
+        participations = self.user.participations.all()
+        participations_by_issues = {}
+        for participation in participations:
+            issue = participation.issue
+            if not participations_by_issues.has_key(issue):
+                participations_by_issues[issue] = []
+            participations_by_issues[issue].append(participation)
+        return participations_by_issues
+
     class Meta:
         verbose_name = _('profile')
         verbose_name_plural = _('profiles')

@@ -20,7 +20,7 @@ def issue(request, slug, template_name='issue_details.html'):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
     squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
-    squares = Square.objects.filter(issue=issue)
+    squares = Square.objects.select_related().filter(issue=issue)
     
     t_squares_open = dict((square_open.coord, square_open) for square_open in squares_open)
     t_squares = dict((square.coord, square) for square in squares)

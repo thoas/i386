@@ -13,8 +13,7 @@ from timezones.fields import TimeZoneField
 
 class Account(models.Model):
     
-    user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
-    
+    user = models.ForeignKey(User, unique=True, verbose_name=_('user'), related_name=_('account'))
     timezone = TimeZoneField(_('timezone'))
     language = models.CharField(_('language'), max_length=10, choices=settings.LANGUAGES, default=settings.LANGUAGE_CODE)
     
@@ -42,22 +41,7 @@ class AnonymousAccount(object):
 
 class InvitationManager(models.Manager):
     """manager for Invitation model"""
-    def remain_invitation(self, user):
-        """docstring for remain_invitation"""
-        return user.get_profile().nb_invitation - self.filter(user=user).count()
-    
-    def unused_invitations(self, user):
-        """docstring for unused_invitation"""
-        return self.filter(user=user, email__isnull=True)
-    
-    def sent_invitations(self, user):
-        """docstring for sent_invitations"""
-        return self.filter(user=user, email__isnull=False, date_burned__isnull=True)
-        
-    def users_invited(self, user):
-        """docstring for sent_invitations"""
-        return self.filter(user=user, date_burned__isnull=False).select_related('user_created')
-        
+
     def send_invitation(self, invitation_instance, user_instance=None, user_profile=None, current_site=None):
         from emailconfirmation.utils import get_send_mail
         send_mail = get_send_mail()
@@ -99,8 +83,8 @@ class Invitation(models.Model):
     content = models.TextField(_('content'), blank=True, null=True)
     date_sent = models.DateField(_('date_sent'), auto_now_add=True, blank=True, null=True)
     date_burned = models.DateField(_('date_burned'), null=True, blank=True)
-    user = models.ForeignKey(User, verbose_name=_('user'), related_name=_('user'))
-    user_created = models.ForeignKey(User, verbose_name=_('user_created'), related_name=_('user_created'), blank=True, null=True)
+    user = models.ForeignKey(User, verbose_name=_('user'), related_name=_('invitations'))
+    user_created = models.ForeignKey(User, verbose_name=_('user_created'), related_name=_('invitations_created'), blank=True, null=True)
 
     objects = InvitationManager()
     def save(self, force_insert=False, force_update=False):
