@@ -4,6 +4,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.db.models.signals import post_save
 
+from square.models import ParticipateSquare
+
 class Profile(models.Model):
 
     user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
@@ -22,9 +24,13 @@ class Profile(models.Model):
     def __unicode__(self):
         return self.user.username
     
+    @models.permalink
     def get_absolute_url(self):
         return ('profile_detail', None, {'username': self.user.username})
-    get_absolute_url = models.permalink(get_absolute_url)
+        
+    def participations_by_issues(self):
+        """docstring for participations"""
+        return ParticipateSquare.objects.participations_by_issues(self.user)
     
     class Meta:
         verbose_name = _('profile')

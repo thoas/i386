@@ -102,6 +102,8 @@ INSTALLED_APPS = (
     'ajax_validation',
     
     # internal (for now)
+    'square',
+    'issue',
     'profiles',
     'account',
     'misc',
@@ -109,8 +111,6 @@ INSTALLED_APPS = (
     'about',
     'survey',
     'django.contrib.admin',
-    'square',
-    'issue',
     'exchange',
 )
 
@@ -140,14 +140,21 @@ LOGIN_REDIRECT_URLNAME = 'what_next'
 # File
 FILE_UPLOAD_MAX_MEMORY_SIZE = 8621440 # 8.5 MB
 FILE_UPLOAD_TEMP_DIR = os.path.join(PROJECT_ROOT, 'tmp')
+
 UPLOAD_DIR = 'upload'
 UPLOAD_ROOT = os.path.join(MEDIA_ROOT, UPLOAD_DIR)
 UPLOAD_HD_ROOT = os.path.join(UPLOAD_ROOT, 'hd')
-UPLOAD_TEMPLATE_ROOT = os.path.join(UPLOAD_ROOT, 'template')
+
+TEMPLATE_DIR = 'template'
+
+TEMPLATE_ROOT = os.path.join(MEDIA_ROOT, TEMPLATE_DIR)
+
+UPLOAD_TEMPLATE_ROOT = os.path.join(UPLOAD_ROOT, TEMPLATE_DIR)
 THUMB_ROOT = os.path.join(UPLOAD_ROOT, 'thumb')
 
 # Default values
 DEFAULT_NB_INVITATION = 1
+DEFAULT_IS_STANDBY = False
 DEFAULT_MAX_PARTICIPATION = 5
 DEFAULT_SIZE = 800
 DEFAULT_MARGIN = 200

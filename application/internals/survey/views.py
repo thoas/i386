@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.core.urlresolvers import reverse
 
 from survey.forms import EnqueteForm
 

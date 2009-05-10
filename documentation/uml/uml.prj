@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 17
+  revision 18
   modified_by 2 "thoas"
 
 
@@ -191,7 +191,7 @@ format 66
 	    classrelation_ref 129794 // <association>
 	  b role_name "" private
 	    classrelation_ref 129922 // <association>
-	  association_type class_ref 129154 // ParticipateIssue
+	  association_explicit_type "ParticipateIssue"
       end
 
       classrelation 130690 // <composition>
@@ -959,43 +959,6 @@ format 66
       end
     end
 
-    class 129154 "ParticipateIssue"
-      visibility package 
-      cpp_decl ""
-      java_decl ""
-      php_decl ""
-      python_2_2 python_decl ""
-      idl_decl ""
-      explicit_switch_type ""
-      
-      attribute 134018 "id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 134146 "user_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-
-      attribute 134274 "issue_id"
-	private explicit_type ""
-	cpp_decl ""
-	java_decl ""
-	php_decl ""
-	python_decl ""
-	idl_decl ""
-      end
-    end
-
     class 132866 "SquareOpen"
       visibility package 
       cpp_decl ""
@@ -1075,6 +1038,15 @@ format 66
       end
 
       attribute 143618 "square_id"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 148354 "template_name"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
