@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
-from issue.models import Issue, ParticipateIssue
+from issue.models import Issue
 from square.models import Square, SquareOpen
 
 @login_required
@@ -19,8 +19,8 @@ def issues(request, template_name='issues.html'):
 def issue(request, slug, template_name='issue_details.html'):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
-    squares_open = SquareOpen.objects.all()
-    squares = Square.objects.all()
+    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
+    squares = Square.objects.filter(issue=issue)
     
     t_squares_open = dict((square_open.coord, square_open) for square_open in squares_open)
     t_squares = dict((square.coord, square) for square in squares)

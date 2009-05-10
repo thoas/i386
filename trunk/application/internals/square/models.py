@@ -19,7 +19,12 @@ class SquareManager(AbstractSquareManager):
     pass
 
 class SquareOpenManager(AbstractSquareManager):
-    pass
+    def neighbors_standby(self, square, is_standby=0):
+        """docstring for neighbors_standby"""
+        neighbors = square.neighbors().keys()
+        neighbors.append(square.coord)
+        return self.extra(where=['coord IN %s' % str(tuple(neighbors))])\
+            .update(is_standby=is_standby)
 
 class AbstractSquare(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
@@ -57,8 +62,39 @@ class Square(AbstractSquare):
 
 class SquareOpen(AbstractSquare):
     date_created = models.DateField(_('date_created'), auto_now_add=True)
-    objects = SquareOpenManager()
     
+    # 0 : can be booked ; 1 : a square has been booked next to
+    is_standby = models.BooleanField(_('is_standby'), default=settings.DEFAULT_IS_STANDBY)
+    objects = SquareOpenManager()
+
+class ParticipateSquareManager(models.Manager):
+    """docstring for ParticipateSquareManager"""
+    def participations_by_issues(self, user=None):
+        participations = self.select_related().filter(user=user)\
+                            if not user is None else self.select_related()
+        participations_by_issues = {}
+        for participation in participations:
+            issue = participation.square.issue
+            if not participations_by_issues.has_key(issue):
+                participations_by_issues[issue] = []
+            participations_by_issues[issue].append(participation)
+        return participations_by_issues
+
 class ParticipateSquare(models.Model):
     user = models.ForeignKey(User, verbose_name=_('user'))
     square = models.ForeignKey(Square, verbose_name=_('square'))
+    template_name = models.CharField(_('template_name'), max_length=150, blank=True, null=True)
+    
+    def template_path(self):
+        """docstring for template_path"""
+        from os.path import join
+        return join(settings.TEMPLATE_ROOT, self.template_name)
+    
+    def delete(self):
+        """docstring for delete"""
+        from os import unlink
+        template_path = self.template_path()
+        if exists(template_path):
+            unlink(template_path)
+        super(ParticipateSquare, self).delete()
+    objects = ParticipateSquareManager()
