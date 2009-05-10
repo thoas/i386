@@ -3,7 +3,7 @@ import StringIO
 from os import unlink
 from os.path import join, exists
 from PIL import Image
-from square.models import Square, SquareOpen, ParticipateSquare
+from square.models import Square, SquareOpen
 from issue.models import Issue
 from datetime import datetime
 from square.constance import *
@@ -29,8 +29,6 @@ def book(request, pos_x, pos_y, issue_slug):
     neighbors = Square.objects.neighbors(square_open)
     
     # creation d'un square
-    square = Square.objects.create(pos_x=square_open.pos_x, pos_y=square_open.pos_y,\
-                status=0, issue=issue)
     for neighbor in neighbors:
         index = neighbors_key[neighbor.coord]
         im = Image.open(neighbor.background_image_path.path)
@@ -41,14 +39,14 @@ def book(request, pos_x, pos_y, issue_slug):
 
     now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
     template_name = '%s__x%s_y%s__%s__template.tif' % (request.user.username, pos_x, pos_y, now)    
-    participate_square = ParticipateSquare.objects.create(square=square,\
-                            user=request.user, template_name=template_name)
+    square = Square.objects.create(pos_x=square_open.pos_x, pos_y=square_open.pos_y,\
+                status=0, issue=issue, user=request.user, template_name=template_name)
 
-    SquareOpen.objects.neighbors_standby(square_open, 1);
+    SquareOpen.objects.neighbors_standby(square_open, True);
 
     buffer = StringIO.StringIO()
     image.save(buffer, format=FORMAT_IMAGE, quality=90)
-    image.save(participate_square.template_path(), format=FORMAT_IMAGE, quality=90)
+    image.save(square.template_path(), format=FORMAT_IMAGE, quality=90)
     
     response = HttpResponse(mimetype=MIMETYPE_IMAGE)
     response['Content-Disposition'] = 'attachment; filename=%s' % template_name
@@ -81,8 +79,8 @@ def release(request, pos_x, pos_y, issue_slug):
     square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue=issue)
     square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue=issue)
 
-    SquareOpen.objects.neighbors_standby(square_open, 0);
+    SquareOpen.objects.neighbors_standby(square_open, False);
     
     square.delete()
-    return HttpResponseRedirect(reverse('templates'))
+    return HttpResponseRedirect(reverse('square_templates'))
     

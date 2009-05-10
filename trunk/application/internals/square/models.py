@@ -19,17 +19,20 @@ class SquareManager(AbstractSquareManager):
     pass
 
 class SquareOpenManager(AbstractSquareManager):
-    def neighbors_standby(self, square, is_standby=0):
+    def neighbors_standby(self, square, is_standby=False):
         """docstring for neighbors_standby"""
         neighbors = square.neighbors().keys()
-        neighbors.append(square.coord)
-        return self.extra(where=['coord IN %s' % str(tuple(neighbors))])\
-            .update(is_standby=is_standby)
+        neighbors.append(str(square.coord))
+        from django.db import connection, transaction
+        cursor = connection.cursor()
+        cursor.execute("UPDATE square_squareopen SET is_standby = %d WHERE coord IN %s"
+                            % (int(is_standby), str(tuple(neighbors))))
+        transaction.commit_unless_managed()
 
 class AbstractSquare(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
     pos_y = models.IntegerField(_('pos_y'))
-    coord = models.CharField(_('coord'), max_length=20, unique=True)
+    coord = models.CharField(_('coord'), max_length=20, unique=True, blank=True)
     issue = models.ForeignKey(Issue, verbose_name=_('issue'))
 
     class Meta:
@@ -54,11 +57,30 @@ class Square(AbstractSquare):
     # 1 : full | 0 : booked
     status = models.BooleanField(_('status'))
     
+    user = models.ForeignKey(User, verbose_name=_('user'), related_name=_('participations'))
+    square_parent = models.ForeignKey('Square', verbose_name=_('square_parent'),\
+                        related_name=_('squares_child'), blank=True, null=True)
+    template_name = models.CharField(_('template_name'), max_length=150, blank=True, null=True)
+    
     objects = SquareManager()
 
     def __unicode__(self):
         """docstring for __unicode__"""
         return self.coord
+
+    def template_path(self):
+        """docstring for template_path"""
+        from os.path import join
+        return join(settings.TEMPLATE_ROOT, self.template_name)
+
+    def delete(self):
+        """docstring for delete"""
+        from os import unlink
+        from os.path import exists
+        template_path = self.template_path()
+        if exists(template_path):
+            unlink(template_path)
+        super(Square, self).delete()
 
 class SquareOpen(AbstractSquare):
     date_created = models.DateField(_('date_created'), auto_now_add=True)
@@ -66,35 +88,3 @@ class SquareOpen(AbstractSquare):
     # 0 : can be booked ; 1 : a square has been booked next to
     is_standby = models.BooleanField(_('is_standby'), default=settings.DEFAULT_IS_STANDBY)
     objects = SquareOpenManager()
-
-class ParticipateSquareManager(models.Manager):
-    """docstring for ParticipateSquareManager"""
-    def participations_by_issues(self, user=None):
-        participations = self.select_related().filter(user=user)\
-                            if not user is None else self.select_related()
-        participations_by_issues = {}
-        for participation in participations:
-            issue = participation.square.issue
-            if not participations_by_issues.has_key(issue):
-                participations_by_issues[issue] = []
-            participations_by_issues[issue].append(participation)
-        return participations_by_issues
-
-class ParticipateSquare(models.Model):
-    user = models.ForeignKey(User, verbose_name=_('user'))
-    square = models.ForeignKey(Square, verbose_name=_('square'))
-    template_name = models.CharField(_('template_name'), max_length=150, blank=True, null=True)
-    
-    def template_path(self):
-        """docstring for template_path"""
-        from os.path import join
-        return join(settings.TEMPLATE_ROOT, self.template_name)
-    
-    def delete(self):
-        """docstring for delete"""
-        from os import unlink
-        template_path = self.template_path()
-        if exists(template_path):
-            unlink(template_path)
-        super(ParticipateSquare, self).delete()
-    objects = ParticipateSquareManager()
