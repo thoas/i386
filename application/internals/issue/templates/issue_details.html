@@ -19,9 +19,12 @@
                 {% if coord in t_squares %}
                     {% with t_squares|get:coord as square %}
                         {% if square.user == user %}
-                            {{ user }}
+                            <a href="{% url square_fill pos_x=i pos_y=j issue_slug=issue.slug %}">
+                                <span class="verified">{{ coord }}</span>
+                            </a>
+                        {% else %}
+                            {{ coord }}
                         {% endif %}
-                    {{ coord }}
                     {% endwith %}
                 {% else %}
                     {{ coord }}
