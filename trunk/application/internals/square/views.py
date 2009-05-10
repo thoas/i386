@@ -83,4 +83,7 @@ def release(request, pos_x, pos_y, issue_slug):
     
     square.delete()
     return HttpResponseRedirect(reverse('square_templates'))
-    
+
+@login_required
+def fill(request, pos_x, pos_y, issue_slug):
+    pass
