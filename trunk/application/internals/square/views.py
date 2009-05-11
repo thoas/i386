@@ -75,9 +75,8 @@ def template(request, template_name):
 @login_required
 def release(request, pos_x, pos_y, issue_slug):
     """docstring for release"""
-    issue = get_object_or_404(Issue, slug=issue_slug)
-    square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue=issue)
-    square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue=issue)
+    square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
+    square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
 
     SquareOpen.objects.neighbors_standby(square_open, False);
     

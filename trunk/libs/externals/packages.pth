@@ -4,7 +4,7 @@ feedparser-4.1
 geopy-trunk
 markdown-1.7
 misc
-python-openid-2.1.1
+pygments
 python-yadis-1.1.0
 pytz-2008b
 simplejson-1.9.1
