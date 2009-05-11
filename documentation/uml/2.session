@@ -6,7 +6,7 @@ diagrams
     1351 873 120 4 583 0
 end
 show_stereotypes
-selected classrelation_ref 139650 // <directional composition>
+selected attribute_ref 148738 // template_name
 open
   attribute_ref 144002 // about
   attribute_ref 129282 // website
@@ -18,9 +18,7 @@ open
   class_ref 128642 // Contact
   class_ref 128770 // ExchangeTopic
   class_ref 128898 // ExchangePost
-  class_ref 129154 // ParticipateIssue
   class_ref 132866 // SquareOpen
-  class_ref 134146 // ParticipateSquare
   class_ref 135298 // AbstractSquare
   usecaseview_ref 128002 // cases
 end

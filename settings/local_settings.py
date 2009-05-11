@@ -40,7 +40,6 @@ try:
     DEBUG_TOOLBAR_CONFIG = {
         #'INTERCEPT_REDIRECTS': False
     }
-
     
     MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES)
     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
