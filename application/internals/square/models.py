@@ -38,6 +38,9 @@ class AbstractSquare(models.Model):
 
     def save(self, force_insert=False, force_update=False):
         self.coord = str((self.pos_x, self.pos_y))
+        if self.status:
+            from datetime import datetime
+            self.date_finished = datetime.now()
         super(AbstractSquare, self).save(force_insert, force_update)
 
     def neighbors(self):

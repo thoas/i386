@@ -60,18 +60,11 @@ def fill(request, issue, square_open):
                 pos_y=square_open.pos_y, issue=issue)
     if request.method == 'POST':
         datas = request.POST.copy()
-        values = dict({
-            'pos_x': square_open.pos_x, 
-            'pos_y': square_open.pos_y 
-        })
-        #for key, value in values:
-            #datas.appendlist(key, value) 
-        print request.POST
-        form = SquareForm(request.POST, request.FILES)
+        form = SquareForm(request.POST, request.FILES, square)
         if form.is_valid():
             pass
     else:
-        form = SquareForm()
+        form = SquareForm(square)
     return render_to_response('fill.html', {
         'square': square,
         'issue': issue,
