@@ -2,11 +2,12 @@
 
 {% load i18n %}
 
+{% block head_title %}{% trans "Issues" %}{% endblock %}
 {% block body %}
 {% autoescape off %}
 {% for issue in issues %}
-	<h1><a href="{{ issue.get_absolute_url }}" title="{{ issue.title }}">{{ issue.title }}</a></h1>
-	<p>{{ issue.text_presentation }}</p>
+    <h1><a href="{{ issue.get_absolute_url }}" title="{{ issue.title }}">{{ issue.title }}</a></h1>
+    <p>{{ issue.text_presentation }}</p>
 {% endfor %}
 {% endautoescape %}
 {% endblock %}

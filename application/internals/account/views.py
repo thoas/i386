@@ -15,16 +15,16 @@ from account.forms import SignupForm, AddEmailForm, LoginForm, \
         ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
-def login(request, form_class=LoginForm, template_name="login.html"):
-    if request.method == "POST":
-        default_redirect_to = getattr(settings, "LOGIN_REDIRECT_URLNAME", None) 
+def login(request, form_class=LoginForm, template_name='login.html'):
+    if request.method == 'POST':
+        default_redirect_to = getattr(settings, 'LOGIN_REDIRECT_URLNAME', None) 
         if default_redirect_to:
             default_redirect_to = reverse(default_redirect_to)
         else:
             default_redirect_to = settings.LOGIN_REDIRECT_URL
-        redirect_to = request.REQUEST.get("next")
+        redirect_to = request.REQUEST.get('next')
         # light security check -- make sure redirect_to isn't garabage.
-        if not redirect_to or "://" in redirect_to or " " in redirect_to:
+        if not redirect_to or '://' in redirect_to or ' ' in redirect_to:
             redirect_to = default_redirect_to
         form = form_class(request.POST)
         if form.login(request):
@@ -32,20 +32,20 @@ def login(request, form_class=LoginForm, template_name="login.html"):
     else:
         form = form_class()
     return render_to_response(template_name, {
-        "form": form,
+        'form': form,
     }, context_instance=RequestContext(request))
 
 def signup(request, confirmation_key='', form_class=SignupForm,
-        template_name="signup.html", success_url=None):
+        template_name='signup.html', success_url=None):
     if success_url is None:
-        success_url = reverse("what_next")
-    if request.method == "POST":
+        success_url = reverse('what_next')
+    if request.method == 'POST':
         form = form_class(request.POST)
         if form.is_valid():
             username, password = form.save()
             user = authenticate(username=username, password=password)
             auth_login(request, user)
-            request.user.message_set.create(message=_("Successfully logged in as %(username)s.") 
+            request.user.message_set.create(message=_('Successfully logged in as %(username)s.') 
                 % {'username': user.username})
             return HttpResponseRedirect(success_url)
     else:
@@ -57,67 +57,67 @@ def signup(request, confirmation_key='', form_class=SignupForm,
             pass
         form = form_class(initial=initial)
     return render_to_response(template_name, {
-        "form": form,
+        'form': form,
     }, context_instance=RequestContext(request))
 
 def password_reset(request, form_class=ResetPasswordForm,
-        template_name="password_reset.html",
-        template_name_done="account/password_reset_done.html"):
-    if request.method == "POST":
+        template_name='password_reset.html',
+        template_name_done='account/password_reset_done.html'):
+    if request.method == 'POST':
         password_reset_form = form_class(request.POST)
         if password_reset_form.is_valid():
             email = password_reset_form.save()
             return render_to_response(template_name_done, {
-                "email": email,
+                'email': email,
             }, context_instance=RequestContext(request))
     else:
         password_reset_form = form_class()
 
     return render_to_response(template_name, {
-        "password_reset_form": password_reset_form,
+        'password_reset_form': password_reset_form,
     }, context_instance=RequestContext(request))
 
 @login_required
 def email(request, form_class=AddEmailForm,
-        template_name="email.html"):
-    if request.method == "POST" and request.user.is_authenticated():
-        if request.POST["action"] == "add":
+        template_name='email.html'):
+    if request.method == 'POST' and request.user.is_authenticated():
+        if request.POST['action'] == 'add':
             add_email_form = form_class(request.user, request.POST)
             if add_email_form.is_valid():
                 add_email_form.save()
                 add_email_form = form_class() # @@@
         else:
             add_email_form = form_class()
-            if request.POST["action"] == "send":
-                email = request.POST["email"]
+            if request.POST['action'] == 'send':
+                email = request.POST['email']
                 try:
                     email_address = EmailAddress.objects.get(user=request.user, email=email)
-                    request.user.message_set.create(message=_("Confirmation email sent to %s") % email)
+                    request.user.message_set.create(message=_('Confirmation email sent to %s') % email)
                     EmailConfirmation.objects.send_confirmation(email_address)
                 except EmailAddress.DoesNotExist:
                     pass
-            elif request.POST["action"] == "remove":
-                email = request.POST["email"]
+            elif request.POST['action'] == 'remove':
+                email = request.POST['email']
                 try:
                     email_address = EmailAddress.objects.get(user=request.user, email=email)
                     email_address.delete()
-                    request.user.message_set.create(message=_("Removed email address %s") % email)
+                    request.user.message_set.create(message=_('Removed email address %s') % email)
                 except EmailAddress.DoesNotExist:
                     pass
-            elif request.POST["action"] == "primary":
-                email = request.POST["email"]
+            elif request.POST['action'] == 'primary':
+                email = request.POST['email']
                 email_address = EmailAddress.objects.get(user=request.user, email=email)
                 email_address.set_as_primary()
     else:
         add_email_form = form_class()
     return render_to_response(template_name, {
-        "add_email_form": add_email_form,
+        'add_email_form': add_email_form,
     }, context_instance=RequestContext(request))
 
 @login_required
 def password_change(request, form_class=ChangePasswordForm,
-        template_name="password_change.html"):
-    if request.method == "POST":
+        template_name='password_change.html'):
+    if request.method == 'POST':
         password_change_form = form_class(request.user, request.POST)
         if password_change_form.is_valid():
             password_change_form.save()
@@ -125,26 +125,26 @@ def password_change(request, form_class=ChangePasswordForm,
     else:
         password_change_form = form_class(request.user)
     return render_to_response(template_name, {
-        "password_change_form": password_change_form,
+        'password_change_form': password_change_form,
     }, context_instance=RequestContext(request))
 
 @login_required
 def timezone_change(request, form_class=ChangeTimezoneForm,
-        template_name="timezone_change.html"):
-    if request.method == "POST":
+        template_name='timezone_change.html'):
+    if request.method == 'POST':
         form = form_class(request.user, request.POST)
         if form.is_valid():
             form.save()
     else:
         form = form_class(request.user)
     return render_to_response(template_name, {
-        "form": form,
+        'form': form,
     }, context_instance=RequestContext(request))
 
 @login_required
 def language_change(request, form_class=ChangeLanguageForm,
-        template_name="language_change.html"):
-    if request.method == "POST":
+        template_name='language_change.html'):
+    if request.method == 'POST':
         form = form_class(request.user, request.POST)
         if form.is_valid():
             form.save()
@@ -153,12 +153,12 @@ def language_change(request, form_class=ChangeLanguageForm,
     else:
         form = form_class(request.user)
     return render_to_response(template_name, {
-        "form": form,
+        'form': form,
     }, context_instance=RequestContext(request))
 
 @login_required
 def invitations(request, confirmation_key='', form_class=InvitationForm,
-        template_name="invitations.html"):
+        template_name='invitations.html'):
     
     user = request.user
     remain_invitation = user.get_profile().remain_invitation()
@@ -169,7 +169,7 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
     form = form_class()
     
     from django.forms.fields import email_re
-    if request.method == "POST":
+    if request.method == 'POST':
         if request.POST['action'] == 'add':
             if remain_invitation > 0:
                 new_invitation = Invitation.objects.create(user=request.user, 
@@ -187,7 +187,7 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
                 if email_re.match(email):
                     try:
                         invitation = Invitation.objects.get(email=email)
-                        request.user.message_set.create(message=_("%s already exists in our database") % email)
+                        request.user.message_set.create(message=_('%s already exists in our database') % email)
                     except Invitation.DoesNotExist:
                         invitation = get_object_or_404(Invitation, 
                             confirmation_key=request.POST['confirmation_key_' + index])
@@ -201,9 +201,9 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
                         Invitation.objects.send_invitation(invitation, \
                             request.user, user_profile, current_site)
     return render_to_response(template_name, {
-        "form": form,
-        "remain_invitation": remain_invitation,
-        "sent_invitations": sent_invitations,
-        "unused_invitations": unused_invitations,
-        "users_invited": users_invited,
+        'form': form,
+        'remain_invitation': remain_invitation,
+        'sent_invitations': sent_invitations,
+        'unused_invitations': unused_invitations,
+        'users_invited': users_invited,
     }, context_instance=RequestContext(request))
