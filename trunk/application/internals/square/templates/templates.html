@@ -15,7 +15,7 @@
                         <a href="{% url square_template participation.template_name %}">{{ participation }}</a>&nbsp;
                     </td>
                     <td>
-                        <a href="{% url square_release participation.pos_x participation.pos_y issue.slug %}">{% trans "release" %}</a>
+                        <a href="{% url square action="release" pos_x=participation.pos_x pos_y=participation.pos_y issue_slug=issue.slug %}">{% trans "release" %}</a>
                     </td>
                 </tr>
             {% endfor %}

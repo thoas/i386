@@ -14,16 +14,16 @@
         {% captureas coord %}({{ i }}, {{ j }}){% endcaptureas %}
         <td>
             {% if coord in t_squares_open %}
-            <a href="{% url square_book pos_x=i pos_y=j issue_slug=issue.slug %}">{{ coord }}</a>
+            <a href="{% url square action="book" pos_x=i pos_y=j issue_slug=issue.slug %}">{{ coord }}</a>
             {% else %}
                 {% if coord in t_squares %}
                     {% with t_squares|get:coord as square %}
                         {% if square.user == user %}
-                            <a href="{% url square_fill pos_x=i pos_y=j issue_slug=issue.slug %}">
+                            <a href="{% url square action="fill" pos_x=i pos_y=j issue_slug=issue.slug %}">
                                 <span class="verified">{{ coord }}</span>
                             </a>
                         {% else %}
-                            {{ coord }}
+                            <span class="unverified">{{ coord }}</span>
                         {% endif %}
                     {% endwith %}
                 {% else %}

@@ -27,21 +27,17 @@ class Profile(models.Model):
         return ('profile_detail', None, {'username': self.user.username})
 
     def remain_invitation(self):
-        """docstring for remain_invitation"""
         if self.user.participations.filter(status=1).count() < 1:
             return 0
         return self.nb_invitation - self.user.invitations.count()
 
     def unused_invitations(self):
-        """docstring for unused_invitation"""
         return self.user.invitations.filter(email__isnull=True)
 
     def sent_invitations(self):
-        """docstring for sent_invitations"""
         return self.user.invitations.filter(email__isnull=False, date_burned__isnull=True)
 
     def users_invited(self):
-        """docstring for sent_invitations"""
         return self.user.invitations.filter(date_burned__isnull=False)\
                     .select_related('user_created')
 

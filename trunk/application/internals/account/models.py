@@ -28,7 +28,7 @@ def create_account(sender, instance=None, **kwargs):
 post_save.connect(create_account, sender=User)
 
 class InvitationManager(models.Manager):
-    """manager for Invitation model"""
+    '''manager for Invitation model'''
 
     def send_invitation(self, invitation_instance, user_instance=None, user_profile=None, current_site=None):
         from emailconfirmation.utils import get_send_mail
@@ -37,9 +37,9 @@ class InvitationManager(models.Manager):
         confirmation_key = invitation_instance.confirmation_key
         if current_site is None:
             current_site = Site.objects.get_current()
-        activate_url = u"http://%s%s" % (
+        activate_url = u'http://%s%s' % (
             unicode(current_site.domain),
-            reverse("acct_signup_key", args=(confirmation_key,))
+            reverse('acct_signup_key', args=(confirmation_key,))
         )
         if user_instance is None:
             user_instance = invitation.user
@@ -47,18 +47,18 @@ class InvitationManager(models.Manager):
         if user_profile is None:
             user_profile = user_instance.get_profile()
         context = {
-            "user": user_instance,
-            "user_profile": user_profile,
-            "invitation": invitation_instance,
-            "activate_url": activate_url,
-            "current_site": current_site,
-            "confirmation_key": confirmation_key
+            'user': user_instance,
+            'user_profile': user_profile,
+            'invitation': invitation_instance,
+            'activate_url': activate_url,
+            'current_site': current_site,
+            'confirmation_key': confirmation_key
         }
         
-        subject = render_to_string("email_invitation_subject.txt", context)
-        message = render_to_string("email_invitation_message.txt", context)
+        subject = render_to_string('email_invitation_subject.txt', context)
+        message = render_to_string('email_invitation_message.txt', context)
         try:
-            send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority="high")
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority='high')
         except socket.error, msg:
             print 'error (%s) for %s' % (msg, invitation_instance.email)
 
@@ -76,5 +76,5 @@ class Invitation(models.Model):
 
     objects = InvitationManager()
     def save(self, force_insert=False, force_update=False):
-        """override save"""
+        '''override save'''
         super(Invitation, self).save(force_insert, force_update)

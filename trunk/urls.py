@@ -9,7 +9,7 @@ admin.autodiscover()
 import os
 
 urlpatterns = patterns('',
-    url(r'^$', direct_to_template, {"template": "homepage.html"}, name="home"),
+    url(r'^$', direct_to_template, {'template': 'homepage.html'}, name='home'),
     (r'^about/', include('about.urls')),
     (r'^account/', include('account.urls')),
     (r'^issue/', include('issue.urls')),
@@ -24,5 +24,5 @@ urlpatterns = patterns('',
 if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-            {'document_root': os.path.join(os.path.dirname(__file__), "media")}),
+            {'document_root': os.path.join(os.path.dirname(__file__), 'media')}),
     )
