@@ -6,6 +6,8 @@ POS_X = [-1, -1, 0, 1, 1, 1, 0, -1]
 POS_Y = [0, 1, 1, 1, 0, -1, -1, -1]
 
 FORMAT_IMAGE = 'TIFF'
+DEFAULT_IMAGE_BACKGROUND_COLOR = 'white'
+DEFAULT_IMAGE_MODE = 'RGB'
 
 CROP_POS = (
     (0, 600, 800, 800), # h_c

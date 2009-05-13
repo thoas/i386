@@ -20,7 +20,7 @@ class AbstractSquareManager(models.Manager):
         super(AbstractSquareManager, self).__init__()
 
     def neighbors(self, square):
-        return self.extra(where=['coord IN %s' % str(tuple(square.neighbors().keys()))])\
+        return self.extra(where=['coord IN %s' % str(tuple(str(coord) for coord in square.neighbors().keys()))])\
             .filter(status=1).order_by('pos_x', 'pos_y')
 
 class SquareManager(AbstractSquareManager):
@@ -29,11 +29,13 @@ class SquareManager(AbstractSquareManager):
 class SquareOpenManager(AbstractSquareManager):
     def neighbors_standby(self, square, is_standby=False):
         neighbors = square.neighbors().keys()
-        neighbors.append(str(square.coord))
+        neighbors.append(tuple((square.pos_x, square.pos_y)))
+        
+        print neighbors
         from django.db import connection, transaction
         cursor = connection.cursor()
         cursor.execute("UPDATE square_squareopen SET is_standby = %d WHERE coord IN %s"
-                            % (int(is_standby), str(tuple(neighbors))))
+                            % (int(is_standby), str(tuple(str(neighbor) for neighbor in neighbors))))
         transaction.commit_unless_managed()
 
 class AbstractSquare(models.Model):
@@ -51,7 +53,7 @@ class AbstractSquare(models.Model):
 
     def neighbors(self):
         if not hasattr(self, 'square_neighbors'):
-            self.square_neighbors = dict((str((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
+            self.square_neighbors = dict((tuple((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
                 for i in range(LEN_POS))
         return self.square_neighbors
     
@@ -79,13 +81,14 @@ class Square(AbstractSquare):
     date_booked = models.DateField(_('date_booked'), blank=True, null=True)
     date_finished = models.DateField(_('date_finished'), blank=True, null=True)
     # 1 : full | 0 : booked
-    status = models.BooleanField(_('status'))
+    status = models.BooleanField(_('status'), default=False)
 
     user = models.ForeignKey(User, verbose_name=_('user'),\
                         related_name=_('participations'), blank=True, null=True)
     square_parent = models.ForeignKey('Square', verbose_name=_('square_parent'),\
                         related_name=_('squares_child'), blank=True, null=True)
-    template_name = models.CharField(_('template_name'), max_length=150, blank=True, null=True)
+    template_name = models.CharField(_('template_name'),\
+                        max_length=150, blank=True, null=True)
 
     objects = SquareManager()
     
@@ -93,36 +96,39 @@ class Square(AbstractSquare):
         self.date_booked = datetime.now()
     
         now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
-        self.template_name = '%s__x%s_y%s__%s__template.tif' %\
-                                (self.user.username, self.pos_x, self.pos_y, now)
+        self.template_name = '%s__x%s_y%s__%s__%s__template.tif' %\
+                                (self.user.username, self.pos_x, self.pos_y, self.issue.slug, now)
 
-        image = Image.new('RGB', (self.issue.size_with_double_margin,\
-                                    self.issue.size_with_double_margin), 'white')
+        image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size_with_double_margin,\
+                                    self.issue.size_with_double_margin), DEFAULT_IMAGE_BACKGROUND_COLOR)
 
-        neighbors_key = self.neighbors()
-        logging.info(neighbors_key)
+        neighbors_keys = self.neighbors()
+        logging.info(neighbors_keys)
 
         neighbors = Square.objects.neighbors(self)
         logging.info(neighbors)
 
         # square creation
         for neighbor in neighbors:
-            index = neighbors_key[neighbor.coord]
+            coord_tuple = tuple((neighbor.x, neighbor.y))
+            index = neighbors_keys[coord_tuple]
             im = Image.open(neighbor.background_image_path.path)
 
             logging.info('%s -> %s (%s)' %\
-                    (self.issue.crop_pos[index], self.issue.paste_pos[index], LITERAL[index]))
+                    (self.issue.crop_pos[index],\
+                        self.issue.paste_pos[index], LITERAL[index]))
+
             crop = im.crop(self.issue.crop_pos[index])
             image.paste(crop, self.issue.paste_pos[index])
-        
+
         # if square is already created
         if self.background_image_path:
             image_tmp_path = join(TEMPLATE_TMP_ROOT, self.background_image_path)
             if exists(image_tmp_path):
                 image_tmp = Image.open(image_tmp_path)
-                im.paste(image_tmp, self.issue.creation_position)
+                im.paste(image_tmp, self.issue.creation_position_crop)
             
-        image.save(self.template_path(), format=FORMAT_IMAGE, quality=90)
+        image.save(self.get_template_path(), format=FORMAT_IMAGE, quality=90)
         image.filename = self.template_name
         self.template = image
 
@@ -141,13 +147,19 @@ class Square(AbstractSquare):
         return Square.retrieve_template(self.template_name)\
                     if not hasattr(self, 'template') else self.template
 
-    def template_path(self):
+    def get_template_path(self):
         return join(settings.TEMPLATE_ROOT, self.template_name)
 
+    def get_template_full_path(self):
+        return join(settings.UPLOAD_TEMPLATE_ROOT, self.template_name)
+
     def delete(self):
-        template_path = self.template_path()
+        template_path = self.get_template_path()
         if exists(template_path):
             unlink(template_path)
+        template_full_path = self.get_template_full_path()
+        if exists(template_full_path):
+            unlink(template_full_path)
         super(Square, self).delete()
 
 class SquareOpen(AbstractSquare):
