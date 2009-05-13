@@ -1,9 +1,17 @@
+import StringIO
+
+from os import unlink
+from os.path import join, exists
+from PIL import Image
+from datetime import datetime
+
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-from issue.models import Issue
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+
+from issue.models import Issue
 from square.constance import *
 
 class AbstractSquareManager(models.Manager):
@@ -38,9 +46,6 @@ class AbstractSquare(models.Model):
 
     def save(self, force_insert=False, force_update=False):
         self.coord = str((self.pos_x, self.pos_y))
-        if self.status:
-            from datetime import datetime
-            self.date_finished = datetime.now()
         super(AbstractSquare, self).save(force_insert, force_update)
 
     def neighbors(self):
@@ -48,6 +53,21 @@ class AbstractSquare(models.Model):
             self.square_neighbors = dict((str((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
                 for i in range(LEN_POS))
         return self.square_neighbors
+    
+    @staticmethod
+    def retrieve_template(template_name):
+        template_path = join(settings.TEMPLATE_ROOT, template_name)
+        if not exists(template_path):
+            return False
+        template = Image.open(template_path)
+        template.filename = template_name
+        return template
+
+    @staticmethod
+    def buffer(template_image):
+        buffer = StringIO.StringIO()
+        template_image.save(buffer, format=FORMAT_IMAGE, quality=90)
+        return buffer
 
 class Square(AbstractSquare):
     background_image_path = models.ImageField(upload_to=settings.UPLOAD_DIR, blank=True, null=True)
@@ -62,17 +82,46 @@ class Square(AbstractSquare):
     template_name = models.CharField(_('template_name'), max_length=150, blank=True, null=True)
 
     objects = SquareManager()
+    
+    def save(self, force_insert=False, force_update=False):
+        if force_insert:
+            now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
+            self.template_name = '%s__x%s_y%s__%s__template.tif' %\
+                                    (self.user.username, self.pos_x, self.pos_y, now)
+
+            image = Image.new('RGB', (self.issue.size_with_double_margin,\
+                                        self.issue.size_with_double_margin), 'white')
+
+            neighbors_key = self.neighbors()
+            neighbors = Square.objects.neighbors(self)
+
+            # creation d'un square
+            for neighbor in neighbors:
+                index = neighbors_key[neighbor.coord]
+                im = Image.open(neighbor.background_image_path.path)
+
+                print '%s -> %s (%s)' % (self.issue.crop_pos[index], self.issue.paste_pos[index], LITERAL[index])
+                crop = im.crop(self.issue.crop_pos[index])
+                image.paste(crop, self.issue.paste_pos[index])
+
+            image.save(self.template_path(), format=FORMAT_IMAGE, quality=90)
+            image.filename = self.template_name
+            self.template = image
+        if self.status:
+            self.date_finished = datetime.now()
+        super(Square, self).save(force_insert, force_update)
 
     def __unicode__(self):
         return self.coord
 
+    def get_template(self):
+        return Square.objects.retrieve_template(self.template_name)\
+                    if not self.template else self.template
+
     def template_path(self):
-        from os.path import join
         return join(settings.TEMPLATE_ROOT, self.template_name)
 
     def delete(self):
-        from os import unlink
-        from os.path import exists
         template_path = self.template_path()
         if exists(template_path):
             unlink(template_path)

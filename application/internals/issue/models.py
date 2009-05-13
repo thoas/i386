@@ -24,6 +24,35 @@ class Issue(models.Model):
     
     objects = IssueManager()
     
+    def __init__(self, *args, **kwargs):
+        """docstring for __init__"""
+        super(Issue, self).__init__(*args, **kwargs)
+        self.size_without_margin = self.size - self.margin
+        self.size_with_margin = self.size + self.margin
+        self.size_with_double_margin = self.size + self.margin * 2
+
+        self.crop_pos = (
+            (0, self.size_without_margin, self.size, self.size), # h_c
+            (0, self.size_without_margin, self.margin, self.size), # h_r
+            (0, 0, self.margin, self.size), # c_r
+            (0, 0, self.margin, self.margin), # l_r
+            (0, 0, self.size, self.margin), # l_c
+            (self.size_without_margin, 0, self.size, self.margin), # l_l
+            (self.size_without_margin, 0, self.size, self.size), # c_l
+            (self.size_without_margin, self.size_without_margin, self.size, self.size), # h_l
+        )
+
+        self.paste_pos = (
+            (self.margin, 0, self.size_with_margin, self.margin), # h_c
+            (self.size_with_margin, 0, self.size_with_double_margin, self.margin), # h_r
+            (self.size_with_margin, self.margin, self.size_with_double_margin, self.size_with_margin), # c_r
+            (self.size_with_margin, self.size_with_margin, self.size_with_double_margin, self.size_with_double_margin), # l_r
+            (self.margin, self.size_with_margin, self.size_with_margin, self.size_with_double_margin), # l_c
+            (0, self.size_with_margin, self.margin, self.size_with_double_margin), # l_l
+            (0, self.margin, self.margin, self.size_with_margin), # c_l
+            (0, 0, self.margin, self.margin), # h_l
+        )
+    
     def steps(self):
         """docstring for steps"""
         size = self.size
