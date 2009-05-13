@@ -52,6 +52,9 @@ class Issue(models.Model):
             (0, self.margin, self.margin, self.size_with_margin), # c_l
             (0, 0, self.margin, self.margin), # h_l
         )
+        
+        self.creation_position = (self.margin, self.margin,\
+            self.size + self.margin, self.size + self.margin)
     
     def steps(self):
         """docstring for steps"""

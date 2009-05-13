@@ -14,10 +14,14 @@ class SquareForm(ModelForm):
             if not background_image_path.content_type in settings.ALLOWED_EXTENSIONS:
                 raise forms.ValidationError(_('Mimetype %s not allowed')\
                                             % background_image_path.content_type)
-
         return background_image_path
+
+    def save(self):
+        """docstring for save"""
+        square = super(SquareForm, self).save()
+        return square
 
     class Meta:
         model = Square
         exclude = ('pos_x', 'pos_y', 'issue', 'square_parent',\
-                    'coord', 'user', 'status', 'template_name', 'date_finished')
+                    'coord', 'user', 'status', 'template_name', 'date_finished', 'date_booked')
