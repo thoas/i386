@@ -31,7 +31,6 @@ class SquareOpenManager(AbstractSquareManager):
         neighbors = square.neighbors().keys()
         neighbors.append(tuple((square.pos_x, square.pos_y)))
         
-        print neighbors
         from django.db import connection, transaction
         cursor = connection.cursor()
         cursor.execute("UPDATE square_squareopen SET is_standby = %d WHERE coord IN %s"
@@ -130,11 +129,11 @@ class Square(AbstractSquare):
             
         image.save(self.get_template_path(), format=FORMAT_IMAGE, quality=90)
         image.filename = self.template_name
-        self.template = image
+        return image
 
     def save(self, force_insert=False, force_update=False):
         if self.user and not self.status:
-            self.__build_template()
+            self.template = self.__build_template()
         
         if self.status and self.pk:
             self.date_finished = datetime.now()

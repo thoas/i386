@@ -36,8 +36,7 @@ class SquareForm(ModelForm):
         neighbors = Square.objects.neighbors(square)
         logging.info(neighbors)
         for neighbor in neighbors:
-            coord_tuple = tuple((neighbor.x, neighbor.y))
-            index = neighbors_keys[coord_tuple]
+            index = neighbors_keys[tuple((neighbor.x, neighbor.y))]
             logging.info(index)
             
             image = Image.open(neighbor.background_image_path.path)
@@ -48,26 +47,33 @@ class SquareForm(ModelForm):
             logging.info('del %d' % index)
         
         now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
+        
+        # create square side by side
         for x, y in neighbors_keys.keys():
             if (x > 0 and issue.nb_case_y) and (y > 0 and y < issue.nb_case_x):
                 continue
             index = neighbors_keys[tuple((x, y))]
             
-            background_image = 'x%s_y%s__%s__%s.tif' %\
-                                    (self.pos_x, self.pos_y, issue.slug, now)
-            Square.objects.create(issue=issue, pos_x=x, pos_y=y, background_image_path=background_image)
-            image = Image.new(DEFAULT_IMAGE_MODE, (issue.size, issue.size), DEFAULT_IMAGE_BACKGROUND_COLOR)
-            image.paste(template.crop(issue.paste_pos[index]), issue.crop_pos[index])
-            image.save(join(settings.TEMPLATE_TMP_ROOT, background_image), format=FORMAT_IMAGE, quality=90)
-            logging.info('+ %s' % background_image)
+            im = self.__create_image(settings.TEMPLATE_TMP_ROOT, (issue.size, issue.size),\
+                template.crop(issue.paste_pos[index]), issue.crop_pos[index])
+            logging.info('+ %s' % im.filename)
         
         # current square
+        im = self.__create_image(settings.UPLOAD_HD_ROOT, (issue.size, issue.size),\
+            template.crop(issue.creation_position_crop), issue.creation_position_paste, self.user.username)
+        logging.info('+ %s' % im.filename)
+        return square
+    
+    def __create_image(directory_root, size, im_crop, im_paste, cmplt_name=None):
         background_image = '%s__x%s_y%s__%s__%s.tif' %\
                                 (self.user.username, self.pos_x, self.pos_y, issue.slug, now)
-        image = Image.new(DEFAULT_IMAGE_MODE, (issue.size, issue.size), DEFAULT_IMAGE_BACKGROUND_COLOR)
-        image.paste(template.crop(issue.creation_position_crop), issue.creation_position_paste)
-        image.save(join(settings.TEMPLATE_TMP_ROOT, background_image), format=FORMAT_IMAGE, quality=90)
-        return square
+        if not cmplt_name is None:
+            background_image = '%s__%s' % (cmplt_name, background_image)
+        image = Image.new(DEFAULT_IMAGE_MODE, size, DEFAULT_IMAGE_BACKGROUND_COLOR)
+        image.paste(im_crop, im_paste)
+        image.save(join(directory_root, background_image), format=FORMAT_IMAGE, quality=90)
+        return image
+    
     class Meta:
         model = Square
         exclude = ('pos_x', 'pos_y', 'issue', 'square_parent',\
