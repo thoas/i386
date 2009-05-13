@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 18
+  revision 19
   modified_by 2 "thoas"
 
 
@@ -1035,6 +1035,7 @@ format 66
 	    classrelation_ref 139778 // <generalisation>
 	  b parent class_ref 135298 // AbstractSquare
       end
+
     end
 
     class 135298 "AbstractSquare"

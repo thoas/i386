@@ -1,4 +1,5 @@
 import StringIO
+import logging
 
 from os import unlink
 from os.path import join, exists
@@ -69,45 +70,67 @@ class AbstractSquare(models.Model):
         template_image.save(buffer, format=FORMAT_IMAGE, quality=90)
         return buffer
 
+def get_filename(instance, filename):
+    """docstring for get_filename"""
+    return join(settings.UPLOAD_TEMPLATE_DIR, instance.template_name)
+
 class Square(AbstractSquare):
-    background_image_path = models.ImageField(upload_to=settings.UPLOAD_DIR, blank=True, null=True)
-    date_booked = models.DateField(_('date_booked'), auto_now_add=True)
+    background_image_path = models.ImageField(upload_to=get_filename, blank=True, null=True)
+    date_booked = models.DateField(_('date_booked'), blank=True, null=True)
     date_finished = models.DateField(_('date_finished'), blank=True, null=True)
     # 1 : full | 0 : booked
     status = models.BooleanField(_('status'))
 
-    user = models.ForeignKey(User, verbose_name=_('user'), related_name=_('participations'))
+    user = models.ForeignKey(User, verbose_name=_('user'),\
+                        related_name=_('participations'), blank=True, null=True)
     square_parent = models.ForeignKey('Square', verbose_name=_('square_parent'),\
                         related_name=_('squares_child'), blank=True, null=True)
     template_name = models.CharField(_('template_name'), max_length=150, blank=True, null=True)
 
     objects = SquareManager()
     
+    def __build_template(self):
+        self.date_booked = datetime.now()
+    
+        now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
+        self.template_name = '%s__x%s_y%s__%s__template.tif' %\
+                                (self.user.username, self.pos_x, self.pos_y, now)
+
+        image = Image.new('RGB', (self.issue.size_with_double_margin,\
+                                    self.issue.size_with_double_margin), 'white')
+
+        neighbors_key = self.neighbors()
+        logging.info(neighbors_key)
+
+        neighbors = Square.objects.neighbors(self)
+        logging.info(neighbors)
+
+        # square creation
+        for neighbor in neighbors:
+            index = neighbors_key[neighbor.coord]
+            im = Image.open(neighbor.background_image_path.path)
+
+            logging.info('%s -> %s (%s)' %\
+                    (self.issue.crop_pos[index], self.issue.paste_pos[index], LITERAL[index]))
+            crop = im.crop(self.issue.crop_pos[index])
+            image.paste(crop, self.issue.paste_pos[index])
+        
+        # if square is already created
+        if self.background_image_path:
+            image_tmp_path = join(TEMPLATE_TMP_ROOT, self.background_image_path)
+            if exists(image_tmp_path):
+                image_tmp = Image.open(image_tmp_path)
+                im.paste(image_tmp, self.issue.creation_position)
+            
+        image.save(self.template_path(), format=FORMAT_IMAGE, quality=90)
+        image.filename = self.template_name
+        self.template = image
+
     def save(self, force_insert=False, force_update=False):
-        if force_insert:
-            now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
-            self.template_name = '%s__x%s_y%s__%s__template.tif' %\
-                                    (self.user.username, self.pos_x, self.pos_y, now)
-
-            image = Image.new('RGB', (self.issue.size_with_double_margin,\
-                                        self.issue.size_with_double_margin), 'white')
-
-            neighbors_key = self.neighbors()
-            neighbors = Square.objects.neighbors(self)
-
-            # creation d'un square
-            for neighbor in neighbors:
-                index = neighbors_key[neighbor.coord]
-                im = Image.open(neighbor.background_image_path.path)
-
-                print '%s -> %s (%s)' % (self.issue.crop_pos[index], self.issue.paste_pos[index], LITERAL[index])
-                crop = im.crop(self.issue.crop_pos[index])
-                image.paste(crop, self.issue.paste_pos[index])
-
-            image.save(self.template_path(), format=FORMAT_IMAGE, quality=90)
-            image.filename = self.template_name
-            self.template = image
-        if self.status:
+        if self.user and not self.status:
+            self.__build_template()
+        
+        if self.status and self.pk:
             self.date_finished = datetime.now()
         super(Square, self).save(force_insert, force_update)
 
@@ -115,8 +138,8 @@ class Square(AbstractSquare):
         return self.coord
 
     def get_template(self):
-        return Square.objects.retrieve_template(self.template_name)\
-                    if not self.template else self.template
+        return Square.retrieve_template(self.template_name)\
+                    if not hasattr(self, 'template') else self.template
 
     def template_path(self):
         return join(settings.TEMPLATE_ROOT, self.template_name)

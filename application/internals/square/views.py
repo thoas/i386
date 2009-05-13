@@ -15,8 +15,16 @@ from square.forms import SquareForm
 MIMETYPE_IMAGE = 'image/tiff'
 
 def book(request, issue, square_open):
-    square = Square.objects.create(pos_x=square_open.pos_x, pos_y=square_open.pos_x,\
-                status=0, issue=issue, user=request.user)
+    pos_x = square_open.pos_x
+    pos_y = square_open.pos_y
+    try:
+        square = Square.objects.get(pos_x=pos_x, pos_y=pos_y, issue=issue)
+        square.user = request.user
+        square.status = 0
+        square.save()
+    except Square.DoesNotExist:
+        square = Square.objects.create(pos_x=pos_x, pos_y=pos_x,\
+                    status=0, issue=issue, user=request.user)
     SquareOpen.objects.neighbors_standby(square_open, True);
     
     return template(request, square.get_template())
@@ -32,11 +40,10 @@ def fill(request, issue, square_open):
     square = get_object_or_404(Square, pos_x=square_open.pos_x,\
                 pos_y=square_open.pos_y, issue=issue)
     if request.method == 'POST':
-        datas = request.POST.copy()
-        #datas.appendlist('status', True)
-        form = SquareForm(datas, request.FILES, instance=square)
+        square.status = True
+        form = SquareForm(request.POST, request.FILES, instance=square)
         if form.is_valid():
-            form.save()
+            square = form.save()
             #return HttpResponseRedirect(reverse('issue', kwargs={'slug': issue.slug }))
     else:
         form = SquareForm(instance=square)
@@ -65,7 +72,7 @@ def template(request, template):
         template = Square.retrieve_template(template)
         if not template:
             raise Http404
-    
+
     buffer = Square.buffer(template)
     response = HttpResponse(mimetype=MIMETYPE_IMAGE)
     response['Content-Disposition'] = 'attachment; filename=%s' % template.filename
