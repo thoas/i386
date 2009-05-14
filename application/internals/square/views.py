@@ -18,7 +18,7 @@ def book(request, issue, square_open):
     pos_x = square_open.pos_x
     pos_y = square_open.pos_y
     try:
-        square = Square.objects.get(pos_x=pos_x, pos_y=pos_y, issue=issue)
+        square = Square.objects.get(pos_x=pos_x, pos_y=pos_y, issue=issue, user__isnull=True)
         square.user = request.user
         square.status = 0
         square.save()

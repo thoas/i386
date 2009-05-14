@@ -19,11 +19,19 @@
                 {% if coord in t_squares %}
                     {% with t_squares|get:coord as square %}
                         {% if square.user == user %}
+                            {% if not square.status %}
                             <a href="{% url square action="fill" pos_x=i pos_y=j issue_slug=issue.slug %}">
                                 <span class="verified">{{ coord }}</span>
                             </a>
+                            {% else %}
+                                <img src="{{ upload_hd_url }}/100_{{ square.background_image_name }}" />
+                            {% endif %}
                         {% else %}
-                            <span class="unverified">{{ coord }}</span>
+                            {% if square.status %}
+                                <img src="{{ upload_hd_url }}/100_{{ square.background_image_name }}" />
+                            {% else %}
+                                <span class="unverified">{{ coord }}</span>
+                            {% endif %}
                         {% endif %}
                     {% endwith %}
                 {% else %}
