@@ -23,3 +23,6 @@ def combined_inbox_count(request):
                 except (TypeError, ValueError):
                     pass
     return {'combined_inbox_count': count,}
+    
+def upload_hd_url(request):
+    return {'upload_hd_url': settings.UPLOAD_HD_URL }
