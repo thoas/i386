@@ -44,6 +44,7 @@ def fill(request, issue, square_open):
         form = SquareForm(request.POST, request.FILES, instance=square)
         if form.is_valid():
             square = form.save()
+            print square.status
             #return HttpResponseRedirect(reverse('issue', kwargs={'slug': issue.slug }))
     else:
         form = SquareForm(instance=square)
