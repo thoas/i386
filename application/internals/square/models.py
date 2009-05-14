@@ -96,7 +96,13 @@ class Square(AbstractSquare):
         image = Image.new(DEFAULT_IMAGE_MODE, kwargs['size'], DEFAULT_IMAGE_BACKGROUND_COLOR)
         image.paste(kwargs['im_crop'], kwargs['paste_pos'])
         image.save(join(kwargs['directory_root'], kwargs['background_image']), format=FORMAT_IMAGE, quality=90)
-        return image
+        
+        thumbs = {}
+        for step in kwargs['steps']:
+            image.thumbnail((step, step))
+            thumbs[step] = image.save(join(kwargs['directory_root'], '%s_%s'\
+                % (str(step), kwargs['background_image'])))
+        return image, thumbs
     
     def __build_template(self):
         self.date_booked = datetime.now()
@@ -147,6 +153,19 @@ class Square(AbstractSquare):
         neighbors_keys = self.neighbors()
 
         # refresh neighbors background_image_name with overlap
+        
+        # create background_image_path with with template_full
+        background_image = '%s__x%s_y%s__%s__%s.tif' %\
+                                (self.user.username, self.pos_x, self.pos_y, self.issue.slug, now)
+        image, thumbs = Square.image(
+            size=size,
+            background_image=background_image,
+            im_crop=template_full.crop(self.issue.creation_position_crop),
+            paste_pos=self.issue.creation_position_paste,
+            directory_root=settings.UPLOAD_HD_ROOT,
+            steps=steps
+        )
+        
         neighbors = Square.objects.neighbors(self)
         for neighbor in neighbors:
             index = neighbors_keys[tuple((neighbor.x, neighbor.y))]
@@ -161,7 +180,8 @@ class Square(AbstractSquare):
 
         now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
         size =  tuple((self.issue.size, self.issue.size))
-
+        steps = issue.steps()
+        
         # create square side by side with overlap
         for x, y in neighbors_keys.keys():
             if (x >= 0 and x < self.issue.nb_case_y) and (y >= 0 and y < self.issue.nb_case_x):
@@ -170,27 +190,18 @@ class Square(AbstractSquare):
                 background_image = 'x%s_y%s__%s__%s.tif' %\
                                         (x, y, self.issue.slug, now)
 
-                image = Square.image(
+                image, thumbs = Square.image(
                     size=size,
                     background_image=background_image,
                     im_crop=template_full.crop(self.issue.paste_pos[index]),
                     paste_pos=self.issue.crop_pos[index],
-                    directory_root=settings.TMP_ROOT
+                    directory_root=settings.UPLOAD_HD_ROOT,
+                    steps=steps
                 )
 
-                logging.info('+ (%d, %d)' % (x, y))
+                logging.info('+ (%d, %d) -> %s' % (x, y, image.name))
 
-        # create background_image_path with with template_full
-        background_image = '%s__x%s_y%s__%s__%s.tif' %\
-                                (self.user.username, self.pos_x, self.pos_y, self.issue.slug, now)
-        image = Square.image(
-            size=size,
-            background_image=background_image,
-            im_crop=template_full.crop(self.issue.creation_position_crop),
-            paste_pos=self.issue.creation_position_paste,
-            directory_root=settings.UPLOAD_HD_ROOT
-        )
-        logging.info('+ %s' % image)
+        logging.info('+ %s' % image.name)
 
     def save(self, force_insert=False, force_update=False):
         if self.user and not self.status:
@@ -221,9 +232,8 @@ class Square(AbstractSquare):
         """docstring for get_background_image_path"""
         return join(settings.UPLOAD_HD_ROOT, self.background_image.name)
     
-    def get_background_image_tmp_path(self):
-        """docstring for get_template_tmp_path"""
-        return join(settings.TMP_ROOT, self.background_image.name)
+    def get_background_image_thumb_path(self, size):
+        return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image.name))
     
     def get_upload_hd_url(self, size):
         """docstring for get_upload_hd_url"""

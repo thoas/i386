@@ -78,6 +78,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'misc.context_processors.contact_email',
     'misc.context_processors.site_name',
+    'misc.context_processors.upload_hd_url',
     
     #'notification.context_processors.notification',
     #'announcements.context_processors.site_wide_announcements',
@@ -150,9 +151,6 @@ UPLOAD_HD_ROOT = os.path.join(MEDIA_ROOT, UPLOAD_HD_DIR)
 
 TEMPLATE_DIR = 'template'
 TEMPLATE_ROOT = os.path.join(MEDIA_ROOT, TEMPLATE_DIR)
-
-TMP_DIR = 'tmp'
-TMP_ROOT = os.path.join(MEDIA_ROOT, TMP_DIR)
 
 UPLOAD_TEMPLATE_DIR = os.path.join(UPLOAD_DIR, TEMPLATE_DIR)
 UPLOAD_TEMPLATE_ROOT = os.path.join(MEDIA_ROOT, UPLOAD_TEMPLATE_DIR)
