@@ -50,7 +50,7 @@ class SquareForm(ModelForm):
             
             image.paste(template.crop(issue.paste_pos[index]), issue.crop_pos[index])
             del neighbors_keys[index]
-            logging.info('del %d' % index)
+            logging.info('- %d' % index)
         
         now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
         size =  tuple((issue.size, issue.size))
@@ -59,31 +59,33 @@ class SquareForm(ModelForm):
         for x, y in neighbors_keys.keys():
             if (x >= 0 and x < issue.nb_case_y) and (y >= 0 and y < issue.nb_case_x):
                 index = neighbors_keys[tuple((x, y))]
-            
+                
                 background_image = 'x%s_y%s__%s__%s.tif' %\
                                         (x, y, square.issue.slug, now)
                 
-                image = Image.new(DEFAULT_IMAGE_MODE, size, DEFAULT_IMAGE_BACKGROUND_COLOR)
-                image.paste(template.crop(issue.paste_pos[index]), issue.crop_pos[index])
-                image.save(join(settings.TMP_ROOT, background_image), format=FORMAT_IMAGE, quality=90)
-
+                image = Square.image(
+                    size=size,
+                    background_image=background_image,
+                    im_crop=template.crop(issue.paste_pos[index]),
+                    paste_pos=issue.crop_pos[index],
+                    directory_root=settings.TMP_ROOT
+                )
+                
                 logging.info('+ (%d, %d)' % (x, y))
         
         # current square
         background_image = '%s__x%s_y%s__%s__%s.tif' %\
                                 (square.user.username, square.pos_x, square.pos_y, square.issue.slug, now)
-        image = Image.new(DEFAULT_IMAGE_MODE, size, DEFAULT_IMAGE_BACKGROUND_COLOR)
-        image.paste(template.crop(issue.creation_position_crop), issue.creation_position_paste)
-        image.save(join(settings.UPLOAD_HD_ROOT, background_image), format=FORMAT_IMAGE, quality=90)
-
+        image = Square.image(
+            size=size,
+            background_image=background_image,
+            im_crop=template.crop(issue.creation_position_crop),
+            paste_pos=issue.creation_position_paste,
+            directory_root=settings.UPLOAD_HD_ROOT
+        )
+        
         logging.info('+ %s' % image)
         return square
-    
-    def __create_image(**kwargs):
-        image = Image.new(DEFAULT_IMAGE_MODE, kwargs['size'], DEFAULT_IMAGE_BACKGROUND_COLOR)
-        image.paste(kwargs['im_crop'], kwargs['im_paste'])
-        image.save(join(kwargs['directory_root'], kwargs['background_image']), format=FORMAT_IMAGE, quality=90)
-        return image
     
     class Meta:
         model = Square

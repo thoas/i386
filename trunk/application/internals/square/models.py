@@ -55,21 +55,6 @@ class AbstractSquare(models.Model):
             self.square_neighbors = dict((tuple((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
                 for i in range(LEN_POS))
         return self.square_neighbors
-    
-    @staticmethod
-    def retrieve_template(template_name):
-        template_path = join(settings.TEMPLATE_ROOT, template_name)
-        if not exists(template_path):
-            return False
-        template = Image.open(template_path)
-        template.filename = template_name
-        return template
-
-    @staticmethod
-    def buffer(template_image):
-        buffer = StringIO.StringIO()
-        template_image.save(buffer, format=FORMAT_IMAGE, quality=90)
-        return buffer
 
 def get_filename(instance, filename):
     """docstring for get_filename"""
@@ -90,6 +75,28 @@ class Square(AbstractSquare):
                         max_length=150, blank=True, null=True)
 
     objects = SquareManager()
+    
+    @staticmethod
+    def retrieve_template(template_name):
+        template_path = join(settings.TEMPLATE_ROOT, template_name)
+        if not exists(template_path):
+            return False
+        template = Image.open(template_path)
+        template.filename = template_name
+        return template
+
+    @staticmethod
+    def buffer(template_image):
+        buffer = StringIO.StringIO()
+        template_image.save(buffer, format=FORMAT_IMAGE, quality=90)
+        return buffer
+    
+    @staticmethod
+    def image(**kwargs):
+        image = Image.new(DEFAULT_IMAGE_MODE, kwargs['size'], DEFAULT_IMAGE_BACKGROUND_COLOR)
+        image.paste(kwargs['im_crop'], kwargs['paste_pos'])
+        image.save(join(kwargs['directory_root'], kwargs['background_image']), format=FORMAT_IMAGE, quality=90)
+        return image
     
     def __build_template(self):
         self.date_booked = datetime.now()
@@ -180,3 +187,4 @@ class SquareOpen(AbstractSquare):
     # 0 : can be booked ; 1 : a square has been booked next to
     is_standby = models.BooleanField(_('is_standby'), default=settings.DEFAULT_IS_STANDBY)
     objects = SquareOpenManager()
+        
