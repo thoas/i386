@@ -73,10 +73,10 @@ class AbstractSquare(models.Model):
 
 def get_filename(instance, filename):
     """docstring for get_filename"""
-    return join(settings.UPLOAD_TEMPLATE_DIR, instance.template_name)
+    return instance.template_name
 
 class Square(AbstractSquare):
-    background_image_path = models.ImageField(upload_to=get_filename, blank=True, null=True)
+    background_image_name = models.ImageField(upload_to=get_filename, blank=True, null=True)
     date_booked = models.DateField(_('date_booked'), blank=True, null=True)
     date_finished = models.DateField(_('date_finished'), blank=True, null=True)
     # 1 : full | 0 : booked
@@ -111,7 +111,7 @@ class Square(AbstractSquare):
         for neighbor in neighbors:
             coord_tuple = tuple((neighbor.x, neighbor.y))
             index = neighbors_keys[coord_tuple]
-            im = Image.open(neighbor.background_image_path.path)
+            im = Image.open(neighbor.get_background_image_path())
 
             logging.info('%s -> %s (%s)' %\
                     (self.issue.crop_pos[index],\
@@ -121,8 +121,8 @@ class Square(AbstractSquare):
             image.paste(crop, self.issue.paste_pos[index])
 
         # if square is already created
-        if self.background_image_path:
-            image_tmp_path = join(TEMPLATE_TMP_ROOT, self.background_image_path)
+        if self.background_image_name:
+            image_tmp_path = self.get_background_image_tmp_path()
             if exists(image_tmp_path):
                 image_tmp = Image.open(image_tmp_path)
                 im.paste(image_tmp, self.issue.creation_position_crop)
@@ -151,6 +151,19 @@ class Square(AbstractSquare):
 
     def get_template_full_path(self):
         return join(settings.UPLOAD_TEMPLATE_ROOT, self.template_name)
+    
+    def get_background_image_path(self):
+        """docstring for get_background_image_path"""
+        return join(settings.UPLOAD_HD_ROOT, self.background_image_name.name)
+    
+    def get_background_image_tmp_path(self):
+        """docstring for get_template_tmp_path"""
+        return join(settings.TMP_ROOT, self.background_image_name.name)
+    
+    def get_upload_hd_url(self, size):
+        """docstring for get_upload_hd_url"""
+        return join(settings.MEDIA_URL, settings.UPLOAD_HD_DIR, '%s_%s'\
+                % (str(size), self.background_image_name.name))
 
     def delete(self):
         template_path = self.get_template_path()
