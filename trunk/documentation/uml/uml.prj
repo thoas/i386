@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 19
+  revision 20
   modified_by 2 "thoas"
 
 
@@ -514,7 +514,7 @@ format 66
 	idl_decl ""
       end
 
-      attribute 134786 "background_image_path"
+      attribute 134786 "background_image"
 	private explicit_type ""
 	cpp_decl ""
 	java_decl ""
@@ -1035,7 +1035,6 @@ format 66
 	    classrelation_ref 139778 // <generalisation>
 	  b parent class_ref 135298 // AbstractSquare
       end
-
     end
 
     class 135298 "AbstractSquare"
