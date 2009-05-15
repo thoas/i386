@@ -20,8 +20,8 @@ class AbstractSquareManager(models.Manager):
         super(AbstractSquareManager, self).__init__()
 
     def neighbors(self, square):
-        return self.extra(where=['coord IN %s' % str(tuple(str(coord) for coord in square.neighbors().keys()))])\
-            .filter(status=1).order_by('pos_x', 'pos_y')
+        return self.filter(coord__in=list(str(key) for key in square.neighbors().keys()), status=1)\
+            .order_by('pos_x', 'pos_y')
 
 class SquareManager(AbstractSquareManager):
     pass
@@ -92,18 +92,24 @@ class Square(AbstractSquare):
         return buffer
     
     @staticmethod
-    def image(**kwargs):
+    def image(instance, **kwargs):
         image = Image.new(DEFAULT_IMAGE_MODE, kwargs['size'], DEFAULT_IMAGE_BACKGROUND_COLOR)
         image.paste(kwargs['im_crop'], kwargs['paste_pos'])
         image.save(join(kwargs['directory_root'], kwargs['background_image']), format=FORMAT_IMAGE, quality=90)
         image.name = kwargs['background_image']
         
+        return image, instance.generate_thumbs(image, kwargs['steps'])
+        
+    def generate_thumbs(self, image, steps):
         thumbs = {}
-        for step in kwargs['steps']:
+        for step in steps:
             image.thumbnail((step, step))
-            thumbs[step] = image.save(join(settings.UPLOAD_THUMB_ROOT, '%s_%s.png'\
-                % (str(step), kwargs['background_image'])), format='PNG', quality=90)
-        return image, thumbs
+            thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.png'\
+                % (str(step), self.background_image.name))
+            if exists(thumb_path):
+                unlink(thumb_path)
+            thumbs[step] = image.save(thumb_path, format='PNG', quality=90)
+        return thumbs
     
     def __build_template(self):
         self.date_booked = datetime.now()
@@ -123,7 +129,7 @@ class Square(AbstractSquare):
 
         # square creation
         for neighbor in neighbors:
-            coord_tuple = tuple((neighbor.x, neighbor.y))
+            coord_tuple = tuple((neighbor.pos_x, neighbor.pos_y))
             index = neighbors_keys[coord_tuple]
             im = Image.open(neighbor.get_background_image_path())
 
@@ -139,7 +145,7 @@ class Square(AbstractSquare):
             image_tmp_path = self.get_background_image_path()
             if exists(image_tmp_path):
                 image_tmp = Image.open(image_tmp_path)
-                im.paste(image_tmp, self.issue.creation_position_crop)
+                image.paste(image_tmp, self.issue.creation_position_crop)
             
         image.save(self.get_template_path(), format=FORMAT_IMAGE, quality=90)
         image.filename = self.template_name
@@ -152,21 +158,17 @@ class Square(AbstractSquare):
         neighbors_keys = self.neighbors()
         neighbors = Square.objects.neighbors(self)
         for neighbor in neighbors:
-            index = neighbors_keys[tuple((neighbor.x, neighbor.y))]
+            index = neighbors_keys[tuple((neighbor.pos_x, neighbor.pos_y))]
             logging.info(index)
 
             image = Image.open(neighbor.get_background_image_path())
             logging.info(neighbor.get_background_image_path())
 
             image.paste(template_full.crop(self.issue.paste_pos[index]), self.issue.crop_pos[index])
+            image.save()
             
             # delete all thumbs to recreate them
-            for step in steps:
-                background_image_thumb_path = self.get_background_image_thumb_path(step)
-                if exists(background_image_thumb_path):
-                    unlink(background_image_thumb_path)
-                image.thumbnail((step, step))
-                image.save(background_image_thumb_path)
+            self.generate_thumbs(image, steps)
             
             del neighbors_keys[index]
             
@@ -180,7 +182,21 @@ class Square(AbstractSquare):
                 background_image = 'x%s_y%s__%s__%s.tif' %\
                                         (x, y, self.issue.slug, now)
                 
+                # create square in database with no user set
+                new_square = Square.objects.create(
+                    background_image=background_image,
+                    pos_x=x,
+                    pos_y=y,
+                    issue=self.issue
+                )
+                new_square_open = SquareOpen.objects.create(
+                    pos_x=x,
+                    pos_y=y,
+                    issue=self.issue
+                )
+                
                 image, thumbs = Square.image(
+                    new_square,
                     size=size,
                     background_image=background_image,
                     im_crop=template_full.crop(self.issue.paste_pos[index]),
@@ -189,7 +205,6 @@ class Square(AbstractSquare):
                     steps=steps
                 )
                 
-                # create square in database with no user set
                 
                 logging.info('+ (%d, %d) -> %s' % (x, y, image.name))
         
@@ -218,12 +233,13 @@ class Square(AbstractSquare):
             # create background_image_path with with template_full
 
             image, thumbs = Square.image(
-              size=size,
-              background_image=self.background_image.name,
-              im_crop=template_full.crop(self.issue.creation_position_crop),
-              paste_pos=self.issue.creation_position_paste,
-              directory_root=settings.UPLOAD_HD_ROOT,
-              steps=steps
+                self,
+                size=size,
+                background_image=self.background_image.name,
+                im_crop=template_full.crop(self.issue.creation_position_crop),
+                paste_pos=self.issue.creation_position_paste,
+                directory_root=settings.UPLOAD_HD_ROOT,
+                steps=steps
             )
             self.populate_neighbors(template_full, size, steps, now)
 
