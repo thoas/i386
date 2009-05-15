@@ -24,11 +24,11 @@
                                 <span class="verified">{{ coord }}</span>
                             </a>
                             {% else %}
-                                <img src="{{ upload_hd_url }}/100_{{ square.background_image.name }}" />
+                                <img src="{{ upload_thumb_url }}/100_{{ square.background_image.name }}.png" />
                             {% endif %}
                         {% else %}
                             {% if square.status %}
-                                <img src="{{ upload_hd_url }}/100_{{ square.background_image.name }}" />
+                                <img src="{{ upload_thumb_url }}/100_{{ square.background_image.name }}.png" />
                             {% else %}
                                 <span class="unverified">{{ coord }}</span>
                             {% endif %}

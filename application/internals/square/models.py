@@ -101,15 +101,15 @@ class Square(AbstractSquare):
         thumbs = {}
         for step in kwargs['steps']:
             image.thumbnail((step, step))
-            thumbs[step] = image.save(join(kwargs['directory_root'], '%s_%s'\
-                % (str(step), kwargs['background_image'])))
+            thumbs[step] = image.save(join(settings.UPLOAD_THUMB_ROOT, '%s_%s.png'\
+                % (str(step), kwargs['background_image'])), format='PNG', quality=90)
         return image, thumbs
     
     def __build_template(self):
         self.date_booked = datetime.now()
     
         now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
-        self.template_name = '%s__x%s_y%s__%s__%s__template.tif' %\
+        self.template_name = '%s__x%s_y%s__%s__%s.tif' %\
                                 (self.user.username, self.pos_x, self.pos_y, self.issue.slug, now)
 
         image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size_with_double_margin,\
@@ -136,7 +136,7 @@ class Square(AbstractSquare):
 
         # if square is already created
         if self.background_image:
-            image_tmp_path = self.get_background_image_tmp_path()
+            image_tmp_path = self.get_background_image_path()
             if exists(image_tmp_path):
                 image_tmp = Image.open(image_tmp_path)
                 im.paste(image_tmp, self.issue.creation_position_crop)
@@ -201,24 +201,25 @@ class Square(AbstractSquare):
         
         if self.status and self.pk:
             self.date_finished = datetime.now()
+            now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
+            self.background_image = '%s__x%s_y%s__%s__%s.tif' %\
+                                  (self.user.username, self.pos_x, self.pos_y, self.issue.slug, now)
         super(Square, self).save(force_insert, force_update)
         
         # now, square saved, template uploaded, we can build thumbs and update neighbors
         if self.status and self.pk:
             template_full_path = self.get_template_full_path()
-            rename(join(settings.MEDIA_ROOT, self.background_image.name), template_full_path)
+            rename(join(settings.MEDIA_ROOT, self.template_name), template_full_path)
             template_full = Image.open(template_full_path)
 
-            now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
             size =  tuple((self.issue.size, self.issue.size))
             steps = self.issue.steps()
 
             # create background_image_path with with template_full
-            background_image = '%s__x%s_y%s__%s__%s.tif' %\
-                                  (self.user.username, self.pos_x, self.pos_y, self.issue.slug, now)
+
             image, thumbs = Square.image(
               size=size,
-              background_image=background_image,
+              background_image=self.background_image.name,
               im_crop=template_full.crop(self.issue.creation_position_crop),
               paste_pos=self.issue.creation_position_paste,
               directory_root=settings.UPLOAD_HD_ROOT,
