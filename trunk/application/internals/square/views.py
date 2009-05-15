@@ -7,6 +7,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect, QueryDict
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.db import transaction
 
 from square.models import Square, SquareOpen
 from issue.models import Issue
@@ -24,9 +25,8 @@ def book(request, issue, square_open):
         square.save()
     except Square.DoesNotExist:
         square = Square.objects.create(pos_x=pos_x, pos_y=pos_x,\
-                    status=0, issue=issue, user=request.user)
+            status=0, issue=issue, user=request.user)
     SquareOpen.objects.neighbors_standby(square_open, True);
-    
     return template(request, square.get_template())
 
 def release(request, issue, square_open):
@@ -36,6 +36,7 @@ def release(request, issue, square_open):
     square.delete()
     return HttpResponseRedirect(reverse('square_templates'))
 
+@transaction.commit_manually
 def fill(request, issue, square_open):
     square = get_object_or_404(Square, pos_x=square_open.pos_x,\
                 pos_y=square_open.pos_y, issue=issue)
@@ -43,7 +44,14 @@ def fill(request, issue, square_open):
         square.status = True
         form = SquareForm(request.POST, request.FILES, instance=square)
         if form.is_valid():
-            square = form.save()
+            transaction.commit()
+            try:
+                square = form.save()
+            except Exception, error:
+                print error
+                transaction.rollback()
+            else:
+                transaction.commit()
             #return HttpResponseRedirect(reverse('issue', kwargs={'slug': issue.slug }))
     else:
         form = SquareForm(instance=square)
