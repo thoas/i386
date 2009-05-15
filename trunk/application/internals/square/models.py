@@ -20,8 +20,9 @@ class AbstractSquareManager(models.Manager):
         super(AbstractSquareManager, self).__init__()
 
     def neighbors(self, square):
-        return self.filter(coord__in=list(str(key) for key in square.neighbors().keys()), status=1)\
-            .order_by('pos_x', 'pos_y')
+        return self.filter(coord__in=list(str(key)\
+            for key in square.neighbors().keys()), status=1)\
+                .order_by('pos_x', 'pos_y')
 
 class SquareManager(AbstractSquareManager):
     pass
@@ -160,12 +161,15 @@ class Square(AbstractSquare):
         for neighbor in neighbors:
             index = neighbors_keys[tuple((neighbor.pos_x, neighbor.pos_y))]
             logging.info(index)
-
-            image = Image.open(neighbor.get_background_image_path())
+            
+            neighbor_path = neighbor.get_background_image_path()
+            
+            image = Image.open(neighbor_path)
             logging.info(neighbor.get_background_image_path())
-
             image.paste(template_full.crop(self.issue.paste_pos[index]), self.issue.crop_pos[index])
-            image.save()
+            
+            unlink(neighbor_path)
+            image.save(neighbor_path, format=image.format, quality=90)
             
             # delete all thumbs to recreate them
             self.generate_thumbs(image, steps)
