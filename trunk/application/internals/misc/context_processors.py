@@ -26,3 +26,6 @@ def combined_inbox_count(request):
     
 def upload_hd_url(request):
     return {'upload_hd_url': settings.UPLOAD_HD_URL }
+
+def upload_thumb_url(request):
+    return {'upload_thumb_url': settings.UPLOAD_THUMB_URL }

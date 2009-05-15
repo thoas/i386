@@ -40,7 +40,7 @@ def fill(request, issue, square_open):
     square = get_object_or_404(Square, pos_x=square_open.pos_x,\
                 pos_y=square_open.pos_y, issue=issue)
     if request.method == 'POST':
-        #square.status = True
+        square.status = True
         form = SquareForm(request.POST, request.FILES, instance=square)
         if form.is_valid():
             square = form.save()

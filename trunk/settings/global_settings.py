@@ -79,6 +79,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'misc.context_processors.contact_email',
     'misc.context_processors.site_name',
     'misc.context_processors.upload_hd_url',
+    'misc.context_processors.upload_thumb_url',
     
     #'notification.context_processors.notification',
     #'announcements.context_processors.site_wide_announcements',
@@ -155,7 +156,9 @@ TEMPLATE_ROOT = os.path.join(MEDIA_ROOT, TEMPLATE_DIR)
 UPLOAD_TEMPLATE_DIR = os.path.join(UPLOAD_DIR, TEMPLATE_DIR)
 UPLOAD_TEMPLATE_ROOT = os.path.join(MEDIA_ROOT, UPLOAD_TEMPLATE_DIR)
 
-THUMB_ROOT = os.path.join(UPLOAD_ROOT, 'thumb')
+UPLOAD_THUMB_DIR = 'thumb'
+UPLOAD_THUMB_ROOT = os.path.join(UPLOAD_ROOT, UPLOAD_THUMB_DIR)
+UPLOAD_THUMB_URL = os.path.join(UPLOAD_HD_URL, UPLOAD_THUMB_DIR)
 
 # Default values
 DEFAULT_NB_INVITATION = 1
