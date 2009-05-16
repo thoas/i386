@@ -99,6 +99,7 @@ class Square(AbstractSquare):
         image.save(join(kwargs['directory_root'], kwargs['background_image']), format=FORMAT_IMAGE, quality=90)
         image.name = kwargs['background_image']
         
+        logging.info(join(kwargs['directory_root'], kwargs['background_image']))
         return image, instance.generate_thumbs(image, kwargs['steps'])
         
     def generate_thumbs(self, image, steps):
@@ -107,6 +108,7 @@ class Square(AbstractSquare):
             image.thumbnail((step, step))
             thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.png'\
                 % (str(step), self.background_image.name))
+            logging.info(thumb_path)
             if exists(thumb_path):
                 unlink(thumb_path)
             thumbs[step] = image.save(thumb_path, format='PNG', quality=90)
@@ -172,7 +174,7 @@ class Square(AbstractSquare):
             image.save(neighbor_path, format=image.format, quality=90)
             
             # delete all thumbs to recreate them
-            self.generate_thumbs(image, steps)
+            neighbor.generate_thumbs(image, steps)
             
             del neighbors_keys[index]
             
@@ -228,9 +230,10 @@ class Square(AbstractSquare):
         # now, square saved, template uploaded, we can build thumbs and update neighbors
         if self.status and self.pk:
             template_full_path = self.get_template_full_path()
+            if exists(template_full_path):
+                unlink(template_full_path)
             rename(join(settings.MEDIA_ROOT, self.template_name), template_full_path)
             template_full = Image.open(template_full_path)
-
             size =  tuple((self.issue.size, self.issue.size))
             steps = self.issue.steps()
 
