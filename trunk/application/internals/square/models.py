@@ -89,7 +89,7 @@ class Square(AbstractSquare):
     objects = SquareManager()
     
     @staticmethod
-    def retrieve_template(template_name):
+    def retrieve_template(cls, template_name):
         template_path = join(settings.TEMPLATE_ROOT, template_name)
         if not exists(template_path):
             return False
@@ -98,7 +98,7 @@ class Square(AbstractSquare):
         return template
 
     @staticmethod
-    def buffer(template_image):
+    def buffer(cls, template_image):
         buffer = StringIO.StringIO()
         template_image.save(buffer, format=FORMAT_IMAGE, quality=90)
         return buffer
