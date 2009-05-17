@@ -31,13 +31,14 @@
                         {% if square.user == user %}
                             {% if not square.status %}
                                 <div class="fill">
-                                {% if square.background_image %}
                                     <a href="{% url square action="fill" pos_x=i pos_y=j issue_slug=issue.slug %}">
+                                {% if square.background_image %}
+
                                         <img src="/media/upload/thumb/100_{{ square.background_image.name }}.png" />
-                                    </a>
                                 {% else %}
                                     {{ coord }}
                                 {% endif %}
+                                </a>
                                 </div>
                             {% else %}
                                 <img src="/media/upload/thumb/100_{{ square.background_image.name }}.png" />
