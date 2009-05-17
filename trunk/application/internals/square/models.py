@@ -24,7 +24,7 @@ class AbstractSquareManager(models.Manager):
         # do not hit database
         if not self.neighbors_dict.has_key(square.pk) or force_insert:
             self.neighbors_dict[square.pk] = self.filter(coord__in=list(str(key)\
-                for key in square.neighbors().keys()))\
+                for key in square.neighbors.keys()))\
                     .order_by('pos_x', 'pos_y')
         return self.neighbors_dict[square.pk]
 
@@ -35,7 +35,7 @@ class SquareManager(AbstractSquareManager):
 
 class SquareOpenManager(AbstractSquareManager):
     def neighbors_standby(self, square, is_standby=False):
-        neighbors = square.neighbors().keys()
+        neighbors = square.neighbors.keys()
         neighbors.append(tuple((square.pos_x, square.pos_y)))
         
         logging.info('standbuy set to %d for %s' % (is_standby, neighbors))
@@ -61,11 +61,12 @@ class AbstractSquare(models.Model):
         logging.info('++ %s - %d' % (self.coord, force_insert))
         super(AbstractSquare, self).save(force_insert, force_update)
 
+    @property
     def neighbors(self):
-        if not hasattr(self, 'square_neighbors'):
-            self.square_neighbors = dict((tuple((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
+        if not hasattr(self, '_neighbors'):
+            self._neighbors = dict((tuple((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
                 for i in range(LEN_POS))
-        return self.square_neighbors
+        return self._neighbors
 
 def get_filename(instance, filename):
     """docstring for get_filename"""
@@ -104,7 +105,7 @@ class Square(AbstractSquare):
 
     def generate_thumbs(self, image):
         thumbs = {}
-        steps = self.get_steps()
+        steps = self.steps
         for step in steps:
             image.thumbnail((step, step))
             thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.png'\
@@ -119,12 +120,12 @@ class Square(AbstractSquare):
     def build_template(self):
         self.date_booked = datetime.now()
     
-        self.template_name = self.get_formatted_background_image()
+        self.template_name = self.formatted_background_image
 
         image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size_with_double_margin,\
                     self.issue.size_with_double_margin), DEFAULT_IMAGE_BACKGROUND_COLOR)
 
-        neighbors_keys = self.neighbors()
+        neighbors_keys = self.neighbors
         logging.info(neighbors_keys)
 
         neighbors = Square.objects.neighbors(self)
@@ -134,7 +135,7 @@ class Square(AbstractSquare):
         for neighbor in neighbors:
             coord_tuple = tuple((neighbor.pos_x, neighbor.pos_y))
             index = neighbors_keys[coord_tuple]
-            im = Image.open(neighbor.get_background_image_path())
+            im = Image.open(neighbor.background_image_path)
 
             logging.debug('%s -> %s (%s)' %\
                     (self.issue.crop_pos[index],\
@@ -145,13 +146,13 @@ class Square(AbstractSquare):
 
         # if square is already created, append the background to the template
         if self.background_image:
-            image_tmp_path = self.get_background_image_path()
+            image_tmp_path = self.background_image_path
             if exists(image_tmp_path):
                 image_tmp = Image.open(image_tmp_path)
                 logging.warn('background already exists, paste image %s' % image_tmp_path)
                 image.paste(image_tmp, self.issue.creation_position_crop)
-            
-        image.save(self.get_template_path(), format=FORMAT_IMAGE, quality=90)
+        
+        image.save(self.template_path, format=FORMAT_IMAGE, quality=90)
         image.filename = self.template_name
         return image
     
@@ -159,14 +160,14 @@ class Square(AbstractSquare):
         """docstring for thumbs"""
         
         # refresh neighbors background_image_name with overlap
-        neighbors_keys = self.neighbors()
+        neighbors_keys = self.neighbors
         neighbors = Square.objects.neighbors(self)
         
         logging.debug('neighbors : %s' % neighbors)
         for neighbor in neighbors:
             neighbor_current_key = tuple((neighbor.pos_x, neighbor.pos_y))
             index = neighbors_keys[neighbor_current_key]
-            neighbor_path = neighbor.get_background_image_path()
+            neighbor_path = neighbor.background_image_path
             
             logging.info('rebuilding %s' % neighbor_path)
             image = Image.open(neighbor_path)
@@ -214,18 +215,18 @@ class Square(AbstractSquare):
     def save(self, force_insert=False, force_update=False):
         if self.user:
             if not self.status:
-                self.template = self.build_template()
+                self._template = self.build_template()
         else:
-            self.background_image = self.get_formatted_background_image()
+            self.background_image = self.formatted_background_image
         
         if self.pk and self.status:
             self.date_finished = datetime.now()
-            self.background_image = self.get_formatted_background_image()
+            self.background_image = self.formatted_background_image
         super(Square, self).save(force_insert, force_update)
         
         # now, square saved, template uploaded, we can build thumbs and update neighbors
         if self.status and self.pk:
-            template_full_path = self.get_template_full_path()
+            template_full_path = self.template_full_path
             
             # if the template uploaded already exists, we erase it
             if exists(template_full_path):
@@ -245,62 +246,64 @@ class Square(AbstractSquare):
             self.populate_neighbors(template_full)
 
     def build_background_image(self, im_crop, paste_pos, directory_root):
-        image = Image.new(DEFAULT_IMAGE_MODE, self.get_size(), DEFAULT_IMAGE_BACKGROUND_COLOR)
+        image = Image.new(DEFAULT_IMAGE_MODE, self.size, DEFAULT_IMAGE_BACKGROUND_COLOR)
         image.paste(im_crop, paste_pos)
-        image.save(join(directory_root, self.get_formatted_background_image()),\
+        image.save(join(directory_root, self.formatted_background_image),\
                         format=FORMAT_IMAGE, quality=90)
-        image.name = self.get_formatted_background_image()
+        image.name = self.formatted_background_image
 
-        logging.info(join(directory_root, self.get_formatted_background_image()))
+        logging.info(join(directory_root, self.formatted_background_image))
         return image, self.generate_thumbs(image)
-
+    
     def __unicode__(self):
         return self.coord
 
-    def get_template(self):
+    def delete(self):
+        super(Square, self).delete()
+    
+    @property
+    def template(self):
         return Square.retrieve_template(self.template_name)\
-                    if not hasattr(self, 'template') else self.template
+                    if not hasattr(self, '_template') else self._template
 
-    def get_template_path(self):
+    @property
+    def template_path(self):
         return join(settings.TEMPLATE_ROOT, self.template_name)
 
-    def get_template_full_path(self):
+    @property
+    def template_full_path(self):
         return join(settings.UPLOAD_TEMPLATE_ROOT, self.template_name)
     
-    def get_background_image_path(self):
+    @property
+    def background_image_path(self):
         """docstring for get_background_image_path"""
         return join(settings.UPLOAD_HD_ROOT, self.background_image.name)
     
     def get_background_image_thumb_path(self, size):
         return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image.name))
     
-    def get_upload_hd_url(self, size):
-        """docstring for get_upload_hd_url"""
-        return join(settings.MEDIA_URL, settings.UPLOAD_HD_DIR, '%s_%s'\
-                % (str(size), self.background_image.name))
-
-    def get_formatted_background_image(self):
-        if not hasattr(self, 'formatted_background_image'):
+    @property
+    def formatted_background_image(self):
+        if not hasattr(self, '_formatted_background_image'):
             now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
-            self.formatted_background_image = 'x%s_y%s__%s__%s.tif' %\
+            self._formatted_background_image = 'x%s_y%s__%s__%s.tif' %\
                                     (self.pos_x, self.pos_y, self.issue.slug, now)
             if self.user:
-                self.formatted_background_image = '%s__%s'\
+                self._formatted_background_image = '%s__%s'\
                     % (self.user.username, self.formatted_background_image)
-        return self.formatted_background_image
+        return self._formatted_background_image
 
-    def get_size(self):
-        if not hasattr(self, 'size'):
-            self.size = tuple((self.issue.size, self.issue.size))
-        return self.size
+    @property
+    def size(self):
+        if not hasattr(self, '_size'):
+            self._size = tuple((self.issue.size, self.issue.size))
+        return self._size
 
-    def get_steps(self):
-        if not hasattr(self, 'steps'):
-            self.steps = self.issue.steps()
-        return self.steps
-
-    def delete(self):
-        super(Square, self).delete()
+    @property
+    def steps(self):
+        if not hasattr(self, '_steps'):
+            self._steps = self.issue.steps()
+        return self._steps
 
 class SquareOpen(AbstractSquare):
     date_created = models.DateField(_('date_created'), auto_now_add=True)
