@@ -27,13 +27,13 @@ def book(request, issue, square_open):
     except Square.DoesNotExist:
         square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue, user=request.user, status=0)
     if not square.status:
-        SquareOpen.objects.neighbors_standby(square_open, True);
+        SquareOpen.objects.neighbors_standby(square_open, 1)
     return template(request, square.get_template())
 
 def release(request, issue, square_open):
     square = get_object_or_404(Square, pos_x=square_open.pos_x,\
                 pos_y=square_open.pos_y, issue=issue)
-    SquareOpen.objects.neighbors_standby(square_open, False);
+    SquareOpen.objects.neighbors_standby(square_open, False)
     square.delete()
     return HttpResponseRedirect(reverse('square_templates'))
 
@@ -48,6 +48,7 @@ def fill(request, issue, square_open):
             transaction.commit()
             try:
                 square = form.save()
+                SquareOpen.objects.neighbors_standby(square_open, 0)
                 square_open.delete()
             except Exception, error:
                 logging.critical(error)
