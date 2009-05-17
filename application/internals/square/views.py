@@ -13,30 +13,41 @@ from django.db.models import Q
 from square.models import Square, SquareOpen
 from issue.models import Issue
 from square.forms import SquareForm
+from issue.views import issue
 
 MIMETYPE_IMAGE = 'image/tiff'
 
+@transaction.commit_manually
 def book(request, issue, square_open):
     pos_x = square_open.pos_x
     pos_y = square_open.pos_y
-    try:
-        # Q() object raise an error when at the bottom : non-keyword arg after keyword arg
-        square = Square.objects.get(Q(user__isnull=True) | Q(user=request.user),\
-                    pos_x=pos_x, pos_y=pos_y, issue=issue)
-        
-        square.user = request.user
-        square.save()
-    except Square.DoesNotExist:
-        square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue,\
-                    user=request.user, status=0)
     
-    if not square.status:
-        SquareOpen.objects.neighbors_standby(square_open, 1)
-    return template(request, square.get_template())
+    transaction.commit()
+    try:
+        try:
+            # Q() object raise an error when at the bottom : non-keyword arg after keyword arg
+            square = Square.objects.get(Q(user__isnull=True) | Q(user=request.user),\
+                        pos_x=pos_x, pos_y=pos_y, issue=issue)
+
+            square.user = request.user
+            square.save()
+        except Square.DoesNotExist:
+            square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue,\
+                        user=request.user, status=0)
+        if not square.status:
+            SquareOpen.objects.neighbors_standby(square_open, 1)
+    except Exception, error:
+        (message, code) = error
+        logging.error('%s - %s' % (message, str(code)))
+        transaction.rollback()
+    else:
+        transaction.commit()
+        return template(request, square.get_template())
+    return issue(request, issue.slug)
 
 def release(request, issue, square_open):
     square = get_object_or_404(Square, pos_x=square_open.pos_x,\
-                pos_y=square_open.pos_y, issue=issue)
+                pos_y=square_open.pos_y, issue=issue, status=0)
     SquareOpen.objects.neighbors_standby(square_open, False)
     square.delete()
     return HttpResponseRedirect(reverse('square_templates'))
