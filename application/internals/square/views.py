@@ -1,4 +1,4 @@
-from datetime import datetime
+import logging
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db import transaction
+from django.db.models import Q
 
 from square.models import Square, SquareOpen
 from issue.models import Issue
@@ -19,14 +20,14 @@ def book(request, issue, square_open):
     pos_x = square_open.pos_x
     pos_y = square_open.pos_y
     try:
-        square = Square.objects.get(pos_x=pos_x, pos_y=pos_y, issue=issue, user__isnull=True)
+        # Q() object raise an error when at the bottom : non-keyword arg after keyword arg
+        square = Square.objects.get(Q(user__isnull=True) | Q(user=request.user), pos_x=pos_x, pos_y=pos_y, issue=issue)
         square.user = request.user
-        square.status = 0
         square.save()
     except Square.DoesNotExist:
-        square = Square.objects.create(pos_x=pos_x, pos_y=pos_x,\
-            status=0, issue=issue, user=request.user)
-    SquareOpen.objects.neighbors_standby(square_open, True);
+        square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue, user=request.user, status=0)
+    if not square.status:
+        SquareOpen.objects.neighbors_standby(square_open, True);
     return template(request, square.get_template())
 
 def release(request, issue, square_open):
@@ -39,16 +40,17 @@ def release(request, issue, square_open):
 @transaction.commit_manually
 def fill(request, issue, square_open):
     square = get_object_or_404(Square, pos_x=square_open.pos_x,\
-                pos_y=square_open.pos_y, issue=issue)
+                pos_y=square_open.pos_y, user=request.user, issue=issue)
     if request.method == 'POST':
-        square.status = True
+        square.status = 1
         form = SquareForm(request.POST, request.FILES, instance=square)
         if form.is_valid():
             transaction.commit()
             try:
                 square = form.save()
+                square_open.delete()
             except Exception, error:
-                print error
+                logging.critical(error)
                 transaction.rollback()
             else:
                 transaction.commit()
@@ -63,6 +65,7 @@ def fill(request, issue, square_open):
 
 @login_required
 def square(request, action, pos_x, pos_y, issue_slug):
+    logging.debug('x: %s - y: %s - issue: %s' % (pos_x, pos_y, issue_slug))
     issue = get_object_or_404(Issue, slug=issue_slug)
     square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue=issue)
     #getattr(__import__(__name__), action)(request, issue, issue_slug)

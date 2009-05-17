@@ -21,22 +21,27 @@ class AbstractSquareManager(models.Manager):
 
     def neighbors(self, square):
         return self.filter(coord__in=list(str(key)\
-            for key in square.neighbors().keys()), status=1)\
+            for key in square.neighbors().keys()))\
                 .order_by('pos_x', 'pos_y')
 
 class SquareManager(AbstractSquareManager):
-    pass
+    def bulk_create(square_list):
+        for square in square_list:
+            print square._meta.db_table
 
 class SquareOpenManager(AbstractSquareManager):
     def neighbors_standby(self, square, is_standby=False):
         neighbors = square.neighbors().keys()
         neighbors.append(tuple((square.pos_x, square.pos_y)))
         
-        from django.db import connection, transaction
-        cursor = connection.cursor()
-        cursor.execute("UPDATE square_squareopen SET is_standby = %d WHERE coord IN %s"
-                            % (int(is_standby), str(tuple(str(neighbor) for neighbor in neighbors))))
-        transaction.commit_unless_managed()
+        logging.info('standbuy set to %d for %s' % (is_standby, neighbors))
+        self.filter(coord__in=list(str(key)\
+            for key in neighbors)).update(is_standby=is_standby)
+        #from django.db import connection, transaction
+        #cursor = connection.cursor()
+        #cursor.execute("UPDATE square_squareopen SET is_standby = %d WHERE coord IN %s"
+        #                    % (int(is_standby), str(tuple(str(neighbor) for neighbor in neighbors))))
+        #transaction.commit_unless_managed()
 
 class AbstractSquare(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
@@ -49,6 +54,7 @@ class AbstractSquare(models.Model):
 
     def save(self, force_insert=False, force_update=False):
         self.coord = str((self.pos_x, self.pos_y))
+        logging.info('++ %s - %d' % (self.coord, force_insert))
         super(AbstractSquare, self).save(force_insert, force_update)
 
     def neighbors(self):
@@ -66,7 +72,7 @@ class Square(AbstractSquare):
     date_booked = models.DateField(_('date_booked'), blank=True, null=True)
     date_finished = models.DateField(_('date_finished'), blank=True, null=True)
     # 1 : full | 0 : booked
-    status = models.BooleanField(_('status'), default=False)
+    status = models.BooleanField(_('status'), default=0)
 
     user = models.ForeignKey(User, verbose_name=_('user'),\
                         related_name=_('participations'), blank=True, null=True)
@@ -91,38 +97,28 @@ class Square(AbstractSquare):
         buffer = StringIO.StringIO()
         template_image.save(buffer, format=FORMAT_IMAGE, quality=90)
         return buffer
-    
-    @staticmethod
-    def image(instance, **kwargs):
-        image = Image.new(DEFAULT_IMAGE_MODE, kwargs['size'], DEFAULT_IMAGE_BACKGROUND_COLOR)
-        image.paste(kwargs['im_crop'], kwargs['paste_pos'])
-        image.save(join(kwargs['directory_root'], kwargs['background_image']), format=FORMAT_IMAGE, quality=90)
-        image.name = kwargs['background_image']
-        
-        logging.info(join(kwargs['directory_root'], kwargs['background_image']))
-        return image, instance.generate_thumbs(image, kwargs['steps'])
-        
-    def generate_thumbs(self, image, steps):
+
+    def generate_thumbs(self, image):
         thumbs = {}
+        steps = self.get_steps()
         for step in steps:
             image.thumbnail((step, step))
             thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.png'\
-                % (str(step), self.background_image.name))
+                            % (str(step), self.background_image.name))
             logging.info(thumb_path)
             if exists(thumb_path):
+                logging.warn('erase thumbnail %s' % thumb_path)
                 unlink(thumb_path)
             thumbs[step] = image.save(thumb_path, format='PNG', quality=90)
         return thumbs
     
-    def __build_template(self):
+    def build_template(self):
         self.date_booked = datetime.now()
     
-        now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
-        self.template_name = '%s__x%s_y%s__%s__%s.tif' %\
-                                (self.user.username, self.pos_x, self.pos_y, self.issue.slug, now)
+        self.template_name = self.get_formatted_background_image()
 
         image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size_with_double_margin,\
-                                    self.issue.size_with_double_margin), DEFAULT_IMAGE_BACKGROUND_COLOR)
+                    self.issue.size_with_double_margin), DEFAULT_IMAGE_BACKGROUND_COLOR)
 
         neighbors_keys = self.neighbors()
         logging.info(neighbors_keys)
@@ -136,7 +132,7 @@ class Square(AbstractSquare):
             index = neighbors_keys[coord_tuple]
             im = Image.open(neighbor.get_background_image_path())
 
-            logging.info('%s -> %s (%s)' %\
+            logging.debug('%s -> %s (%s)' %\
                     (self.issue.crop_pos[index],\
                         self.issue.paste_pos[index], LITERAL[index]))
 
@@ -148,107 +144,115 @@ class Square(AbstractSquare):
             image_tmp_path = self.get_background_image_path()
             if exists(image_tmp_path):
                 image_tmp = Image.open(image_tmp_path)
+                logging.warn('background already exists, paste image %s' % image_tmp_path)
                 image.paste(image_tmp, self.issue.creation_position_crop)
             
         image.save(self.get_template_path(), format=FORMAT_IMAGE, quality=90)
         image.filename = self.template_name
         return image
     
-    def populate_neighbors(self, template_full, size, steps, now):
+    def populate_neighbors(self, template_full):
         """docstring for thumbs"""
         
         # refresh neighbors background_image_name with overlap
         neighbors_keys = self.neighbors()
         neighbors = Square.objects.neighbors(self)
+        
+        logging.debug('neighbors : %s' % neighbors)
         for neighbor in neighbors:
-            index = neighbors_keys[tuple((neighbor.pos_x, neighbor.pos_y))]
-            logging.info(index)
-            
+            neighbor_current_key = tuple((neighbor.pos_x, neighbor.pos_y))
+            index = neighbors_keys[neighbor_current_key]
             neighbor_path = neighbor.get_background_image_path()
             
+            if not exists(neighbor_path):
+                logging.error('%s doesn\'t exists')
+                continue
+            
+            logging.info('rebuilding %s' % neighbor_path)
             image = Image.open(neighbor_path)
-            logging.info(neighbor.get_background_image_path())
             image.paste(template_full.crop(self.issue.paste_pos[index]), self.issue.crop_pos[index])
             
+            # PIL weakness : we can't resave an image in the same path, unlink before the old.
             unlink(neighbor_path)
             image.save(neighbor_path, format=image.format, quality=90)
             
             # delete all thumbs to recreate them
-            neighbor.generate_thumbs(image, steps)
+            neighbor.generate_thumbs(image)
             
-            del neighbors_keys[index]
+            del neighbors_keys[neighbor_current_key]
             
             logging.info('- %d' % index)
+        
+        logging.info('populate %s' % neighbors_keys.keys())
         
         # create square side by side with overlap
         for x, y in neighbors_keys.keys():
             if (x >= 0 and x < self.issue.nb_case_y) and (y >= 0 and y < self.issue.nb_case_x):
                 index = neighbors_keys[tuple((x, y))]
                 
-                background_image = 'x%s_y%s__%s__%s.tif' %\
-                                        (x, y, self.issue.slug, now)
-                
                 # create square in database with no user set
+                # thought INSERT ... INTO VALUES ((...), (...))
                 new_square = Square.objects.create(
-                    background_image=background_image,
                     pos_x=x,
                     pos_y=y,
                     issue=self.issue
                 )
+                
                 new_square_open = SquareOpen.objects.create(
                     pos_x=x,
                     pos_y=y,
                     issue=self.issue
                 )
                 
-                image, thumbs = Square.image(
-                    new_square,
-                    size=size,
-                    background_image=background_image,
-                    im_crop=template_full.crop(self.issue.paste_pos[index]),
-                    paste_pos=self.issue.crop_pos[index],
-                    directory_root=settings.UPLOAD_HD_ROOT,
-                    steps=steps
-                )
-                
+                image, thumbs = new_square.build_background_image(template_full.crop(self.issue.paste_pos[index]),\
+                                    self.issue.crop_pos[index], settings.UPLOAD_HD_ROOT)
                 
                 logging.info('+ (%d, %d) -> %s' % (x, y, image.name))
         
         logging.info('+ %s' % image.name)
 
     def save(self, force_insert=False, force_update=False):
-        if self.user and not self.status:
-            self.template = self.__build_template()
+        if self.user:
+            if not self.status:
+                self.template = self.build_template()
+        else:
+            self.background_image = self.get_formatted_background_image()
         
-        if self.status and self.pk:
+        if self.pk and self.status:
             self.date_finished = datetime.now()
-            now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
-            self.background_image = '%s__x%s_y%s__%s__%s.tif' %\
-                                  (self.user.username, self.pos_x, self.pos_y, self.issue.slug, now)
+            self.background_image = self.get_formatted_background_image()
         super(Square, self).save(force_insert, force_update)
         
         # now, square saved, template uploaded, we can build thumbs and update neighbors
         if self.status and self.pk:
             template_full_path = self.get_template_full_path()
+            
+            # if the template uploaded already exists, we erase it
             if exists(template_full_path):
+                logging.warn('%s already exists, erase...' % template_full_path)
                 unlink(template_full_path)
+                
+            # rename the default location, from media directory to a dedicated one
             rename(join(settings.MEDIA_ROOT, self.template_name), template_full_path)
+            
             template_full = Image.open(template_full_path)
-            size =  tuple((self.issue.size, self.issue.size))
-            steps = self.issue.steps()
 
             # create background_image_path with with template_full
+            image, thumbs = self.build_background_image(template_full.crop(self.issue.creation_position_crop),\
+                                self.issue.creation_position_paste, settings.UPLOAD_HD_ROOT)
+            
+            # update neighbors with overlap
+            self.populate_neighbors(template_full)
 
-            image, thumbs = Square.image(
-                self,
-                size=size,
-                background_image=self.background_image.name,
-                im_crop=template_full.crop(self.issue.creation_position_crop),
-                paste_pos=self.issue.creation_position_paste,
-                directory_root=settings.UPLOAD_HD_ROOT,
-                steps=steps
-            )
-            self.populate_neighbors(template_full, size, steps, now)
+    def build_background_image(self, im_crop, paste_pos, directory_root):
+        image = Image.new(DEFAULT_IMAGE_MODE, self.get_size(), DEFAULT_IMAGE_BACKGROUND_COLOR)
+        image.paste(im_crop, paste_pos)
+        image.save(join(directory_root, self.get_formatted_background_image()),\
+                        format=FORMAT_IMAGE, quality=90)
+        image.name = self.get_formatted_background_image()
+
+        logging.info(join(directory_root, self.get_formatted_background_image()))
+        return image, self.generate_thumbs(image)
 
     def __unicode__(self):
         return self.coord
@@ -274,6 +278,26 @@ class Square(AbstractSquare):
         """docstring for get_upload_hd_url"""
         return join(settings.MEDIA_URL, settings.UPLOAD_HD_DIR, '%s_%s'\
                 % (str(size), self.background_image.name))
+
+    def get_formatted_background_image(self):
+        if not hasattr(self, 'formatted_background_image'):
+            now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
+            self.formatted_background_image = 'x%s_y%s__%s__%s.tif' %\
+                                    (self.pos_x, self.pos_y, self.issue.slug, now)
+            if self.user:
+                self.formatted_background_image = '%s__%s'\
+                    % (self.user.username, self.formatted_background_image)
+        return self.formatted_background_image
+
+    def get_size(self):
+        if not hasattr(self, 'size'):
+            self.size = tuple((self.issue.size, self.issue.size))
+        return self.size
+
+    def get_steps(self):
+        if not hasattr(self, 'steps'):
+            self.steps = self.issue.steps()
+        return self.steps
 
     def delete(self):
         super(Square, self).delete()
