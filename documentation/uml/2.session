@@ -6,7 +6,7 @@ diagrams
     1351 873 120 4 583 0
 end
 show_stereotypes
-selected attribute_ref 134786 // background_image
+selected classview_ref 128002 // classes
 open
   attribute_ref 144002 // about
   attribute_ref 129282 // website
