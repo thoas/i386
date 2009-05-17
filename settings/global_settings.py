@@ -1,10 +1,9 @@
-import os
-import os.path
+from os.path import join, dirname, abspath
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__)) + '/..'
-TEMPLATE_ROOT = os.path.join(PROJECT_ROOT, 'templates')
-APPLICATION_ROOT = os.path.join(PROJECT_ROOT, 'application')
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+PROJECT_ROOT = dirname(abspath(__file__)) + '/..'
+TEMPLATE_ROOT = join(PROJECT_ROOT, 'templates')
+APPLICATION_ROOT = join(PROJECT_ROOT, 'application')
+MEDIA_ROOT = join(PROJECT_ROOT, 'media')
 
 ADMINS = (
      ('Florent Messa', 'florent.messa@gmail.com'),
@@ -29,7 +28,7 @@ LANGUAGE_CODE = 'fr'
 LANGUAGE_BIDI = True
 
 LOCALE_PATHS = (
-    os.path.join(PROJECT_ROOT, 'locale')
+    join(PROJECT_ROOT, 'locale')
 )
 
 # If you set this to False, Django will make some optimizations so as not
@@ -55,15 +54,21 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+#    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+#    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',    
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'account.middleware.LocaleMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )
+
+CACHE_ROOT = join(PROJECT_ROOT, 'cache')
+
+CACHE_BACKEND = 'file://%s' % CACHE_ROOT
 
 ROOT_URLCONF = 'urls'
 
@@ -125,7 +130,7 @@ NOTIFICATION_LANGUAGE_MODULE = 'account.Account'
 
 EMAIL_CONFIRMATION_DAYS = 2
 
-SESSION_FILE_PATH = os.path.join(PROJECT_ROOT, 'sessions')
+SESSION_FILE_PATH = join(PROJECT_ROOT, 'sessions')
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'hello@milkshape.cc'
@@ -141,25 +146,25 @@ LOGIN_REDIRECT_URLNAME = 'what_next'
 
 # File
 FILE_UPLOAD_MAX_MEMORY_SIZE = 8621440 # 8.5 MB
-FILE_UPLOAD_TEMP_DIR = os.path.join(PROJECT_ROOT, 'tmp')
+FILE_UPLOAD_TEMP_DIR = join(PROJECT_ROOT, 'tmp')
 
 UPLOAD_DIR = 'upload'
-UPLOAD_ROOT = os.path.join(MEDIA_ROOT, UPLOAD_DIR)
+UPLOAD_ROOT = join(MEDIA_ROOT, UPLOAD_DIR)
 
 
-UPLOAD_HD_DIR = os.path.join(UPLOAD_DIR, 'hd')
-UPLOAD_HD_URL = os.path.join(MEDIA_URL, UPLOAD_DIR)
-UPLOAD_HD_ROOT = os.path.join(MEDIA_ROOT, UPLOAD_HD_DIR)
+UPLOAD_HD_DIR = join(UPLOAD_DIR, 'hd')
+UPLOAD_HD_URL = join(MEDIA_URL, UPLOAD_DIR)
+UPLOAD_HD_ROOT = join(MEDIA_ROOT, UPLOAD_HD_DIR)
 
 TEMPLATE_DIR = 'template'
-TEMPLATE_ROOT = os.path.join(MEDIA_ROOT, TEMPLATE_DIR)
+TEMPLATE_ROOT = join(MEDIA_ROOT, TEMPLATE_DIR)
 
-UPLOAD_TEMPLATE_DIR = os.path.join(UPLOAD_DIR, TEMPLATE_DIR)
-UPLOAD_TEMPLATE_ROOT = os.path.join(MEDIA_ROOT, UPLOAD_TEMPLATE_DIR)
+UPLOAD_TEMPLATE_DIR = join(UPLOAD_DIR, TEMPLATE_DIR)
+UPLOAD_TEMPLATE_ROOT = join(MEDIA_ROOT, UPLOAD_TEMPLATE_DIR)
 
 UPLOAD_THUMB_DIR = 'thumb'
-UPLOAD_THUMB_ROOT = os.path.join(UPLOAD_ROOT, UPLOAD_THUMB_DIR)
-UPLOAD_THUMB_URL = os.path.join(UPLOAD_HD_URL, UPLOAD_THUMB_DIR)
+UPLOAD_THUMB_ROOT = join(UPLOAD_ROOT, UPLOAD_THUMB_DIR)
+UPLOAD_THUMB_URL = join(UPLOAD_HD_URL, UPLOAD_THUMB_DIR)
 
 # Default values
 DEFAULT_NB_INVITATION = 1

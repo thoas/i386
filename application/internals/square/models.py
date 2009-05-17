@@ -18,11 +18,15 @@ from square.constance import *
 class AbstractSquareManager(models.Manager):
     def __init__(self):
         super(AbstractSquareManager, self).__init__()
+        self.neighbors_dict = {}
 
-    def neighbors(self, square):
-        return self.filter(coord__in=list(str(key)\
-            for key in square.neighbors().keys()))\
-                .order_by('pos_x', 'pos_y')
+    def neighbors(self, square, force_insert=False):
+        # do not hit database
+        if not self.neighbors_dict.has_key(square.pk) or force_insert:
+            self.neighbors_dict[square.pk] = self.filter(coord__in=list(str(key)\
+                for key in square.neighbors().keys()))\
+                    .order_by('pos_x', 'pos_y')
+        return self.neighbors_dict[square.pk]
 
 class SquareManager(AbstractSquareManager):
     def bulk_create(square_list):
@@ -139,7 +143,7 @@ class Square(AbstractSquare):
             crop = im.crop(self.issue.crop_pos[index])
             image.paste(crop, self.issue.paste_pos[index])
 
-        # if square is already created
+        # if square is already created, append the background to the template
         if self.background_image:
             image_tmp_path = self.get_background_image_path()
             if exists(image_tmp_path):
@@ -163,10 +167,6 @@ class Square(AbstractSquare):
             neighbor_current_key = tuple((neighbor.pos_x, neighbor.pos_y))
             index = neighbors_keys[neighbor_current_key]
             neighbor_path = neighbor.get_background_image_path()
-            
-            if not exists(neighbor_path):
-                logging.error('%s doesn\'t exists')
-                continue
             
             logging.info('rebuilding %s' % neighbor_path)
             image = Image.open(neighbor_path)

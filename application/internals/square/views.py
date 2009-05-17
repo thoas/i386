@@ -21,11 +21,15 @@ def book(request, issue, square_open):
     pos_y = square_open.pos_y
     try:
         # Q() object raise an error when at the bottom : non-keyword arg after keyword arg
-        square = Square.objects.get(Q(user__isnull=True) | Q(user=request.user), pos_x=pos_x, pos_y=pos_y, issue=issue)
+        square = Square.objects.get(Q(user__isnull=True) | Q(user=request.user),\
+                    pos_x=pos_x, pos_y=pos_y, issue=issue)
+        
         square.user = request.user
         square.save()
     except Square.DoesNotExist:
-        square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue, user=request.user, status=0)
+        square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue,\
+                    user=request.user, status=0)
+    
     if not square.status:
         SquareOpen.objects.neighbors_standby(square_open, 1)
     return template(request, square.get_template())
@@ -39,8 +43,14 @@ def release(request, issue, square_open):
 
 @transaction.commit_manually
 def fill(request, issue, square_open):
-    square = get_object_or_404(Square, pos_x=square_open.pos_x,\
-                pos_y=square_open.pos_y, user=request.user, issue=issue)
+    # http://groups.google.com/group/django-developers/browse_thread/thread/818c2ee766550426/e311d8fe6a04bb22
+    # not get_object_or_404 with select_related()
+    try:
+        square = Square.objects.select_related('user', 'issue').get(pos_x=square_open.pos_x,\
+                    pos_y=square_open.pos_y, user=request.user, issue=issue)
+    except Square.DoesNotExist:
+        raise Http404
+    
     if request.method == 'POST':
         square.status = 1
         form = SquareForm(request.POST, request.FILES, instance=square)
@@ -48,10 +58,14 @@ def fill(request, issue, square_open):
             transaction.commit()
             try:
                 square = form.save()
+                
+                # upload good, now allow book square open
                 SquareOpen.objects.neighbors_standby(square_open, 0)
+                # delete old square open
                 square_open.delete()
             except Exception, error:
-                logging.critical(error)
+                (message, code) = error
+                logging.error('%s - %s' % (message, str(code)))
                 transaction.rollback()
             else:
                 transaction.commit()
