@@ -7,6 +7,8 @@ package grid
 	import flash.events.IOErrorEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.net.NetConnection;
+	import flash.net.Responder;
 	import flash.net.URLRequest;
 	import flash.ui.Keyboard;
 	
@@ -16,6 +18,8 @@ package grid
 	
 	public class GridController
 	{
+		private var _gateway:NetConnection;
+		private var _responder:Responder;
 		private var _gridModel:GridModel;
 		private var _overX:int;
 		private var _overY:int;
@@ -25,6 +29,10 @@ package grid
 		
 		public function GridController(gridModel:GridModel)
 		{
+			_gateway = new NetConnection();
+			_responder = new Responder(_onResult, _onFault);
+			_gateway.connect( "http://localhost:8000/issue/gateway/");
+			
 			_gridModel = gridModel;
 			_isShowForm = false;
 			
@@ -33,8 +41,20 @@ package grid
             _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
 		}
 		
+		public function _onResult(result:Object):void {
+			var myData:String = result.toString();
+			trace(result);
+		}
+		
+		public function _onFault(error:Object):void {
+			for (var d:String in error) {
+				trace(error[d] + "\n") 
+			}
+		}
+		
 		public function getGridInfo():void
 		{
+			_gateway.call("issue.issue", _responder, '5x5');
 			// On envoit une requête en POST avec issue_id
 			// On reçoit les infos de l'issue
 			var issue:Object = new Object();
@@ -209,8 +229,11 @@ package grid
 					_gridModel.dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE));
 				}
 				_gridModel.currentScale = futurScale;
-				_loadImage(futurScale);
 				_gridModel.dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, futurScale));
+				
+				trace(_gridModel.focusX + " " + _gridModel.focusY);
+				_loadImage(futurScale);//
+				
 				_moveTo();
 			}
 		}
