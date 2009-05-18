@@ -57,6 +57,7 @@ class Issue(models.Model):
             self.size + self.margin, self.size + self.margin)
         self.creation_position_paste = (0, 0, self.size, self.size)
     
+    @property
     def steps(self):
         """docstring for steps"""
         size = self.size

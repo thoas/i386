@@ -38,7 +38,7 @@ class SquareOpenManager(AbstractSquareManager):
         neighbors = square.neighbors.keys()
         neighbors.append(tuple((square.pos_x, square.pos_y)))
         
-        logging.info('standbuy set to %d for %s' % (is_standby, neighbors))
+        logging.info('standby set to %d for %s' % (is_standby, neighbors))
         self.filter(coord__in=list(str(key)\
             for key in neighbors)).update(is_standby=is_standby)
         #from django.db import connection, transaction
@@ -88,6 +88,10 @@ class Square(AbstractSquare):
 
     objects = SquareManager()
     
+    def __init__(self, *args, **kwargs):
+        self._layer_dict = {}
+        super(Square, self).__init__(*args, **kwargs)
+    
     @staticmethod
     def retrieve_template(cls, template_name):
         template_path = join(settings.TEMPLATE_ROOT, template_name)
@@ -100,21 +104,44 @@ class Square(AbstractSquare):
     @staticmethod
     def buffer(template_image):
         buffer = StringIO.StringIO()
-        template_image.save(buffer, format=FORMAT_IMAGE, quality=90)
+        template_image.save(buffer, format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
         return buffer
 
     def generate_thumbs(self, image):
         thumbs = {}
         steps = self.steps
+        default_step = steps[0]
+        
         for step in steps:
-            image.thumbnail((step, step))
-            thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.png'\
-                            % (str(step), self.background_image.name))
+            image_clone = image.copy()
+            width, height = (step, step)
+            image_clone.thumbnail((width, height))
+            thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.%s'\
+                            % (str(step), self.background_image.name, THUMB_EXTENSION_IMAGE))
             logging.info(thumb_path)
             if exists(thumb_path):
                 logging.warn('erase thumbnail %s' % thumb_path)
                 unlink(thumb_path)
-            thumbs[step] = image.save(thumb_path, format='PNG', quality=90)
+            image_clone.save(thumb_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
+            
+            # layerable image
+            layer_path = self.layer_path(step)
+            if not exists(layer_path):
+                layer = Image.new(DEFAULT_IMAGE_MODE, self.size,\
+                            DEFAULT_IMAGE_BACKGROUND_COLOR)
+            else:
+                layer = Image.open(layer_path)
+                logging.debug('layer exists %s' % layer_path)
+          
+            x = self.pos_x * width
+            y = self.pos_y * height
+            layer.paste(image_clone,(x, y, x + width, y + height))
+            
+            try:
+                logging.debug(layer_path)
+                layer.save(layer_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
+            except IOError, error:
+                logging.error('%s', error)
         return thumbs
     
     def build_template(self):
@@ -152,7 +179,7 @@ class Square(AbstractSquare):
                 logging.warn('background already exists, paste image %s' % image_tmp_path)
                 image.paste(image_tmp, self.issue.creation_position_crop)
         
-        image.save(self.template_path, format=FORMAT_IMAGE, quality=90)
+        image.save(self.template_path, format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
         image.filename = self.template_name
         return image
     
@@ -174,8 +201,8 @@ class Square(AbstractSquare):
             image.paste(template_full.crop(self.issue.paste_pos[index]), self.issue.crop_pos[index])
             
             # PIL weakness : we can't resave an image in the same path, unlink before the old.
-            unlink(neighbor_path)
-            image.save(neighbor_path, format=image.format, quality=90)
+            #unlink(neighbor_path)
+            image.save(neighbor_path, format=image.format, quality=QUALITY_IMAGE)
             
             # delete all thumbs to recreate them
             neighbor.generate_thumbs(image)
@@ -249,7 +276,7 @@ class Square(AbstractSquare):
         image = Image.new(DEFAULT_IMAGE_MODE, self.size, DEFAULT_IMAGE_BACKGROUND_COLOR)
         image.paste(im_crop, paste_pos)
         image.save(join(directory_root, self.formatted_background_image),\
-                        format=FORMAT_IMAGE, quality=90)
+                        format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
         image.name = self.formatted_background_image
 
         logging.info(join(directory_root, self.formatted_background_image))
@@ -279,6 +306,17 @@ class Square(AbstractSquare):
         """docstring for get_background_image_path"""
         return join(settings.UPLOAD_HD_ROOT, self.background_image.name)
     
+    def layer_name(self, step):
+        if not self._layer_dict.has_key(step):
+            width, height = self.size
+            x = (self.pos_x * step) / width
+            y = (self.pos_y * step) / height
+            self._layer_dict[step] = '%d_%d__%d__%s.%s' % (x, y, step, self.issue.slug, THUMB_EXTENSION_IMAGE)
+        return self._layer_dict[step]
+    
+    def layer_path(self, step):
+        return join(settings.LAYER_ROOT, self.layer_name(step))
+    
     def get_background_image_thumb_path(self, size):
         return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image.name))
     
@@ -286,8 +324,8 @@ class Square(AbstractSquare):
     def formatted_background_image(self):
         if not hasattr(self, '_formatted_background_image'):
             now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
-            self._formatted_background_image = 'x%s_y%s__%s__%s.tif' %\
-                                    (self.pos_x, self.pos_y, self.issue.slug, now)
+            self._formatted_background_image = 'x%s_y%s__%s__%s.%s' %\
+                                    (self.pos_x, self.pos_y, self.issue.slug, now, EXTENSION_IMAGE)
             if self.user:
                 self._formatted_background_image = '%s__%s'\
                     % (self.user.username, self.formatted_background_image)
@@ -302,7 +340,7 @@ class Square(AbstractSquare):
     @property
     def steps(self):
         if not hasattr(self, '_steps'):
-            self._steps = self.issue.steps()
+            self._steps = self.issue.steps
         return self._steps
 
 class SquareOpen(AbstractSquare):

@@ -55,7 +55,7 @@ def release(request, issue, square_open):
 @transaction.commit_manually
 def fill(request, issue, square_open):
     # http://groups.google.com/group/django-developers/browse_thread/thread/818c2ee766550426/e311d8fe6a04bb22
-    # not get_object_or_404 with select_related()
+    # no get_object_or_404 with select_related()
     try:
         square = Square.objects.select_related('user', 'issue').get(pos_x=square_open.pos_x,\
                     pos_y=square_open.pos_y, user=request.user, issue=issue)
@@ -72,6 +72,7 @@ def fill(request, issue, square_open):
                 
                 # upload good, now allow book square open
                 SquareOpen.objects.neighbors_standby(square_open, 0)
+                
                 # delete old square open
                 square_open.delete()
             except Exception, error:
