@@ -66,9 +66,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
 )
 
-CACHE_ROOT = join(PROJECT_ROOT, 'cache')
-
-CACHE_BACKEND = 'file://%s' % CACHE_ROOT
+#CACHE_ROOT = join(PROJECT_ROOT, 'cache')
+#CACHE_BACKEND = 'file://%s' % CACHE_ROOT
 
 ROOT_URLCONF = 'urls'
 
@@ -165,6 +164,9 @@ UPLOAD_TEMPLATE_ROOT = join(MEDIA_ROOT, UPLOAD_TEMPLATE_DIR)
 UPLOAD_THUMB_DIR = 'thumb'
 UPLOAD_THUMB_ROOT = join(UPLOAD_ROOT, UPLOAD_THUMB_DIR)
 UPLOAD_THUMB_URL = join(UPLOAD_HD_URL, UPLOAD_THUMB_DIR)
+
+LAYER_DIR = 'layer'
+LAYER_ROOT = join(MEDIA_ROOT, LAYER_DIR)
 
 # Default values
 DEFAULT_NB_INVITATION = 1

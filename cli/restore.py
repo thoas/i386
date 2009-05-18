@@ -25,6 +25,7 @@ def main():
     restore(global_settings.UPLOAD_TEMPLATE_ROOT)
     restore(global_settings.UPLOAD_HD_ROOT)
     restore(global_settings.UPLOAD_THUMB_ROOT)
+    restore(global_settings.LAYER_ROOT)
 
 if __name__ == '__main__':
     main()
