@@ -53,7 +53,7 @@ package grid
 			{
 				_addPosition(
 					square.status ? 
-					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, this, _squareSize) : 
+					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, _squareSize) : 
 					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY, _squareSize)
 				);
 			}

@@ -39,7 +39,7 @@
 		
 		private function _focusIn(e:Event):void
 		{
-			alpha = 1;
+			alpha = 0.8;
 			dispatchEvent(new SquareEvent(SquareEvent.FOCUS, this));
 			//trace("tabIndex : "+ tabIndex + " pos : "+_x + ";" + _y);
 		}

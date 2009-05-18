@@ -6,7 +6,6 @@ package grid
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	
 	import grid.square.*;
 	
 	import utils.Constance;
@@ -23,6 +22,7 @@ package grid
 		private var _speed:int;// Vitesse en millisecondes
 		private var _nbHSquare:int;// Nombre de carrés à l'horizontal
 		private var _nbVSquare:int;// Nombre de carrés à la vertical
+		private var _layerSquare:Sprite;// Le calque qui contient les squares
 		
 		public function GridView(model:GridModel, controller:GridController)
 		{
@@ -43,6 +43,18 @@ package grid
 		
 		private function _handlerGridInfoReady(e:GridEvent):void
 		{
+			var scales:Array = _controller.defineScale(stage.stageHeight, stage.stageWidth, _stagePadding);
+			_minScale = scales['minScale'];
+			_maxScale = scales['maxScale'];
+			
+			for(var i:int = _minScale; i <= _maxScale; i++)
+			{
+				addChild(_controller.getLayer(i));
+			}
+			
+			_layerSquare = new Sprite();
+			addChild(_layerSquare);
+			
 			_nbHSquare = e.nbHSquare;
 			_nbVSquare = e.nbVSquare;	
 			_squareSize = e.squareSize;
@@ -52,12 +64,8 @@ package grid
 		}
 		
 		private function _handlerGridReady(e:GridEvent):void
-		{
-			var scales:Array = _controller.defineScale(stage.stageHeight, stage.stageWidth, _stagePadding);
-			_minScale = scales['minScale'];
-			_maxScale = scales['maxScale'];
-			
-			addChild(new GridLine(_nbHSquare, _nbVSquare, _squareSize, _lineColor));
+		{            
+			_layerSquare.addChild(new GridLine(_nbHSquare, _nbVSquare, _squareSize, _lineColor));
 			
 			width = Constance.SCALE_THUMB[_minScale] * _nbHSquare;
 			scaleY = scaleX;
@@ -89,11 +97,11 @@ package grid
 			square.tabIndex = _nbHSquare * square.Y + square.X;// Numéro tabulation = nombre de colonne * y + x
 			square.addEventListener(SquareEvent.OVER, _controller.rollOverHandler);
 			square.addEventListener(SquareEvent.FOCUS, _controller.onFocusHandler);// Focus : tabulation, clic, double clic, clavier...
-			addChild(square);
+			_layerSquare.addChild(square);
 		}
 		
 		private function _zoomTo(e:GridZoomEvent):void
-		{
+		{			
 			Tweener.addTween(
 				this,
 				{
