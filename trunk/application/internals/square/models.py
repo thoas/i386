@@ -98,7 +98,7 @@ class Square(AbstractSquare):
         return template
 
     @staticmethod
-    def buffer(cls, template_image):
+    def buffer(template_image):
         buffer = StringIO.StringIO()
         template_image.save(buffer, format=FORMAT_IMAGE, quality=90)
         return buffer
