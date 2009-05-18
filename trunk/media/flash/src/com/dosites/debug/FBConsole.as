@@ -55,7 +55,7 @@ package com.dosites.debug {
 		public static function FBwrite(mess:String="",consLevel:String="log"):void {
 			if(isFBConsole()){
 				ExternalInterface.call( "console."+consLevel , mess);
-				}
+			}
 		}
 
 	}
