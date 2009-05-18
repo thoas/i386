@@ -1,8 +1,5 @@
 package
 {
-	import com.dosites.debug.FBConsole;
-	import com.dosites.debug.FPSMeter;
-	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -12,6 +9,8 @@ package
 	import grid.GridModel;
 	import grid.GridView;
 	import grid.square.SquareFormEvent;
+	
+	import nl.demonsters.debugger.MonsterDebugger;
 	
 	import utils.Fullscreen;
 	import utils.MemoryIndicator;
@@ -28,8 +27,8 @@ package
 		
 		public function Issue(issueId:int = 0)
 		{
-			//new FBConsole();
-			//new FPSMeter(stage);
+			var debugger:MonsterDebugger = new MonsterDebugger(this);
+			MonsterDebugger.trace(this, "Hello World!");
 			
 			stage.align = StageAlign.TOP_LEFT;
         	stage.scaleMode = StageScaleMode.NO_SCALE;
