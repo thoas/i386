@@ -64,6 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'misc.middleware.FormatMiddleware'
 )
 
 #CACHE_ROOT = join(PROJECT_ROOT, 'cache')
@@ -179,3 +180,5 @@ DEFAULT_INVITATION_FIRST_NAME = 'Anonymous'
 DEFAULT_INVITATION_LAST_NAME = 'Anonymous'
 
 ALLOWED_EXTENSIONS = ('image/jpeg', 'image/tiff')
+
+FORMAT_STRING = 'format'

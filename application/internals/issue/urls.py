@@ -6,6 +6,7 @@ urlpatterns = patterns('issue.gateway',
 )
 
 urlpatterns += patterns('issue.views',
-    url(r'^$', 'issues', name='issue_list'),
+    url(r'issues.(?P<format>xml|json|html)$', 'issues', {'template_name': 'issues.html'}, name='issue_list'),
+    url(r'^$', 'issues', {'format': 'html', 'template_name': 'issues.html'}, name='issue_list'),
     url(r'^(?P<slug>[\w]+)/$', 'issue', name='issue'),
 )
