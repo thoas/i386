@@ -1,3 +1,5 @@
+from xml.dom.minidom import Document
+
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.conf import settings
@@ -5,25 +7,38 @@ from django.core.exceptions import ImproperlyConfigured
 
 _inbox_count_sources = None
 
-def inbox_count_sources():
-    global _inbox_count_sources
-    if _inbox_count_sources is None:
-        sources = []
-        for path in settings.COMBINED_INBOX_COUNT_SOURCES:
-            i = path.rfind('.')
-            module, attr = path[:i], path[i+1:]
-            try:
-                mod = __import__(module, {}, {}, [attr])
-            except ImportError, e:
-                raise ImproperlyConfigured('Error importing request processor module %s: "%s"' % (module, e))
-            try:
-                func = getattr(mod, attr)
-            except AttributeError:
-                raise ImproperlyConfigured('Module "%s" does not define a "%s" callable request processor' % (module, attr))
-            sources.append(func)
-        _inbox_count_sources = tuple(sources)
-    return _inbox_count_sources
+class DictToXml(Document):
+    """docstring for DictToXml"""
+    def __init__(self, arg):
+        Document.__init__(self)
+        self.arg = arg
+        self.__add_value_to_xml(self, self.arg)
 
+    @staticmethod
+    def is_scalar(v):
+        return isinstance(v, basestring) or isinstance(v, float) \
+            or isinstance(v, int) or isinstance(v, bool)
+
+    def __add_value_to_xml(self, root, v):
+        if type(v) == type({}):
+            for k, kv in v.iteritems():
+                node = self.createElement(unicode(k))
+                print node
+                root.appendChild(node)
+                vx = self.__add_value_to_xml(node, kv)
+        elif type(v) == list:
+            root.setAttribute('type', 'list')
+            for e in v:
+                li = self.createElement(root.tag)
+                root.appendChild(li)
+                li = self.__add_value_to_xml(li, e)
+                li.setAttribute('type', 'item')
+        elif DictToXml.is_scalar(v):
+            text = self.createTextNode(unicode(v))
+            root.appendChild(text)
+        else:
+            raise Exception("add_value_to_xml: unsuppoted type (%s)" % type(v))
+        return root
 
 def get_send_mail():
     """
@@ -90,11 +105,7 @@ def json_response(data, check=False):
     return HttpResponse(simplejson.dumps(uni_str(data, encode)))
 
 def xml_response(data, check=False):
-    encode = settings.DEFAULT_CHARSET
-    if check:
-        if not is_ajax_data(data):
-            raise SimpleAjaxException, 'Return data should be follow the Simple Ajax Data Format'
-    return HttpResponse(simplejson.dumps(uni_str(data, encode)))
+    return HttpResponse(DictToXml(uni_str(data)).toprettyxml("   "), mimetype='text/xml; charset=utf-8')
 
 def ajax_data(response_code, data=None, error=None, next=None, message=None):
     """if the response_code is true, then the data is set in 'data',

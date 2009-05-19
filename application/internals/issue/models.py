@@ -24,6 +24,10 @@ class Issue(models.Model):
     
     objects = IssueManager()
     
+    def values(self):
+        """docstring for values"""
+        return dict((field.name, self.__dict__.get(field.name)) for field in self._meta.fields)
+    
     def __init__(self, *args, **kwargs):
         """docstring for __init__"""
         super(Issue, self).__init__(*args, **kwargs)

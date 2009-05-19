@@ -182,3 +182,4 @@ DEFAULT_INVITATION_LAST_NAME = 'Anonymous'
 ALLOWED_EXTENSIONS = ('image/jpeg', 'image/tiff')
 
 FORMAT_STRING = 'format'
+DEFAULT_FORMAT = 'html'

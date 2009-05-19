@@ -6,7 +6,3 @@ urlpatterns = patterns('square.views',
     url(r'^template/(?P<template>[A-Za-z-\._0-9]+)/$', 'template', name='square_template'),
     url(r'^my_templates/$', 'templates', name='square_templates'),
 )
-
-urlpatterns += patterns('square.gateway',
-    url(r'^gateway/$', 'squareGateway')
-)

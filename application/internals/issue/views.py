@@ -1,3 +1,5 @@
+from pyamf.remoting.gateway.django import DjangoGateway
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.models import User
@@ -13,20 +15,20 @@ def _issues(request):
     datas = {
         'issues': Issue.objects.all()
     }
-    
+
     return datas
 
 def _issue(request, slug):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
-    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
-    squares = Square.objects.select_related().filter(issue=issue)
+    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0).values()
+    squares = Square.objects.select_related().filter(issue=issue).values()
 
-    t_squares_open = dict((square_open.coord, square_open) for square_open in squares_open)
-    t_squares = dict((square.coord, square) for square in squares)
+    t_squares_open = dict((square_open.get('coord'), square_open) for square_open in squares_open)
+    t_squares = dict((square.get('coord'), square) for square in squares)
 
     datas = {
-        'issue': issue,
+        'issue': issue.values(),
         't_squares_open': t_squares_open,
         't_squares': t_squares,
         'nb_case_x': range(issue.nb_case_x),
@@ -34,11 +36,17 @@ def _issue(request, slug):
     }
     return datas
 
-@login_required
+#@login_required
 def issues(request, format, template_name):
     return _issues(request)
 
-@login_required
-def issue(request, slug, template_name):
-    return render_to_response(template_name,\
-                _issue(request, slug), context_instance=RequestContext(request))
+#@login_required
+def issue(request, slug, format, template_name):
+    return _issue(request, slug)
+
+services = {
+    'issue.issues': _issues,
+    'issue.issue': _issue
+}
+
+issueGateway = DjangoGateway(services)
