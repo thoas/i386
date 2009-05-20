@@ -1,3 +1,5 @@
+from dateutil import tz
+
 from pyamf import register_class
 
 from django.db import models
@@ -30,8 +32,13 @@ class Issue(models.Model):
     
     def values(self):
         """docstring for values"""
-        return dict((field.name, self.__dict__.get(field.name))\
-            for field in self._meta.fields if hasattr(self._meta.fields, 'values'))
+        values = {}
+        for field in self._meta.fields:
+            if hasattr(field, 'values'):
+                values[field.name] = field.values()
+            else:
+                values[field.name] = self.__dict__.get(field.name)
+        return values
     
     def __init__(self, *args, **kwargs):
         """docstring for __init__"""

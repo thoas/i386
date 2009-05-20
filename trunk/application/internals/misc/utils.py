@@ -2,6 +2,7 @@ from xml.dom.minidom import Document
 
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.db.models.query import QuerySet
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
@@ -102,18 +103,11 @@ def json_response(data, check=False):
     if check:
         if not is_ajax_data(data):
             raise SimpleAjaxException, 'Return data should be follow the Simple Ajax Data Format'
-    return HttpResponse(simplejson.dumps(uni_str(data, encode)))
+    data = uni_str(data, encode)
+    return HttpResponse(simplejson.dumps(data))
 
 def xml_response(data):
     return HttpResponse(DictToXml(uni_str(data)).toprettyxml("   "), mimetype='text/xml; charset=utf-8')
-
-def amf_response(data):
-    """docstring for amf_response"""
-    formatted_data = {}
-    for key, value in data.items():
-        formatted_data[key] = value.values() if hasattr(value, 'values') else value
-    print formatted_data
-    return formatted_data
 
 def ajax_data(response_code, data=None, error=None, next=None, message=None):
     """if the response_code is true, then the data is set in 'data',
@@ -148,7 +142,7 @@ def is_ajax_data(data):
 def uni_str(a, encoding=None):
     if not encoding:
         encoding = settings.DEFAULT_CHARSET
-    if isinstance(a, (list, tuple)):
+    if isinstance(a, (list, tuple, QuerySet)):
         s = []
         for i, k in enumerate(a):
             s.append(uni_str(k, encoding))
@@ -163,6 +157,8 @@ def uni_str(a, encoding=None):
         return a
     elif isinstance(a, (int, float)):
         return a
+    elif hasattr(a, 'values'):
+        return a.values()
     elif isinstance(a, str) or (hasattr(a, '__str__') and callable(getattr(a, '__str__'))):
         if getattr(a, '__str__'):
             a = str(a)
