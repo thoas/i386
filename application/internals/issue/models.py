@@ -18,6 +18,8 @@ class Issue(models.Model):
     nb_step = models.IntegerField(_('nb_step'), default=settings.DEFAULT_NB_STEP)
     size = models.IntegerField(_('size'), default=settings.DEFAULT_SIZE)
     margin = models.IntegerField(_('margin'), default=settings.DEFAULT_MARGIN)
+    
+    # DateField makes an error on pyamf
     date_created = models.DateTimeField(_('date_creation'), auto_now_add=True)
     date_finished = models.DateTimeField(_('date_finished'), blank=True, null=True)
     max_participation = models.IntegerField(_('max_participation'),\
