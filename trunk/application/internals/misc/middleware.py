@@ -37,7 +37,7 @@ class FormatMiddleware(object):
                 request.POST._mutable = old
                 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        self.format = view_kwargs.get('format', '')
+        self.format = view_kwargs.get('format', settings.DEFAULT_FORMAT)
         self.template_name = view_kwargs.get('template_name', '')
     
     def process_response(self, request, response):

@@ -1,3 +1,5 @@
+from pyamf import register_class
+
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -26,7 +28,8 @@ class Issue(models.Model):
     
     def values(self):
         """docstring for values"""
-        return dict((field.name, self.__dict__.get(field.name)) for field in self._meta.fields)
+        return dict((field.name, self.__dict__.get(field.name))\
+            for field in self._meta.fields if hasattr(self._meta.fields, 'values'))
     
     def __init__(self, *args, **kwargs):
         """docstring for __init__"""
@@ -79,3 +82,5 @@ class Issue(models.Model):
     def get_absolute_url(self):
         """docstring for get_absolute_url"""
         return ('issue.views.issue', [str(self.slug)])
+
+register_class(Issue, 'issue.models.Issue')

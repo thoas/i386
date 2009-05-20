@@ -1,3 +1,6 @@
+from pyamf import register_class
+from pyamf.remoting.gateway.django import DjangoGateway
+
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -8,6 +11,7 @@ from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 from account.models import Invitation
 from account.forms import SignupForm, AddEmailForm, LoginForm, \
@@ -15,30 +19,40 @@ from account.forms import SignupForm, AddEmailForm, LoginForm, \
         ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
-def login(request, form_class=LoginForm, template_name='login.html'):
+def _login(request, username=None, password=None, remember=None):
     if request.method == 'POST':
-        default_redirect_to = getattr(settings, 'LOGIN_REDIRECT_URLNAME', None) 
-        if default_redirect_to:
-            default_redirect_to = reverse(default_redirect_to)
-        else:
-            default_redirect_to = settings.LOGIN_REDIRECT_URL
-        redirect_to = request.REQUEST.get('next')
-        # light security check -- make sure redirect_to isn't garabage.
-        if not redirect_to or '://' in redirect_to or ' ' in redirect_to:
-            redirect_to = default_redirect_to
-        form = form_class(request.POST)
-        if form.login(request):
-            return HttpResponseRedirect(redirect_to)
-    else:
-        form = form_class()
-    return render_to_response(template_name, {
-        'form': form,
-    }, context_instance=RequestContext(request))
+        datas = request.POST.copy()
 
-def signup(request, confirmation_key='', form_class=SignupForm,
-        template_name='signup.html', success_url=None):
-    if success_url is None:
-        success_url = reverse('what_next')
+        if not username is None:
+            datas['username'] = username
+        if not password is None:
+            datas['password'] = password
+        if not remember is None:
+            datas['remember'] = remember
+        form = LoginForm(datas)
+        return form.login(request)
+    return LoginForm()
+
+def login(request, template_name):
+    default_redirect_to = getattr(settings, 'LOGIN_REDIRECT_URLNAME', None) 
+    if default_redirect_to:
+        default_redirect_to = reverse(default_redirect_to)
+    else:
+        default_redirect_to = settings.LOGIN_REDIRECT_URL
+    redirect_to = request.REQUEST.get('next')
+    # light security check -- make sure redirect_to isn't garabage.
+    if not redirect_to or '://' in redirect_to or ' ' in redirect_to:
+        redirect_to = default_redirect_to
+
+    result = _login(request)
+    if isinstance(result, LoginForm):
+        return dict({'form': result})
+    return HttpResponseRedirect(redirect_to)
+
+def _signup(request, confirmation_key):
+    pass
+
+def signup(request, confirmation_key, template_name, form_class=SignupForm):
     if request.method == 'POST':
         form = form_class(request.POST)
         if form.is_valid():
@@ -47,7 +61,7 @@ def signup(request, confirmation_key='', form_class=SignupForm,
             auth_login(request, user)
             request.user.message_set.create(message=_('Successfully logged in as %(username)s.') 
                 % {'username': user.username})
-            return HttpResponseRedirect(success_url)
+            return HttpResponseRedirect(reverse('what_next'))
     else:
         initial = {'confirmation_key': confirmation_key}
         try:
@@ -78,8 +92,7 @@ def password_reset(request, form_class=ResetPasswordForm,
     }, context_instance=RequestContext(request))
 
 @login_required
-def email(request, form_class=AddEmailForm,
-        template_name='email.html'):
+def email(request, template_name, form_class=AddEmailForm):
     if request.method == 'POST' and request.user.is_authenticated():
         if request.POST['action'] == 'add':
             add_email_form = form_class(request.user, request.POST)
@@ -115,8 +128,7 @@ def email(request, form_class=AddEmailForm,
     }, context_instance=RequestContext(request))
 
 @login_required
-def password_change(request, form_class=ChangePasswordForm,
-        template_name='password_change.html'):
+def password_change(request, template_name, form_class=ChangePasswordForm):
     if request.method == 'POST':
         password_change_form = form_class(request.user, request.POST)
         if password_change_form.is_valid():
@@ -129,8 +141,7 @@ def password_change(request, form_class=ChangePasswordForm,
     }, context_instance=RequestContext(request))
 
 @login_required
-def timezone_change(request, form_class=ChangeTimezoneForm,
-        template_name='timezone_change.html'):
+def timezone_change(request, template_name, form_class=ChangeTimezoneForm):
     if request.method == 'POST':
         form = form_class(request.user, request.POST)
         if form.is_valid():
@@ -142,8 +153,7 @@ def timezone_change(request, form_class=ChangeTimezoneForm,
     }, context_instance=RequestContext(request))
 
 @login_required
-def language_change(request, form_class=ChangeLanguageForm,
-        template_name='language_change.html'):
+def language_change(request, template_name, form_class=ChangeLanguageForm):
     if request.method == 'POST':
         form = form_class(request.user, request.POST)
         if form.is_valid():
@@ -157,8 +167,7 @@ def language_change(request, form_class=ChangeLanguageForm,
     }, context_instance=RequestContext(request))
 
 @login_required
-def invitations(request, confirmation_key='', form_class=InvitationForm,
-        template_name='invitations.html'):
+def invitations(request, template_name, confirmation_key, form_class=InvitationForm):
     
     user = request.user
     remain_invitation = user.get_profile().remain_invitation()
@@ -207,3 +216,12 @@ def invitations(request, confirmation_key='', form_class=InvitationForm,
         'unused_invitations': unused_invitations,
         'users_invited': users_invited,
     }, context_instance=RequestContext(request))
+
+try:
+    register_class(User, 'django.contrib.auth.models.User')
+except ValueError:
+    print "Classes already registered"
+
+accountGateway = DjangoGateway({
+    'account.login': _login,
+})

@@ -1,3 +1,4 @@
+from pyamf import register_class
 from pyamf.remoting.gateway.django import DjangoGateway
 
 from django.shortcuts import render_to_response, get_object_or_404
@@ -8,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
 from issue.models import Issue
+from account.models import Account
 from square.models import Square, SquareOpen
 
 def _issues(request):
@@ -21,19 +23,20 @@ def _issues(request):
 def _issue(request, slug):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
-    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0).values()
-    squares = Square.objects.select_related().filter(issue=issue).values()
-
-    t_squares_open = dict((square_open.get('coord'), square_open) for square_open in squares_open)
-    t_squares = dict((square.get('coord'), square) for square in squares)
+    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
+    squares = Square.objects.select_related().filter(issue=issue)
+    
+    t_squares_open = dict((square_open.coord, square_open) for square_open in squares_open)
+    t_squares = dict((square.coord, square) for square in squares)
 
     datas = {
-        'issue': issue.values(),
+        'issue': issue,
         't_squares_open': t_squares_open,
         't_squares': t_squares,
         'nb_case_x': range(issue.nb_case_x),
         'nb_case_y': range(issue.nb_case_y)
     }
+    
     return datas
 
 #@login_required

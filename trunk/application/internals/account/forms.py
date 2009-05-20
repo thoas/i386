@@ -41,8 +41,8 @@ class LoginForm(forms.Form):
                 request.session.set_expiry(60 * 60 * 24 * 7 * 3)
             else:
                 request.session.set_expiry(0)
-            return True
-        return False
+            return self.user
+        return self
 
 
 class SignupForm(forms.Form):
