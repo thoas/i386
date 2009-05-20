@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
 from issue.models import Issue
-from account.models import Account
 from square.models import Square, SquareOpen
 
 def _issues(request):
@@ -17,14 +16,14 @@ def _issues(request):
     datas = {
         'issues': Issue.objects.all()
     }
-
+    
     return datas
 
 def _issue(request, slug):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
-    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
-    squares = Square.objects.select_related().filter(issue=issue)
+    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=1)
+    squares = Square.objects.filter(issue=issue)
     
     t_squares_open = dict((square_open.coord, square_open) for square_open in squares_open)
     t_squares = dict((square.coord, square) for square in squares)

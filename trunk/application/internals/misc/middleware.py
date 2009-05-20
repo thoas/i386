@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponse
-from misc.utils import json_response, xml_response
+from misc.utils import json_response, xml_response, amf_response
 from django.conf import settings
 
 
@@ -10,13 +10,19 @@ class SortOrderMiddleware(object):
         request.sort_order = request.GET.get('sort_order')
 
 class FormatMiddleware(object):
+    FORMAT = {
+        #'application/x-amf': 'amf',
+        'application/x-json': 'json',
+        'application/xml': 'xml',
+        'text/plain': 'html'
+    }
     def process_request(self, request):
         format_string = getattr(settings, 'FORMAT_STRING', 'format')
-        format = request.GET.get(format_string, None)
+        format = request.GET.get(format_string, self.FORMAT.get(request.META.get('CONTENT_TYPE')))
         if format:
-            self.format = format.lower() #could be "json", "xmlrpc", etc
+            self.format = format.lower()
         else:
-            self.format = getattr(settings, 'DEFAULT_FORMAT', 'json')
+            self.format = getattr(settings, 'DEFAULT_FORMAT', 'html')
         if self.format == 'xmlrpc':
             import xmlrpclib
             p, u = xmlrpclib.getparser()
@@ -35,12 +41,13 @@ class FormatMiddleware(object):
                 for k, v in args.items():
                     request.POST[k] = v
                 request.POST._mutable = old
-                
+    
     def process_view(self, request, view_func, view_args, view_kwargs):
-        self.format = view_kwargs.get('format', settings.DEFAULT_FORMAT)
+        self.format = view_kwargs.get('format', self.format)
         self.template_name = view_kwargs.get('template_name', '')
     
     def process_response(self, request, response):
+        print response
         if isinstance(response, HttpResponse):
             return response
         elif self.format == 'json':

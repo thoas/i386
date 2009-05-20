@@ -104,8 +104,16 @@ def json_response(data, check=False):
             raise SimpleAjaxException, 'Return data should be follow the Simple Ajax Data Format'
     return HttpResponse(simplejson.dumps(uni_str(data, encode)))
 
-def xml_response(data, check=False):
+def xml_response(data):
     return HttpResponse(DictToXml(uni_str(data)).toprettyxml("   "), mimetype='text/xml; charset=utf-8')
+
+def amf_response(data):
+    """docstring for amf_response"""
+    formatted_data = {}
+    for key, value in data.items():
+        formatted_data[key] = value.values() if hasattr(value, 'values') else value
+    print formatted_data
+    return formatted_data
 
 def ajax_data(response_code, data=None, error=None, next=None, message=None):
     """if the response_code is true, then the data is set in 'data',
