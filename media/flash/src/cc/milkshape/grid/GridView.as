@@ -35,12 +35,30 @@ package cc.milkshape.grid
 			_model = model;
 			
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
+			addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
 		}
 		
 		private function _handlerAddedToStage(e:Event):void
 		{			
 			_model.addEventListener(GridEvent.INFO_READY, _handlerGridInfoReady);
 			_controller.getGridInfo();
+		}
+		
+		private function _handlerRemovedFromStage(e:Event):void
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
+			removeEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
+			removeEventListener(MouseEvent.CLICK, _controller.clickHandler);
+			removeEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
+			stage.removeEventListener(Event.RESIZE, _resize);			
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
+			stage.removeEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
+			_model.removeEventListener(GridEvent.INFO_READY, _handlerGridInfoReady);
+			_model.removeEventListener(SquareEvent.CREATION, _addSquare);
+			_model.removeEventListener(GridEvent.READY, _handlerGridReady);
+			_model.removeEventListener(GridFocusEvent.FOCUS, _squarePutFocus);
+			_model.removeEventListener(GridMoveEvent.MOVE, _moveTo);
+			_model.removeEventListener(GridZoomEvent.ZOOM, _zoomTo);
 		}
 		
 		private function _handlerGridInfoReady(e:GridEvent):void

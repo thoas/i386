@@ -21,6 +21,16 @@ package cc.milkshape.preloader
             addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 		}
 		
+		public function unloadMedia():void
+		{
+			_loader.unload();
+		}
+		
+		public function loadMedia(url:String):void
+		{
+			_loader.load(new URLRequest(url));
+		}
+		
 		private function _handlerAddedToStage(e:Event):void
 		{
 			_loader = new Loader();
@@ -28,8 +38,8 @@ package cc.milkshape.preloader
 			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, _progressHandler);
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
             _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
-            _loader.load(new URLRequest(_url));
             
+            loadMedia(_url);            
             _sprite = new Sprite();
 		}
         
