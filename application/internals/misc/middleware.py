@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponse
-from misc.utils import json_response, xml_response, amf_response
+from misc.utils import json_response, xml_response
 from django.conf import settings
 
 
@@ -11,7 +11,7 @@ class SortOrderMiddleware(object):
 
 class FormatMiddleware(object):
     FORMAT = {
-        #'application/x-amf': 'amf',
+        'application/x-amf': 'amf',
         'application/x-json': 'json',
         'application/xml': 'xml',
         'text/plain': 'html'
@@ -33,7 +33,8 @@ class FormatMiddleware(object):
             if len(args) > 0:
                 args = args[0]
                 if not isinstance(args, dict):
-                    xml = xmlrpclib.dumps(xmlrpclib.Fault(-32400, 'system error: %s' % 'Arguments should be a dict'), methodresponse=1)
+                    xml = xmlrpclib.dumps(xmlrpclib.Fault(-32400, 'system error: %s'\
+                        % 'Arguments should be a dict'), methodresponse=1)
                     return HttpResponse(xml, mimetype='text/xml; charset=utf-8')
 
                 old = request.POST._mutable
