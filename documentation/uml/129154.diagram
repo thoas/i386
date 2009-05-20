@@ -32,6 +32,7 @@ usecasecanvas 129154 usecase_ref 128642 // Envoyer une invitation
   xyzwh 636 855 3005 120 43 label_xy 642 868
 end
 usecasecanvas 129282 usecase_ref 128770 // Réserver une case
+  color mediumblue
   xyzwh 419 392 3005 106 45 label_xy 424 407
 end
 usecasecanvas 129410 usecase_ref 128898 // Envoyer une notification (contact)
@@ -39,6 +40,7 @@ usecasecanvas 129410 usecase_ref 128898 // Envoyer une notification (contact)
   xyzwh 38 304 3005 177 42 label_xy 43 316
 end
 usecasecanvas 129666 usecase_ref 129154 // Transférer un travail
+  color mediumblue
   xyzwh 538 959 3005 110 39 label_xy 539 970
 end
 usecasecanvas 129794 usecase_ref 129282 // Mettre le site en plein écran
@@ -92,9 +94,6 @@ subject 138370 "Zone d'échange"
   color lightgray  xyzwh 404 463 2000 205 182
 subject 141314 "Gestion des créations"
   color verylightgray  xyzwh 307 779 2000 296 169
-usecasecanvas 141570 usecase_ref 131714 // Supprimer une création
-  xyzwh 458 896 3005 125 40 label_xy 463 907
-end
 usecasecanvas 141698 usecase_ref 131842 // S'abonner au flux des créations
   xyzwh 303 3 3005 175 40 label_xy 311 14
 end
@@ -102,6 +101,7 @@ usecasecanvas 141954 usecase_ref 131970 // S'abonner au flux des artistes
   xyzwh 364 45 3010 158 39 label_xy 369 56
 end
 usecasecanvas 142210 usecase_ref 132098 // Télécharger le template de création
+  color mediumblue
   xyzwh 453 1043 3005 189 39 label_xy 460 1054
 end
 usecasecanvas 142466 usecase_ref 132226 // Voir la liste des participants
@@ -109,6 +109,7 @@ usecasecanvas 142466 usecase_ref 132226 // Voir la liste des participants
   xyzwh 408 692 3005 149 44 label_xy 417 705
 end
 usecasecanvas 143106 usecase_ref 132354 // Transférer une création
+  color mediumblue
   xyzwh 310 895 3005 125 40 label_xy 313 906
 end
 usecasecanvas 143618 usecase_ref 132482 // Télécharger la création du jour
@@ -219,9 +220,6 @@ line 142594 ----
 simplerelationcanvas 142722 simplerelation_ref 130690
   from ref 142466 z 3004 stereotype "<<include>>" xyz 599 663 3000 to point 667 638
   line 142850 z 3004 to ref 128770
-end
-simplerelationcanvas 143362 simplerelation_ref 130818
-  from ref 141570 z 3004 stereotype "<<extend>>" xyz 419 867 3000 to ref 128514
 end
 simplerelationcanvas 143490 simplerelation_ref 130946
   from ref 143106 z 3004 stereotype "<<extend>>" xyz 344 866 3000 to ref 128514
