@@ -47,7 +47,6 @@ class FormatMiddleware(object):
         self.template_name = view_kwargs.get('template_name', '')
     
     def process_response(self, request, response):
-        print response
         if isinstance(response, HttpResponse):
             return response
         elif self.format == 'json':

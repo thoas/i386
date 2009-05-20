@@ -22,8 +22,8 @@ def _issues(request):
 def _issue(request, slug):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
-    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=1)
-    squares = Square.objects.filter(issue=issue)
+    squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
+    squares = Square.objects.select_related().filter(issue=issue)
     
     t_squares_open = dict((square_open.coord, square_open) for square_open in squares_open)
     t_squares = dict((square.coord, square) for square in squares)
@@ -36,6 +36,7 @@ def _issue(request, slug):
         'nb_case_y': range(issue.nb_case_y)
     }
     
+    print datas
     return datas
 
 #@login_required
