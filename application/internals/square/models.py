@@ -74,8 +74,8 @@ def get_filename(instance, filename):
 
 class Square(AbstractSquare):
     background_image = models.ImageField(upload_to=get_filename, blank=True, null=True)
-    date_booked = models.DateField(_('date_booked'), blank=True, null=True)
-    date_finished = models.DateField(_('date_finished'), blank=True, null=True)
+    date_booked = models.DateTimeField(_('date_booked'), blank=True, null=True)
+    date_finished = models.DateTimeField(_('date_finished'), blank=True, null=True)
     # 1 : full | 0 : booked
     status = models.BooleanField(_('status'), default=0)
 
@@ -344,7 +344,7 @@ class Square(AbstractSquare):
         return self._steps
 
 class SquareOpen(AbstractSquare):
-    date_created = models.DateField(_('date_created'), auto_now_add=True)
+    date_created = models.DateTimeField(_('date_created'), auto_now_add=True)
 
     # 0 : can be booked ; 1 : a square has been booked next to
     is_standby = models.BooleanField(_('is_standby'), default=settings.DEFAULT_IS_STANDBY)

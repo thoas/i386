@@ -17,7 +17,7 @@ class Profile(models.Model):
                                         default=settings.DEFAULT_NB_INVITATION)
     max_participation = models.IntegerField(_('max_participation'), 
                                             default=settings.DEFAULT_MAX_PARTICIPATION)
-    last_updated = models.DateField(_('last_updated'), auto_now_add=True)
+    last_updated = models.DateTimeField(_('last_updated'), auto_now_add=True)
     
     def __unicode__(self):
         return self.user.username

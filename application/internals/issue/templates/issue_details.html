@@ -14,11 +14,11 @@
         {% captureas coord %}({{ i }}, {{ j }}){% endcaptureas %}
         <td>
             {% if coord in t_squares_open %}
-            <a href="{% url square action="book" pos_x=i pos_y=j issue_slug=issue|get:"slug" %}">
+            <a href="{% url square action="book" pos_x=i pos_y=j issue_slug=issue.slug %}">
                 {% with t_squares|get:coord as square %}
                     <div class="opened">
-                    {% if square|get:"background_image" %}
-                        <img src="/media/upload/thumb/100_{{ square|get:"background_image" }}.png" />
+                    {% if square.background_image %}
+                        <img src="/media/upload/thumb/100_{{ square.background_image.name }}.png" />
                     {% else %}
                         {{ coord }}
                     {% endif %}
@@ -28,30 +28,30 @@
             {% else %}
                 {% if coord in t_squares %}
                     {% with t_squares|get:coord as square %}
-                        {% if square|get:"user_id" == user.id %}
-                            {% if not square|get:"status" %}
+                        {% if square.user == user %}
+                            {% if not square.status %}
                                 <div class="fill">
                                     <a href="{% url square action="fill" pos_x=i pos_y=j issue_slug=issue.slug %}">
-                                {% if square|get:"background_image" %}
+                                {% if square.background_image %}
 
-                                        <img src="/media/upload/thumb/100_{{ square|get:"background_image" }}.png" />
+                                        <img src="/media/upload/thumb/100_{{ square.background_image.name }}.png" />
                                 {% else %}
                                     {{ coord }}
                                 {% endif %}
                                 </a>
                                 </div>
                             {% else %}
-                                <img src="/media/upload/thumb/100_{{ square|get:"background_image" }}.png" />
+                                <img src="/media/upload/thumb/100_{{ square.background_image.name }}.png" />
                             {% endif %}
                         {% else %}
-                            {% if square|get:"status" %}
+                            {% if square.status %}
                             <div>
-                                <img src="/media/upload/thumb/100_{{ square|get:"background_image" }}.png" />
+                                <img src="/media/upload/thumb/100_{{ square.background_image.name }}.png" />
                             </div>
                             {% else %}
                                 <div class="disabled">
-                                {% if square|get:"background_image" %}
-                                    <img src="/media/upload/thumb/100_{{ square|get:"background_image" }}.png" />
+                                {% if square.background_image %}
+                                    <img src="/media/upload/thumb/100_{{ square.background_image.name }}.png" />
                                 {% else %}
                                     {{ coord }}
                                 {% endif %}
@@ -69,3 +69,4 @@
     {% endfor %}
 </table>
 {% endblock %}
+

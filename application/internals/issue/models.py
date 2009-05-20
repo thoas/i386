@@ -18,8 +18,8 @@ class Issue(models.Model):
     nb_step = models.IntegerField(_('nb_step'), default=settings.DEFAULT_NB_STEP)
     size = models.IntegerField(_('size'), default=settings.DEFAULT_SIZE)
     margin = models.IntegerField(_('margin'), default=settings.DEFAULT_MARGIN)
-    date_created = models.DateField(_('date_creation'), auto_now_add=True)
-    date_finished = models.DateField(_('date_finished'), blank=True, null=True)
+    date_created = models.DateTimeField(_('date_creation'), auto_now_add=True)
+    date_finished = models.DateTimeField(_('date_finished'), blank=True, null=True)
     max_participation = models.IntegerField(_('max_participation'),\
         default=settings.DEFAULT_MAX_PARTICIPATION)
     slug = models.SlugField(unique=True)
@@ -82,5 +82,3 @@ class Issue(models.Model):
     def get_absolute_url(self):
         """docstring for get_absolute_url"""
         return ('issue.views.issue', [str(self.slug)])
-
-register_class(Issue, 'issue.models.Issue')
