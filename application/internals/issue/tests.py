@@ -1,5 +1,6 @@
 import unittest
 from issue.models import Issue
+from django.core.urlresolvers import reverse
 from pyamf.remoting.client import RemotingService
 
 class IssueTestCase(unittest.TestCase):
