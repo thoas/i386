@@ -3,10 +3,10 @@ from pyamf.remoting.gateway.django import DjangoGateway
 
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from misc.views import MultiResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
+from misc.views import MultiResponse
 from issue.models import Issue
 from square.models import Square, SquareOpen
 

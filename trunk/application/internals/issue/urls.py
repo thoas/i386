@@ -9,5 +9,5 @@ urlpatterns = patterns('issue.views',
     
     url(r'^(?P<slug>[\w]+).(?P<format>[\w]{3,4})$', 'issue', {'template_name': 'issue_details.html'}, name='issue'),
     url(r'^(?P<slug>[\w]+)$', 'issue', {'format': settings.DEFAULT_FORMAT, 'template_name': 'issue_details.html'}, name='issue'),
-    url(r'^gateway/$', 'issueGateway'),
+    url(r'^gateway/$', 'issueGateway', name='issue_gateway'),
 )

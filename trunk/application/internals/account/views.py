@@ -46,7 +46,9 @@ def login(request, template_name):
 
     result = _login(request)
     if isinstance(result, LoginForm):
-        return dict({'form': result})
+        return render_to_response(template_name, {
+            'form': result,
+        }, context_instance=RequestContext(request))
     return HttpResponseRedirect(redirect_to)
 
 def _signup(request, confirmation_key):
@@ -216,11 +218,6 @@ def invitations(request, template_name, confirmation_key, form_class=InvitationF
         'unused_invitations': unused_invitations,
         'users_invited': users_invited,
     }, context_instance=RequestContext(request))
-
-try:
-    register_class(User, 'django.contrib.auth.models.User')
-except ValueError:
-    print "Classes already registered"
 
 accountGateway = DjangoGateway({
     'account.login': _login,

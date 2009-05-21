@@ -108,16 +108,16 @@ INSTALLED_APPS = (
     'ajax_validation',
     
     # internal (for now)
-    'square',
     'issue',
+    'square',
     'profiles',
     'account',
     'misc',
     
     'about',
     'survey',
-    'django.contrib.admin',
     'exchange',
+    'django.contrib.admin',
 )
 
 ABSOLUTE_URL_OVERRIDES = {

@@ -22,7 +22,7 @@ urlpatterns = patterns('account.views',
     
     #(r'^validate/$', 'ajax_validation.views.validate', {'form_class': SignupForm}, 'signup_form_validate'),
     
-    url(r'^gateway/$', 'accountGateway'),
+    url(r'^gateway/$', 'accountGateway', name='account_gateway'),
 )
 
 urlpatterns += patterns('',
