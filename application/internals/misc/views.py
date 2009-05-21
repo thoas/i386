@@ -13,7 +13,8 @@ from django.template import RequestContext
 
 
 class MultiResponse(object):
-    def __init__(self, template_mapping={}, allowed_format=settings.ALLOWED_FORMAT, auto_render=True, request_context=True):
+    def __init__(self, template_mapping={}, allowed_format=settings.ALLOWED_FORMAT,\
+                 auto_render=True, request_context=True):
         self.template_mapping = template_mapping
         self.request_context = request_context
         self.allowed_format = allowed_format
@@ -30,7 +31,8 @@ class MultiResponse(object):
             
             if self.template_mapping.has_key(content_type):
                 template_name = self.template_mapping.get(content_type)
-            elif kwargs.has_key(settings.FORMAT_STRING) and kwargs.get(settings.FORMAT_STRING) in self.allowed_format:
+            elif kwargs.has_key(settings.FORMAT_STRING) and \
+                 kwargs.get(settings.FORMAT_STRING) in self.allowed_format:
                 format = kwargs.get(settings.FORMAT_STRING)
                 template_name = '%s.%s' % (view_func.__name__, format)
                 content_type = settings.ALLOWED_FORMAT.get(format)

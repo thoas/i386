@@ -4,8 +4,8 @@ from os.path import abspath, dirname, join
 from site import addsitedir
 
 PROJECT_ROOT = abspath(dirname(__file__)) + '/..'
-LIB_ROOT = join(PROJECT_ROOT, "libs")
-LIB_EXTERNAL_ROOT = join(LIB_ROOT, "externals")
+LIB_ROOT = join(PROJECT_ROOT, 'libs')
+LIB_EXTERNAL_ROOT = join(LIB_ROOT, 'externals')
 APPLICATION_ROOT = join(PROJECT_ROOT, 'application')
 
 
