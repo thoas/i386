@@ -1,10 +1,9 @@
 from pyamf import register_class
 from pyamf.remoting.gateway.django import DjangoGateway
 
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseForbidden
+from misc.views import MultiResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
@@ -39,10 +38,12 @@ def _issue(request, slug):
     return datas
 
 #@login_required
+@MultiResponse()
 def issues(request, format, template_name):
     return _issues(request)
 
 #@login_required
+@MultiResponse()
 def issue(request, slug, format, template_name):
     return _issue(request, slug)
 

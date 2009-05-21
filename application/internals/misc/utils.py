@@ -1,7 +1,9 @@
 from xml.dom.minidom import Document
 
 from django.http import HttpResponse
+from django.core.serializers import json, serialize
 from django.utils import simplejson
+from django.core import serializers
 from django.db.models.query import QuerySet
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -103,7 +105,6 @@ def json_response(data, check=False):
     if check:
         if not is_ajax_data(data):
             raise SimpleAjaxException, 'Return data should be follow the Simple Ajax Data Format'
-    data = uni_str(data, encode)
     return HttpResponse(simplejson.dumps(data))
 
 def xml_response(data):
@@ -142,7 +143,7 @@ def is_ajax_data(data):
 def uni_str(a, encoding=None):
     if not encoding:
         encoding = settings.DEFAULT_CHARSET
-    if isinstance(a, (list, tuple, QuerySet)):
+    if isinstance(a, (list, tuple)):
         s = []
         for i, k in enumerate(a):
             s.append(uni_str(k, encoding))
@@ -157,11 +158,14 @@ def uni_str(a, encoding=None):
         return a
     elif isinstance(a, (int, float)):
         return a
-    elif hasattr(a, 'values'):
-        return a.values()
+    elif isinstance(a, QuerySet):
+        json_serializer = serializers.get_serializer("json")()
+        serialized = json_serializer.serialize(a, ensure_ascii=False)
+        return serialized
     elif isinstance(a, str) or (hasattr(a, '__str__') and callable(getattr(a, '__str__'))):
         if getattr(a, '__str__'):
             a = str(a)
+        print a
         return unicode(a, encoding)
     else:
         return a
