@@ -64,7 +64,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
-    'misc.middleware.FormatMiddleware'
 )
 
 #CACHE_ROOT = join(PROJECT_ROOT, 'cache')
@@ -179,7 +178,12 @@ DEFAULT_NB_STEP = 6
 DEFAULT_INVITATION_FIRST_NAME = 'Anonymous'
 DEFAULT_INVITATION_LAST_NAME = 'Anonymous'
 
-ALLOWED_EXTENSIONS = ('image/jpeg', 'image/tiff')
-
+DEFAULT_MIMETYPE = 'text/html'
 FORMAT_STRING = 'format'
 DEFAULT_FORMAT = 'html'
+ALLOWED_EXTENSIONS = ('image/jpeg', 'image/tiff')
+ALLOWED_FORMAT = {
+    'json': 'applicaiton/json',
+    'xml': 'applicaiton/xml',
+    DEFAULT_FORMAT: DEFAULT_MIMETYPE
+}
