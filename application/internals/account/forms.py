@@ -1,5 +1,7 @@
 import re
 
+from pyamf import register_class
+
 from django import forms
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -42,8 +44,7 @@ class LoginForm(forms.Form):
             else:
                 request.session.set_expiry(0)
             return self.user
-        return self
-
+        return None
 
 class SignupForm(forms.Form):
 
