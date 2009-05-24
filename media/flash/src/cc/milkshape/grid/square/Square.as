@@ -25,17 +25,12 @@
 			graphics.drawRect(0, 0, size, size);
 			graphics.endFill();
 			
-			
 			addEventListener(FocusEvent.FOCUS_IN, _focusIn);
 			addEventListener(FocusEvent.FOCUS_OUT, _focusOut);
 			addEventListener(MouseEvent.ROLL_OVER, _rollOver);
 			
 			SquareManager.add(this);
 		}
-		
-		public function get X():int { return _x };
-		
-		public function get Y():int { return _y };
 		
 		private function _focusIn(e:Event):void
 		{
@@ -44,15 +39,19 @@
 			//trace("tabIndex : "+ tabIndex + " pos : "+_x + ";" + _y);
 		}
 		
-		private function _focusOut(e:Event):void
+		private function _focusOut(e:FocusEvent):void
 		{
 			alpha = 0.8;
 		}
 		
-		private function _rollOver(e:Event):void
+		private function _rollOver(e:MouseEvent):void
 		{
 			dispatchEvent(new SquareEvent(SquareEvent.OVER, this));			
 		}
+		
+		public function get X():int { return _x };
+		
+		public function get Y():int { return _y };
 		
 	}
 	

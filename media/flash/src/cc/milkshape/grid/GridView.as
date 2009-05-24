@@ -1,6 +1,10 @@
 package cc.milkshape.grid
 {
+	import cc.milkshape.grid.square.*;
+	import cc.milkshape.utils.Constance;
+	
 	import com.gskinner.motion.GTween;
+	
 	import fl.motion.easing.Sine;
 	
 	import flash.display.Sprite;
@@ -8,9 +12,7 @@ package cc.milkshape.grid
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	
-	import cc.milkshape.grid.square.*
-	
-	import cc.milkshape.utils.Constance;
+	import flash.ui.Mouse;
 	
 	public class GridView extends Sprite
 	{
@@ -25,6 +27,7 @@ package cc.milkshape.grid
 		private var _nbHSquare:int;// Nombre de carrés à l'horizontal
 		private var _nbVSquare:int;// Nombre de carrés à la vertical
 		private var _layerSquare:Sprite;// Le calque qui contient les squares
+		private var _gridLine:GridLine;
 		
 		public function GridView(model:GridModel, controller:GridController)
 		{
@@ -48,17 +51,22 @@ package cc.milkshape.grid
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 			removeEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
+			stage.removeEventListener(Event.RESIZE, _resize);
+			
 			removeEventListener(MouseEvent.CLICK, _controller.clickHandler);
 			removeEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
-			stage.removeEventListener(Event.RESIZE, _resize);			
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
 			stage.removeEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
-			_model.removeEventListener(GridEvent.INFO_READY, _handlerGridInfoReady);
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
+
 			_model.removeEventListener(SquareEvent.CREATION, _addSquare);
+			
+			_model.removeEventListener(GridEvent.INFO_READY, _handlerGridInfoReady);
 			_model.removeEventListener(GridEvent.READY, _handlerGridReady);
 			_model.removeEventListener(GridFocusEvent.FOCUS, _squarePutFocus);
 			_model.removeEventListener(GridMoveEvent.MOVE, _moveTo);
 			_model.removeEventListener(GridZoomEvent.ZOOM, _zoomTo);
+			_model.removeEventListener(GridLineEvent.SHOW, _showGridLine);
+			_model.removeEventListener(GridLineEvent.HIDE, _hideGridLine);
 		}
 		
 		private function _handlerGridInfoReady(e:GridEvent):void
@@ -84,8 +92,11 @@ package cc.milkshape.grid
 		}
 		
 		private function _handlerGridReady(e:GridEvent):void
-		{            
-			_layerSquare.addChild(new GridLine(_nbHSquare, _nbVSquare, _squareSize, _lineColor));
+		{
+			_gridLine = new GridLine(_nbHSquare, _nbVSquare, _squareSize, _lineColor);
+			_layerSquare.addChild(_gridLine);
+			_model.addEventListener(GridLineEvent.SHOW, _showGridLine);
+			_model.addEventListener(GridLineEvent.HIDE, _hideGridLine);
 			
 			width = Constance.SCALE_THUMB[_minScale] * _nbHSquare;
 			scaleY = scaleX;
@@ -97,9 +108,10 @@ package cc.milkshape.grid
 			addEventListener(MouseEvent.CLICK, _controller.clickHandler);
 			addEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
+			stage.addEventListener(KeyboardEvent.KEY_UP, _controller.keyUpHandler);
 			stage.addEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
 			stage.addEventListener(Event.RESIZE, _resize);
-			
+
 			_resize();
 		}
 		
@@ -120,11 +132,61 @@ package cc.milkshape.grid
 			_layerSquare.addChild(square);
 		}
 		
+		private function _removeControllerEventListener():void
+		{
+			removeEventListener(MouseEvent.CLICK, _controller.clickHandler);
+			removeEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
+			stage.removeEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
+			
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, _controller.mouseDownMagnet);
+			stage.addEventListener(MouseEvent.MOUSE_UP, _controller.mouseUpMagnet);
+			addEventListener(MouseEvent.MOUSE_DOWN, _controller.mouseDownMagnet);
+			addEventListener(MouseEvent.MOUSE_UP, _controller.mouseUpMagnet);
+		}
+		
+		private function _addControllerEventListener():void
+		{
+			addEventListener(MouseEvent.CLICK, _controller.clickHandler);
+			addEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
+			
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN, _controller.mouseDownMagnet);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, _controller.mouseUpMagnet);
+			removeEventListener(MouseEvent.MOUSE_DOWN, _controller.mouseDownMagnet);
+			removeEventListener(MouseEvent.MOUSE_UP, _controller.mouseUpMagnet);
+		}
+		
+		private function _hideGridLine(e:GridLineEvent):void
+		{
+			Mouse.hide();
+			_removeControllerEventListener();
+			new GTween(
+				_gridLine, 
+				_speed * 0.0005, {
+				alpha: 0 }, {
+				ease:Sine.easeOut}
+			);
+		}
+		
+		private function _showGridLine(e:GridLineEvent):void
+		{
+			Mouse.show();
+			_addControllerEventListener();
+			new GTween(
+				_gridLine, 
+				_speed * 0.0005, {
+				alpha: 1 }, {
+				ease:Sine.easeOut}
+			);
+		}
+		
 		private function _zoomTo(e:GridZoomEvent):void
 		{
 			new GTween(
 				this, 
-				_speed/1000, {
+				_speed * 0.001, {
 				width: Constance.SCALE_THUMB[e.currentScale] * _nbHSquare,
 				height: Constance.SCALE_THUMB[e.currentScale] * _nbVSquare }, {
 				ease:Sine.easeOut}
@@ -135,7 +197,7 @@ package cc.milkshape.grid
 		{
 			new GTween(
 				this, 
-				_speed/1000, {
+				_speed * 0.001, {
 				x: Math.round(stage.stageWidth / 2 - e.decalX),
 				y: Math.round(stage.stageHeight / 2 - e.decalY) }, {
 				ease:Sine.easeOut}
