@@ -1,5 +1,10 @@
 package cc.milkshape.grid
 {
+	import cc.milkshape.grid.square.*;
+	import cc.milkshape.manager.KeyboardManager;
+	import cc.milkshape.manager.SoundManager;
+	import cc.milkshape.utils.Constance;
+	
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -13,9 +18,6 @@ package cc.milkshape.grid
 	import flash.net.URLRequest;
 	import flash.ui.Keyboard;
 	
-	import cc.milkshape.grid.square.*;	
-	import cc.milkshape.utils.Constance;
-	
 	public class GridController
 	{
 		private var _gateway:NetConnection;
@@ -26,9 +28,19 @@ package cc.milkshape.grid
 		private var _isShowForm:Boolean;
 		private var _loader:Loader;
 		private var _listLayers:Array;
+		private var _clickEnabled:Boolean;
+		private var _soundSquareFocus:SoundSquareFocus;
+		private var _pointClickX:int;
+		private var _pointClickY:int;
 		
 		public function GridController(gridModel:GridModel)
 		{
+			_pointClickX = 0;
+			_pointClickY = 0;
+			
+			SoundManager.getInstance().addLibrarySound(SoundSquareFocus, "SoundSquareFocus");
+			//_soundSquareFocus = new SoundSquareFocus();
+			
 			_gateway = new NetConnection();
 			_gateway.addEventListener(NetStatusEvent.NET_STATUS, _netStatus)
 			_responder = new Responder(_onResult, _onFault);
@@ -36,6 +48,7 @@ package cc.milkshape.grid
 			
 			_gridModel = gridModel;
 			_isShowForm = false;
+			_clickEnabled = true;
 			
 			_loader = new Loader();// Un seul loader... donc un seul téléchargement possible à la fois
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
@@ -236,8 +249,7 @@ package cc.milkshape.grid
 				}
 				_gridModel.currentScale = futurScale;
 				_gridModel.dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, futurScale));
-				
-				trace(_gridModel.focusX + " " + _gridModel.focusY);
+
 				_loadImage(futurScale);//
 				
 				_moveTo();
@@ -284,22 +296,16 @@ package cc.milkshape.grid
 				
 			if(_gridModel.currentScale != _gridModel.minScale)// Si on n'est pas au zoom minimal
 			{
-				_gridModel.dispatchEvent(new GridMoveEvent(
-						GridMoveEvent.MOVE, 
-						_gridModel.focusX * Constance.SCALE_THUMB[_gridModel.currentScale] + Constance.SCALE_THUMB[_gridModel.currentScale] / 2, 
-						_gridModel.focusY * Constance.SCALE_THUMB[_gridModel.currentScale] + Constance.SCALE_THUMB[_gridModel.currentScale] / 2
-					)
-				);
+				_gridModel.posX = _gridModel.focusX * Constance.SCALE_THUMB[_gridModel.currentScale] + Constance.SCALE_THUMB[_gridModel.currentScale] / 2;
+				_gridModel.posY = _gridModel.focusY * Constance.SCALE_THUMB[_gridModel.currentScale] + Constance.SCALE_THUMB[_gridModel.currentScale] / 2;
 			}
 			else
 			{
-				_gridModel.dispatchEvent(new GridMoveEvent(
-						GridMoveEvent.MOVE, 
-						_gridModel.nbVSquare * Constance.SCALE_THUMB[_gridModel.currentScale] / 2, 
-						_gridModel.nbHSquare * Constance.SCALE_THUMB[_gridModel.currentScale] / 2
-					)
-				);
+				_gridModel.posX = _gridModel.nbVSquare * Constance.SCALE_THUMB[_gridModel.currentScale] / 2;
+				_gridModel.posY = _gridModel.nbHSquare * Constance.SCALE_THUMB[_gridModel.currentScale] / 2;
 			}
+			
+			_gridModel.dispatchEvent(new GridMoveEvent(GridMoveEvent.MOVE, _gridModel.posX, _gridModel.posY));
 		}
 		
 		public function getFocusSquare():Square// Renvoit le carré ayant le focus
@@ -317,25 +323,62 @@ package cc.milkshape.grid
 		{
 			_overX = e.square.X;
 			_overY = e.square.Y;
+			_clickEnabled = (_gridModel.focusX == _overX && _gridModel.focusY == _overY) ? true : false;
 		}
 		
 		public function onFocusHandler(e:SquareEvent):void
 		{
-			_setFocusSquare(e.square.X, e.square.Y);
-			_moveTo();
+			if(_gridModel.gridLineVisible)
+			{
+				SoundManager.getInstance().playSound("SoundSquareFocus");
+	
+				_setFocusSquare(e.square.X, e.square.Y);
+				_moveTo();
+			}
 		}
 		
-		public function mouseWheelHandler(mouseEvent:MouseEvent):void
+		public function mouseDownMagnet(e:MouseEvent):void
 		{
-			_setFocusSquare(_overX, _overY);
-			_gridModel.dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));;
-			zoomTo(Math.round(mouseEvent.delta/4));
+			_pointClickX = e.stageX;
+			_pointClickY = e.stageY;
 		}
 		
-		public function clickHandler(mouseEvent:MouseEvent):void
+		public function mouseUpMagnet(e:MouseEvent):void
+		{
+			if(_gridModel.currentScale != _gridModel.minScale)// Si on n'est pas au zoom maximal
+			{
+				_gridModel.posX += (_pointClickX - e.stageX) * _gridModel.currentScale / 2;
+				_gridModel.posY += (_pointClickY - e.stageY) * _gridModel.currentScale / 2;
+				
+				_gridModel.dispatchEvent(new GridMoveEvent(GridMoveEvent.MOVE, _gridModel.posX, _gridModel.posY));
+			}
+		}
+		
+		public function mouseWheelHandler(e:MouseEvent):void
 		{
 			_setFocusSquare(_overX, _overY);
-			zoomTo(mouseEvent.shiftKey ? -1 : 1);	
+			_gridModel.dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));
+			zoomTo(Math.round(e.delta/4));
+		}
+		
+		public function clickHandler(e:MouseEvent):void
+		{
+			KeyboardManager.enabled = true;
+			if(_clickEnabled || _gridModel.currentScale == _gridModel.minScale)
+			{
+				zoomTo(e.shiftKey ? -1 : 1);
+			}
+			_clickEnabled = (_gridModel.focusX == _overX && _gridModel.focusY == _overY) ? true : false;
+		}
+		
+		public function stageClickHandler(mouseEvent:MouseEvent):void
+		{
+			zoomTo(-1);
+		}
+		
+		public function stageDoubleClickHandler(mouseEvent:MouseEvent):void
+		{
+			zoomTo(-_gridModel.maxScale);
 		}
 		
 		public function doubleClickHandler(mouseEvent:MouseEvent):void
@@ -343,67 +386,90 @@ package cc.milkshape.grid
 			zoomTo(mouseEvent.shiftKey ? -_gridModel.maxScale : _gridModel.maxScale);
 		}
 		
+		public function keyUpHandler(e:KeyboardEvent):void
+		{
+			if(KeyboardManager.enabled)
+			{					
+				switch(e.keyCode)
+				{
+					case Keyboard.SPACE:
+					case 32: // Space bar
+						_gridModel.dispatchEvent(new GridLineEvent(GridLineEvent.SHOW));
+						_gridModel.gridLineVisible = true;
+						break;
+				}
+			}
+		}
+		
 		public function keyDownHandler(e:KeyboardEvent):void
 		{
-			var x:int = 0;
-			var y:int = 0;
-				
-			switch(e.keyCode)
+			if(KeyboardManager.enabled)
 			{
-				case Keyboard.UP:
-				case 87: // W
-					y = -1 * (e.shiftKey ? _gridModel.nbVSquare : 1);
-					break;
-
-				case Keyboard.DOWN:
-				case 83: // S
-					y = 1 * (e.shiftKey ? _gridModel.nbVSquare : 1);
-					break;
-
-				case Keyboard.LEFT:
-				case 65: // A
-					x = -1 * (e.shiftKey ? _gridModel.nbHSquare : 1);
-					break;
-
-				case Keyboard.RIGHT:
-				case 68: // D
-					x = 1 * (e.shiftKey ? _gridModel.nbHSquare : 1);
-					break;
-
-				case Keyboard.PAGE_UP:
-					//_pageUpActivated = value;
-					break;
-					 
-				case Keyboard.PAGE_DOWN:
-					//_pageDownActivated = value;
-					break;
-
-				case Keyboard.HOME:
-					//_homeActivated = value;
-					break;
-
-				case Keyboard.END:
-					//_endActivated = value;
-					break;
-
-				case Keyboard.NUMPAD_ADD:
-				case 73: // I
-					zoomTo(e.shiftKey ? _gridModel.maxScale : 1);
-					break;
-
-				case Keyboard.NUMPAD_SUBTRACT:
-				case 79: // O
-					zoomTo(e.shiftKey ? -_gridModel.maxScale : -1);
-					break;
-			}
-			
-			_setFocusSquare(
-			  	_gridModel.focusX + x < 0 ? 0 : _gridModel.focusX + x >= _gridModel.nbHSquare ? _gridModel.nbHSquare - 1 : _gridModel.focusX + x,
-			  	_gridModel.focusY = _gridModel.focusY + y < 0 ? 0 : _gridModel.focusY + y >= _gridModel.nbVSquare ? _gridModel.nbVSquare - 1 : _gridModel.focusY + y
-			);
-			
-			_gridModel.dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));
-			  
+				var x:int = 0;
+				var y:int = 0;
+					
+				switch(e.keyCode)
+				{
+					case Keyboard.UP:
+					case 87: // W
+						y = -1 * (e.shiftKey ? _gridModel.nbVSquare : 1);
+						break;
+	
+					case Keyboard.DOWN:
+					case 83: // S
+						y = 1 * (e.shiftKey ? _gridModel.nbVSquare : 1);
+						break;
+	
+					case Keyboard.LEFT:
+					case 65: // A
+						x = -1 * (e.shiftKey ? _gridModel.nbHSquare : 1);
+						break;
+	
+					case Keyboard.RIGHT:
+					case 68: // D
+						x = 1 * (e.shiftKey ? _gridModel.nbHSquare : 1);
+						break;
+	
+					case Keyboard.PAGE_UP:
+						//_pageUpActivated = value;
+						break;
+						 
+					case Keyboard.PAGE_DOWN:
+						//_pageDownActivated = value;
+						break;
+	
+					case Keyboard.HOME:
+						//_homeActivated = value;
+						break;
+	
+					case Keyboard.END:
+						//_endActivated = value;
+						break;
+	
+					case Keyboard.NUMPAD_ADD:
+					case 73: // I
+						zoomTo(e.shiftKey ? _gridModel.maxScale : 1);
+						break;
+	
+					case Keyboard.NUMPAD_SUBTRACT:
+					case 79: // O
+						zoomTo(e.shiftKey ? -_gridModel.maxScale : -1);
+						break;
+						
+					case Keyboard.SPACE:
+					case 32: // Space bar
+						if(_gridModel.gridLineVisible) _gridModel.dispatchEvent(new GridLineEvent(GridLineEvent.HIDE));
+						_gridModel.gridLineVisible = false;
+						break;
+				}
+				
+				_setFocusSquare(
+				  	_gridModel.focusX + x < 0 ? 0 : _gridModel.focusX + x >= _gridModel.nbHSquare ? _gridModel.nbHSquare - 1 : _gridModel.focusX + x,
+				  	_gridModel.focusY = _gridModel.focusY + y < 0 ? 0 : _gridModel.focusY + y >= _gridModel.nbVSquare ? _gridModel.nbVSquare - 1 : _gridModel.focusY + y
+				);
+				
+				_gridModel.dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));
+			}  
 		 }
 		 
 	}

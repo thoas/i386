@@ -11,8 +11,10 @@ package cc.milkshape.preloader
 	{
 		private var _url:String;
 		private var _msg:*;
-		protected var _sprite:Sprite;
 		protected var _loader:Loader;
+		protected var _bytesTotal:int;
+		protected var _bytesLoaded:int;
+		protected var _percent:int;
 		
 		public function Preloader(url:String, msg:*)
 		{
@@ -28,6 +30,7 @@ package cc.milkshape.preloader
 		
 		public function loadMedia(url:String):void
 		{
+			_url = url;
 			_loader.load(new URLRequest(url));
 		}
 		
@@ -39,13 +42,16 @@ package cc.milkshape.preloader
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
             _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
             
-            loadMedia(_url);            
-            _sprite = new Sprite();
+            loadMedia(_url);
 		}
         
         private function _progressHandler(e:ProgressEvent):void
 		{
-			if(e.bytesLoaded != e.bytesTotal) _onProgress(Math.round(e.bytesLoaded * 100 / e.bytesTotal));
+			_bytesTotal = e.bytesTotal;
+			_bytesLoaded = e.bytesLoaded;
+			_percent = Math.round(_bytesLoaded * 100 / _bytesTotal);
+				
+			if(_bytesLoaded != _bytesTotal) _onProgress(); 
 		}
 		
 		private function _openHandler(e:Event):void { _init(); }
@@ -56,11 +62,13 @@ package cc.milkshape.preloader
 			_close();
 		}
 		
-		private function _ioErrorHandler(event:IOErrorEvent):void { trace('Unable to load image'); }
+		private function _ioErrorHandler(e:IOErrorEvent):void { 
+			throw new Error('Unable to load ' + _url); 
+		}
 		
 		protected function _init():void	{ }
         protected function _close():void { }
-        protected function _onProgress(p:int):void { }
+        protected function _onProgress():void { }
         
 	}
 }

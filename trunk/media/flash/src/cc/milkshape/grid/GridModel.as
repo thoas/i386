@@ -1,8 +1,8 @@
 package cc.milkshape.grid
 {
-	import flash.events.EventDispatcher;
-	
 	import cc.milkshape.grid.square.*;
+	
+	import flash.events.EventDispatcher;
 	
 	public class GridModel extends EventDispatcher 
 	{
@@ -21,6 +21,9 @@ package cc.milkshape.grid
 		private var _minScale:int;
 		private var _maxScale:int;
 		private var _showDisableSquare:int;
+		private var _gridLineVisible:Boolean;
+		private var _posX:int;
+		private var _posY:int;
 		
 		public function GridModel(issueId:int) 
 		{ 
@@ -29,6 +32,9 @@ package cc.milkshape.grid
 		
 		public function init(minX:int, minY:int, maxX:int, maxY:int, nbHSquare:int, nbVSquare:int, showDisableSquare:int, squareSize:int):void
 		{
+			_posX = 0;
+			_posY = 0;
+			_gridLineVisible = true;
 			_showDisableSquare = showDisableSquare;
 			_maxX = maxX;
 			_maxY = maxY;
@@ -95,7 +101,19 @@ package cc.milkshape.grid
 		
 		public function set minScale(minScale:int):void { _minScale = minScale }
 		
-		public function set maxScale(maxScale:int):void { _maxScale = maxScale }		
+		public function set maxScale(maxScale:int):void { _maxScale = maxScale }
+		
+		public function set posX(x:int):void { _posX = x }		
+		
+		public function get posX():int { return _posX }
+		
+		public function set posY(y:int):void { _posY = y }		
+		
+		public function get posY():int { return _posY }
+		
+		public function set gridLineVisible(b:Boolean):void { _gridLineVisible = b }		
+		
+		public function get gridLineVisible():Boolean { return _gridLineVisible }		
 		
 		public function get minScale():int { return _minScale }
 		
