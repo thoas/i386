@@ -98,7 +98,7 @@ def square(request, action, pos_x, pos_y, issue_slug):
     return globals()[action](request, issue, square_open)
 
 @login_required
-def templates(request, template_name='templates.html'):
+def templates(request, template_name):
     return render_to_response(template_name, {
         'participations_by_issues': request.user.get_profile().participations_by_issues()
     }, context_instance=RequestContext(request))

@@ -1,4 +1,3 @@
-from pyamf import register_class
 from pyamf.remoting.gateway.django import DjangoGateway
 
 from django.shortcuts import get_object_or_404

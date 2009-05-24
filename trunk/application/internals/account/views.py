@@ -1,4 +1,3 @@
-from pyamf import register_class
 from pyamf.remoting.gateway.django import DjangoGateway
 
 from django.conf import settings
@@ -22,34 +21,35 @@ from emailconfirmation.models import EmailAddress, EmailConfirmation
 def _login(request, username=None, password=None, remember=None):
     if request.method == 'POST':
         datas = request.POST.copy()
-
-        if not username is None:
-            datas['username'] = username
-        if not password is None:
-            datas['password'] = password
-        if not remember is None:
-            datas['remember'] = remember
+        
+        datas['username'] = username
+        datas['password'] = password
+        datas['remember'] = remember
         form = LoginForm(datas)
-        return form.login(request)
-    return LoginForm()
+        if form.login(request):
+            return request.user
+        return form.errors 
+    return None
 
-def login(request, template_name):
-    default_redirect_to = getattr(settings, 'LOGIN_REDIRECT_URLNAME', None) 
-    if default_redirect_to:
-        default_redirect_to = reverse(default_redirect_to)
+def login(request, template_name, form_class=LoginForm):
+    if request.method == 'POST':
+        default_redirect_to = getattr(settings, 'LOGIN_REDIRECT_URLNAME', None) 
+        if default_redirect_to:
+            default_redirect_to = reverse(default_redirect_to)
+        else:
+            default_redirect_to = settings.LOGIN_REDIRECT_URL
+        redirect_to = request.REQUEST.get('next')
+        # light security check -- make sure redirect_to isn't garabage.
+        if not redirect_to or '://' in redirect_to or ' ' in redirect_to:
+            redirect_to = default_redirect_to
+        form = form_class(request.POST)
+        if form.login(request):
+            return HttpResponseRedirect(redirect_to)
     else:
-        default_redirect_to = settings.LOGIN_REDIRECT_URL
-    redirect_to = request.REQUEST.get('next')
-    # light security check -- make sure redirect_to isn't garabage.
-    if not redirect_to or '://' in redirect_to or ' ' in redirect_to:
-        redirect_to = default_redirect_to
-
-    result = _login(request)
-    if isinstance(result, LoginForm):
-        return render_to_response(template_name, {
-            'form': result,
-        }, context_instance=RequestContext(request))
-    return HttpResponseRedirect(redirect_to)
+        form = form_class()
+    return render_to_response(template_name, {
+        'form': form,
+    }, context_instance=RequestContext(request))
 
 def _signup(request, confirmation_key):
     pass
