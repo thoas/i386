@@ -10,7 +10,8 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.ui.Mouse;
+	
+	import nl.demonsters.debugger.MonsterDebugger;
 	
 	[SWF(width='960', height='600', frameRate='31', backgroundColor='#141414')]
 	
@@ -22,9 +23,11 @@ package
 		private var _gridModel:GridModel;
 		private var _gridController:GridController;
 		private var _gridView:GridView;
+		private var _debugger:MonsterDebugger;
 		
 		public function Issue()
 		{
+			_debugger = new MonsterDebugger(this);
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedToStage);
 		}
