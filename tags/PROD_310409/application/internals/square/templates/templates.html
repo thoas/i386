@@ -1,0 +1,27 @@
+{% extends "base_profiles.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% blocktrans %}Templates for {{ user }}{% endblocktrans %}{% endblock %}
+
+{% block body %}
+    {% for issue, participations in participations_by_issues.items %}
+        <h1>{{ issue.title }}</h1>
+        {% if participations %}
+            <table class="email_list">
+            {% for participation in participations %}
+                <tr>
+                    <td>
+                        <a href="{% url square_template participation.template_name %}">{{ participation }}</a>&nbsp;
+                    </td>
+                    <td>
+                        {% ifequal participation.status 0 %}
+                        <a href="{% url square action="release" pos_x=participation.pos_x pos_y=participation.pos_y issue_slug=issue.slug %}">{% trans "release" %}</a>
+                        {% endifequal %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

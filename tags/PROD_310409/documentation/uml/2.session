@@ -1,0 +1,25 @@
+window_sizes 1440 852 319 1115 797 0
+diagrams
+  active  classdiagram_ref 128002 // DBDC
+    1351 873 110 4 60 0
+  usecasediagram_ref 129154 // DCU
+    1351 873 120 4 0 0
+end
+show_stereotypes
+selected classdiagram_ref 128002 // DBDC
+open
+  attribute_ref 144002 // about
+  attribute_ref 129282 // website
+  attribute_ref 143746 // last_updated
+  attribute_ref 147074 // nb_step
+  classrelation_ref 139650 // <directional composition>
+  class_ref 128386 // Square
+  class_ref 128514 // Invitation
+  class_ref 128642 // Contact
+  class_ref 128770 // ExchangeTopic
+  class_ref 128898 // ExchangePost
+  class_ref 132866 // SquareOpen
+  class_ref 135298 // AbstractSquare
+  usecaseview_ref 128002 // cases
+end
+end
