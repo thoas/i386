@@ -1,26 +1,12 @@
-MySQL : 5.1.x
-Python : 2.5.x
-PIL : 1.1.6
-MySQL-Python (drivers) : 1.2.2
-PyAMF
-Django : 1.0.2 (1.x)
-
-===================================================================
-- Exemple d'AMF
-===================================================================
-- square
-    - echo(param:String):String
-
-        _gateway = new NetConnection();
-        _gateway.connect( "http://localhost:8000/square/gateway/");
-        var param:String = "Hello World!";
-        var responder:Responder = new Responder(onResult, onFault);
-        _gateway.call("square.echo", responder, param);
-===================================================================
-
-- issues
-    - issue(slug:String):Issue
-    - issues():Array
-
-- account
-    - login(username:String, password:String, remember:Boolean = false):User|LoginForm
+1. install git
+2. Git recipe
+    Go to http://github.com/zerok/zerokspot.gitrecipe/tree/master
+    open a shell and run :
+    $> git clone http://github.com/zerok/zerokspot.gitrecipe/tree/master zerokspot-gitrecipe
+    $> cd zerokspot-gitrecipe
+    $> sudo port install py-setuptools
+    $> python setup.py install
+3. Run buildout
+    Go to milkshape directory
+    $> python bootstrap.py
+    $> ./bin/buildout
