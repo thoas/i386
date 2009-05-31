@@ -30,8 +30,7 @@ class AbstractSquareManager(models.Manager):
 
 class SquareManager(AbstractSquareManager):
     def bulk_create(square_list):
-        for square in square_list:
-            print square._meta.db_table
+        pass
 
 class SquareOpenManager(AbstractSquareManager):
     def neighbors_standby(self, square, is_standby=False):
@@ -252,6 +251,7 @@ class Square(AbstractSquare):
         super(Square, self).save(force_insert, force_update)
         
         # now, square saved, template uploaded, we can build thumbs and update neighbors
+        # square is mark as filled and has a pk
         if self.status and self.pk:
             template_full_path = self.template_full_path
             
@@ -260,12 +260,13 @@ class Square(AbstractSquare):
                 logging.warn('%s already exists, erase...' % template_full_path)
                 unlink(template_full_path)
                 
+            # when we upload, it's done in media directory
             # rename the default location, from media directory to a dedicated one
             rename(join(settings.MEDIA_ROOT, self.template_name), template_full_path)
             
             template_full = Image.open(template_full_path)
 
-            # create background_image_path with with template_full
+            # create background_image_path with with template_full 
             image, thumbs = self.build_background_image(template_full.crop(self.issue.creation_position_crop),\
                                 self.issue.creation_position_paste, settings.UPLOAD_HD_ROOT)
             
