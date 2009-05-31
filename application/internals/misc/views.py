@@ -25,9 +25,11 @@ class MultiResponse(object):
             context_dictionary = view_func(request, *args, **kwargs)
             context_instance = self.request_context and RequestContext(request) or Context()
             
-            content_type = mimeparse.best_match(self.template_mapping.keys(),
-                                                request.META['HTTP_ACCEPT'])\
-                                                if self.template_mapping else settings.DEFAULT_MIMETYPE
+            if self.template_mapping:
+                content_type = mimeparse.best_match(self.template_mapping.keys(),\
+                                    request.META['HTTP_ACCEPT'])
+            else:
+                content_type = settings.DEFAULT_MIMETYPE
             
             if self.template_mapping.has_key(content_type):
                 template_name = self.template_mapping.get(content_type)

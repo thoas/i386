@@ -291,8 +291,9 @@ class Square(AbstractSquare):
     
     @property
     def template(self):
-        return Square.retrieve_template(self.template_name)\
-                    if not hasattr(self, '_template') else self._template
+        if not hasattr(self, '_template'):
+            self._template = Square.retrieve_template(self.template_name)
+        return self._template
 
     @property
     def template_path(self):
