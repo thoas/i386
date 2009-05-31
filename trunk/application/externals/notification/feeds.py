@@ -1,4 +1,5 @@
-from atomformat import Feed
+from atompub.atom import Feed
+
 from datetime import datetime
 
 from django.core.urlresolvers import reverse
