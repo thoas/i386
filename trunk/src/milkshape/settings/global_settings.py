@@ -88,7 +88,6 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.humanize',
-    'django_extensions',
     
     # external
     'notification', # must be first
