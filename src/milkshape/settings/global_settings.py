@@ -3,6 +3,7 @@ from os.path import join, dirname, abspath
 PROJECT_ROOT = dirname(abspath(__file__)) + '/..'
 TEMPLATE_ROOT = join(PROJECT_ROOT, 'templates')
 APPLICATION_ROOT = join(PROJECT_ROOT, 'application')
+
 MEDIA_ROOT = join(PROJECT_ROOT, 'media')
 
 ADMINS = (
@@ -32,23 +33,12 @@ LOCALE_PATHS = (
     join(PROJECT_ROOT, 'settings', 'locale')
 )
 
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
 USE_I18N = True
 
-# URL that handles the media served from MEDIA_ROOT.
-# Example: 'http://media.lawrence.com'
 MEDIA_URL = '/media'
 
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: 'http://foo.com/media/', '/media/'.
-ADMIN_MEDIA_PREFIX = '/media/admin'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'bk-e2zv3humar79nm=j*bwc=-ymeit(8a20whp3goq4dh71t)s'
-
-# List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
@@ -147,6 +137,8 @@ LOGIN_REDIRECT_URLNAME = 'what_next'
 # File
 FILE_UPLOAD_MAX_MEMORY_SIZE = 8621440 # 8.5 MB
 FILE_UPLOAD_TEMP_DIR = join(PROJECT_ROOT, 'tmp')
+
+SECRET_KEY = 'bk-e2zv3humar79nm=j*bwc=-ymeit(8a20whp3goq4dh71t)s'
 
 UPLOAD_DIR = 'upload'
 UPLOAD_ROOT = join(MEDIA_ROOT, UPLOAD_DIR)
