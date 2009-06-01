@@ -28,7 +28,8 @@ LANGUAGE_CODE = 'fr'
 LANGUAGE_BIDI = True
 
 LOCALE_PATHS = (
-    join(PROJECT_ROOT, 'locale')
+    join(PROJECT_ROOT, 'locale'),
+    join(PROJECT_ROOT, 'settings', 'locale')
 )
 
 # If you set this to False, Django will make some optimizations so as not
