@@ -1,3 +1,10 @@
+dependences:
+    python
+    gcc
+    g++
+    automake
+    build-essential
+
 1. install git
 2. Git recipe
     Go to http://github.com/zerok/zerokspot.gitrecipe/tree/master
