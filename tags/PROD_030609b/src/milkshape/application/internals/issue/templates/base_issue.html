@@ -1,0 +1,12 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load issue_extras %}
+
+{% block rtab_id %}id="issue_tab"{% endblock %}
+
+{% block subnav %}
+    {% if user.is_authenticated %}
+        {% show_issues %}
+    {% endif %}
+{% endblock %}
