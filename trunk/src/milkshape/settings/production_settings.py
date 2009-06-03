@@ -21,5 +21,10 @@ DATABASE_OPTIONS = {
 # like database and email that differ between development and production.
 try:
     from global_settings import *
+    
+    ADMINS += (
+        ('Thomas Poblete', 'thomas.pob@gmail.com'),
+        ('Arnaud Guiheneuf', 'arnaud.guiheneuf@gmail.com'),
+    )
 except ImportError:
     pass
