@@ -8,8 +8,6 @@ MEDIA_ROOT = join(PROJECT_ROOT, 'media')
 
 ADMINS = (
      ('Florent Messa', 'florent.messa@gmail.com'),
-     #('Thomas Poblete', 'thomas.pob@gmail.com'),
-     #('Arnaud Guiheneuf', 'arnaud.guiheneuf@gmail.com'),
 )
 
 MANAGERS = ADMINS
