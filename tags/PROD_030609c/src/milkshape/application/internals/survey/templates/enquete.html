@@ -1,0 +1,77 @@
+{% extends 'base_questionnaire.html' %}
+{% load i18n %}
+
+{% block title %}
+Envies et motivations des cr&eacute;ateurs dans la cr&eacute;ation collaborative &gt; questionnaire
+{% endblock %}
+
+{% block questionnaire %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+
+<form action="/questionnaire/" method="POST">
+    <h2 class="left">Vous ...</h2>
+    {{ form.coordonnees.errors }}
+    <p class="text">
+        {{ form.coordonnees }}
+        <label for="id_last_name">Nom / Pr&eacute;nom / Pseudonyme</label>
+    </p>
+    {{ form.age.errors }}
+    <p class="text">
+        {{ form.age }}
+        <label for="id_age">{{ form.age.label_tag }}</label>
+    </p>
+    {{ form.profession.errors }}
+    <p class="text">
+        {{ form.profession }}
+        <label for="id_profession">Profession</label>
+    </p>
+    {{ form.place_to_work.errors }}
+    <p class="text">
+        {{ form.place_to_work }}
+        <label for="id_place_to_work">Soci&eacute;t&eacute; / &Eacute;cole</label>
+    </p>
+    {{ form.email.errors }}
+    <p class="last text">{{ form.email }}<label for="email">Mail</label></p>
+    
+    <h2 class="right">... et l'art collaboratif</h2>
+    {{ form.question1.errors }}
+    <p>
+        <label class="none" for="id_question1">{{ form.question1.label }}</label>
+        {{ form.question1 }}
+    </p>
+    {{ form.question2.errors }}
+    <p>
+        <label class="none" for="id_question2">{{ form.question2.label }}</label>
+        {{ form.question2 }}
+    </p>
+    {{ form.question3.errors }}
+    <p>
+        <label class="none" for="id_question3">{{ form.question3.label }}</label>
+        {{ form.question3 }}
+    </p>
+    {{ form.question4.errors }}
+    <p>
+        <label class="none" for="id_question4">{{ form.question4.label }}</label>
+        {{ form.question4 }}
+    </p>
+    {{ form.question5.errors }}
+    <p>
+        <label class="none" for="id_question5">{{ form.question5.label }}</label>
+        {{ form.question5 }}
+    </p>
+    {{ form.question6.errors }}
+    <p>
+        <label class="none" for="id_question6">{{ form.question6.label }}</label>
+        {{ form.question6 }}
+    </p>
+    {{ form.question7.errors }}
+    <p>
+        <label class="none" for="id_question7">{{ form.question7.label }}</label>
+        {{ form.question7 }}
+    </p>
+	<p class="submit"><input type="submit" value="envoyer" /></p>
+</form>
+{% endblock %}
