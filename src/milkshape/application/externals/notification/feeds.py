@@ -1,4 +1,4 @@
-from atompub.atom import Feed
+from atomformat import Feed
 
 from datetime import datetime
 
