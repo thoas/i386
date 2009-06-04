@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 22
+  revision 23
   modified_by 2 "thoas"
 
 
@@ -200,9 +200,9 @@ format 66
 
       classrelation 130818 // <association>
 	relation 129410 ----
-	  a role_name "" private
+	  a role_name "" multiplicity "*" private
 	    classrelation_ref 130818 // <association>
-	  b role_name "" private
+	  b role_name "" multiplicity "0..1" private
 	    classrelation_ref 130946 // <association>
 	  association_explicit_type "ParticipateSquare"
       end
@@ -723,7 +723,7 @@ format 66
 
       classrelation 137218 // <association>
 	relation 135042 ----
-	  a role_name "" multiplicity "0..1" private
+	  a role_name "" multiplicity "1" private
 	    classrelation_ref 137218 // <association>
 	  b role_name "" multiplicity "0..1" private
 	    classrelation_ref 137346 // <association>
