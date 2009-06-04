@@ -2,7 +2,7 @@ format 66
 
 classcanvas 128002 class_ref 128002 // User
   draw_all_relations default hide_attributes no hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties yes
-  xyz 300 75 2000
+  xyz 297 72 2000
 end
 classcanvas 128130 class_ref 128130 // Profile
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
@@ -14,7 +14,7 @@ classcanvas 128258 class_ref 128258 // Issue
 end
 classcanvas 128386 class_ref 128386 // Square
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
-  xyz 50 315 2000
+  xyz 48 315 2000
 end
 classcanvas 128514 class_ref 128514 // Invitation
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
@@ -41,14 +41,14 @@ classcanvas 135682 class_ref 135298 // AbstractSquare
   xyz 220 341 2000
 end
 relationcanvas 129026 relation_ref 128002 // <association>
-  from ref 128002 z 1999 stereotype "<<have>>" xyz 227 240 3000 to ref 128130
+  from ref 128002 z 1999 stereotype "<<have>>" xyz 225 237 3000 to ref 128130
   no_role_a no_role_b
-  multiplicity_a_pos 139 232 3000 multiplicity_b_pos 286 169 3000
+  multiplicity_a_pos 139 230 3000 multiplicity_b_pos 286 159 3000
 end
 relationcanvas 129410 relation_ref 128386 // <association>
-  from ref 128002 z 1999 stereotype "<<write>>" xyz 393 175 3000 to ref 128898
+  from ref 128002 z 1999 stereotype "<<write>>" xyz 390 172 3000 to ref 128898
   no_role_a no_role_b
-  multiplicity_a_pos 450 161 3000 no_multiplicity_b
+  multiplicity_a_pos 450 160 3000 no_multiplicity_b
 end
 relationcanvas 131330 relation_ref 128642 // <association>
   from ref 128898 z 1999 stereotype "<<answer>>" xyz 434 71 3000 to point 432 32
@@ -62,15 +62,10 @@ relationcanvas 131714 relation_ref 128770 // <association>
   no_role_a no_role_b
   multiplicity_a_pos 563 374 3000 multiplicity_b_pos 481 362 3000
 end
-relationcanvas 131842 relation_ref 128898 // <association>
-  from ref 128002 z 1999 to ref 128258
-  no_role_a no_role_b
-  no_multiplicity_a no_multiplicity_b
-end
 relationcanvas 132610 relation_ref 129410 // <association>
   from ref 128002 z 1999 to ref 128386
   no_role_a no_role_b
-  no_multiplicity_a no_multiplicity_b
+  multiplicity_a_pos 131 331 3000 multiplicity_b_pos 278 170 3000
 end
 relationcanvas 133890 relation_ref 130178 // <directional composition>
   from ref 128770 z 1999 to ref 128898
@@ -80,13 +75,13 @@ end
 relationcanvas 134018 relation_ref 130306 // <association>
   from ref 128002 z 1999 to ref 128514
   no_role_a no_role_b
-  multiplicity_a_pos 143 115 3000 no_multiplicity_b
+  multiplicity_a_pos 142 113 3000 no_multiplicity_b
 end
 relationcanvas 135042 relation_ref 135042 // <association>
   from ref 128514 z 2006 to point 177 174
   line 135170 z 2006 to ref 128002
   no_role_a no_role_b
-  multiplicity_a_pos 272 146 3000 multiplicity_b_pos 146 134 3000
+  multiplicity_a_pos 286 153 3000 multiplicity_b_pos 144 132 3000
 end
 relationcanvas 135810 relation_ref 137346 // <directional composition>
   from ref 128258 z 2001 to ref 135682
