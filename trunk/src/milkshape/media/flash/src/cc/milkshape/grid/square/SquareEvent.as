@@ -11,15 +11,31 @@ package cc.milkshape.grid.square
 		private var _square:Square;
 		private var _shiftKey:Boolean;
 		
+		public function get shiftKey():Boolean
+		{
+			return _shiftKey;
+		}
+
+		public function set shiftKey(v:Boolean):void
+		{
+			_shiftKey = v;
+		}
+
+		public function get square():Square
+		{
+			return _square;
+		}
+
+		public function set square(v:Square):void
+		{
+			_square = v;
+		}
+
 		public function SquareEvent(eventType:String, square:Square, shiftKey:Boolean = false):void
 		{
 			super(eventType);
 			_square = square;
 			_shiftKey = shiftKey;
 		}
-		
-		public function get square():Square { return _square }
-		
-		public function get shiftKey():Boolean { return _shiftKey }
 	}
 }
