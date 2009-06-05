@@ -111,7 +111,11 @@ package cc.milkshape.grid
 		
 		public function get posY():int { return _posY }
 		
-		public function set gridLineVisible(b:Boolean):void { _gridLineVisible = b }		
+		public function set gridLineVisible(b:Boolean):void
+		{
+			_gridLineVisible = b;
+			//dispatchEvent(new GridLineEvent(b ? GridLineEvent.SHOW : GridLineEvent.HIDE));
+		}		
 		
 		public function get gridLineVisible():Boolean { return _gridLineVisible }		
 		
