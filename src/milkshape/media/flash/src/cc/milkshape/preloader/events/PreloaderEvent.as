@@ -1,4 +1,4 @@
-package cc.milkshape.preloader
+package cc.milkshape.preloader.events
 {
 	import flash.events.Event;
 	

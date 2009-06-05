@@ -1,4 +1,4 @@
-package cc.milkshape.grid
+package cc.milkshape.grid.events
 {
 	import flash.events.Event;
 	
@@ -7,6 +7,13 @@ package cc.milkshape.grid
 		public static const MOVE:String = 'MOVE';
 		private var _decalX:Number;
 		private var _decalY:Number;
+		
+		public function GridMoveEvent(e:String, decalX:Number, decalY:Number):void
+		{
+			super(e);
+			_decalX = decalX;
+			_decalY = decalY;
+		}
 		
 		public function get decalY():Number
 		{
@@ -26,13 +33,6 @@ package cc.milkshape.grid
 		public function set decalX(v:Number):void
 		{
 			_decalX = v;
-		}
-
-		public function GridMoveEvent(e:String, decalX:Number, decalY:Number):void
-		{
-			super(e);
-			_decalX = decalX;
-			_decalY = decalY;
 		}
 	}
 }

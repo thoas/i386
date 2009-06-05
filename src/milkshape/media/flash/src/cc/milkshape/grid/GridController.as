@@ -1,23 +1,22 @@
 package cc.milkshape.grid
 {
+	import cc.milkshape.gateaway.GatewayController;
 	import cc.milkshape.grid.square.*;
+	import cc.milkshape.grid.square.events.SquareEvent;
 	import cc.milkshape.manager.SoundManager;
 	import cc.milkshape.utils.Constance;
 	
+	import flash.events.IOErrorEvent;
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.events.NetStatusEvent;
-	import flash.net.NetConnection;
-	import flash.net.Responder;
 	import flash.net.URLRequest;
 	
-	public class GridController
+	import cc.milkshape.grid.events.GridZoomEvent;
+
+	public class GridController extends GatewayController
 	{
-		private var _gateway:NetConnection;
-		private var _responder:Responder;
 		private var _gridModel:GridModel;
 		private var _loader:Loader;
 		private var _listLayers:Array;
@@ -25,35 +24,17 @@ package cc.milkshape.grid
 		
 		public function GridController(gridModel:GridModel)
 		{	
+			super();
 			SoundManager.getInstance().addLibrarySound(SoundSquareFocus, "SoundSquareFocus");
 			//_soundSquareFocus = new SoundSquareFocus();
 			
-			_gateway = new NetConnection();
-			_gateway.addEventListener(NetStatusEvent.NET_STATUS, _netStatus)
-			_responder = new Responder(_onResult, _onFault);
-			_gateway.connect( "http://localhost:8000/issue/gateway/");
+			_connect("http://localhost:8000/issue/gateway/");
 			
 			_gridModel = gridModel;
 			
 			_loader = new Loader();// Un seul loader... donc un seul téléchargement possible à la fois
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
             _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
-		}
-		
-		private function _netStatus(e:NetStatusEvent):void
-		{
-			
-		}
-		
-		public function _onResult(result:Object):void {
-			var myData:String = result.toString();
-			trace(result);
-		}
-		
-		public function _onFault(error:Object):void {
-			for (var d:String in error) {
-				trace(error[d] + "\n") 
-			}
 		}
 		
 		public function getGridInfo():void

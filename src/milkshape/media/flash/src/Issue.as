@@ -1,20 +1,22 @@
 package
 {
+	import cc.milkshape.grid.GridBackground;
 	import cc.milkshape.grid.GridController;
 	import cc.milkshape.grid.GridKeyboardController;
-	import cc.milkshape.grid.GridLineEvent;
+	import cc.milkshape.grid.events.GridLineEvent;
 	import cc.milkshape.grid.GridModel;
 	import cc.milkshape.grid.GridMouseController;
 	import cc.milkshape.grid.GridView;
-	import cc.milkshape.grid.square.SquareFormEvent;
-	import cc.milkshape.preloader.PreloaderEvent;
+	import cc.milkshape.preloader.events.PreloaderEvent;
+	import cc.milkshape.grid.square.events.SquareEvent;
+	import cc.milkshape.grid.square.events.SquareFormEvent;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import nl.demonsters.debugger.MonsterDebugger;
-	
+
 	[SWF(width='960', height='600', frameRate='31', backgroundColor='#141414')]
 	
 	public class Issue extends Sprite
@@ -50,6 +52,7 @@ package
 		{
 			loaderInfo.sharedEvents.removeEventListener(PreloaderEvent.INFO, _handlerInit);
 			
+			_debugger = new MonsterDebugger(this);
 			_gridModel = new GridModel(int(e.msg));
 			_gridController = new GridController(_gridModel);
 			var keyboardController:GridKeyboardController = new GridKeyboardController(_gridModel);
@@ -60,12 +63,9 @@ package
 			_gridModel.addEventListener(SquareFormEvent.SHOW_BOOKED, _showBookedForm);
 			_gridModel.addEventListener(SquareFormEvent.CLOSE, _closeForm);		
 			
-			_bg = new Sprite();
-			_bg.graphics.beginFill(0x000000,0);
-			_bg.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-			_bg.graphics.endFill();
-			_bg.addEventListener(MouseEvent.CLICK, _gridView.mouseController.stageClickHandler);
-			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, _gridView.mouseController.stageDoubleClickHandler);
+			_bg = new GridBackground();
+			_bg.addEventListener(MouseEvent.CLICK, mouseController.stageClickHandler);
+			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, mouseController.stageDoubleClickHandler);
 			
 			addChild(_bg);
 			addChild(_gridView);

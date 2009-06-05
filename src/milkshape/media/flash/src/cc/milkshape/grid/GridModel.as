@@ -1,10 +1,21 @@
 package cc.milkshape.grid
 {
+	import cc.milkshape.framework.Model;
 	import cc.milkshape.grid.square.*;
+	import cc.milkshape.grid.square.events.SquareEvent;
+	import cc.milkshape.grid.square.events.SquareFormEvent;
 	import cc.milkshape.utils.Constance;
 	import flash.events.EventDispatcher;
 	
-	public class GridModel extends EventDispatcher 
+	import cc.milkshape.grid.events.GridEvent;
+
+	import cc.milkshape.grid.events.GridFocusEvent;
+
+	import cc.milkshape.grid.events.GridMoveEvent;
+
+	import cc.milkshape.grid.events.GridZoomEvent;
+
+	public class GridModel extends Model 
 	{
 		private var _issueId:int;
 		private var _nbVSquare:int;
