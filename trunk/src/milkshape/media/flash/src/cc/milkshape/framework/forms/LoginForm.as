@@ -1,4 +1,4 @@
-package cc.milkshape.utils
+package cc.milkshape.framework.forms
 {
 	import flash.events.MouseEvent;
 	import flash.events.Event;

@@ -1,11 +1,13 @@
 package cc.milkshape.grid
 {
-	import cc.milkshape.grid.square.SquareEvent;
+	import cc.milkshape.grid.square.events.SquareEvent;
 	
 	import flash.events.MouseEvent;
 	import cc.milkshape.grid.GridModel;
 	import cc.milkshape.manager.KeyboardManager;
 	
+	import cc.milkshape.grid.events.GridMoveEvent;
+
 	public class GridMouseController
 	{
 		private var _gridModel:GridModel;

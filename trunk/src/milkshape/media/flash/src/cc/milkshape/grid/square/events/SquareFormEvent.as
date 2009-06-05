@@ -1,4 +1,4 @@
-package cc.milkshape.grid.square
+package cc.milkshape.grid.square.events
 {
 	import flash.events.Event;
 	import cc.milkshape.grid.square.Square;

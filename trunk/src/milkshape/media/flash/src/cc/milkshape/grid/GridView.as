@@ -1,8 +1,22 @@
 package cc.milkshape.grid
 {
+	import cc.milkshape.framework.View;
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.utils.Constance;
 	
+	import cc.milkshape.grid.square.events.SquareEvent;
+	import cc.milkshape.grid.square.events.SquareFormEvent;
+	
+	import cc.milkshape.grid.events.GridEvent;
+
+	import cc.milkshape.grid.events.GridLineEvent;
+
+	import cc.milkshape.grid.events.GridFocusEvent;
+
+	import cc.milkshape.grid.events.GridMoveEvent;
+
+	import cc.milkshape.grid.events.GridZoomEvent;
+
 	import com.gskinner.motion.GTween;
 	
 	import fl.motion.easing.Sine;
@@ -12,8 +26,8 @@ package cc.milkshape.grid
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
-	
-	public class GridView extends Sprite
+
+	public class GridView extends View
 	{
 		private var _controller:GridController;
 		private var _keyboardController:GridKeyboardController;

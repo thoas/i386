@@ -1,7 +1,9 @@
-package cc.milkshape.grid.square
+package cc.milkshape.grid.square.events
 {
 	import flash.events.Event;
 	
+	import cc.milkshape.grid.square.Square;
+
 	public class SquareEvent extends Event
 	{
 		public static const CREATION:String = 'CREATION';

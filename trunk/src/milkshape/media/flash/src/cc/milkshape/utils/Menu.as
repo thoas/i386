@@ -3,7 +3,7 @@ package cc.milkshape.utils
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextFormat;
-	import cc.milkshape.preloader.PreloaderEvent;
+	import cc.milkshape.preloader.events.PreloaderEvent;
 	
 	public class Menu extends Sprite
 	{

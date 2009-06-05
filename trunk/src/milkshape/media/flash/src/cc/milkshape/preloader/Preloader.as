@@ -1,5 +1,6 @@
 package cc.milkshape.preloader
 {
+	import cc.milkshape.preloader.events.PreloaderEvent;
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
