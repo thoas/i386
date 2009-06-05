@@ -22,22 +22,22 @@ package cc.milkshape.grid
 				{
 					case Keyboard.UP:
 					case 87: // W
-						_gridModel.focusY = -1 * (gridEvent.shiftKey ? _gridModel.nbVSquare : 1);
+						_gridModel.focusY += -1 * (gridEvent.shiftKey ? _gridModel.nbVSquare : 1);
 						break;
 	
 					case Keyboard.DOWN:
 					case 83: // S
-						_gridModel.focusY = 1 * (gridEvent.shiftKey ? _gridModel.nbVSquare : 1);
+						_gridModel.focusY += 1 * (gridEvent.shiftKey ? _gridModel.nbVSquare : 1);
 						break;
 	
 					case Keyboard.LEFT:
 					case 65: // A
-						_gridModel.focusX = -1 * (gridEvent.shiftKey ? _gridModel.nbHSquare : 1);
+						_gridModel.focusX += -1 * (gridEvent.shiftKey ? _gridModel.nbHSquare : 1);
 						break;
 	
 					case Keyboard.RIGHT:
 					case 68: // D
-						_gridModel.focusX = 1 * (gridEvent.shiftKey ? _gridModel.nbHSquare : 1);
+						_gridModel.focusX += 1 * (gridEvent.shiftKey ? _gridModel.nbHSquare : 1);
 						break;
 	
 					case Keyboard.NUMPAD_ADD:

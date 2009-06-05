@@ -1,8 +1,10 @@
 package
 {
 	import cc.milkshape.grid.GridController;
+	import cc.milkshape.grid.GridKeyboardController;
 	import cc.milkshape.grid.GridLineEvent;
 	import cc.milkshape.grid.GridModel;
+	import cc.milkshape.grid.GridMouseController;
 	import cc.milkshape.grid.GridView;
 	import cc.milkshape.grid.square.SquareFormEvent;
 	import cc.milkshape.preloader.PreloaderEvent;
@@ -50,7 +52,10 @@ package
 			
 			_gridModel = new GridModel(int(e.msg));
 			_gridController = new GridController(_gridModel);
-			_gridView = new GridView(_gridModel, _gridController);
+			var keyboardController:GridKeyboardController = new GridKeyboardController(_gridModel);
+			var mouseController:GridMouseController = new GridMouseController(_gridModel);
+			_gridView = new GridView(_gridModel, _gridController, keyboardController, mouseController);
+			
 			_gridModel.addEventListener(SquareFormEvent.SHOW_OPEN, _showOpenForm);
 			_gridModel.addEventListener(SquareFormEvent.SHOW_BOOKED, _showBookedForm);
 			_gridModel.addEventListener(SquareFormEvent.CLOSE, _closeForm);		
@@ -59,8 +64,8 @@ package
 			_bg.graphics.beginFill(0x000000,0);
 			_bg.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			_bg.graphics.endFill();
-			_bg.addEventListener(MouseEvent.CLICK, _gridController.stageClickHandler);
-			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, _gridController.stageDoubleClickHandler);
+			_bg.addEventListener(MouseEvent.CLICK, _gridView.mouseController.stageClickHandler);
+			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, _gridView.mouseController.stageDoubleClickHandler);
 			
 			addChild(_bg);
 			addChild(_gridView);
@@ -127,8 +132,8 @@ package
 			removeEventListener(MouseEvent.MOUSE_DOWN, _showCloseHandCursor);
 			removeEventListener(MouseEvent.MOUSE_UP, _hideCloseHandCursor);
 			
-			_bg.addEventListener(MouseEvent.CLICK, _gridController.stageClickHandler);
-			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, _gridController.stageDoubleClickHandler);
+			_bg.addEventListener(MouseEvent.CLICK, _gridView.mouseController.stageClickHandler);
+			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, _gridView.mouseController.stageDoubleClickHandler);
 		}
 		
 		private function _showOpenHandCursor(e:GridLineEvent):void
@@ -139,8 +144,8 @@ package
 			addEventListener(MouseEvent.MOUSE_DOWN, _showCloseHandCursor);
 			addEventListener(MouseEvent.MOUSE_UP, _hideCloseHandCursor);
 			
-			_bg.removeEventListener(MouseEvent.CLICK, _gridController.stageClickHandler);
-			_bg.removeEventListener(MouseEvent.DOUBLE_CLICK, _gridController.stageDoubleClickHandler);
+			_bg.removeEventListener(MouseEvent.CLICK, _gridView.mouseController.stageClickHandler);
+			_bg.removeEventListener(MouseEvent.DOUBLE_CLICK, _gridView.mouseController.stageDoubleClickHandler);
 		}
 		
 		private function _showOpenForm(e:SquareFormEvent):void

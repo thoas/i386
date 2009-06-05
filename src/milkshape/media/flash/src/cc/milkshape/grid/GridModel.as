@@ -1,7 +1,7 @@
 package cc.milkshape.grid
 {
 	import cc.milkshape.grid.square.*;
-	
+	import cc.milkshape.utils.Constance;
 	import flash.events.EventDispatcher;
 	
 	public class GridModel extends EventDispatcher 
@@ -24,6 +24,7 @@ package cc.milkshape.grid
 		private var _gridLineVisible:Boolean;
 		private var _posX:int;
 		private var _posY:int;
+		private var _isShowForm:Boolean;
 		
 		public function GridModel(issueId:int) 
 		{ 
@@ -45,6 +46,11 @@ package cc.milkshape.grid
 			_squareSize = squareSize;
 			
 			dispatchEvent(new GridEvent(GridEvent.INFO_READY, _nbHSquare, _nbVSquare, _squareSize));
+		}
+		
+		public function setFocus(x:int, y:int):void {
+			focusX = x;
+			focusY = y;
 		}
 		
 		public function initSquares(squares:Array, squaresOpen:Array):void
@@ -84,6 +90,60 @@ package cc.milkshape.grid
 			
 			dispatchEvent(new GridEvent(GridEvent.READY));
 		}
+
+		public function zoomTo(op:int):void
+		{			
+			var futurScale:int = currentScale + op < minScale ? minScale : currentScale + op > maxScale ? maxScale : currentScale + op;
+			
+			if(currentScale != futurScale)// Si le zoom change
+			{
+				if(_isShowForm)
+				{
+					_isShowForm = false;
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE));
+				}
+				currentScale = futurScale;
+				dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, futurScale));
+
+				moveTo();
+			}
+		}
+		
+		public function moveTo():void
+		{
+			if(currentScale == maxScale)// Si on est au zoom maximal
+			{
+				var square:Square = SquareManager.get(focusSquare);
+				if(square is SquareOpen)
+				{
+					_isShowForm = true;
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_OPEN));
+				}
+				else if(square is SquareBooked)
+				{
+					_isShowForm = true;
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_BOOKED));
+				}
+				else if(_isShowForm)
+				{
+					_isShowForm = false;
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE));
+				}
+			}
+				
+			if(currentScale != minScale)// Si on n'est pas au zoom minimal
+			{
+				posX = focusX * Constance.SCALE_THUMB[currentScale] + Constance.SCALE_THUMB[currentScale] / 2;
+				posY = focusY * Constance.SCALE_THUMB[currentScale] + Constance.SCALE_THUMB[currentScale] / 2;
+			}
+			else
+			{
+				posX = nbVSquare * Constance.SCALE_THUMB[currentScale] / 2;
+				posY = nbHSquare * Constance.SCALE_THUMB[currentScale] / 2;
+			}
+			
+			dispatchEvent(new GridMoveEvent(GridMoveEvent.MOVE, posX, posY));
+		}
 		
 		private function _addPosition(square:Square):void
 		{
@@ -93,9 +153,15 @@ package cc.milkshape.grid
 		
 		public function set currentScale(scale:int):void { _currentScale = scale }
 		
-		public function set focusX(x:int):void { _focusX = x }
+		public function set focusX(x:int):void { 
+			_focusX = x < 0 ? 0 : x >= _nbHSquare ? _nbHSquare - 1 : x;
+			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS)); 
+		}
 
-		public function set focusY(y:int):void { _focusY = y }
+		public function set focusY(y:int):void {
+			_focusY = y < 0 ? 0 : y >= _nbVSquare ? _nbVSquare - 1 : y;
+			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));
+		}
 		
 		public function set squareSize(squareSize:int):void { _squareSize = squareSize }
 		
@@ -114,7 +180,6 @@ package cc.milkshape.grid
 		public function set gridLineVisible(b:Boolean):void
 		{
 			_gridLineVisible = b;
-			//dispatchEvent(new GridLineEvent(b ? GridLineEvent.SHOW : GridLineEvent.HIDE));
 		}		
 		
 		public function get gridLineVisible():Boolean { return _gridLineVisible }		
@@ -141,6 +206,8 @@ package cc.milkshape.grid
 		
 		public function get squareSize():int { return _squareSize }
 		
-		public function get focusSquare():int { return _lstPosition[_focusX][_focusY] }
+		public function get focusSquare():int { 
+			return _lstPosition[_focusX][_focusY];
+		}
 	}
 }

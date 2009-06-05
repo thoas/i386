@@ -11,12 +11,13 @@ package cc.milkshape.grid
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	
 	import flash.ui.Mouse;
 	
 	public class GridView extends Sprite
 	{
 		private var _controller:GridController;
+		private var _keyboardController:GridKeyboardController;
+		private var _mouseController:GridMouseController;
 		private var _model:GridModel;
 		private var _squareSize:int;// Taille des carrés
 		private var _maxScale:int;// Echelle maximum
@@ -29,18 +30,40 @@ package cc.milkshape.grid
 		private var _layerSquare:Sprite;// Le calque qui contient les squares
 		private var _gridLine:GridLine;
 		
-		public function GridView(model:GridModel, controller:GridController)
+		public function GridView(model:GridModel, controller:GridController, keyboardController:GridKeyboardController, mouseController:GridMouseController)
 		{
 			_lineColor = 0x1E1E1E;
 			_stagePadding = 50;
 			_speed = 800;
 			_controller = controller;
+			_keyboardController = keyboardController;
+			_mouseController = mouseController;
 			_model = model;
 			
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
 		}
 		
+		public function get keyboardController():GridKeyboardController
+		{
+			return _keyboardController;
+		}
+
+		public function set keyboardController(v:GridKeyboardController):void
+		{
+			_keyboardController = v;
+		}
+
+		public function get mouseController():GridMouseController
+		{
+			return _mouseController;
+		}
+
+		public function set mouseController(v:GridMouseController):void
+		{
+			_mouseController = v;
+		}
+
 		private function _handlerAddedToStage(e:Event):void
 		{			
 			_model.addEventListener(GridEvent.INFO_READY, _handlerGridInfoReady);
@@ -53,10 +76,10 @@ package cc.milkshape.grid
 			removeEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
 			stage.removeEventListener(Event.RESIZE, _resize);
 			
-			removeEventListener(MouseEvent.CLICK, _controller.clickHandler);
-			removeEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
-			stage.removeEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
+			removeEventListener(MouseEvent.CLICK, _mouseController.clickHandler);
+			removeEventListener(MouseEvent.DOUBLE_CLICK, _mouseController.doubleClickHandler);
+			stage.removeEventListener(MouseEvent.MOUSE_WHEEL, _mouseController.mouseWheelHandler);
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _keyboardController.keyDownHandler);
 
 			_model.removeEventListener(SquareEvent.CREATION, _addSquare);
 			
@@ -105,11 +128,11 @@ package cc.milkshape.grid
 			_model.addEventListener(GridMoveEvent.MOVE, _moveTo);
 			_model.addEventListener(GridZoomEvent.ZOOM, _zoomTo);
 			
-			addEventListener(MouseEvent.CLICK, _controller.clickHandler);
-			addEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
-			stage.addEventListener(KeyboardEvent.KEY_UP, _controller.keyUpHandler);
-			stage.addEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
+			addEventListener(MouseEvent.CLICK, _mouseController.clickHandler);
+			addEventListener(MouseEvent.DOUBLE_CLICK, _mouseController.doubleClickHandler);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, _keyboardController.keyDownHandler);
+			stage.addEventListener(KeyboardEvent.KEY_UP, _keyboardController.keyUpHandler);
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, _mouseController.mouseWheelHandler);
 			stage.addEventListener(Event.RESIZE, _resize);
 
 			_resize();
@@ -127,35 +150,35 @@ package cc.milkshape.grid
 			square.x = square.X * _squareSize;
 			square.y = square.Y * _squareSize;
 			square.tabIndex = _nbHSquare * square.Y + square.X;// Numéro tabulation = nombre de colonne * y + x
-			square.addEventListener(SquareEvent.OVER, _controller.rollOverHandler);
+			square.addEventListener(SquareEvent.OVER, _mouseController.rollOverHandler);
 			square.addEventListener(SquareEvent.FOCUS, _controller.onFocusHandler);// Focus : tabulation, clic, double clic, clavier...
 			_layerSquare.addChild(square);
 		}
 		
 		private function _removeControllerEventListener():void
 		{
-			removeEventListener(MouseEvent.CLICK, _controller.clickHandler);
-			removeEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
-			stage.removeEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
+			removeEventListener(MouseEvent.CLICK, _mouseController.clickHandler);
+			removeEventListener(MouseEvent.DOUBLE_CLICK, _mouseController.doubleClickHandler);
+			stage.removeEventListener(MouseEvent.MOUSE_WHEEL, _mouseController.mouseWheelHandler);
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, _keyboardController.keyDownHandler);
 			
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, _controller.mouseDownMagnet);
-			stage.addEventListener(MouseEvent.MOUSE_UP, _controller.mouseUpMagnet);
-			addEventListener(MouseEvent.MOUSE_DOWN, _controller.mouseDownMagnet);
-			addEventListener(MouseEvent.MOUSE_UP, _controller.mouseUpMagnet);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, _mouseController.mouseDownMagnet);
+			stage.addEventListener(MouseEvent.MOUSE_UP, _mouseController.mouseUpMagnet);
+			addEventListener(MouseEvent.MOUSE_DOWN, _mouseController.mouseDownMagnet);
+			addEventListener(MouseEvent.MOUSE_UP, _mouseController.mouseUpMagnet);
 		}
 		
 		private function _addControllerEventListener():void
 		{
-			addEventListener(MouseEvent.CLICK, _controller.clickHandler);
-			addEventListener(MouseEvent.DOUBLE_CLICK, _controller.doubleClickHandler);
-			stage.addEventListener(MouseEvent.MOUSE_WHEEL, _controller.mouseWheelHandler);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, _controller.keyDownHandler);
+			addEventListener(MouseEvent.CLICK, _mouseController.clickHandler);
+			addEventListener(MouseEvent.DOUBLE_CLICK, _mouseController.doubleClickHandler);
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, _mouseController.mouseWheelHandler);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, _keyboardController.keyDownHandler);
 			
-			stage.removeEventListener(MouseEvent.MOUSE_DOWN, _controller.mouseDownMagnet);
-			stage.removeEventListener(MouseEvent.MOUSE_UP, _controller.mouseUpMagnet);
-			removeEventListener(MouseEvent.MOUSE_DOWN, _controller.mouseDownMagnet);
-			removeEventListener(MouseEvent.MOUSE_UP, _controller.mouseUpMagnet);
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN, _mouseController.mouseDownMagnet);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, _mouseController.mouseUpMagnet);
+			removeEventListener(MouseEvent.MOUSE_DOWN, _mouseController.mouseDownMagnet);
+			removeEventListener(MouseEvent.MOUSE_UP, _mouseController.mouseUpMagnet);
 		}
 		
 		private function _hideGridLine(e:GridLineEvent):void
@@ -191,6 +214,7 @@ package cc.milkshape.grid
 				height: Constance.SCALE_THUMB[e.currentScale] * _nbVSquare }, {
 				ease:Sine.easeOut}
 			);
+			_controller.loadImage(e.currentScale);
 		}
 		
 		private function _moveTo(e:GridMoveEvent):void
