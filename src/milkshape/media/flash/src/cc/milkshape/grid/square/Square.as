@@ -7,8 +7,8 @@
 	
 	public class Square extends Sprite
 	{
-		protected var _x:int;
-		protected var _y:int;
+		private var _x:int;
+		private var _y:int;
 		private var _color:int;
 		
 		public function Square(x:int, y:int, color:int, size:int) 
@@ -32,6 +32,26 @@
 			SquareManager.add(this);
 		}
 		
+		public function get Y():int
+		{
+			return _y;
+		}
+
+		public function set Y(v:int):void
+		{
+			_y = v;
+		}
+
+		public function get X():int
+		{
+			return _x;
+		}
+
+		public function set X(v:int):void
+		{
+			_x = v;
+		}
+
 		private function _focusIn(e:Event):void
 		{
 			alpha = 1;
@@ -48,11 +68,6 @@
 		{
 			dispatchEvent(new SquareEvent(SquareEvent.OVER, this));			
 		}
-		
-		public function get X():int { return _x };
-		
-		public function get Y():int { return _y };
-		
 	}
 	
 }
