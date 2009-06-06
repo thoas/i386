@@ -3,7 +3,7 @@ package cc.milkshape.utils
 	import cc.milkshape.manager.SoundManager;
 	import flash.events.MouseEvent;
 	
-	public class SoundController extends SoundControllerClip
+	public class SoundController extends SoundControllerClp
 	{
 		private var _enabled:Boolean;
 		
