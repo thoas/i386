@@ -8,7 +8,6 @@ package cc.milkshape.framework.forms
 	
 	public class LoginForm extends LoginFormClip
 	{
-		private var _timelineWatcher:TimelineWatcher;
 		
 		public function LoginForm()
 		{
@@ -17,31 +16,23 @@ package cc.milkshape.framework.forms
 		
 		private function _handlerAddedToStage(e:Event):void
 		{
-			LoginBtn.buttonMode = true;
-			LoginBtn.addEventListener(MouseEvent.CLICK, _clickHandler);
-			addEventListener(MouseEvent.CLICK, _clickHandler);
-			
-			_timelineWatcher = new TimelineWatcher(this);
-            _timelineWatcher.addEventListener(TimelineEvent.LABEL_REACHED, _handleTimelineEvent);
-
-			LoginForm.PasswordInput.displayAsPassword = true;
-			LoginForm.SubmitBtn.addEventListener(MouseEvent.CLICK, _submit);
+			loginBtn.buttonMode = true;
+			loginBtn.addEventListener(MouseEvent.CLICK, _clickHandler);
 		}
 		
 		private function _clickHandler(e:MouseEvent):void
 		{
 			KeyboardManager.enabled = false;
 			gotoAndStop('form');
+			//addEventListener(MouseEvent.CLICK, _clickHandler);
+			loginForm.password.displayAsPassword = true;
+			loginForm.submit.buttonMode = true;
+			loginForm.submit.addEventListener(MouseEvent.CLICK, _submit);
         }
- 
-        private function _handleTimelineEvent(e:TimelineEvent):void
-        {
-        	trace(e.currentLabel);
-		}
 		
 		private function _submit(e:MouseEvent):void
 		{
-			trace(LoginForm.LoginInput.text + " " + LoginForm.PasswordInput.text); 
+			trace(loginForm.login.txt.text + " " + loginForm.password.txt.text); 
 		}
 		
 	}
