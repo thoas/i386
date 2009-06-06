@@ -1,6 +1,6 @@
 package
 {
-	import cc.milkshape.preloader.PreloaderEvent;
+	import cc.milkshape.preloader.events.PreloaderEvent;
 	import cc.milkshape.preloader.PreloaderWiper;
 	
 	import flash.display.LoaderInfo;

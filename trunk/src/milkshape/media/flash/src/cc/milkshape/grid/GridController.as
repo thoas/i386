@@ -53,6 +53,7 @@ package cc.milkshape.grid
 			issue.max_x = 4;
 			issue.min_y = 0;
 			issue.max_y = 4;
+			issue.nb_step = 4;
 			issue.square_size = 800;
 			
 			_gridModel.init(issue.min_x, issue.min_y, issue.max_x, issue.max_y, issue.nb_square_x, issue.nb_square_y, issue.show_disable_square, issue.square_size);
