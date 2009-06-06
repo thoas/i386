@@ -8,6 +8,7 @@ package cc.milkshape.grid
 	import flash.events.EventDispatcher;
 	
 	import cc.milkshape.grid.events.GridEvent;
+	import cc.milkshape.grid.events.GridLineEvent;
 
 	import cc.milkshape.grid.events.GridFocusEvent;
 
@@ -191,6 +192,7 @@ package cc.milkshape.grid
 		public function set gridLineVisible(b:Boolean):void
 		{
 			_gridLineVisible = b;
+			dispatchEvent(new GridLineEvent(b ? GridLineEvent.SHOW : GridLineEvent.HIDE));
 		}		
 		
 		public function get gridLineVisible():Boolean { return _gridLineVisible }		
