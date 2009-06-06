@@ -6,7 +6,7 @@ package cc.milkshape.framework.forms
     import com.refunk.timeline.TimelineWatcher;
     import cc.milkshape.manager.KeyboardManager;
 	
-	public class LoginForm extends LoginFormClip
+	public class LoginForm extends LoginFormClp
 	{
 		
 		public function LoginForm()

@@ -24,7 +24,7 @@ package cc.milkshape.utils
             
             for each(var o:Object in array)
             {
-            	var menuItem:MenuItemClip = new MenuItemClip();
+            	var menuItem:MenuItemClp = new MenuItemClp();
             	
             	menuItem.buttonMode = true;
             	menuItem.label.text = o.label;
