@@ -18,16 +18,15 @@ package cc.milkshape.utils
 		{
 			if(_enabled)
 			{
-				_enabled = false;
 				gotoAndPlay('off');
 				SoundManager.getInstance().muteAllSounds();
 			}
 			else
 			{
-				_enabled = true;
 				gotoAndPlay('on');
 				SoundManager.getInstance().unmuteAllSounds();
 			}
+			_enabled = !_enabled;
 		}
 		
 	}
