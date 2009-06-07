@@ -1,5 +1,6 @@
 package cc.milkshape.user
 {
+	import nl.demonsters.debugger.MonsterDebugger;
 	import cc.milkshape.gateway.GatewayController;
 	import cc.milkshape.user.forms.LoginForm;
 	import cc.milkshape.user.events.LoginEvent;
@@ -18,12 +19,13 @@ package cc.milkshape.user
 		public function _login(e:LoginEvent):void 
 		{
 			var params:Object = _loginForm.values();
-			_gateway.connect("http://localhost:8000/account/gateway/");
+			_connect("account/gateway/");
 			_gateway.call("account.login", _responder, params.login, params.password);
 		}
 		
 		override protected function _onResult(result:Object):void 
 		{
+			MonsterDebugger.trace(this, result);
 			UserManager.setUser(result);
 		}
 	}

@@ -4,7 +4,6 @@ package cc.milkshape.grid
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.grid.square.events.SquareEvent;
 	import cc.milkshape.manager.SoundManager;
-	import cc.milkshape.utils.Constance;
 	
 	import flash.events.IOErrorEvent;
 	import flash.display.Bitmap;
@@ -14,6 +13,8 @@ package cc.milkshape.grid
 	import flash.net.URLRequest;
 	
 	import cc.milkshape.grid.events.GridZoomEvent;
+	
+	import cc.milkshape.utils.Constance;
 
 	public class GridController extends GatewayController
 	{
@@ -28,7 +29,7 @@ package cc.milkshape.grid
 			SoundManager.getInstance().addLibrarySound(SoundSquareFocus, "SoundSquareFocus");
 			//_soundSquareFocus = new SoundSquareFocus();
 			
-			_connect("http://localhost:8000/issue/gateway/");
+			_connect("issue/gateway/");
 			
 			_gridModel = gridModel;
 			
@@ -45,8 +46,8 @@ package cc.milkshape.grid
 			var issue:Object = new Object();
 			issue.title = 'Bac à sable';
 			issue.text_presentation = 'Bac à sable desc';
-			issue.nb_square_x = 0;
-			issue.nb_square_y = 0;
+			issue.nb_case_x = 0;
+			issue.nb_case_y = 0;
 			issue.show_disable_square = 1;
 			issue.max_participation = 1;
 			issue.min_x = 0;
@@ -54,7 +55,7 @@ package cc.milkshape.grid
 			issue.min_y = 0;
 			issue.max_y = 4;
 			issue.nb_step = 4;
-			issue.square_size = 800;
+			issue.size = 800;
 			
 			_gridModel.init(issue.min_x, issue.min_y, issue.max_x, issue.max_y, issue.nb_square_x, issue.nb_square_y, issue.show_disable_square, issue.square_size);
 		}
