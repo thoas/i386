@@ -7,6 +7,8 @@ package cc.milkshape.gateway
 	import flash.net.Responder;
 	import nl.demonsters.debugger.MonsterDebugger;
 	
+	import cc.milkshape.utils.Constance;
+	
 	public class GatewayController extends Controller
 	{
 		protected var _gateway:NetConnection;
@@ -20,7 +22,7 @@ package cc.milkshape.gateway
 		
 		protected function _connect(URI:String):void
 		{
-			_gateway.connect(URI);
+			_gateway.connect(Constance.url(URI));
 		}
 		
 		protected function _netStatus(e:NetStatusEvent):void

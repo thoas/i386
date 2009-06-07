@@ -13,6 +13,7 @@ class Issue(models.Model):
     text_presentation = models.TextField(_('text_presentation'))
     nb_case_x = models.IntegerField(_('nb_case_x'))
     nb_case_y = models.IntegerField(_('nb_case_y'))
+    show_disable_square = models.BooleanField(_('show_disable_square'), default=0)
     nb_step = models.IntegerField(_('nb_step'), default=settings.DEFAULT_NB_STEP)
     size = models.IntegerField(_('size'), default=settings.DEFAULT_SIZE)
     margin = models.IntegerField(_('margin'), default=settings.DEFAULT_MARGIN)

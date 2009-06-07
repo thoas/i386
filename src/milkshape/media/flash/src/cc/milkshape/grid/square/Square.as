@@ -57,7 +57,6 @@
 		{
 			alpha = 1;
 			dispatchEvent(new SquareEvent(SquareEvent.FOCUS, this));
-			//trace("tabIndex : "+ tabIndex + " pos : "+_x + ";" + _y);
 		}
 		
 		private function _focusOut(e:FocusEvent):void

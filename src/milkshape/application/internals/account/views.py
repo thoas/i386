@@ -21,7 +21,7 @@ from account.forms import SignupForm, AddEmailForm, LoginForm, \
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
 try:
-    pyamf.register_class(User, 'django.contrib.auth.models.User')
+    pyamf.register_class(User, 'cc.milkshape.gateway.vo.UserVO')
 except ValueError:
     print "Classes already registered"
 
