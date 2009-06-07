@@ -1,3 +1,5 @@
+import pyamf
+
 from pyamf.remoting.gateway.django import DjangoGateway
 
 from django.conf import settings
@@ -18,6 +20,11 @@ from account.forms import SignupForm, AddEmailForm, LoginForm, \
         ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
+try:
+    pyamf.register_class(User, 'django.contrib.auth.models.User')
+except ValueError:
+    print "Classes already registered"
+
 def _login(request, username=None, password=None, remember=None):
     if request.method == 'POST':
         datas = request.POST.copy()
@@ -28,7 +35,7 @@ def _login(request, username=None, password=None, remember=None):
         form = LoginForm(datas)
         if form.login(request):
             return request.user
-        return form.errors 
+        return form.errors['__all__']
     return None
 
 def login(request, template_name, form_class=LoginForm):

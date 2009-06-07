@@ -1,6 +1,6 @@
 package cc.milkshape.grid
 {
-	import cc.milkshape.gateaway.GatewayController;
+	import cc.milkshape.gateway.GatewayController;
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.grid.square.events.SquareEvent;
 	import cc.milkshape.manager.SoundManager;
