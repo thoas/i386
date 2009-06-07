@@ -1,10 +1,12 @@
-package cc.milkshape.gateaway
+package cc.milkshape.gateway
 {
 	import cc.milkshape.framework.Controller;
 	
 	import flash.events.NetStatusEvent;
 	import flash.net.NetConnection;
 	import flash.net.Responder;
+	import nl.demonsters.debugger.MonsterDebugger;
+	
 	public class GatewayController extends Controller
 	{
 		protected var _gateway:NetConnection;
@@ -28,6 +30,7 @@ package cc.milkshape.gateaway
 		
 		protected function _onResult(result:Object):void {
 			var myData:String = result.toString();
+			MonsterDebugger.trace(this, result, 0xFF0000, true, 6);
 			trace(result);
 		}
 		

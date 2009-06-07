@@ -11,4 +11,5 @@ class IssueTestCase(unittest.TestCase):
         self.service = self.gw.getService('account')
 
     def testGatewayLogin(self):
-        print self.service.login("thoas", "toto")
+        values = self.service.login("thoas", "toto")
+        print values
