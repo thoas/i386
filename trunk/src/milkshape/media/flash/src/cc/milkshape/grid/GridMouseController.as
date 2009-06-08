@@ -43,7 +43,7 @@ package cc.milkshape.grid
 		}
 		
 		public function rollOverHandler(e:SquareEvent):void
-		{
+		{ 
 			_overX = e.square.X;
 			_overY = e.square.Y;
 			_clickEnabled = (_gridModel.focusX == _overX && _gridModel.focusY == _overY) ? true : false;

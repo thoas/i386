@@ -57,7 +57,7 @@ package cc.milkshape.grid
 			issue.nb_step = 4;
 			issue.size = 800;
 			
-			_gridModel.init(issue.min_x, issue.min_y, issue.max_x, issue.max_y, issue.nb_square_x, issue.nb_square_y, issue.show_disable_square, issue.square_size);
+			_gridModel.init(issue.min_x, issue.min_y, issue.max_x, issue.max_y, issue.nb_case_x, issue.nb_case_y, issue.show_disable_square, issue.size);
 		}
 		
 		public function getGridSquares():void
