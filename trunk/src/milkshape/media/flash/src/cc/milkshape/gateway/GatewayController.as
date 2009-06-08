@@ -30,13 +30,15 @@ package cc.milkshape.gateway
 			
 		}
 		
-		protected function _onResult(result:Object):void {
+		protected function _onResult(result:Object):void 
+		{
 			var myData:String = result.toString();
 			MonsterDebugger.trace(this, result, 0xFF0000, true, 6);
 			trace(result);
 		}
 		
-		protected function _onFault(error:Object):void {
+		protected function _onFault(error:Object):void 
+		{
 			for (var d:String in error) {
 				trace(error[d] + "\n") 
 			}

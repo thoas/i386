@@ -72,7 +72,8 @@ def get_filename(instance, filename):
     return instance.template_name
 
 class Square(AbstractSquare):
-    background_image = models.ImageField(upload_to=get_filename, blank=True, null=True)
+    # ImageField raises an error in PyAMF
+    background_image = models.CharField(max_length=255, blank=True, null=True)
     date_booked = models.DateTimeField(_('date_booked'), blank=True, null=True)
     date_finished = models.DateTimeField(_('date_finished'), blank=True, null=True)
     # 1 : full | 0 : booked
@@ -80,8 +81,9 @@ class Square(AbstractSquare):
 
     user = models.ForeignKey(User, verbose_name=_('user'),\
                         related_name=_('participations'), blank=True, null=True)
-    square_parent = models.ForeignKey('Square', verbose_name=_('square_parent'),\
-                        related_name=_('squares_child'), blank=True, null=True)
+    # PyAMF ERROR
+    # square_parent = models.ForeignKey('Square', verbose_name=_('square_parent'),\
+    #                    related_name=_('squares_child'), blank=True, null=True)
     template_name = models.CharField(_('template_name'),\
                         max_length=150, blank=True, null=True)
 
@@ -116,7 +118,7 @@ class Square(AbstractSquare):
             width, height = (step, step)
             image_clone.thumbnail((width, height))
             thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.%s'\
-                            % (str(step), self.background_image.name, THUMB_EXTENSION_IMAGE))
+                            % (str(step), self.background_image, THUMB_EXTENSION_IMAGE))
             logging.info(thumb_path)
             if exists(thumb_path):
                 logging.warn('erase thumbnail %s' % thumb_path)
@@ -162,7 +164,7 @@ class Square(AbstractSquare):
         for neighbor in neighbors:
             coord_tuple = tuple((neighbor.pos_x, neighbor.pos_y))
             index = neighbors_keys[coord_tuple]
-            im = Image.open(neighbor.background_image_path)
+            im = Image.open(neighbor.background_image_path())
 
             logging.debug('%s -> %s (%s)' %\
                     (self.issue.crop_pos[index],\
@@ -173,13 +175,13 @@ class Square(AbstractSquare):
 
         # if square is already created, append the background to the template
         if self.background_image:
-            image_tmp_path = self.background_image_path
+            image_tmp_path = self.background_image_path()
             if exists(image_tmp_path):
                 image_tmp = Image.open(image_tmp_path)
                 logging.warn('background already exists, paste image %s' % image_tmp_path)
                 image.paste(image_tmp, self.issue.creation_position_crop)
         
-        image.save(self.template_path, format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
+        image.save(self.template_path(), format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
         image.filename = self.template_name
         return image
     
@@ -194,7 +196,7 @@ class Square(AbstractSquare):
         for neighbor in neighbors:
             neighbor_current_key = tuple((neighbor.pos_x, neighbor.pos_y))
             index = neighbors_keys[neighbor_current_key]
-            neighbor_path = neighbor.background_image_path
+            neighbor_path = neighbor.background_image_path()
             
             logging.info('rebuilding %s' % neighbor_path)
             image = Image.open(neighbor_path)
@@ -254,7 +256,7 @@ class Square(AbstractSquare):
         # now, square saved, template uploaded, we can build thumbs and update neighbors
         # square is mark as filled and has a pk
         if self.status and self.pk:
-            template_full_path = self.template_full_path
+            template_full_path = self.template_full_path()
             
             # if the template uploaded already exists, we erase it
             if exists(template_full_path):
@@ -290,24 +292,20 @@ class Square(AbstractSquare):
     def delete(self):
         super(Square, self).delete()
     
-    @property
     def template(self):
         if not hasattr(self, '_template'):
             self._template = Square.retrieve_template(self.template_name)
         return self._template
 
-    @property
     def template_path(self):
         return join(settings.TEMPLATE_ROOT, self.template_name)
 
-    @property
     def template_full_path(self):
         return join(settings.UPLOAD_TEMPLATE_ROOT, self.template_name)
     
-    @property
     def background_image_path(self):
         """docstring for get_background_image_path"""
-        return join(settings.UPLOAD_HD_ROOT, self.background_image.name)
+        return join(settings.UPLOAD_HD_ROOT, self.background_image)
     
     def layer_name(self, step):
         if not self._layer_dict.has_key(step):
@@ -321,7 +319,7 @@ class Square(AbstractSquare):
         return join(settings.LAYER_ROOT, self.layer_name(step))
     
     def get_background_image_thumb_path(self, size):
-        return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image.name))
+        return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image))
     
     @property
     def formatted_background_image(self):

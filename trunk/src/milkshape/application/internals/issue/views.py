@@ -34,6 +34,8 @@ def _issue(request, slug):
         'nb_case_y': range(issue.nb_case_y)
     }
     
+    print squares
+    
     return datas
 
 #@login_required
