@@ -67,9 +67,9 @@ class AbstractSquare(models.Model):
                 for i in range(LEN_POS))
         return self._neighbors
 
-def get_filename(instance, filename):
-    """docstring for get_filename"""
-    return instance.template_name
+#def get_filename(instance, filename):
+#    """docstring for get_filename"""
+#    return instance.template_name
 
 class Square(AbstractSquare):
     # ImageField raises an error in PyAMF
@@ -257,15 +257,6 @@ class Square(AbstractSquare):
         # square is mark as filled and has a pk
         if self.status and self.pk:
             template_full_path = self.template_full_path()
-            
-            # if the template uploaded already exists, we erase it
-            if exists(template_full_path):
-                logging.warn('%s already exists, erase...' % template_full_path)
-                unlink(template_full_path)
-                
-            # when we upload, it's done in media directory
-            # rename the default location, from media directory to a dedicated one
-            rename(join(settings.MEDIA_ROOT, self.template_name), template_full_path)
             
             template_full = Image.open(template_full_path)
 

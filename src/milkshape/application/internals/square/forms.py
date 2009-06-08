@@ -19,6 +19,10 @@ class SquareForm(ModelForm):
 
     def save(self):
         """docstring for save"""
+        dest = open(self.instance.template_full_path(), 'wb+')
+        for chunk in self.files['background_image'].chunks():
+            dest.write(chunk)
+        dest.close()
         return super(SquareForm, self).save()
     
     class Meta:
