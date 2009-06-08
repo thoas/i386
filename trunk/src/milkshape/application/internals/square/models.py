@@ -132,10 +132,11 @@ class Square(AbstractSquare):
                 layer = Image.open(layer_path)
                 logging.debug('layer exists %s' % layer_path)
           
-            x = self.pos_x * width
-            y = self.pos_y * height
-            layer.paste(image_clone,(x, y, x + width, y + height))
+            x = self.pos_y * height
+            y = self.pos_x * width
+            layer.paste(image_clone,(x, y, x + height, y + width))
             
+            logging.info('(%d, %d) -> layer position (%d, %d)' % (self.pos_x, self.pos_y, x, y));
             try:
                 logging.debug(layer_path)
                 layer.save(layer_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
