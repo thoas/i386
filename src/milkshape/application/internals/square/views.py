@@ -38,11 +38,12 @@ def book(request, issue, square_open):
         if not square.status:
             SquareOpen.objects.neighbors_standby(square_open, 1)
     except Exception, error:
+        print error
         logging.error(error)
         transaction.rollback()
     else:
         transaction.commit()
-        return template(request, square.template)
+        return template(request, square.template())
     return templates(request)
 
 def release(request, issue, square_open):
@@ -76,6 +77,7 @@ def fill(request, issue, square_open):
                 # delete old square open
                 square_open.delete()
             except Exception, error:
+                print error
                 logging.error(error)
                 transaction.rollback()
             else:

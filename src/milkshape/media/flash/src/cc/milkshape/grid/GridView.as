@@ -79,7 +79,8 @@ package cc.milkshape.grid
 		}
 
 		private function _handlerAddedToStage(e:Event):void
-		{			
+		{		
+			removeEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);	
 			_model.addEventListener(GridEvent.INFO_READY, _handlerGridInfoReady);
 			_controller.getGridInfo();
 		}
