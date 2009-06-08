@@ -116,7 +116,6 @@ package cc.milkshape.grid
 				}
 				currentScale = futurScale;
 				dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, futurScale));
-
 				moveTo();
 			}
 		}
@@ -163,7 +162,9 @@ package cc.milkshape.grid
 			dispatchEvent(new SquareEvent(SquareEvent.CREATION, square));
 		}
 		
-		public function set currentScale(scale:int):void { _currentScale = scale }
+		public function set currentScale(scale:int):void { 
+			_currentScale = scale;
+		}
 		
 		public function set focusX(x:int):void { 
 			_focusX = x < 0 ? 0 : x >= _nbHSquare ? _nbHSquare - 1 : x;

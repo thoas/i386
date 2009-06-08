@@ -1,6 +1,7 @@
 package cc.milkshape.framework
 {
-	public class Controller
+	import flash.events.EventDispatcher;
+	public class Controller extends EventDispatcher
 	{
 		public function Controller()
 		{

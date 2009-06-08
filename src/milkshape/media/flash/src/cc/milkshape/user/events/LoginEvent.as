@@ -5,9 +5,23 @@ package cc.milkshape.user.events
 	public class LoginEvent extends Event
 	{
 		public static const SUBMIT:String = 'SUBMIT';
-		public function LoginEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+		public static const LOGGED:String = 'LOGGED';
+		private var _user:Object;
+		public function LoginEvent(type:String, user:Object)
 		{
 			super(type, bubbles, cancelable);
+			_user = user;
 		}
+
+		public function get user():Object
+		{
+			return _user;
+		}
+
+		public function set user(v:Object):void
+		{
+			_user = v;
+		}
+
 	}
 }
