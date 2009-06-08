@@ -42,12 +42,12 @@ package cc.milkshape.grid
 	
 					case Keyboard.NUMPAD_ADD:
 					case 73: // I
-						_gridModel.currentScale = gridEvent.shiftKey ? _gridModel.maxScale : 1;
+						_gridModel.zoomTo(gridEvent.shiftKey ? _gridModel.maxScale : 1);
 						break;
 	
 					case Keyboard.NUMPAD_SUBTRACT:
 					case 79: // O
-						_gridModel.currentScale = gridEvent.shiftKey ? -_gridModel.maxScale : -1;
+						_gridModel.zoomTo(gridEvent.shiftKey ? -_gridModel.maxScale : -1);
 						break;
 						
 					case Keyboard.SPACE:

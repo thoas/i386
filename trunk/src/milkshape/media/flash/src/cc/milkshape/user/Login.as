@@ -15,10 +15,8 @@ package cc.milkshape.user
 		
 		public function _handlerAddedToStage(e:Event):void 
 		{
-			var loginForm:LoginForm = new LoginForm();
-			loginForm.x = 200;
-			
-			_loginController = new LoginController(loginForm);
+			_loginController = new LoginController();
+			var loginForm:LoginForm = new LoginForm(_loginController);
 			addChild(loginForm);
 		}
 	}
