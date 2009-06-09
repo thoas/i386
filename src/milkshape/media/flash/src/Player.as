@@ -14,7 +14,8 @@ package
 		
 		public function Player()
 		{
-			_wiperPreloader = new PreloaderWiper('main.swf');
+			_wiperPreloader = new PreloaderWiper();
+			_wiperPreloader.loadMedia('main.swf');
 			addChild(_wiperPreloader);
 		}
 

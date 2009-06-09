@@ -10,11 +10,6 @@ package cc.milkshape.preloader
 	{
 		private var _label:TextField;
 		
-		public function PreloaderKb(url:String, msg:String = "")
-		{
-			super(url, msg);
-		}
-		
 		override protected function _init():void
 		{
 			addChild(_loader);

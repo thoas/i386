@@ -18,7 +18,7 @@ package cc.milkshape.grid
 		public function addThumb(bitmap:Bitmap, x:int, y:int):void
 		{
 			bitmap.width *= 800 / Constance.SCALE_THUMB[_scale];
-			bitmap.height *= 800 / Constance.SCALE_THUMB[_scale];
+			bitmap.height *= 800 / Constance.SCALE_THUMB [_scale];
 			bitmap.x = x * 800;
 			bitmap.y = y * 800;
 			_lstImage.push(bitmap);

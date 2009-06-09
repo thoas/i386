@@ -111,7 +111,7 @@ package cc.milkshape.grid
 		private function _completeHandler(e:Event):void
 		{
 			var o:LoaderInfo = LoaderInfo(e.target);
-			_listLayers[_gridModel.currentScale].addThumb(Bitmap(o.content), 2, 2);
+			_listLayers[_gridModel.currentScale].addThumb(Bitmap(o.content), 0, 0);
         }
 
 		private function _ioErrorHandler(event:IOErrorEvent):void
@@ -121,14 +121,16 @@ package cc.milkshape.grid
         
         public function loadImage():void
 		{
-			_responder = new Responder(_loadLayer, _onFault);
-			_gateway.call("issue.layer", _responder, '5x5', _gridModel.focusX, _gridModel.focusY, _gridModel.currentScale);
+			_loader.load(new URLRequest(Constance.url('media/layer/0_0__'+ Constance.SCALE_THUMB[_gridModel.currentScale]+'__5x5.png')));
+			//_responder = new Responder(_loadLayer, _onFault);
+			//_gateway.call("issue.layer", _responder, '5x5', _gridModel.focusX, _gridModel.focusY, _gridModel.currentScale);
 		}
 		
 		private function _loadLayer(result:Array):void
 		{
-			for each(var layer:Object in result){
-				_loader.load(new URLRequest(layer.url));
+			for each(var layer:Object in result)
+			{
+				//_loader.load(new URLRequest(layer.url));
 			}
 		}
 
