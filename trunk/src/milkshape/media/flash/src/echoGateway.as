@@ -13,7 +13,7 @@ package
 			_gateway = new NetConnection();
 			_gateway.connect( "http://localhost:8000/issue/gateway/");
 			var responder:Responder = new Responder( onResult, onFault );
-			_gateway.call( "issue.issues", responder);
+			_gateway.call( "issue.issue", responder, '5x5');
 		}
 
 		private function onResult( result:Object ): void {
