@@ -49,7 +49,7 @@ class SquareOpenManager(AbstractSquareManager):
 class AbstractSquare(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
     pos_y = models.IntegerField(_('pos_y'))
-    coord = models.CharField(_('coord'), max_length=20, unique=True, blank=True)
+    coord = models.CharField(_('coord'), max_length=20, blank=True)
     issue = models.ForeignKey(Issue, verbose_name=_('issue'))
 
     class Meta:
@@ -110,11 +110,11 @@ class Square(AbstractSquare):
 
     def generate_thumbs(self, image):
         thumbs = {}
-        steps = self.steps
+        steps = self.issue.steps
         
         for step in steps:
             image_clone = image.copy()
-            width, height = (step, step)
+            width = height = step
             image_clone.thumbnail((width, height))
             thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.%s'\
                             % (str(step), self.background_image, THUMB_EXTENSION_IMAGE))
@@ -124,45 +124,54 @@ class Square(AbstractSquare):
                 unlink(thumb_path)
             image_clone.save(thumb_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
             
+            self.build_layer(image_clone, step)
             
-            size_x = self.issue.nb_case_x * step
-            size_y = self.issue.nb_case_y * step
-            
-            max_width, max_height = self.issue.size, self.issue.size
-
-            if size_x > self.issue.size:
-                size_x = max_width
-            
-            if size_y > self.issue.size:
-                size_y = max_height
-            
-            # layerable image
-            layer_path = self.layer_path(size_x, size_y, step)
-            
-            # juanito
-            if not exists(layer_path):
-                layer = Image.new(DEFAULT_IMAGE_MODE, (size_x, size_y),\
-                            DEFAULT_IMAGE_BACKGROUND_COLOR)
-            else:
-                layer = Image.open(layer_path)
-                logging.debug('layer exists %s' % layer_path)
-            
-            indent_x = self.pos_x * step / size_x
-            indent_y = self.pos_y * step / size_y
-            
-            x = (self.pos_y * step) - (indent_y * size_y)
-            y = (self.pos_x * step) - (indent_x * size_x)
-            
-            print '(%d, %d) paste in (%d, %d)' % (self.pos_x, self.pos_y, x, y)
-            layer.paste(image_clone,(x, y, x + height, y + width))
-            
-            logging.info('(%d, %d) -> layer position (%d, %d)' % (self.pos_x, self.pos_y, x, y));
-            try:
-                logging.debug(layer_path)
-                layer.save(layer_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
-            except IOError, error:
-                logging.error('%s', error)
         return thumbs
+    
+    def size(self, step):
+        max_width = max_height = self.issue.size
+
+        size_x = self.issue.nb_case_x * step
+        size_y = self.issue.nb_case_y * step
+
+        if size_x > self.issue.size:
+            size_x = max_width
+        
+        if size_y > self.issue.size:
+            size_y = max_height
+        return size_x, size_y
+    
+    def build_layer(self, image, step):        
+        width = height = step
+
+        size_x, size_y = self.size(step)
+        
+        # layerable image
+        layer_path = self.layer_path(step)
+        
+        # juanito
+        if not exists(layer_path):
+            layer = Image.new(DEFAULT_IMAGE_MODE, (size_x, size_y),\
+                        DEFAULT_IMAGE_BACKGROUND_COLOR)
+        else:
+            layer = Image.open(layer_path)
+            logging.debug('layer exists %s' % layer_path)
+        
+        indent_x = (self.pos_x * step) / size_x
+        indent_y = (self.pos_y * step) / size_y
+        
+        x = (self.pos_y * step) - (indent_y * size_y)
+        y = (self.pos_x * step) - (indent_x * size_x)
+        
+        layer.paste(image, (x, y, x + height, y + width))
+        
+        logging.info('(%d, %d) -> layer position (%d, %d)' % (self.pos_x, self.pos_y, x, y))
+        
+        try:
+            logging.debug(layer_path)
+            layer.save(layer_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
+        except IOError, error:
+            logging.error('%s', error)
     
     def build_template(self):
         self.date_booked = datetime.now()
@@ -286,7 +295,7 @@ class Square(AbstractSquare):
             self.populate_neighbors(template_full)
 
     def build_background_image(self, im_crop, paste_pos, directory_root):
-        image = Image.new(DEFAULT_IMAGE_MODE, self.size, DEFAULT_IMAGE_BACKGROUND_COLOR)
+        image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size, self.issue.size), DEFAULT_IMAGE_BACKGROUND_COLOR)
         image.paste(im_crop, paste_pos)
         image.save(join(directory_root, self.formatted_background_image),\
                         format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
@@ -316,16 +325,16 @@ class Square(AbstractSquare):
         """docstring for get_background_image_path"""
         return join(settings.UPLOAD_HD_ROOT, self.background_image)
     
-    def layer_name(self, size_x, size_y, step):
+    def layer_name(self, step):
         if not self._layer_dict.has_key(step):
+            size_x, size_y = self.size(step)
             x = self.pos_x * step / size_x
             y = self.pos_y * step / size_y
-            print '%d %d (%d) %d %d' % (size_x, size_y, step, x, y)
             self._layer_dict[step] = '%d_%d__%d__%s.%s' % (x, y, step, self.issue.slug, THUMB_EXTENSION_IMAGE)
         return self._layer_dict[step]
     
-    def layer_path(self, size_x, size_y, step):
-        return join(settings.LAYER_ROOT, self.layer_name(size_x, size_y, step))
+    def layer_path(self, step):
+        return join(settings.LAYER_ROOT, self.layer_name(step))
     
     def get_background_image_thumb_path(self, size):
         return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image))
@@ -335,7 +344,10 @@ class Square(AbstractSquare):
         return settings.UPLOAD_THUMB_URL + '/' + self.background_image
     
     def background_image_thumb_url(self, size):
-        return '%s/%d_%s.png' % (settings.UPLOAD_THUMB_URL, size, self.background_image)
+        return '%s/%d_%s.%s' % (settings.UPLOAD_THUMB_URL, size, self.background_image, THUMB_EXTENSION_IMAGE)
+    
+    def layer_url(self, step):
+        return join(settings.LAYER_URL, self.layer_name(step))
     
     @property
     def formatted_background_image(self):
@@ -347,18 +359,12 @@ class Square(AbstractSquare):
                 self._formatted_background_image = '%s__%s'\
                     % (self.user.username, self.formatted_background_image)
         return self._formatted_background_image
-
+    
     @property
-    def size(self):
-        if not hasattr(self, '_size'):
-            self._size = tuple((self.issue.size, self.issue.size))
-        return self._size
-
-    @property
-    def steps(self):
-        if not hasattr(self, '_steps'):
-            self._steps = self.issue.steps
-        return self._steps
+    def layer_urls(self):
+        if not hasattr(self, '_layer_urls'):
+            self._urls = dict((step, self.layer_url(step)) for step in self.issue.steps)
+        return self._urls
 
 class SquareOpen(AbstractSquare):
     date_created = models.DateTimeField(_('date_created'), auto_now_add=True)
