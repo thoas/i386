@@ -111,7 +111,6 @@ class Square(AbstractSquare):
     def generate_thumbs(self, image):
         thumbs = {}
         steps = self.steps
-        default_step = steps[0]
         
         for step in steps:
             image_clone = image.copy()
@@ -125,17 +124,36 @@ class Square(AbstractSquare):
                 unlink(thumb_path)
             image_clone.save(thumb_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
             
+            
+            size_x = self.issue.nb_case_x * step
+            size_y = self.issue.nb_case_y * step
+            
+            max_width, max_height = self.issue.size, self.issue.size
+
+            if size_x > self.issue.size:
+                size_x = max_width
+            
+            if size_y > self.issue.size:
+                size_y = max_height
+            
             # layerable image
-            layer_path = self.layer_path(step)
+            layer_path = self.layer_path(size_x, size_y, step)
+            
+            # juanito
             if not exists(layer_path):
-                layer = Image.new(DEFAULT_IMAGE_MODE, self.size,\
+                layer = Image.new(DEFAULT_IMAGE_MODE, (size_x, size_y),\
                             DEFAULT_IMAGE_BACKGROUND_COLOR)
             else:
                 layer = Image.open(layer_path)
                 logging.debug('layer exists %s' % layer_path)
-          
-            x = self.pos_y * height
-            y = self.pos_x * width
+            
+            indent_x = self.pos_x * step / size_x
+            indent_y = self.pos_y * step / size_y
+            
+            x = (self.pos_y * step) - (indent_y * size_y)
+            y = (self.pos_x * step) - (indent_x * size_x)
+            
+            print '(%d, %d) paste in (%d, %d)' % (self.pos_x, self.pos_y, x, y)
             layer.paste(image_clone,(x, y, x + height, y + width))
             
             logging.info('(%d, %d) -> layer position (%d, %d)' % (self.pos_x, self.pos_y, x, y));
@@ -298,16 +316,16 @@ class Square(AbstractSquare):
         """docstring for get_background_image_path"""
         return join(settings.UPLOAD_HD_ROOT, self.background_image)
     
-    def layer_name(self, step):
+    def layer_name(self, size_x, size_y, step):
         if not self._layer_dict.has_key(step):
-            width, height = self.size
-            x = (self.pos_x * step) / width
-            y = (self.pos_y * step) / height
+            x = self.pos_x * step / size_x
+            y = self.pos_y * step / size_y
+            print '%d %d (%d) %d %d' % (size_x, size_y, step, x, y)
             self._layer_dict[step] = '%d_%d__%d__%s.%s' % (x, y, step, self.issue.slug, THUMB_EXTENSION_IMAGE)
         return self._layer_dict[step]
     
-    def layer_path(self, step):
-        return join(settings.LAYER_ROOT, self.layer_name(step))
+    def layer_path(self, size_x, size_y, step):
+        return join(settings.LAYER_ROOT, self.layer_name(size_x, size_y, step))
     
     def get_background_image_thumb_path(self, size):
         return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image))
