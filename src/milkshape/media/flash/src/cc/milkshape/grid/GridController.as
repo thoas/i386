@@ -8,10 +8,11 @@ package cc.milkshape.grid
 	import cc.milkshape.utils.Constance;
 	
 	import flash.display.Bitmap;
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.display.Loader;
+	import flash.net.Responder;
+	import flash.display.LoaderInfo;
 	import flash.net.URLRequest;
 	
 	import nl.demonsters.debugger.MonsterDebugger;
@@ -118,9 +119,17 @@ package cc.milkshape.grid
             trace('Unable to load image');
         }
         
-        public function loadImage(scale:int):void
+        public function loadImage():void
 		{
-			_loader.load(new URLRequest('../img/' + '1_1' + '_' + Constance.SCALE_THUMB[scale] + '.jpg'));
+			_responder = new Responder(_loadLayer, _onFault);
+			_gateway.call("issue.layer", _responder, '5x5', _gridModel.focusX, _gridModel.focusY, _gridModel.currentScale);
+		}
+		
+		private function _loadLayer(result:Array):void
+		{
+			for each(var layer:Object in result){
+				_loader.load(new URLRequest(layer.url));
+			}
 		}
 
 		public function onFocusHandler(e:SquareEvent):void
