@@ -17,11 +17,13 @@ package cc.milkshape.preloader
 		protected var _bytesLoaded:int;
 		protected var _percent:int;
 		
-		public function Preloader(url:String, msg:*)
+		public function Preloader()
 		{
-			_url = url;
-			_msg = msg;
-            addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
+			_loader = new Loader();
+			_loader.contentLoaderInfo.addEventListener(Event.OPEN, _openHandler);
+			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, _progressHandler);
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
+            _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
 		}
 		
 		public function unloadMedia():void
@@ -35,17 +37,6 @@ package cc.milkshape.preloader
 			_loader.load(new URLRequest(url));
 		}
 		
-		private function _handlerAddedToStage(e:Event):void
-		{
-			_loader = new Loader();
-			_loader.contentLoaderInfo.addEventListener(Event.OPEN, _openHandler);
-			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, _progressHandler);
-			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
-            _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
-            
-            loadMedia(_url);
-		}
-        
         private function _progressHandler(e:ProgressEvent):void
 		{
 			_bytesTotal = e.bytesTotal;

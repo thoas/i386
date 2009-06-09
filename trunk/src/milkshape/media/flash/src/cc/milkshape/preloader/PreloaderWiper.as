@@ -13,10 +13,8 @@ package cc.milkshape.preloader
 		private var _color:int;
 		private var _mc:MovieClip;
 		
-		public function PreloaderWiper(url:String, msg:String = "", color:int = 0x000000)
+		public function PreloaderWiper(color:int = 0x000000)
 		{
-			super(url, msg);
-			_range = 15;
 			_color = color;
 		}
 		
