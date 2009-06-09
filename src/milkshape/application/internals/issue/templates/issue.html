@@ -4,6 +4,7 @@
 {% load smart_if %}
 {% load captureas %}
 {% load dict_get %}
+{% load square_extras %}
 {% block head_title %}{{ issue.title }} {% endblock %}
 
 {% block body %}
@@ -18,7 +19,7 @@
                 {% with t_squares|get:coord as square %}
                     <div class="opened">
                     {% if square.background_image %}
-                        <img src="/media/upload/thumb/100_{{ square.background_image }}.png" />
+                        <img src="{{ square|background_image_thumb_url:100 }}" />
                     {% else %}
                         {{ coord }}
                     {% endif %}
@@ -34,24 +35,24 @@
                                     <a href="{% url square action="fill" pos_x=i pos_y=j issue_slug=issue.slug %}">
                                 {% if square.background_image %}
 
-                                        <img src="/media/upload/thumb/100_{{ square.background_image }}.png" />
+                                        <img src="{{ square|background_image_thumb_url:100 }}" />
                                 {% else %}
                                     {{ coord }}
                                 {% endif %}
                                 </a>
                                 </div>
                             {% else %}
-                                <img src="/media/upload/thumb/100_{{ square.background_image }}.png" />
+                                <img src="{{ square|background_image_thumb_url:100 }}" />
                             {% endif %}
                         {% else %}
                             {% if square.status %}
                             <div>
-                                <img src="/media/upload/thumb/100_{{ square.background_image }}.png" />
+                                <img src="{{ square|background_image_thumb_url:100 }}" />
                             </div>
                             {% else %}
                                 <div class="disabled">
                                 {% if square.background_image %}
-                                    <img src="/media/upload/thumb/100_{{ square.background_image }}.png" />
+                                    <img src="{{ square|background_image_thumb_url:100 }}" />
                                 {% else %}
                                     {{ coord }}
                                 {% endif %}

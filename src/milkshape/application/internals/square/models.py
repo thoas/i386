@@ -312,6 +312,13 @@ class Square(AbstractSquare):
     def get_background_image_thumb_path(self, size):
         return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image))
     
+    @property 
+    def background_image_thumb_url(self):
+        return settings.UPLOAD_THUMB_URL + '/' + self.background_image
+    
+    def background_image_thumb_url(self, size):
+        return '%s/%d_%s.png' % (settings.UPLOAD_THUMB_URL, size, self.background_image)
+    
     @property
     def formatted_background_image(self):
         if not hasattr(self, '_formatted_background_image'):
