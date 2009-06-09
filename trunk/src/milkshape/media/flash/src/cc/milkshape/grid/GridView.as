@@ -229,7 +229,6 @@ package cc.milkshape.grid
 				height: Constance.SCALE_THUMB[e.currentScale] * _nbVSquare }, {
 				ease:Sine.easeOut}
 			);
-			_controller.loadImage(e.currentScale);
 		}
 		
 		private function _moveTo(e:GridMoveEvent):void
@@ -241,6 +240,7 @@ package cc.milkshape.grid
 				y: Math.round(stage.stageHeight / 2 - e.decalY) }, {
 				ease:Sine.easeOut}
 			);
+			_controller.loadImage();
 		}
 		
 		private function _squarePutFocus(e:GridFocusEvent):void
