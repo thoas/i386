@@ -32,8 +32,8 @@ package cc.milkshape.grid
 			SoundManager.getInstance().addLibrarySound(SoundSquareFocus, "SoundSquareFocus");
 			//_soundSquareFocus = new SoundSquareFocus();
 			
-			_connect("issue/gateway");
-			
+			_connect("issue/gateway/");
+
 			_gridModel = gridModel;
 			
 			_loader = new Loader();// Un seul loader... donc un seul téléchargement possible à la fois
@@ -47,10 +47,11 @@ package cc.milkshape.grid
 		}
 		
 		override protected function _onResult(result:Object):void {
+			trace(result);
 			MonsterDebugger.trace(this, result);
 			_issue = result.issue;
-			_squaresOpen = result.t_squares_open;
-			_squares = result.t_squares;
+			_squaresOpen = result.squares_open;
+			_squares = result.squares;
 			MonsterDebugger.trace(this, _issue);
 			_gridModel.init(_issue.min_x, _issue.min_y, _issue.max_x, _issue.max_y, _issue.nb_case_x, _issue.nb_case_y, _issue.show_disable_square, _issue.size);
 		}
