@@ -34,8 +34,6 @@ def _issue(request, slug):
 
     return datas
 
-
-    
 #@login_required
 @MultiResponse()
 def issues(request, format, template_name):

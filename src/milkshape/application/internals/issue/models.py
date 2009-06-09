@@ -72,13 +72,14 @@ class Issue(models.Model):
     
     @property
     def steps(self):
-        """docstring for steps"""
-        size = self.size
-        steps = []
-        for i in range(self.nb_step):
-            steps.append(size)
-            size /= 2
-        return steps
+        if not hasattr(self, '_steps'):
+            """docstring for steps"""
+            size = self.size
+            self._steps = []
+            for i in range(self.nb_step):
+                self._steps.append(size)
+                size /= 2
+        return self._steps
     
     def __unicode__(self):
         """docstring for __unicode__"""
