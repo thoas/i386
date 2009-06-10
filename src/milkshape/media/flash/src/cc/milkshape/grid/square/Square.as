@@ -20,7 +20,7 @@
 			_x = x;
 			_y = y;
 						
-			alpha = 0;
+			alpha = 0.8;
 			
 			graphics.beginFill(color);
 			graphics.drawRect(0, 0, size, size);
@@ -55,13 +55,13 @@
 
 		private function _focusIn(e:Event):void
 		{
-			//alpha = 1;
+			alpha = 1;
 			dispatchEvent(new SquareEvent(SquareEvent.FOCUS, this));
 		}
 		
 		private function _focusOut(e:FocusEvent):void
 		{
-			alpha = 0;
+			alpha = 0.8;
 		}
 		
 		private function _rollOver(e:MouseEvent):void
