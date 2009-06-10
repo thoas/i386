@@ -9,12 +9,24 @@ package cc.milkshape.grid.events
 		private var _nbHSquare:int;
 		private var _nbVSquare:int;
 		private var _squareSize:int;
+		private var _steps:Array;
 		
-		public function GridEvent(eventType:String, nbHSquare:int = 0, nbVSquare:int = 0, squareSize:int = 0):void
+		public function get steps():Array
+		{
+			return _steps;
+		}
+
+		public function set steps(v:Array):void
+		{
+			_steps = v;
+		}
+
+		public function GridEvent(eventType:String, steps:Array = null, nbHSquare:int = 0, nbVSquare:int = 0, squareSize:int = 0):void
 		{
 			super(eventType);
 			_nbHSquare = nbHSquare;
 			_nbVSquare = nbVSquare;
+			_steps = steps;
 			_squareSize = squareSize;
 		}
 		

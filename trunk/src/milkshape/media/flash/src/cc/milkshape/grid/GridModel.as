@@ -1,26 +1,19 @@
 package cc.milkshape.grid
 {
 	import cc.milkshape.framework.Model;
+	import cc.milkshape.grid.events.GridEvent;
+	import cc.milkshape.grid.events.GridFocusEvent;
+	import cc.milkshape.grid.events.GridLineEvent;
+	import cc.milkshape.grid.events.GridMoveEvent;
+	import cc.milkshape.grid.events.GridZoomEvent;
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.grid.square.events.SquareEvent;
 	import cc.milkshape.grid.square.events.SquareFormEvent;
-	import cc.milkshape.utils.Constance;
-	import flash.events.EventDispatcher;
-	
-	import cc.milkshape.grid.events.GridEvent;
-	import cc.milkshape.grid.events.GridLineEvent;
-
-	import cc.milkshape.grid.events.GridFocusEvent;
-
-	import cc.milkshape.grid.events.GridMoveEvent;
-
-	import cc.milkshape.grid.events.GridZoomEvent;
 
 	public class GridModel extends Model 
 	{
-		private var _issueId:int;
-		private var _nbVSquare:int;
-		private var _nbHSquare:int;
+		private var _issueSlug:String;
+		private var _issue:Object;
 		private var _minX:int;
 		private var _minY:int;
 		private var _maxX:int;
@@ -28,36 +21,122 @@ package cc.milkshape.grid
 		private var _lstPosition:Array;
 		private var _focusX:int;
 		private var _focusY:int;
-		private var _squareSize:int;
 		private var _currentScale:int;
 		private var _minScale:int;
 		private var _maxScale:int;
-		private var _showDisableSquare:int;
 		private var _gridLineVisible:Boolean;
 		private var _posX:int;
 		private var _posY:int;
 		private var _isShowForm:Boolean;
 		
-		public function GridModel(issueId:int) 
+		public function GridModel(issueSlug:String) 
 		{ 
-			_issueId = issueId;
+			_issueSlug = issueSlug;
 		}
-		
-		public function init(minX:int, minY:int, maxX:int, maxY:int, nbHSquare:int, nbVSquare:int, showDisableSquare:int, squareSize:int):void
+
+		public function get showDisableSquare():int
 		{
+			return _issue.show_disable_square;
+		}
+
+		public function set showDisableSquare(v:int):void
+		{
+			_issue.show_disable_square = v;
+		}
+
+		public function get gridLineVisible():Boolean
+		{
+			return _gridLineVisible;
+		}
+
+		public function get maxScale():int
+		{
+			return _maxScale;
+		}
+
+		public function set maxScale(v:int):void
+		{
+			_maxScale = v;
+		}
+
+		public function get minScale():int
+		{
+			return _minScale;
+		}
+
+		public function set minScale(v:int):void
+		{
+			_minScale = v;
+		}
+
+		public function get focusY():int
+		{
+			return _focusY;
+		}
+
+		public function get focusX():int
+		{
+			return _focusX;
+		}
+
+		public function get squareSize():int
+		{
+			return _issue.size;
+		}
+
+		public function set squareSize(v:int):void
+		{
+			_issue.size = v;
+		}
+
+		public function get posY():int
+		{
+			return _posY;
+		}
+
+		public function set posY(v:int):void
+		{
+			_posY = v;
+		}
+
+		public function get posX():int
+		{
+			return _posX;
+		}
+
+		public function set posX(v:int):void
+		{
+			_posX = v;
+		}
+
+		public function get currentScale():int
+		{
+			return _currentScale;
+		}
+
+		public function get issue():Object
+		{
+			return _issue;
+		}
+
+		public function set issue(issue:Object):void
+		{
+			_issue = issue;
 			_posX = 0;
 			_posY = 0;
 			_gridLineVisible = true;
-			_showDisableSquare = showDisableSquare;
-			_maxX = maxX;
-			_maxY = maxY;
-			_minX = minX < 0 ? minX * -1 : 0;
-			_minY = minY < 0 ? minY * -1 : 0;
-			_nbHSquare = nbHSquare ? nbHSquare : _maxX + _minX + 1;
-			_nbVSquare = nbVSquare ? nbVSquare : _maxY + _minY + 1;
-			_squareSize = squareSize;
 			
-			dispatchEvent(new GridEvent(GridEvent.INFO_READY, _nbHSquare, _nbVSquare, _squareSize));
+			dispatchEvent(new GridEvent(GridEvent.INFO_READY, _issue.steps, nbHSquare, nbVSquare, squareSize));
+		}
+
+		public function get issueSlug():String
+		{
+			return _issueSlug;
+		}
+
+		public function set issueSlug(v:String):void
+		{
+			_issueSlug = v;
 		}
 		
 		public function setFocus(x:int, y:int):void {
@@ -67,34 +146,37 @@ package cc.milkshape.grid
 		
 		public function initSquares(squares:Array, squaresOpen:Array):void
 		{
-			_lstPosition = new Array(_nbHSquare);
-			for(var i:int = 0 ; i < _nbHSquare ; ++i)
+			_lstPosition = new Array(nbHSquare);
+			for(var i:int = 0 ; i < nbHSquare ; ++i)
 			{
-				_lstPosition[i] = new Array(_nbVSquare);
+				_lstPosition[i] = new Array(nbVSquare);
 			}
 			var square:Object;
 			for each(square in squares)
 			{
-				_addPosition(
-					square.status ? 
-					new SquareFull(square.pos_x + _minX, square.pos_y + _minY, square.background_image_path, _squareSize) : 
-					new SquareBooked(square.pos_x + _minX, square.pos_y + _minY, _squareSize)
-				);
+				var squareObject:*;
+				if(square.status){
+					squareObject = new SquareFull(square.pos_x + minX, square.pos_y + minY, square.background_image_path, squareSize);
+					squareObject.layers = square.layers;
+				} else {
+					squareObject = new SquareBooked(square.pos_x + minX, square.pos_y + minY, squareSize);
+				}
+				_addPosition(squareObject);
 			}
 			for each(square in squaresOpen)
 			{
-				_addPosition(new SquareOpen(square.pos_x + _minX, square.pos_y + _minY, _squareSize));
+				_addPosition(new SquareOpen(square.pos_x + minX, square.pos_y + minY, squareSize));
 			}
 			
-			if(_showDisableSquare)
+			if(showDisableSquare)
 			{
-				for(i = 0 ; i < _nbHSquare ; ++i)
+				for(i = 0 ; i < nbHSquare ; ++i)
 				{
-					for(var j:int = 0 ; j < _nbVSquare ; ++j)
+					for(var j:int = 0 ; j < nbVSquare ; ++j)
 					{
 						if(_lstPosition[i][j] == null)
 						{
-							_addPosition(new SquareDisable(i, j, _squareSize));;
+							_addPosition(new SquareDisable(i, j, squareSize));;
 						}
 					}
 				}
@@ -124,7 +206,7 @@ package cc.milkshape.grid
 		{
 			if(currentScale == maxScale)// Si on est au zoom maximal
 			{
-				var square:Square = SquareManager.get(focusSquare);
+				var square:Square = focusSquare;
 				if(square is SquareOpen)
 				{
 					_isShowForm = true;
@@ -144,13 +226,13 @@ package cc.milkshape.grid
 				
 			if(currentScale != minScale)// Si on n'est pas au zoom minimal
 			{
-				posX = focusX * Constance.SCALE_THUMB[currentScale] + Constance.SCALE_THUMB[currentScale] / 2;
-				posY = focusY * Constance.SCALE_THUMB[currentScale] + Constance.SCALE_THUMB[currentScale] / 2;
+				posX = focusX * _issue.steps[currentScale] + _issue.steps[currentScale] / 2;
+				posY = focusY * _issue.steps[currentScale] + _issue.steps[currentScale] / 2;
 			}
 			else
 			{
-				posX = nbVSquare * Constance.SCALE_THUMB[currentScale] / 2;
-				posY = nbHSquare * Constance.SCALE_THUMB[currentScale] / 2;
+				posX = nbVSquare * _issue.steps[currentScale] / 2;
+				posY = nbHSquare * _issue.steps[currentScale] / 2;
 			}
 			
 			dispatchEvent(new GridMoveEvent(GridMoveEvent.MOVE, posX, posY));
@@ -167,28 +249,15 @@ package cc.milkshape.grid
 		}
 		
 		public function set focusX(x:int):void { 
-			_focusX = x < 0 ? 0 : x >= _nbHSquare ? _nbHSquare - 1 : x;
+			_focusX = x < 0 ? 0 : x >= nbHSquare ? nbHSquare - 1 : x;
 			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS)); 
 		}
 
 		public function set focusY(y:int):void {
-			_focusY = y < 0 ? 0 : y >= _nbVSquare ? _nbVSquare - 1 : y;
+			_focusY = y < 0 ? 0 : y >= nbVSquare ? nbVSquare - 1 : y;
 			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));
 		}
 		
-		public function set squareSize(squareSize:int):void { _squareSize = squareSize }
-		
-		public function set minScale(minScale:int):void { _minScale = minScale }
-		
-		public function set maxScale(maxScale:int):void { _maxScale = maxScale }
-		
-		public function set posX(x:int):void { _posX = x }		
-		
-		public function get posX():int { return _posX }
-		
-		public function set posY(y:int):void { _posY = y }		
-		
-		public function get posY():int { return _posY }
 		
 		public function set gridLineVisible(b:Boolean):void
 		{
@@ -196,32 +265,33 @@ package cc.milkshape.grid
 			dispatchEvent(new GridLineEvent(b ? GridLineEvent.SHOW : GridLineEvent.HIDE));
 		}		
 		
-		public function get gridLineVisible():Boolean { return _gridLineVisible }		
+		public function get minX():int 
+		{ 
+			return 0; 
+		}
 		
-		public function get minScale():int { return _minScale }
+		public function get minY():int 
+		{ 
+			return 0; 
+		}
 		
-		public function get maxScale():int { return _maxScale }
+		public function get nbHSquare():int 
+		{ 
+			return _issue.nb_case_x + 1; 
+		}
 		
-		public function get currentScale():int { return _currentScale; }
+		public function get nbVSquare():int 
+		{ 
+			return issue.nb_case_y + 1; 
+		}
 		
-		public function get issueId():int { return _issueId }
+		public function get focusSquare():Square { 
+			return SquareManager.get(_lstPosition[_focusX][_focusY]);
+		}
 		
-		public function get minX():int { return _minX }
-		
-		public function get minY():int { return _minY }
-		
-		public function get nbHSquare():int { return _nbHSquare }
-		
-		public function get nbVSquare():int { return _nbVSquare }
-		
-		public function get focusX():int { return _focusX }
-		
-		public function get focusY():int { return _focusY }
-		
-		public function get squareSize():int { return _squareSize }
-		
-		public function get focusSquare():int { 
-			return _lstPosition[_focusX][_focusY];
+		public function get currentStep():int
+		{
+			return _issue.steps[_currentScale];
 		}
 	}
 }
