@@ -5,18 +5,17 @@ package cc.milkshape.grid
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.grid.square.events.SquareEvent;
 	import cc.milkshape.manager.SoundManager;
-	import cc.milkshape.utils.Constance;
 	
 	import flash.display.Bitmap;
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.display.Loader;
-	import flash.net.Responder;
-	import flash.display.LoaderInfo;
 	import flash.net.URLRequest;
+	import flash.net.URLVariables;
 	
 	import nl.demonsters.debugger.MonsterDebugger;
-	
+
 	public class GridController extends GatewayController
 	{
 		private var _gridModel:GridModel;
@@ -33,10 +32,6 @@ package cc.milkshape.grid
 			_connect("issue/gateway/");
 
 			_gridModel = gridModel;
-			
-			_loader = new Loader();// Un seul loader... donc un seul téléchargement possible à la fois
-			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
-            _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
 		}
 		
 		public function getGridInfo():void
@@ -55,7 +50,6 @@ package cc.milkshape.grid
 			var scales:Array = new Array();
 			scales['maxScale'] = _gridModel.issue.steps.indexOf(_gridModel.squareSize)
 			_gridModel.maxScale = scales['maxScale'];
-			trace(_gridModel.nbVSquare);
 			var minSquareWidth:Number = stageWidth > stageHeight ? (stageHeight - stagePadding) / _gridModel.nbVSquare : (stageWidth - stagePadding) / _gridModel.nbHSquare;
 			
 			var index:int;
@@ -68,7 +62,6 @@ package cc.milkshape.grid
 				}
 			}
 			
-			trace(scales['minScale']);
 			_gridModel.currentScale = _gridModel.minScale = scales['minScale'];
 			_gridModel.dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, scales['minScale']));
 			
@@ -89,11 +82,18 @@ package cc.milkshape.grid
 		private function _completeHandler(e:Event):void
 		{
 			var o:LoaderInfo = LoaderInfo(e.target);
-			_listLayers[_gridModel.currentScale].addThumb(Bitmap(o.content), 0, 0, _gridModel.issue.size, _gridModel.currentStep);
+			var posX:int = o.parameters.posX;
+			var posY:int = o.parameters.posY;
+			var currentScale:int = o.parameters.currentScale;
+			var currentStep:int = o.parameters.currentStep;
+			
+			trace('<= ' + o.url);
+			_listLayers[currentScale].addThumb(Bitmap(o.content), posX, posY, _gridModel.squareSize, currentStep);
         }
 
 		private function _ioErrorHandler(event:IOErrorEvent):void
 		{
+			trace(event);
             trace('Unable to load image');
         }
         
@@ -103,9 +103,21 @@ package cc.milkshape.grid
 			if(squareFocus is SquareFull){
 				MonsterDebugger.trace(this, _gridModel.issue);
 				
-				trace(squareFocus.layers[_gridModel.currentStep].url);
+				_loader = new Loader();// Un seul loader... donc un seul téléchargement possible à la fois
+				_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
+	            _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
+	            
+				var currentLayer:Object = squareFocus.layers[_gridModel.currentStep];
+				var urlRequest:URLRequest =  new URLRequest(currentLayer.url);
+				var variables:URLVariables = new URLVariables();
+				variables.posX = currentLayer.pos_x;
+				variables.posY = currentLayer.pos_y;
+				variables.currentScale = _gridModel.currentScale;
+				variables.currentStep = _gridModel.currentStep;
+				urlRequest.data = variables;
+				_loader.load(urlRequest);
+				trace('=> ' + currentLayer.url);
 			}
-			//_loader.load(new URLRequest(Constance.url('media/layer/0_0__'+ _gridModel.issue.steps[_gridModel.currentScale]+'__5x5.png')));
 		}
 
 		public function onFocusHandler(e:SquareEvent):void
