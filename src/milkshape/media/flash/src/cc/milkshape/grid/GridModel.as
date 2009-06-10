@@ -277,12 +277,12 @@ package cc.milkshape.grid
 		
 		public function get nbHSquare():int 
 		{ 
-			return _issue.nb_case_x + 1; 
+			return _issue.nb_case_x; 
 		}
 		
 		public function get nbVSquare():int 
 		{ 
-			return issue.nb_case_y + 1; 
+			return issue.nb_case_y; 
 		}
 		
 		public function get focusSquare():Square { 
