@@ -327,11 +327,15 @@ class Square(AbstractSquare):
     
     def layer_name(self, step):
         if not self._layer_dict.has_key(step):
-            size_x, size_y = self.size(step)
-            x = self.pos_x * step / size_x
-            y = self.pos_y * step / size_y
+            x, y = self.pos(step)
             self._layer_dict[step] = '%d_%d__%d__%s.%s' % (x, y, step, self.issue.slug, THUMB_EXTENSION_IMAGE)
         return self._layer_dict[step]
+    
+    def pos(self, step):
+        size_x, size_y = self.size(step)
+        x = self.pos_x * step / size_x
+        y = self.pos_y * step / size_y
+        return x, y
     
     def layer_path(self, step):
         return join(settings.LAYER_ROOT, self.layer_name(step))
@@ -347,7 +351,7 @@ class Square(AbstractSquare):
         return '%s/%d_%s.%s' % (settings.UPLOAD_THUMB_URL, size, self.background_image, THUMB_EXTENSION_IMAGE)
     
     def layer_url(self, step):
-        return join(settings.LAYER_URL, self.layer_name(step))
+        return '%s/%s' % (settings.LAYER_URL, self.layer_name(step))
     
     @property
     def formatted_background_image(self):
@@ -361,9 +365,16 @@ class Square(AbstractSquare):
         return self._formatted_background_image
     
     @property
-    def layer_urls(self):
-        if not hasattr(self, '_layer_urls'):
-            self._urls = dict((step, self.layer_url(step)) for step in self.issue.steps)
+    def layers(self):
+        if not hasattr(self, '_layers'):
+            self._urls = {}
+            for step in self.issue.steps:
+                pos_x, pos_y = self.pos(step)
+                self._urls[step] = {
+                    'url': self.layer_url(step), 
+                    'pos_x': pos_x, 
+                    'pos_y': pos_y
+                }
         return self._urls
 
 class SquareOpen(AbstractSquare):

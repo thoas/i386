@@ -23,8 +23,8 @@ package cc.milkshape.grid
 		private var _loader:Loader;
 		private var _listLayers:Array;
 		private var _issue:Object;
-		private var _squaresOpen:Object;
-		private var _squares:Object;
+		private var _squaresOpen:Array;
+		private var _squares:Array;
 		private var _soundSquareFocus:SoundSquareFocus;
 		
 		public function GridController(gridModel:GridModel)
@@ -48,30 +48,16 @@ package cc.milkshape.grid
 		}
 		
 		override protected function _onResult(result:Object):void {
-			trace(result);
 			MonsterDebugger.trace(this, result);
 			_issue = result.issue;
 			_squaresOpen = result.squares_open;
 			_squares = result.squares;
-			MonsterDebugger.trace(this, _issue);
 			_gridModel.init(_issue.min_x, _issue.min_y, _issue.max_x, _issue.max_y, _issue.nb_case_x, _issue.nb_case_y, _issue.show_disable_square, _issue.size);
 		}
 		
 		public function getGridSquares():void
 		{
-			var squares:Array = new Array();
-			for(var squareCoord:Object in _squares){
-				squares.push(_squares[squareCoord]);
-			}
-			MonsterDebugger.trace(this, squares);
-			
-			var squaresOpen:Array = new Array();
-			for(var squareOpenCoord:Object in _squaresOpen){
-				squaresOpen.push(_squaresOpen[squareOpenCoord]);
-			}
-			MonsterDebugger.trace(this, squaresOpen);
-			
-			_gridModel.initSquares(squares, squaresOpen);
+			_gridModel.initSquares(_squares, _squaresOpen);
 		}
 		
 		public function defineScale(stageHeight:int, stageWidth:int, stagePadding:int):Array
@@ -121,7 +107,7 @@ package cc.milkshape.grid
         
         public function loadImage():void
 		{
-			_loader.load(new URLRequest(Constance.url('media/layer/0_0__'+ Constance.SCALE_THUMB[_gridModel.currentScale]+'__5x5.png')));
+			//_loader.load(new URLRequest(Constance.url('media/layer/0_0__'+ Constance.SCALE_THUMB[_gridModel.currentScale]+'__5x5.png')));
 			//_responder = new Responder(_loadLayer, _onFault);
 			//_gateway.call("issue.layer", _responder, '5x5', _gridModel.focusX, _gridModel.focusY, _gridModel.currentScale);
 		}
