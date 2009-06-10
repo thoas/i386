@@ -55,7 +55,7 @@ package cc.milkshape.grid
 			var scales:Array = new Array();
 			scales['maxScale'] = _gridModel.issue.steps.indexOf(_gridModel.squareSize)
 			_gridModel.maxScale = scales['maxScale'];
-			
+			trace(_gridModel.nbVSquare);
 			var minSquareWidth:Number = stageWidth > stageHeight ? (stageHeight - stagePadding) / _gridModel.nbVSquare : (stageWidth - stagePadding) / _gridModel.nbHSquare;
 			
 			var index:int;
@@ -67,6 +67,8 @@ package cc.milkshape.grid
 					 break;
 				}
 			}
+			
+			trace(scales['minScale']);
 			_gridModel.currentScale = _gridModel.minScale = scales['minScale'];
 			_gridModel.dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, scales['minScale']));
 			
