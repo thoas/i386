@@ -40,7 +40,7 @@ package
 		{
 			stage.stageFocusRect = false;
 			//loaderInfo.sharedEvents.addEventListener(PreloaderEvent.INFO, _handlerInit);
-			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, "msg"));
+			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, "5x5"));
 		}
 		
 		private function _handlerRemovedToStage(e:Event):void
@@ -53,7 +53,7 @@ package
 			loaderInfo.sharedEvents.removeEventListener(PreloaderEvent.INFO, _handlerInit);
 			
 			_debugger = new MonsterDebugger(this);
-			_gridModel = new GridModel(int(e.msg));
+			_gridModel = new GridModel(e.msg);
 			_gridController = new GridController(_gridModel);
 			var keyboardController:GridKeyboardController = new GridKeyboardController(_gridModel);
 			var mouseController:GridMouseController = new GridMouseController(_gridModel);

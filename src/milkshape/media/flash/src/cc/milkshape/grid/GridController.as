@@ -22,9 +22,6 @@ package cc.milkshape.grid
 		private var _gridModel:GridModel;
 		private var _loader:Loader;
 		private var _listLayers:Array;
-		private var _issue:Object;
-		private var _squaresOpen:Array;
-		private var _squares:Array;
 		private var _soundSquareFocus:SoundSquareFocus;
 		
 		public function GridController(gridModel:GridModel)
@@ -44,26 +41,19 @@ package cc.milkshape.grid
 		
 		public function getGridInfo():void
 		{
-			_gateway.call("issue.issue", _responder, '5x5');
+			_gateway.call("issue.issue", _responder, _gridModel.issueSlug);
 		}
 		
 		override protected function _onResult(result:Object):void {
-			MonsterDebugger.trace(this, result);
-			_issue = result.issue;
-			_squaresOpen = result.squares_open;
-			_squares = result.squares;
-			_gridModel.init(_issue.min_x, _issue.min_y, _issue.max_x, _issue.max_y, _issue.nb_case_x, _issue.nb_case_y, _issue.show_disable_square, _issue.size);
+			var issue:Object = result.issue;
+			_gridModel.issue = issue;
+			_gridModel.initSquares(result.squares, result.squares_open)
 		}
-		
-		public function getGridSquares():void
-		{
-			_gridModel.initSquares(_squares, _squaresOpen);
-		}
-		
+
 		public function defineScale(stageHeight:int, stageWidth:int, stagePadding:int):Array
 		{
 			var scales:Array = new Array();
-			scales['maxScale'] = Constance.SCALE_THUMB.indexOf(_gridModel.squareSize)
+			scales['maxScale'] = _gridModel.issue.steps.indexOf(_gridModel.squareSize)
 			_gridModel.maxScale = scales['maxScale'];
 			
 			var minSquareWidth:Number = stageWidth > stageHeight ? (stageHeight - stagePadding) / _gridModel.nbVSquare : (stageWidth - stagePadding) / _gridModel.nbHSquare;
@@ -71,7 +61,7 @@ package cc.milkshape.grid
 			var index:int;
 			for(var i:int = 0; i <= scales['maxScale']; i++)
 			{
-				if(minSquareWidth >=  Constance.SCALE_THUMB[i] && minSquareWidth < Constance.SCALE_THUMB[i + 1])// on détermine le pas de zoom minimum
+				if(minSquareWidth >=  _gridModel.issue.steps[i] && minSquareWidth < _gridModel.issue.steps[i + 1])// on détermine le pas de zoom minimum
 				{
 					 scales['minScale'] = i;
 					 break;
@@ -97,7 +87,7 @@ package cc.milkshape.grid
 		private function _completeHandler(e:Event):void
 		{
 			var o:LoaderInfo = LoaderInfo(e.target);
-			_listLayers[_gridModel.currentScale].addThumb(Bitmap(o.content), 0, 0);
+			_listLayers[_gridModel.currentScale].addThumb(Bitmap(o.content), 0, 0, _gridModel.issue.size, _gridModel.currentStep);
         }
 
 		private function _ioErrorHandler(event:IOErrorEvent):void
@@ -107,17 +97,13 @@ package cc.milkshape.grid
         
         public function loadImage():void
 		{
-			//_loader.load(new URLRequest(Constance.url('media/layer/0_0__'+ Constance.SCALE_THUMB[_gridModel.currentScale]+'__5x5.png')));
-			//_responder = new Responder(_loadLayer, _onFault);
-			//_gateway.call("issue.layer", _responder, '5x5', _gridModel.focusX, _gridModel.focusY, _gridModel.currentScale);
-		}
-		
-		private function _loadLayer(result:Array):void
-		{
-			for each(var layer:Object in result)
-			{
-				//_loader.load(new URLRequest(layer.url));
+			var squareFocus:* = _gridModel.focusSquare;
+			if(squareFocus is SquareFull){
+				MonsterDebugger.trace(this, _gridModel.issue);
+				
+				trace(squareFocus.layers[_gridModel.currentStep].url);
 			}
+			//_loader.load(new URLRequest(Constance.url('media/layer/0_0__'+ _gridModel.issue.steps[_gridModel.currentScale]+'__5x5.png')));
 		}
 
 		public function onFocusHandler(e:SquareEvent):void
@@ -131,7 +117,7 @@ package cc.milkshape.grid
 		}
 		
 		public function getFocusSquare():Square {
-			return SquareManager.get(_gridModel.focusSquare);
+			return _gridModel.focusSquare;
 		}
 	}
 }

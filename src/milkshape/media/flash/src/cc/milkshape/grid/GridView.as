@@ -1,22 +1,14 @@
 package cc.milkshape.grid
 {
 	import cc.milkshape.framework.View;
-	import cc.milkshape.grid.square.*;
-	import cc.milkshape.utils.Constance;
-	
-	import cc.milkshape.grid.square.events.SquareEvent;
-	import cc.milkshape.grid.square.events.SquareFormEvent;
-	
 	import cc.milkshape.grid.events.GridEvent;
-
-	import cc.milkshape.grid.events.GridLineEvent;
-
 	import cc.milkshape.grid.events.GridFocusEvent;
-
+	import cc.milkshape.grid.events.GridLineEvent;
 	import cc.milkshape.grid.events.GridMoveEvent;
-
 	import cc.milkshape.grid.events.GridZoomEvent;
-
+	import cc.milkshape.grid.square.*;
+	import cc.milkshape.grid.square.events.SquareEvent;
+	
 	import com.gskinner.motion.GTween;
 	
 	import fl.motion.easing.Sine;
@@ -32,6 +24,7 @@ package cc.milkshape.grid
 		private var _controller:GridController;
 		private var _keyboardController:GridKeyboardController;
 		private var _mouseController:GridMouseController;
+		private var _steps:Array;
 		private var _model:GridModel;
 		private var _squareSize:int;// Taille des carrés
 		private var _maxScale:int;// Echelle maximum
@@ -121,12 +114,12 @@ package cc.milkshape.grid
 			_layerSquare = new Sprite();
 			addChild(_layerSquare);
 			
+			_steps = e.steps;
 			_nbHSquare = e.nbHSquare;
 			_nbVSquare = e.nbVSquare;	
 			_squareSize = e.squareSize;
 			_model.addEventListener(SquareEvent.CREATION, _addSquare);
 			_model.addEventListener(GridEvent.READY, _handlerGridReady);
-			_controller.getGridSquares();
 		}
 		
 		private function _handlerGridReady(e:GridEvent):void
@@ -136,7 +129,7 @@ package cc.milkshape.grid
 			_model.addEventListener(GridLineEvent.SHOW, _showGridLine);
 			_model.addEventListener(GridLineEvent.HIDE, _hideGridLine);
 			
-			width = Constance.SCALE_THUMB[_minScale] * _nbHSquare;
+			width = _steps[_minScale] * _nbHSquare;
 			scaleY = scaleX;
 			
 			_model.addEventListener(GridFocusEvent.FOCUS, _squarePutFocus);
@@ -225,8 +218,8 @@ package cc.milkshape.grid
 			new GTween(
 				this, 
 				_speed * 0.001, {
-				width: Constance.SCALE_THUMB[e.currentScale] * _nbHSquare,
-				height: Constance.SCALE_THUMB[e.currentScale] * _nbVSquare }, {
+				width: _steps[e.currentScale] * _nbHSquare,
+				height: _steps[e.currentScale] * _nbVSquare }, {
 				ease:Sine.easeOut}
 			);
 		}

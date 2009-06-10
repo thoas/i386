@@ -79,6 +79,7 @@ class Issue(models.Model):
             for i in range(self.nb_step):
                 self._steps.append(size)
                 size /= 2
+            self._steps.reverse()
         return self._steps
     
     def __unicode__(self):
