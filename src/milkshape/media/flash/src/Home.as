@@ -1,6 +1,7 @@
 ﻿package
 {
-	import cc.milkshape.home.Header;
+	import cc.milkshape.home.*;
+	import cc.milkshape.preloader.PreloaderWiper;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -8,9 +9,12 @@
 	
 	public class Home extends MovieClip
 	{
-		private var _checkerboard:Sprite;
-		private var _header:Header;
+		private var _header:PreloaderWiper;
 		private var _mask:Sprite;
+		private var _welcomeText:WelcomeText;
+		private var _currentIssues:HomeCurrentIssuesClp;
+		private var _completeIssue:HomeCompleteIssueClp;
+		private var _lastArtists:HomeLastArtistsClp;
 		
 		public function Home()
 		{
@@ -19,33 +23,61 @@
 		
 		private function _handlerAddedToStage(e:Event):void
 		{
+			var oGateway:Object = {
+				header_url: 'assets/bg.jpg',
+				current1: {url: 'assets/currentissue1.jpg', title: 'BLACK & WHITE', info: 'sdfljsdflsdfmlkdfj, dsfmsdfsdfmsldf'},
+				current2: {url: 'assets/currentissue2.jpg', title: 'OVER THE LAND', info: 'sdlfjjpfj sdfj s'},
+				complete1: {url: 'assets/completeissue1.jpg', title: 'GENERATION 80', info: 'sdlfjjpfj sdfj s'}
+			};
+			
+			_onResult(oGateway);
+			
+		}
+		
+		private function _onResult(o:Object):void
+		{
 			stage.addEventListener(Event.RESIZE, _handlerResize);
-			_header = new Header();
-			_header.y = 60;
+			
+			_header = new PreloaderWiper();
+			_header.loadMedia(o.header_url);
+				
+			_welcomeText = new WelcomeText();
+            _welcomeText.y = 80;
+            
+			_currentIssues = new HomeCurrentIssuesClp();
+			_currentIssues.preview1.addChild(new HomeIssuePreview(o.current1));
+			_currentIssues.preview2.addChild(new HomeIssuePreview(o.current2));
+			_currentIssues.x = 30;
+			
+			_completeIssue = new HomeCompleteIssueClp();
+			_completeIssue.preview1.addChild(new HomeIssuePreview(o.complete1));
+			_completeIssue.x = _currentIssues.width + 80;
+			
+			_lastArtists = new HomeLastArtistsClp();
+			_lastArtists.x = _completeIssue.x + _completeIssue.width + 50;
 			
 			_mask = new Sprite();
-			_mask.graphics.beginFill(0x000000);
-			_mask.graphics.drawRect(0, 0, 10, 10);
 			_header.mask = _mask;
-				
-			_checkerboard = new Sprite();
-			_checkerboard.graphics.beginBitmapFill(new CheckerboardBm(2, 2));
-            _checkerboard.graphics.drawRect(0, 0, 200, 90);
-            _checkerboard.graphics.endFill();
-            _checkerboard.y = 90;
-            _checkerboard.x = stage.stageWidth - 250;
-            
-			addChild(_header);
-			addChild(_checkerboard);
 			
-			_handlerResize(null);			
+			addChild(_header);
+			addChild(_welcomeText);
+			addChild(_currentIssues);
+			addChild(_completeIssue);
+			addChild(_lastArtists);
+			
+			_handlerResize(null);		
 		}
 		
 		private function _handlerResize(e:Event):void
-		{
-			trace('ok');
-			_mask.width = stage.stageWidth;
-			_mask.height = Math.round(stage.stageHeight/2);
+		{			
+			_mask.graphics.clear();
+			_mask.graphics.beginFill(0x000000);
+			_mask.graphics.drawRect(0, 0, stage.stageWidth, Math.round(stage.stageHeight/2));
+			_mask.graphics.endFill();
+			
+			_welcomeText.x = stage.stageWidth - 504;
+			
+			_currentIssues.y = _completeIssue.y = _lastArtists.y = _mask.height + 30;
 		}
 	}
 	
