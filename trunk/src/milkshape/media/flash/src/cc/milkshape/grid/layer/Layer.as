@@ -1,4 +1,4 @@
-package cc.milkshape.grid
+package cc.milkshape.grid.layer
 {
 	import cc.milkshape.utils.Constance;
 	
@@ -25,6 +25,5 @@ package cc.milkshape.grid
 			_lstImage.push(bitmap);
 			addChild(bitmap);
 		}
-
 	}
 }

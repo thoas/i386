@@ -2,24 +2,19 @@ package cc.milkshape.grid
 {
 	import cc.milkshape.gateway.GatewayController;
 	import cc.milkshape.grid.events.GridZoomEvent;
+	import cc.milkshape.grid.layer.Layer;
+	import cc.milkshape.grid.layer.LayerLoader;
+	import cc.milkshape.grid.layer.LayerLoaderManager;
+	import cc.milkshape.grid.layer.events.LayerEvent;
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.grid.square.events.SquareEvent;
 	import cc.milkshape.manager.SoundManager;
-	
-	import flash.display.Bitmap;
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
-	import flash.net.URLVariables;
-	
 	import nl.demonsters.debugger.MonsterDebugger;
 
 	public class GridController extends GatewayController
 	{
 		private var _gridModel:GridModel;
-		private var _loader:Loader;
+		private var _loader:LayerLoader;
 		private var _listLayers:Array;
 		private var _soundSquareFocus:SoundSquareFocus;
 		
@@ -79,43 +74,23 @@ package cc.milkshape.grid
 			return _listLayers[i];
 		}
 		
-		private function _completeHandler(e:Event):void
+		private function _handlerLayerLoaded(e:LayerEvent):void
 		{
-			var o:LoaderInfo = LoaderInfo(e.target);
-			var posX:int = o.parameters.posX;
-			var posY:int = o.parameters.posY;
-			var currentScale:int = o.parameters.currentScale;
-			var currentStep:int = o.parameters.currentStep;
-			
-			trace('<= ' + o.url);
-			_listLayers[currentScale].addThumb(Bitmap(o.content), posX, posY, _gridModel.squareSize, currentStep);
-        }
-
-		private function _ioErrorHandler(event:IOErrorEvent):void
-		{
-			trace(event);
-            trace('Unable to load image');
-        }
+			_listLayers[e.currentScale].addThumb(e.thumb, e.posX, e.posY, _gridModel.squareSize, e.currentStep);
+		}
         
         public function loadImage():void
 		{
 			var squareFocus:* = _gridModel.focusSquare;
 			if(squareFocus is SquareFull){
-				MonsterDebugger.trace(this, _gridModel.issue);
+				//MonsterDebugger.trace(this, _gridModel.issue);
 				
-				_loader = new Loader();// Un seul loader... donc un seul téléchargement possible à la fois
-				_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);
-	            _loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, _ioErrorHandler);
-	            
 				var currentLayer:Object = squareFocus.layers[_gridModel.currentStep];
-				var urlRequest:URLRequest =  new URLRequest(currentLayer.url);
-				var variables:URLVariables = new URLVariables();
-				variables.posX = currentLayer.pos_x;
-				variables.posY = currentLayer.pos_y;
-				variables.currentScale = _gridModel.currentScale;
-				variables.currentStep = _gridModel.currentStep;
-				urlRequest.data = variables;
-				_loader.load(urlRequest);
+					
+				_loader = new LayerLoader();
+				_loader.addEventListener(LayerEvent.LAYER_LOADED, _handlerLayerLoaded);
+	            _loader.loadLayer(currentLayer, _gridModel.currentScale, _gridModel.currentStep);
+	            
 				trace('=> ' + currentLayer.url);
 			}
 		}
