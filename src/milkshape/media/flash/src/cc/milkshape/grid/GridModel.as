@@ -158,6 +158,7 @@ package cc.milkshape.grid
 				if(square.status){
 					squareObject = new SquareFull(square.pos_x + minX, square.pos_y + minY, square.background_image_path, squareSize);
 					squareObject.layers = square.layers;
+					squareObject.neighbors = square.neighbors_keys;
 				} else {
 					squareObject = new SquareBooked(square.pos_x + minX, square.pos_y + minY, squareSize);
 				}
