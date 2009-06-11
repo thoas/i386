@@ -246,6 +246,7 @@ package cc.milkshape.grid
 		
 		public function set currentScale(scale:int):void { 
 			_currentScale = scale;
+			dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, scale));
 		}
 		
 		public function set focusX(x:int):void { 
