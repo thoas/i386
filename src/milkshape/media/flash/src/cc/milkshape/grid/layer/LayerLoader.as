@@ -31,6 +31,7 @@ package cc.milkshape.grid.layer
 				variables.url = currentLayer.url;
 				urlRequest.data = variables;
 				load(urlRequest);
+				trace('=> ' + currentLayer.url);
 			}
 		}
 		

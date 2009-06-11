@@ -6,6 +6,8 @@ package cc.milkshape.grid
 	import cc.milkshape.grid.events.GridLineEvent;
 	import cc.milkshape.grid.events.GridMoveEvent;
 	import cc.milkshape.grid.events.GridZoomEvent;
+	import cc.milkshape.grid.layer.Layer;
+	import cc.milkshape.grid.layer.events.LayerEvent;
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.grid.square.events.SquareEvent;
 	
@@ -36,6 +38,7 @@ package cc.milkshape.grid
 		private var _nbVSquare:int;// Nombre de carrés à la vertical
 		private var _layerSquare:Sprite;// Le calque qui contient les squares
 		private var _gridLine:GridLine;
+		private var _listLayers:Array;
 		
 		public function GridView(model:GridModel, controller:GridController, keyboardController:GridKeyboardController, mouseController:GridMouseController)
 		{
@@ -106,9 +109,11 @@ package cc.milkshape.grid
 			_minScale = scales['minScale'];
 			_maxScale = scales['maxScale'];
 			
-			for(var i:int = _minScale; i <= _maxScale; i++)
+			_listLayers = new Array();
+			for(var i:int = scales['minScale']; i <= scales['maxScale']; i++)
 			{
-				addChild(_controller.getLayer(i));
+				_listLayers[i] = new Layer(i);
+				addChild(_listLayers[i]);
 			}
 			
 			_layerSquare = new Sprite();
@@ -136,6 +141,9 @@ package cc.milkshape.grid
 			_model.addEventListener(GridMoveEvent.MOVE, _moveTo);
 			_model.addEventListener(GridZoomEvent.ZOOM, _zoomTo);
 			
+			_controller.addEventListener(LayerEvent.LAYER_LOADED, _handlerLayerThumb);
+			
+			
 			addEventListener(MouseEvent.CLICK, _mouseController.clickHandler);
 			addEventListener(MouseEvent.DOUBLE_CLICK, _mouseController.doubleClickHandler);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, _keyboardController.keyDownHandler);
@@ -144,6 +152,12 @@ package cc.milkshape.grid
 			stage.addEventListener(Event.RESIZE, _resize);
 
 			_resize();
+		}
+		
+		private function _handlerLayerThumb(e:Event):void
+		{
+			var event:LayerEvent = e as LayerEvent;
+			//_listLayers[e.currentScale].addThumb(e.thumb, e.posX, e.posY, _squareSize, e.currentStep);
 		}
 		
 		private function _resize(e:Event = null):void

@@ -1,21 +1,16 @@
 package cc.milkshape.grid
 {
 	import cc.milkshape.gateway.GatewayController;
-	import cc.milkshape.grid.events.GridZoomEvent;
-	import cc.milkshape.grid.layer.Layer;
 	import cc.milkshape.grid.layer.LayerLoader;
-	import cc.milkshape.grid.layer.LayerLoaderManager;
 	import cc.milkshape.grid.layer.events.LayerEvent;
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.grid.square.events.SquareEvent;
 	import cc.milkshape.manager.SoundManager;
-	import nl.demonsters.debugger.MonsterDebugger;
 
 	public class GridController extends GatewayController
 	{
 		private var _gridModel:GridModel;
 		private var _loader:LayerLoader;
-		private var _listLayers:Array;
 		private var _soundSquareFocus:SoundSquareFocus;
 		
 		public function GridController(gridModel:GridModel)
@@ -48,7 +43,8 @@ package cc.milkshape.grid
 			var minSquareWidth:Number = stageWidth > stageHeight ? (stageHeight - stagePadding) / _gridModel.nbVSquare : (stageWidth - stagePadding) / _gridModel.nbHSquare;
 			
 			var index:int;
-			for(var i:int = 0; i <= scales['maxScale']; i++)
+			var i:int;
+			for(i = 0; i <= scales['maxScale']; i++)
 			{
 				if(minSquareWidth >=  _gridModel.issue.steps[i] && minSquareWidth < _gridModel.issue.steps[i + 1])// on détermine le pas de zoom minimum
 				{
@@ -58,25 +54,14 @@ package cc.milkshape.grid
 			}
 			
 			_gridModel.currentScale = _gridModel.minScale = scales['minScale'];
-			_gridModel.dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, scales['minScale']));
-			
-			_listLayers = new Array();
-			for(i = scales['minScale']; i <= scales['maxScale']; i++)
-			{
-				_listLayers[i] = new Layer(i);
-			}
 			
 			return scales;
 		}
 		
-		public function getLayer(i:int):Layer
-		{
-			return _listLayers[i];
-		}
-		
 		private function _handlerLayerLoaded(e:LayerEvent):void
 		{
-			_listLayers[e.currentScale].addThumb(e.thumb, e.posX, e.posY, _gridModel.squareSize, e.currentStep);
+			//dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOADED, e.thumb, e.posX, e.posY, e.currentScale, e.currentStep));
+			dispatchEvent(e);
 		}
         
         public function loadImage():void
@@ -90,8 +75,6 @@ package cc.milkshape.grid
 				_loader = new LayerLoader();
 				_loader.addEventListener(LayerEvent.LAYER_LOADED, _handlerLayerLoaded);
 	            _loader.loadLayer(currentLayer, _gridModel.currentScale, _gridModel.currentStep);
-	            
-				trace('=> ' + currentLayer.url);
 			}
 		}
 
