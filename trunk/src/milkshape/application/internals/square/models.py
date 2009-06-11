@@ -343,15 +343,15 @@ class Square(AbstractSquare):
     def get_background_image_thumb_path(self, size):
         return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image))
     
-    @property 
-    def background_image_thumb_url(self):
-        return settings.UPLOAD_THUMB_URL + '/' + self.background_image
-    
     def background_image_thumb_url(self, size):
         return '%s/%d_%s.%s' % (settings.UPLOAD_THUMB_URL, size, self.background_image, THUMB_EXTENSION_IMAGE)
     
     def layer_url(self, step):
         return '%s/%s' % (settings.LAYER_URL, self.layer_name(step))
+
+    @property 
+    def background_image_thumb_url(self):
+        return settings.UPLOAD_THUMB_URL + '/' + self.background_image
     
     @property
     def formatted_background_image(self):
@@ -376,6 +376,10 @@ class Square(AbstractSquare):
                     'pos_y': pos_y
                 }
         return self._urls
+    
+    @property
+    def neighbors_keys(self):
+        return list(({'pos_x': pos_x, 'pos_y': pos_y}) for pos_x, pos_y in self.neighbors)
 
 class SquareOpen(AbstractSquare):
     date_created = models.DateTimeField(_('date_created'), auto_now_add=True)
