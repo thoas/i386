@@ -60,8 +60,7 @@ package cc.milkshape.grid
 		
 		private function _handlerLayerLoaded(e:LayerEvent):void
 		{
-			//dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOADED, e.thumb, e.posX, e.posY, e.currentScale, e.currentStep));
-			dispatchEvent(e);
+			dispatchEvent(e.clone());
 		}
         
         public function loadImage():void

@@ -21,6 +21,10 @@ package cc.milkshape.grid.layer.events
 			_currentStep = currentStep;
 			super(type, bubbles, cancelable);
 		}
+		
+		override public function clone():Event {
+			return new LayerEvent(type, _thumb, _posX, _posY, _currentScale, _currentStep);
+		}
 
 		public function get currentScale():int
 		{

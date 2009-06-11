@@ -154,10 +154,9 @@ package cc.milkshape.grid
 			_resize();
 		}
 		
-		private function _handlerLayerThumb(e:Event):void
+		private function _handlerLayerThumb(e:LayerEvent):void
 		{
-			var event:LayerEvent = e as LayerEvent;
-			//_listLayers[e.currentScale].addThumb(e.thumb, e.posX, e.posY, _squareSize, e.currentStep);
+			_listLayers[e.currentScale].addThumb(e.thumb, e.posX, e.posY, _squareSize, e.currentStep);
 		}
 		
 		private function _resize(e:Event = null):void
