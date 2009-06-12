@@ -1,19 +1,22 @@
 import unittest
+import shutil
 
 from os.path import join
+from datetime import datetime
 
 from square.models import Square, SquareOpen
 from issue.models import Issue
 from django.test.client import Client
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.conf import settings
 from pyamf.remoting.client import RemotingService
 
 class SquareTestCase(unittest.TestCase):
     ACCT_USERNAME = 'toto'
     ACCT_PASSWORD = 'toto'
     ACCT_EMAIL = 'hello@milkshape.cc'
+    
     def setUp(self):
         self.issue, self.created = Issue.objects.get_or_create(title='10x10', text_presentation='10x10',\
                         nb_case_x=10, nb_case_y=10, nb_step=5, size=800, margin=200, slug='10x10')
@@ -49,7 +52,7 @@ class SquareTestCase(unittest.TestCase):
     def __testFillSquare(self, pos_x, pos_y):
         c = Client()
         result = c.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
-        f = open(join(settings.PROJECT_ROOT, 'cli', 'default_dessin.tif'))
+        f = open(join(settings.CLI_ROOT, 'push', 'template.jpg'))
         response = c.post(reverse('square',\
                         kwargs={'action': 'fill',\
                                 'pos_x': pos_x,\
@@ -59,4 +62,5 @@ class SquareTestCase(unittest.TestCase):
         f.close()
         self.assertEquals(response.status_code, 200)
         
-        
+    def testKeepDatabase(self):
+        shutil.copy(settings.TEST_DATABASE_NAME, join(settings.PROJECT_ROOT, 'test_%s.db' % datetime.now().strftime('%Y-%m-%d--%H-%M-%S')))
