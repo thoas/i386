@@ -20,8 +20,8 @@ package cc.milkshape.grid.layer
 		{
 			bitmap.width *= size / currentScale;
 			bitmap.height *= size / currentScale;
-			bitmap.y = x * size;
-			bitmap.x = y * size;
+			bitmap.y = x * bitmap.width;
+			bitmap.x = y * bitmap.height;
 			_lstImage.push(bitmap);
 			addChild(bitmap);
 		}
