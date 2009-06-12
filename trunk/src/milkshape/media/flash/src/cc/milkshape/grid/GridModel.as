@@ -140,8 +140,8 @@ package cc.milkshape.grid
 		}
 		
 		public function setFocus(x:int, y:int):void {
-			focusX = x;
-			focusY = y;
+			focusX = y;
+			focusY = x;
 		}
 		
 		public function initSquares(squares:Array, squaresOpen:Array):void
@@ -155,7 +155,8 @@ package cc.milkshape.grid
 			for each(square in squares)
 			{
 				var squareObject:*;
-				if(square.status){
+				// si status = false et pas de background alors c'est une booked
+				if(square.status || square.background_image != null){
 					squareObject = new SquareFull(square.pos_x + minX, square.pos_y + minY, square.background_image_path, squareSize);
 					squareObject.layers = square.layers;
 					squareObject.neighbors = square.neighbors_keys;
@@ -164,16 +165,12 @@ package cc.milkshape.grid
 				}
 				_addPosition(squareObject);
 			}
-			for each(square in squaresOpen)
-			{
-				_addPosition(new SquareOpen(square.pos_x + minX, square.pos_y + minY, squareSize));
-			}
-			
+
 			if(showDisableSquare)
 			{
-				for(i = 0 ; i < nbHSquare ; ++i)
+				for(i = 0 ; i < nbVSquare ; ++i)
 				{
-					for(var j:int = 0 ; j < nbVSquare ; ++j)
+					for(var j:int = 0 ; j < nbHSquare ; ++j)
 					{
 						if(_lstPosition[i][j] == null)
 						{
@@ -251,12 +248,12 @@ package cc.milkshape.grid
 		}
 		
 		public function set focusX(x:int):void { 
-			_focusX = x < 0 ? 0 : x >= nbHSquare ? nbHSquare - 1 : x;
+			_focusX = x < 0 ? 0 : x >= nbVSquare ? nbVSquare - 1 : x;
 			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS)); 
 		}
 
 		public function set focusY(y:int):void {
-			_focusY = y < 0 ? 0 : y >= nbVSquare ? nbVSquare - 1 : y;
+			_focusY = y < 0 ? 0 : y >= nbHSquare ? nbHSquare - 1 : y;
 			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));
 		}
 		
@@ -288,7 +285,7 @@ package cc.milkshape.grid
 		}
 		
 		public function get focusSquare():Square { 
-			return SquareManager.get(_lstPosition[_focusX][_focusY]);
+			return SquareManager.get(_lstPosition[_focusY][_focusX]);
 		}
 		
 		public function get currentStep():int

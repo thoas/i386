@@ -66,6 +66,7 @@ package cc.milkshape.grid
         public function loadImage():void
 		{
 			var squareFocus:* = _gridModel.focusSquare;
+			trace(squareFocus);
 			if(squareFocus is SquareFull){
 				//MonsterDebugger.trace(this, _gridModel.issue);
 				
