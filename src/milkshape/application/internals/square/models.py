@@ -343,7 +343,7 @@ class Square(AbstractSquare):
     def get_background_image_thumb_path(self, size):
         return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image))
     
-    def background_image_thumb_url(self, size):
+    def background_image_thumb_url_step(self, size):
         return '%s/%d_%s.%s' % (settings.UPLOAD_THUMB_URL, size, self.background_image, THUMB_EXTENSION_IMAGE)
     
     def layer_url(self, step):

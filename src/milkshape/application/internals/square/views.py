@@ -35,6 +35,7 @@ def book(request, issue, square_open):
         except Square.DoesNotExist:
             square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue,\
                         user=request.user, status=0)
+        print square
         if not square.status:
             SquareOpen.objects.neighbors_standby(square_open, 1)
     except Exception, error:
