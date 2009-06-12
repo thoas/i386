@@ -137,9 +137,10 @@ FILE_UPLOAD_TEMP_DIR = join(PROJECT_ROOT, 'tmp')
 
 SECRET_KEY = 'bk-e2zv3humar79nm=j*bwc=-ymeit(8a20whp3goq4dh71t)s'
 
+CLI_ROOT = join(PROJECT_ROOT, 'cli')
+
 UPLOAD_DIR = 'upload'
 UPLOAD_ROOT = join(MEDIA_ROOT, UPLOAD_DIR)
-
 
 UPLOAD_HD_DIR = join(UPLOAD_DIR, 'hd')
 UPLOAD_HD_URL = MEDIA_URL + '/' + UPLOAD_DIR
