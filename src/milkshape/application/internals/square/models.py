@@ -92,15 +92,6 @@ class Square(AbstractSquare):
     def __init__(self, *args, **kwargs):
         self._layer_dict = {}
         super(Square, self).__init__(*args, **kwargs)
-    
-    @staticmethod
-    def retrieve_template(template_name):
-        template_path = join(settings.TEMPLATE_ROOT, template_name)
-        if not exists(template_path):
-            return False
-        template = Image.open(template_path)
-        template.filename = template_name
-        return template
 
     @staticmethod
     def buffer(template_image):
@@ -116,7 +107,7 @@ class Square(AbstractSquare):
             image_clone = image.copy()
             width = height = step
             image_clone.thumbnail((width, height))
-            thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.%s'\
+            thumb_path = join(self.issue.upload_thumb_path(), '%s_%s.%s'\
                             % (str(step), self.background_image, THUMB_EXTENSION_IMAGE))
             logging.info(thumb_path)
 
@@ -260,7 +251,7 @@ class Square(AbstractSquare):
                 )
                 
                 image, thumbs = new_square.build_background_image(template_full.crop(self.issue.paste_pos[index]),\
-                                    self.issue.crop_pos[index], settings.UPLOAD_HD_ROOT)
+                                    self.issue.crop_pos[index])
                 
     def save(self, force_insert=False, force_update=False):
         if self.user:
@@ -284,19 +275,19 @@ class Square(AbstractSquare):
 
             # create background_image_path with with template_full 
             image, thumbs = self.build_background_image(template_full.crop(self.issue.creation_position_crop),\
-                                self.issue.creation_position_paste, settings.UPLOAD_HD_ROOT)
+                                self.issue.creation_position_paste)
             
             # update neighbors with overlap
             self.populate_neighbors(template_full)
 
-    def build_background_image(self, im_crop, paste_pos, directory_root):
+    def build_background_image(self, im_crop, paste_pos):
         image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size, self.issue.size), DEFAULT_IMAGE_BACKGROUND_COLOR)
         image.paste(im_crop, paste_pos)
-        image.save(join(directory_root, self.formatted_background_image),\
+        image.save(self.background_image_path(),\
                         format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
         image.name = self.formatted_background_image
 
-        logging.info(join(directory_root, self.formatted_background_image))
+        logging.info(self.background_image_path())
         return image, self.generate_thumbs(image)
     
     def __unicode__(self):
@@ -307,18 +298,19 @@ class Square(AbstractSquare):
     
     def template(self):
         if not hasattr(self, '_template'):
-            self._template = Square.retrieve_template(self.template_name)
+            self._template = Image.open(self.template_path())
+            self._template.filename = self.template_name
         return self._template
 
     def template_path(self):
-        return join(settings.TEMPLATE_ROOT, self.template_name)
+        return join(self.issue.template_path(), self.template_name)
 
     def template_full_path(self):
-        return join(settings.UPLOAD_TEMPLATE_ROOT, self.template_name)
+        return join(self.issue.upload_template_path(), self.template_name)
     
     def background_image_path(self):
         """docstring for get_background_image_path"""
-        return join(settings.UPLOAD_HD_ROOT, self.background_image)
+        return join(self.issue.upload_hd_path(), self.background_image)
     
     def layer_name(self, step):
         if not self._layer_dict.has_key(step):
@@ -333,20 +325,20 @@ class Square(AbstractSquare):
         return x, y
     
     def layer_path(self, step):
-        return join(settings.LAYER_ROOT, self.layer_name(step))
+        return join(self.issue.layer_path(), self.layer_name(step))
     
     def get_background_image_thumb_path(self, size):
-        return join(settings.UPLOAD_THUMB_ROOT, '%s_%s' % (size, self.background_image))
+        return join(self.issue.upload_thumb_path(), '%s_%s' % (size, self.background_image))
     
     def background_image_thumb_url_step(self, size):
-        return '%s/%d_%s.%s' % (settings.UPLOAD_THUMB_URL, size, self.background_image, THUMB_EXTENSION_IMAGE)
+        return '%s/%d_%s.%s' % (self.issue.upload_thumb_url(), size, self.background_image, THUMB_EXTENSION_IMAGE)
     
     def layer_url(self, step):
-        return '%s/%s' % (settings.LAYER_URL, self.layer_name(step))
+        return '%s/%s' % (self.issue.layer_url(), self.layer_name(step))
 
     @property 
     def background_image_thumb_url(self):
-        return settings.UPLOAD_THUMB_URL + '/' + self.background_image
+        return self.issue.upload_thumb_url() + '/' + self.background_image
     
     @property
     def formatted_background_image(self):
