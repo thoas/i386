@@ -43,7 +43,7 @@ def book(request, issue, square_open):
         transaction.rollback()
     else:
         transaction.commit()
-        return template(request, square.template())
+        return _template(request, square.template())
     return templates(request)
 
 def release(request, issue, square_open):
@@ -106,12 +106,11 @@ def templates(request, template_name):
     }, context_instance=RequestContext(request))
 
 @login_required
-def template(request, template):
-    if isinstance(template, unicode):
-        template = Square.retrieve_template(template)
-        if not template:
-            raise Http404
+def template(request, pos_x, pos_y, issue_slug):
+    square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
+    return _template(square.template())
 
+def _template(request, template):
     buffer = Square.buffer(template)
     response = HttpResponse(mimetype=MIMETYPE_IMAGE)
     response['Content-Disposition'] = 'attachment; filename=%s' % template.filename

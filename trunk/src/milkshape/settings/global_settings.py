@@ -72,8 +72,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'misc.context_processors.contact_email',
     'misc.context_processors.site_name',
-    'misc.context_processors.upload_hd_url',
-    'misc.context_processors.upload_thumb_url',
     
     #'notification.context_processors.notification',
     #'announcements.context_processors.site_wide_announcements',
@@ -140,25 +138,19 @@ SECRET_KEY = 'bk-e2zv3humar79nm=j*bwc=-ymeit(8a20whp3goq4dh71t)s'
 CLI_ROOT = join(PROJECT_ROOT, 'cli')
 
 UPLOAD_DIR = 'upload'
-UPLOAD_ROOT = join(MEDIA_ROOT, UPLOAD_DIR)
 
-UPLOAD_HD_DIR = join(UPLOAD_DIR, 'hd')
-UPLOAD_HD_URL = MEDIA_URL + '/' + UPLOAD_DIR
-UPLOAD_HD_ROOT = join(MEDIA_ROOT, UPLOAD_HD_DIR)
+UPLOAD_HD_DIR = 'hd'
 
 TEMPLATE_DIR = 'template'
-TEMPLATE_ROOT = join(MEDIA_ROOT, TEMPLATE_DIR)
 
-UPLOAD_TEMPLATE_DIR = join(UPLOAD_DIR, TEMPLATE_DIR)
-UPLOAD_TEMPLATE_ROOT = join(MEDIA_ROOT, UPLOAD_TEMPLATE_DIR)
+UPLOAD_TEMPLATE_DIR = 'template'
 
 UPLOAD_THUMB_DIR = 'thumb'
-UPLOAD_THUMB_ROOT = join(UPLOAD_ROOT, UPLOAD_THUMB_DIR)
-UPLOAD_THUMB_URL = UPLOAD_HD_URL + '/' + UPLOAD_THUMB_DIR
 
 LAYER_DIR = 'layer'
-LAYER_URL = MEDIA_URL + '/' + LAYER_DIR
-LAYER_ROOT = join(MEDIA_ROOT, LAYER_DIR)
+
+ISSUES_DIR = 'issues'
+ISSUES_ROOT = join(MEDIA_ROOT, ISSUES_DIR)
 
 # Default values
 DEFAULT_NB_INVITATION = 1

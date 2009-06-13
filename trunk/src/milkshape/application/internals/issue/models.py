@@ -3,6 +3,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+from os.path import join
+from os import makedirs
+
 
 class IssueManager(models.Manager):
     """docstring for IssueManager"""
@@ -26,16 +29,6 @@ class Issue(models.Model):
     slug = models.SlugField(unique=True)
     
     objects = IssueManager()
-    
-    def values(self):
-        """docstring for values"""
-        values = {}
-        for field in self._meta.fields:
-            if hasattr(field, 'values'):
-                values[field.name] = field.values()
-            else:
-                values[field.name] = self.__dict__.get(field.name)
-        return values
     
     def __init__(self, *args, **kwargs):
         """docstring for __init__"""
@@ -85,8 +78,63 @@ class Issue(models.Model):
     def __unicode__(self):
         """docstring for __unicode__"""
         return self.title
-
+    
+    def save(self, force_insert=False, force_update=False):
+        if not self.pk:
+            try:
+                makedirs(self.layer_path())
+                makedirs(self.template_path())
+                makedirs(self.upload_hd_path())
+                makedirs(self.upload_template_path())
+                makedirs(self.upload_thumb_path())
+            except OSError, error:
+                print error
+        super(Issue, self).save(force_insert, force_update)
+        
     @models.permalink
     def get_absolute_url(self):
         """docstring for get_absolute_url"""
         return ('issue.views.issue', [str(self.slug)])
+    
+    @property
+    def media_url(self):
+        return '%s/%s/%s' % (settings.MEDIA_URL, settings.ISSUES_DIR, self.slug)
+    
+    def path(self):
+        return join(settings.ISSUES_ROOT, self.slug)
+    
+    def layer_path(self):
+        return join(self.path(), settings.LAYER_DIR)
+    
+    def layer_url(self):
+        return '%s/%s' % (self.media_url, settings.LAYER_DIR)
+    
+    def template_path(self):
+        return join(self.path(), settings.TEMPLATE_DIR)
+
+    def template_url(self):
+        return '%s/%s' % (self.media_url, settings.TEMPLATE_DIR)
+    
+    def upload_path(self):
+        return join(self.path(), settings.UPLOAD_DIR)
+
+    def upload_url(self):
+        return '%s/%s' % (self.media_url, settings.UPLOAD_DIR)
+    
+    def upload_hd_path(self):
+        return join(self.upload_path(), settings.UPLOAD_HD_DIR)
+
+    def upload_hd_url(self):
+        return '%s/%s' % (self.upload_url(), settings.UPLOAD_HD_DIR)
+
+    def upload_template_path(self):
+        return join(self.upload_path(), settings.UPLOAD_TEMPLATE_DIR)
+    
+    def upload_template_url(self):
+        return '%s/%s' % (self.upload_url(), settings.UPLOAD_TEMPLATE_DIR)
+    
+    def upload_thumb_path(self):
+        return join(self.upload_path(), settings.UPLOAD_THUMB_DIR)
+
+    def upload_thumb_url(self):
+        return '%s/%s' % (self.upload_url(), settings.UPLOAD_THUMB_DIR)

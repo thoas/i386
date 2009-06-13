@@ -12,7 +12,7 @@
             {% for participation in participations %}
                 <tr>
                     <td>
-                        <a href="{% url square_template participation.template_name %}">{{ participation }}</a>&nbsp;
+                        <a href="{% url square_template pos_x=participation.pos_x pos_y=participation.pos_y issue_slug=issue.slug %}">{{ participation }}</a>&nbsp;
                     </td>
                     <td>
                         {% ifequal participation.status 0 %}
