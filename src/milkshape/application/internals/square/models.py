@@ -23,7 +23,7 @@ class AbstractSquareManager(models.Manager):
     def neighbors(self, square, force_insert=False):
         # do not hit database
         if not self.neighbors_dict.has_key(square.pk) or force_insert:
-            self.neighbors_dict[square.pk] = self.filter(coord__in=list(str(key)\
+            self.neighbors_dict[square.pk] = self.filter(issue=square.issue, coord__in=list(str(key)\
                 for key in square.neighbors.keys()))\
                     .order_by('pos_x', 'pos_y')
         return self.neighbors_dict[square.pk]
@@ -39,7 +39,7 @@ class SquareOpenManager(AbstractSquareManager):
         
         logging.info('standby set to %d for %s' % (is_standby, neighbors))
         self.filter(coord__in=list(str(key)\
-            for key in neighbors)).update(is_standby=is_standby)
+            for key in neighbors)).update(is_standby=is_standby, issue=square.issue)
         #from django.db import connection, transaction
         #cursor = connection.cursor()
         #cursor.execute("UPDATE square_squareopen SET is_standby = %d WHERE coord IN %s"
@@ -231,6 +231,7 @@ class Square(AbstractSquare):
         
         logging.info('populate %s' % neighbors_keys.keys())
         
+        print neighbors_keys.keys()
         # create square side by side with overlap
         for x, y in neighbors_keys.keys():
             if (x >= 0 and x < self.issue.nb_case_y) and (y >= 0 and y < self.issue.nb_case_x):
@@ -327,7 +328,7 @@ class Square(AbstractSquare):
     def layer_path(self, step):
         return join(self.issue.layer_path(), self.layer_name(step))
     
-    def get_background_image_thumb_path(self, size):
+    def background_image_thumb_path(self, size):
         return join(self.issue.upload_thumb_path(), '%s_%s' % (size, self.background_image))
     
     def background_image_thumb_url_step(self, size):
