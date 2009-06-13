@@ -6,6 +6,8 @@ SITE_ID = 2
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+MEDIA_URL = 'http://media.milkshape.cc:81'
+
 DATABASE_ENGINE = 'mysql'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
 DATABASE_NAME = 'gobelins_project'       # Or path to database file if using sqlite3.
 DATABASE_USER = 'gobelins_project'             # Not used with sqlite3.

@@ -33,8 +33,6 @@ LOCALE_PATHS = (
 
 USE_I18N = True
 
-MEDIA_URL = 'http://localhost:8000/media'
-
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 TEMPLATE_LOADERS = (
