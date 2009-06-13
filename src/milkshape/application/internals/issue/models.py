@@ -2,8 +2,9 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save
 
-from os.path import join
+from os.path import join, exists
 from os import makedirs
 
 
@@ -80,15 +81,6 @@ class Issue(models.Model):
         return self.title
     
     def save(self, force_insert=False, force_update=False):
-        if not self.pk:
-            try:
-                makedirs(self.layer_path())
-                makedirs(self.template_path())
-                makedirs(self.upload_hd_path())
-                makedirs(self.upload_template_path())
-                makedirs(self.upload_thumb_path())
-            except OSError, error:
-                print error
         super(Issue, self).save(force_insert, force_update)
         
     @models.permalink
@@ -138,3 +130,16 @@ class Issue(models.Model):
 
     def upload_thumb_url(self):
         return '%s/%s' % (self.upload_url(), settings.UPLOAD_THUMB_DIR)
+
+def create_tree(sender, instance=None, **kwargs):
+    if kwargs['created']:
+        try:
+            makedirs(instance.layer_path())
+            makedirs(instance.template_path())
+            makedirs(instance.upload_hd_path())
+            makedirs(instance.upload_template_path())
+            makedirs(instance.upload_thumb_path())
+        except OSError, error:
+            print error
+
+post_save.connect(create_tree, sender=Issue)
