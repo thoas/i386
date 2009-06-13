@@ -1,0 +1,25 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Contact" %}{% endblock %}
+
+{% block body %}
+    <div class="clearfix padtop">
+        <div id="basic-form">
+        <fieldset>
+            <legend>{% trans "Contact" %}</legend>
+                <form class="signupform" id="contact_form" method="post" action="{% url contact %}">
+                    <table width="300px">
+                        {{ form.as_table }}
+                        <tr><td></td><td><input type="submit" value="{% trans "Sign Up &raquo;" %}" class="button" /></td></tr>
+                    </table>
+                </form>
+                
+                {% url privacy as privacy_url %}
+                <div class="right-form">
+                    <p>{% blocktrans %}If you have any trouble with this form, contact us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.{% endblocktrans %}</p>
+        </fieldset>
+        </div>
+    </div>
+{% endblock %}

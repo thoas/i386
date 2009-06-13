@@ -1,0 +1,73 @@
+{% extends "base_issue.html" %}
+
+{% load i18n %}
+{% load smart_if %}
+{% load captureas %}
+{% load dict_get %}
+{% load square_extras %}
+{% block head_title %}{{ issue.title }} {% endblock %}
+
+{% block body %}
+<table id="grid">
+    {% for i in nb_case_x %}
+    <tr>
+        {% for j in nb_case_y %}
+        {% captureas coord %}({{ i }}, {{ j }}){% endcaptureas %}
+        <td>
+            {% if coord in t_squares_open %}
+            <a href="{% url square action="book" pos_x=i pos_y=j issue_slug=issue.slug %}">
+                {% with t_squares|get:coord as square %}
+                    <div class="opened">
+                    {% if square.background_image %}
+                        <img src="{{ square|background_image_thumb_url:100 }}" />
+                    {% else %}
+                        {{ coord }}
+                    {% endif %}
+                    </div>
+                {% endwith %}
+            </a>
+            {% else %}
+                {% if coord in t_squares %}
+                    {% with t_squares|get:coord as square %}
+                        {% if square.user == user %}
+                            {% if not square.status %}
+                                <div class="fill">
+                                    <a href="{% url square action="fill" pos_x=i pos_y=j issue_slug=issue.slug %}">
+                                {% if square.background_image %}
+
+                                        <img src="{{ square|background_image_thumb_url:100 }}" />
+                                {% else %}
+                                    {{ coord }}
+                                {% endif %}
+                                </a>
+                                </div>
+                            {% else %}
+                                <img src="{{ square|background_image_thumb_url:100 }}" />
+                            {% endif %}
+                        {% else %}
+                            {% if square.status %}
+                            <div>
+                                <img src="{{ square|background_image_thumb_url:100 }}" />
+                            </div>
+                            {% else %}
+                                <div class="disabled">
+                                {% if square.background_image %}
+                                    <img src="{{ square|background_image_thumb_url:100 }}" />
+                                {% else %}
+                                    {{ coord }}
+                                {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endwith %}
+                {% else %}
+                    {{ coord }}
+                {% endif %}
+            {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
