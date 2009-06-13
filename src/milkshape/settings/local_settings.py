@@ -7,6 +7,8 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 EMAIL_DEBUG = DEBUG
 
+MEDIA_URL = 'http://media.milkshape.cc:81'
+
 DATABASE_ENGINE = 'sqlite3'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
 DATABASE_NAME = dirname(abspath(__file__)) + '/../dev.db'       # Or path to database file if using sqlite3.
 TEST_DATABASE_NAME = dirname(abspath(__file__)) + '/../test_dev.db' 
