@@ -18,26 +18,26 @@ class SquareTestCase(unittest.TestCase):
     ACCT_EMAIL = 'hello@milkshape.cc'
     
     def setUp(self):
-        self.issue, self.created = Issue.objects.get_or_create(title='10x10', text_presentation='10x10',\
-                        nb_case_x=10, nb_case_y=10, nb_step=5, size=800, margin=200, slug='10x10')
-        self.square_open, self.created = SquareOpen.objects.get_or_create(pos_x=0, pos_y=0, issue=self.issue)
+        self.issue, self.created = Issue.objects.get_or_create(title='4x4', text_presentation='10x10',\
+                        nb_case_x=4, nb_case_y=4, nb_step=5, size=800, margin=200, slug='4x4')
         try:
             self.user = User.objects.get(username=self.ACCT_USERNAME)
         except User.DoesNotExist:
             self.user = User.objects.create_user(self.ACCT_USERNAME, self.ACCT_EMAIL, self.ACCT_PASSWORD)
     
-    def __testSquareOpenExists(self, pos_x, pos_y):
-        self.assertNotEquals(SquareOpen.objects.get(pos_x=pos_x, pos_y=pos_y, is_standby=False, issue=self.issue), None)
-    
     def testBookProcess(self):
+        print '|-- Book process'
+        self.square_open, self.created = SquareOpen.objects.get_or_create(pos_x=0, pos_y=0, issue=self.issue)
+        self.__testBookProcess()
+    
+    def __testBookProcess(self):
         squares_open = SquareOpen.objects.filter(is_standby=False, issue=self.issue)
         for square_open in squares_open:     
-            print 'processing square(%d, %d)' % (square_open.pos_x, square_open.pos_y)       
-            self.__testSquareOpenExists(square_open.pos_x, square_open.pos_y)
+            print '|   |-- Processing (%d, %d)' % (square_open.pos_x, square_open.pos_y)       
             self.__testBookSquare(square_open.pos_x, square_open.pos_y)
             self.__testFillSquare(square_open.pos_x, square_open.pos_y)
         if SquareOpen.objects.filter(is_standby=False, issue=self.issue).count() > 0:
-            self.testBookProcess()
+            self.__testBookProcess()
     
     def __testBookSquare(self, pos_x, pos_y):
         c = Client()
@@ -47,7 +47,7 @@ class SquareTestCase(unittest.TestCase):
         square_open = SquareOpen.objects.get(pos_x=pos_x, pos_y=pos_y, issue=self.issue)
         self.assertEquals(square_open.is_standby, True)
         self.assertEquals(response.status_code, 200)
-        self.assertNotEquals(Square.objects.get(pos_x=pos_x, pos_y=pos_y, issue=self.issue), None)
+        print '|   |   |-- booked'
     
     def __testFillSquare(self, pos_x, pos_y):
         c = Client()
@@ -61,6 +61,12 @@ class SquareTestCase(unittest.TestCase):
                         {'background_image': f})
         f.close()
         self.assertEquals(response.status_code, 200)
+        try:
+            SquareOpen.objects.get(pos_x=pos_x, pos_y=pos_y, issue=self.issue)
+        except SquareOpen.DoesNotExist:
+            print '|   |   |-- filled'
+        else:
+            assert '|   |   |-- FAIL'
         
     def testKeepDatabase(self):
         shutil.copy(settings.TEST_DATABASE_NAME, join(settings.PROJECT_ROOT, 'test_%s.db' % datetime.now().strftime('%Y-%m-%d--%H-%M-%S')))
