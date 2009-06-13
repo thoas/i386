@@ -94,7 +94,7 @@ class Square(AbstractSquare):
         super(Square, self).__init__(*args, **kwargs)
     
     @staticmethod
-    def retrieve_template(cls, template_name):
+    def retrieve_template(template_name):
         template_path = join(settings.TEMPLATE_ROOT, template_name)
         if not exists(template_path):
             return False
@@ -119,11 +119,11 @@ class Square(AbstractSquare):
             thumb_path = join(settings.UPLOAD_THUMB_ROOT, '%s_%s.%s'\
                             % (str(step), self.background_image, THUMB_EXTENSION_IMAGE))
             logging.info(thumb_path)
-            if exists(thumb_path):
-                logging.warn('erase thumbnail %s' % thumb_path)
-                unlink(thumb_path)
-            image_clone.save(thumb_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
-            
+
+            try:
+                image_clone.save(thumb_path, format=THUMB_FORMAT_IMAGE, quality=QUALITY_IMAGE)
+            except IOError, error:
+                logging.error('%s', error)
             self.build_layer(image_clone, step)
             
         return thumbs
@@ -205,7 +205,7 @@ class Square(AbstractSquare):
             image_tmp_path = self.background_image_path()
             if exists(image_tmp_path):
                 image_tmp = Image.open(image_tmp_path)
-                logging.warn('background already exists, paste image %s' % image_tmp_path)
+                logging.debug('background already exists, paste image %s' % image_tmp_path)
                 image.paste(image_tmp, self.issue.creation_position_crop)
         
         image.save(self.template_path(), format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
@@ -229,8 +229,6 @@ class Square(AbstractSquare):
             image = Image.open(neighbor_path)
             image.paste(template_full.crop(self.issue.paste_pos[index]), self.issue.crop_pos[index])
             
-            # PIL weakness : we can't resave an image in the same path, unlink before the old.
-            #unlink(neighbor_path)
             image.save(neighbor_path, format=image.format, quality=QUALITY_IMAGE)
             
             # delete all thumbs to recreate them
@@ -264,10 +262,6 @@ class Square(AbstractSquare):
                 image, thumbs = new_square.build_background_image(template_full.crop(self.issue.paste_pos[index]),\
                                     self.issue.crop_pos[index], settings.UPLOAD_HD_ROOT)
                 
-                logging.info('+ (%d, %d) -> %s' % (x, y, image.name))
-        
-        logging.info('+ %s' % image.name)
-
     def save(self, force_insert=False, force_update=False):
         if self.user:
             if not self.status:
@@ -278,6 +272,7 @@ class Square(AbstractSquare):
         if self.pk and self.status:
             self.date_finished = datetime.now()
             self.background_image = self.formatted_background_image
+        
         super(Square, self).save(force_insert, force_update)
         
         # now, square saved, template uploaded, we can build thumbs and update neighbors
