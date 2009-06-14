@@ -2,7 +2,9 @@
 {
 	import cc.milkshape.home.*;
 	import cc.milkshape.preloader.PreloaderWiper;
-	
+	import cc.milkshape.utils.SmallButton;
+	import cc.milkshape.utils.BigButton;
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -14,7 +16,7 @@
 		private var _welcomeText:WelcomeText;
 		private var _currentIssues:HomeCurrentIssuesClp;
 		private var _completeIssue:HomeCompleteIssueClp;
-		private var _lastArtists:HomeLastArtistsClp;
+		private var _lastArtists:HomeLastArtists;
 		
 		public function Home()
 		{
@@ -27,7 +29,18 @@
 				header_url: 'assets/bg.jpg',
 				current1: {url: 'assets/currentissue1.jpg', title: 'BLACK & WHITE', info: 'sdfljsdflsdfmlkdfj, dsfmsdfsdfmsldf'},
 				current2: {url: 'assets/currentissue2.jpg', title: 'OVER THE LAND', info: 'sdlfjjpfj sdfj s'},
-				complete1: {url: 'assets/completeissue1.jpg', title: 'GENERATION 80', info: 'sdlfjjpfj sdfj s'}
+				complete1: {url: 'assets/completeissue1.jpg', title: 'GENERATION 80', info: 'sdlfjjpfj sdfj s'},
+				artists: new Array(
+					{name: 'John', url: 'qsdqsd'},
+					{name: 'Topdos', url: 'qsdqsd'},
+					{name: 'Afrika bsta', url: 'qsdqsd'},{name: 'John', url: 'qsdqsd'},
+					{name: 'Topdos', url: 'qsdqsd'},
+					{name: 'Afrika bsta', url: 'qsdqsd'},{name: 'John', url: 'qsdqsd'},
+					{name: 'Topdos', url: 'qsdqsd'},
+					{name: 'Afrika bsta', url: 'qsdqsd'},{name: 'John', url: 'qsdqsd'},
+					{name: 'Topdos', url: 'qsdqsd'},
+					{name: 'Afrika bsta', url: 'qsdqsd'}
+				)
 			};
 			
 			_onResult(oGateway);
@@ -48,12 +61,13 @@
 			_currentIssues.preview1.addChild(new HomeIssuePreview(o.current1));
 			_currentIssues.preview2.addChild(new HomeIssuePreview(o.current2));
 			_currentIssues.x = 30;
+			_currentIssues.addChild(new BigButton("MON TEST A MOI", new CircleArrowDownItem()));
 			
 			_completeIssue = new HomeCompleteIssueClp();
 			_completeIssue.preview1.addChild(new HomeIssuePreview(o.complete1));
 			_completeIssue.x = _currentIssues.width + 80;
 			
-			_lastArtists = new HomeLastArtistsClp();
+			_lastArtists = new HomeLastArtists(o.artists);
 			_lastArtists.x = _completeIssue.x + _completeIssue.width + 50;
 			
 			_mask = new Sprite();
