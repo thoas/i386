@@ -39,7 +39,7 @@
 					{name: 'Topdos', url: 'qsdqsd'},
 					{name: 'Afrika bsta', url: 'qsdqsd'},{name: 'John', url: 'qsdqsd'},
 					{name: 'Topdos', url: 'qsdqsd'},
-					{name: 'Afrika bsta', url: 'qsdqsd'}
+					{name: 'Afrika bsta...', url: 'qsdqsd'}
 				)
 			};
 			
@@ -60,15 +60,16 @@
 			_currentIssues = new HomeCurrentIssuesClp();
 			_currentIssues.preview1.addChild(new HomeIssuePreview(o.current1));
 			_currentIssues.preview2.addChild(new HomeIssuePreview(o.current2));
-			_currentIssues.x = 30;
-			_currentIssues.addChild(new BigButton("MON TEST A MOI", new CircleArrowDownItem()));
+			_currentIssues.x = 37;
+			_currentIssues.allIssues.addChild(new SmallButton("ALL ISSUES", new PlusItem()));
 			
 			_completeIssue = new HomeCompleteIssueClp();
 			_completeIssue.preview1.addChild(new HomeIssuePreview(o.complete1));
-			_completeIssue.x = _currentIssues.width + 80;
+			_completeIssue.x = _currentIssues.x + _currentIssues.width;
+			_completeIssue.allIssues.addChild(new SmallButton("ALL ISSUES", new PlusItem()));
 			
 			_lastArtists = new HomeLastArtists(o.artists);
-			_lastArtists.x = _completeIssue.x + _completeIssue.width + 50;
+			_lastArtists.x = _completeIssue.x + _completeIssue.width;
 			
 			_mask = new Sprite();
 			_header.mask = _mask;

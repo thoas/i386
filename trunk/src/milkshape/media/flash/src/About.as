@@ -30,7 +30,7 @@
 			//removeEventListener(Event.ADDED_TO_STAGE, _addedToStageHandler);
 
             _label = new TextField();
-            _label.defaultTextFormat = MilkshapeTextFormat.H1();
+            //_label.defaultTextFormat = MilkshapeTextFormat.H1();
             _label.width = 400;
             _label.height = 300;
             _label.multiline = true;

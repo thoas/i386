@@ -3,7 +3,7 @@ package cc.milkshape.utils
 	import flash.text.TextFormat;
 	
 	public class MilkshapeTextFormat
-	{
+	{/*
 		public static function H1():TextFormat
 		{
 			var format:TextFormat = new TextFormat();
@@ -21,7 +21,7 @@ package cc.milkshape.utils
             format.color = 0x000000;
             format.size = 14;
             return format;
-		}
+		}*/
 
 	}
 }
