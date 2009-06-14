@@ -16,7 +16,7 @@ package cc.milkshape.home
 			for each(var o:Object in a)
 			{
 				artistButton = new HomeArtistButton(o, pair);
-				if(decalX + artistButton.width > 200)
+				if(decalX + artistButton.width > 225)
 				{
 					decalX = 0;
 					decalY += 20;
@@ -28,11 +28,10 @@ package cc.milkshape.home
 				pair = !pair;
 			}
 			
-			_allArtistBtn = new SmallButton("MON TEST A MOI", new PlusItem());
-			_allArtistBtn.x = 180;
-			_allArtistBtn.y = decalY + 30;
-			addChild(_allArtistBtn);
-			
+			_allArtistBtn = new SmallButton("ALL ARTISTS", new PlusItem());
+			_allArtistBtn.x = 155;
+			_allArtistBtn.y = decalY + 90;
+			addChild(_allArtistBtn);		
 			
 		}
 	}
