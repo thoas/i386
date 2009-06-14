@@ -19,7 +19,6 @@ def _issues(request):
 
 def _issue(request, slug):
     """docstring for issues"""
-    print slug
     issue = get_object_or_404(Issue, slug=slug)
     squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
     squares = Square.objects.select_related().filter(issue=issue)
@@ -42,7 +41,6 @@ def issues(request, format, template_name):
 #@login_required
 @MultiResponse()
 def issue(request, slug, format, template_name):
-    print slug
     datas = _issue(request, slug)
     datas['t_squares_open'] = dict((square_open.coord, square_open) for square_open in datas['squares_open'])
     datas['t_squares'] = dict((square.coord, square) for square in datas['squares'])

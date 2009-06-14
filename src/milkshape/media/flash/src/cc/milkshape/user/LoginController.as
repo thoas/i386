@@ -1,7 +1,6 @@
 package cc.milkshape.user
 {
 	import cc.milkshape.gateway.GatewayController;
-	import cc.milkshape.manager.UserManager;
 	import cc.milkshape.user.events.LoginEvent;
 
 	public class LoginController extends GatewayController
@@ -18,7 +17,7 @@ package cc.milkshape.user
 		
 		override protected function _onResult(result:Object):void 
 		{
-			UserManager.setUser(result);
+			this.getUser().setAttribute('account', result);
 			dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result));
 		}
 	}
