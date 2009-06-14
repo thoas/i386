@@ -100,7 +100,6 @@ package cc.milkshape.user.forms
         private function _logged(e:LoginEvent):void {
         	gotoAndPlay('logged');
         	var user:Object = e.user;
-        	MonsterDebugger.trace(this, user);
         }
         
         private function _login(e:MouseEvent):void
