@@ -1,15 +1,14 @@
 package cc.milkshape.home
 {
-	import cc.milkshape.preloader.PreloaderWiper;
-		
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-
-	public class HomeIssuePreview extends HomeIssuePreviewClp
+	import flash.text.TextFieldAutoSize;
+	
+	public class HomeArtistButton extends HomeArtistClp
 	{
 		private var _overStatut:Boolean;
 		
-		public function HomeIssuePreview(o:Object) 
+		public function HomeArtistButton(o:Object, pair:Boolean = true)
 		{
 			buttonMode = true;
 			stop();
@@ -19,12 +18,20 @@ package cc.milkshape.home
 			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
 			addEventListener(MouseEvent.CLICK, _clickHandler);
 			
-			titleClp.label.text = o.title;
-			infoClp.label.text = o.info;
-			var img:PreloaderWiper = new PreloaderWiper();
-			img.loadMedia(o.url);
-			bg.addChild(img);
-			
+			artistText.label.autoSize = TextFieldAutoSize.LEFT;
+			artistText2.label.autoSize = TextFieldAutoSize.LEFT;
+			if(pair)
+			{
+				artistText.label.text = o.name;
+				artistText2.label.text = '';
+				over.width = artistText.width;
+			}
+			else
+			{
+				artistText2.label.text = o.name;
+				artistText.label.text = '';
+				over.width = artistText2.width;
+			}			
 		}
 		
 		private function _overHandler(e:MouseEvent):void
@@ -58,7 +65,7 @@ package cc.milkshape.home
 		
 		private function _clickHandler(e:MouseEvent):void
 		{
-			trace('go to ');			
+			trace('go to ');
 		}
 	}
 }

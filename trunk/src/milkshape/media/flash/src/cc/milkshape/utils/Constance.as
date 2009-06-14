@@ -6,6 +6,8 @@ package cc.milkshape.utils
 		
 		public static var URL_SITE:String = "http://localhost:8000";
 		
+		public static var COLOR_YELLOW:int = 0xffdd00;
+		
 		public static function url(url:String):String {
 			return URL_SITE + "/" + url;
 		}

@@ -13,6 +13,15 @@ package cc.milkshape.utils
             format.bold = true;
             return format;
 		}
+		
+		public static function H2():TextFormat
+		{
+			var format:TextFormat = new TextFormat();
+            format.font = new HelveticaLTStdFt().fontName;
+            format.color = 0x000000;
+            format.size = 14;
+            return format;
+		}
 
 	}
 }

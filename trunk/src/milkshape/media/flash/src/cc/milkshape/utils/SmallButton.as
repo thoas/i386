@@ -1,30 +1,31 @@
-package cc.milkshape.home
+package cc.milkshape.utils
 {
-	import cc.milkshape.preloader.PreloaderWiper;
-		
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-
-	public class HomeIssuePreview extends HomeIssuePreviewClp
+	import flash.text.TextFieldAutoSize;
+	
+	public class SmallButton extends SmallButtonClp
 	{
 		private var _overStatut:Boolean;
+		private var _itemClp:*;
 		
-		public function HomeIssuePreview(o:Object) 
+		public function SmallButton(labelText:String, itemClp:*)
 		{
+			_itemClp = itemClp;
+			item.addChild(_itemClp);
+			
 			buttonMode = true;
 			stop();
+			_itemClp.stop();
 			_overStatut = false;
 			
 			addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
 			addEventListener(MouseEvent.CLICK, _clickHandler);
 			
-			titleClp.label.text = o.title;
-			infoClp.label.text = o.info;
-			var img:PreloaderWiper = new PreloaderWiper();
-			img.loadMedia(o.url);
-			bg.addChild(img);
-			
+			label.autoSize = TextFieldAutoSize.LEFT;
+			label.text = labelText;
+			over.width = bg.shape.width = Math.round(label.width) + 22;			
 		}
 		
 		private function _overHandler(e:MouseEvent):void
@@ -45,11 +46,13 @@ package cc.milkshape.home
 		
 		private function _enterFrame(e:Event):void
 		{
-			if (_overStatut)
+			if (_overStatut) {
 				nextFrame();
-			else
+				_itemClp.nextFrame();
+			} else {
 				prevFrame();
-
+				_itemClp.prevFrame();
+			}
 			if (currentLabel == 'start' || currentLabel == 'end')
 			{
 				removeEventListener(Event.ENTER_FRAME, _enterFrame);
@@ -58,7 +61,7 @@ package cc.milkshape.home
 		
 		private function _clickHandler(e:MouseEvent):void
 		{
-			trace('go to ');			
+			trace('go to ');
 		}
 	}
 }
