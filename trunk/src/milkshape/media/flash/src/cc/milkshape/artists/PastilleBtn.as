@@ -1,5 +1,7 @@
 package cc.milkshape.artists
 {
+	import fl.data.DataProvider;
+	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
@@ -9,9 +11,11 @@ package cc.milkshape.artists
 		private var _clickStatut:Boolean;
 		private var _prevContinue:Boolean;
 		private var _listArtists:Array;
+		private var _artists:DataProvider;
 		
 		public function PastilleBtn(str:String, array:Array)
 		{
+			_artists = new DataProvider(array);
 			_listArtists = array;
 			buttonMode = true;
 			stop();
@@ -104,6 +108,26 @@ package cc.milkshape.artists
 		public function set listArtists(v:Array):void
 		{
 			_listArtists = v;
+		}
+
+		public function get artists():DataProvider
+		{
+			return _artists;
+		}
+
+		public function set artists(v:DataProvider):void
+		{
+			_artists = v;
+		}
+		
+		public function sortByName():void
+		{
+			_artists.sortOn('name');
+		}
+		
+		public function sortByDate():void
+		{
+			_artists.sortOn('date');
 		}
 
 

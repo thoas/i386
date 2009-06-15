@@ -1,12 +1,15 @@
 package
 {
 	import cc.milkshape.artists.*;
+	import cc.milkshape.utils.SmallButton;
+	
+	import com.gskinner.motion.GTween;
+	
+	import fl.motion.easing.Cubic;
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
-	
-	import com.gskinner.motion.GTween;	
-	import fl.motion.easing.Cubic;
+	import flash.events.MouseEvent;
 
 	[SWF(width='960', height='600', frameRate='31', backgroundColor='#191919')]
 
@@ -16,9 +19,10 @@ package
 		private var _maxArtists:int;
 		private var _artistsClp:ArtistsClp;
 		private var _listArtistsContainer:Array;
-		private var _listIssues:Array;
 		private var _listIssuesContainer:Array;
 		private var _lastPastilleBtnClicked:PastilleBtn;
+		private var _az:SmallButton;
+		private var _date:SmallButton;
 		
 		public function Artists()
 		{
@@ -32,35 +36,35 @@ package
 					{
 						num: '1',
 						artists: new Array(
-							{name: 'Edith', url: 'qsdqsd'},
-							{name: 'Carron', url: 'qsdqsd'},
-							{name: 'Tabas', url: 'qsdqsd'},
-							{name: 'Mathilde Aubier', url: 'qsdqsd'},
-							{name: 'Nodar', url: 'qsdqsd'},
-							{name: 'David Benmussa', url: 'qsdqsd'},
-							{name: 'Nepomuk', url: 'qsdqsd'},
-							{name: 'Topdos', url: 'qsdqsd'},
-							{name: 'Malota', url: 'qsdqsd'},
-							{name: 'CrazyBoys', url: 'qsdqsd'},
-							{name: 'Edith Carron', url: 'qsdqsd'}
+							{name: 'Edith', url: 'qsdqsd', date: 899876},
+							{name: 'Carron', url: 'qsdqsd', date: 9870987},
+							{name: 'Tabas', url: 'qsdqsd', date: 9867086},
+							{name: 'Mathilde Aubier', url: 'qsdqsd', date: 896876},
+							{name: 'Nodar', url: 'qsdqsd', date: 876765},
+							{name: 'David Benmussa', url: 'qsdqsd', date: 65564},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 65465},
+							{name: 'Topdos', url: 'qsdqsd', date: 785675},
+							{name: 'Malota', url: 'qsdqsd', date: 764654},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 675675467},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 675674765}
 						)
 					},
 					{
 						num: '2',
 						artists: new Array( 
-							{name: 'Edith', url: 'qsdqsd'},
-							{name: 'Carron', url: 'qsdqsd'}
+							{name: 'Edith', url: 'qsdqsd', date: 764657467},
+							{name: 'Carron', url: 'qsdqsd', date: 76786789}
 						)
 					},
 					{
 						num: '3',
 						artists: new Array( 
-							{name: 'David Benmussa', url: 'qsdqsd'},
-							{name: 'Nepomuk', url: 'qsdqsd'},
-							{name: 'Topdos', url: 'qsdqsd'},
-							{name: 'Malota', url: 'qsdqsd'},
-							{name: 'CrazyBoys', url: 'qsdqsd'},
-							{name: 'Edith Carron', url: 'qsdqsd'}
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
 						)
 					}
 				)
@@ -72,22 +76,50 @@ package
 		
 		private function _onResult(o:Object):void
 		{
-			_listArtistsContainer = new Array();
-			_listIssues = o.issues;
 			_maxArtists = 10;
+			_listArtistsContainer = new Array();
+			_listIssuesContainer = new Array();
 			
 			_artistsClp = new ArtistsClp();
 			addChild(_artistsClp);
 			
-			_all = new PastilleBtn('All', _getAllArtists());
+			var i:int = 0;
+			for each(var issue:Object in o.issues)
+			{
+				var pastille:PastilleBtn = new PastilleBtn('#' + issue.num, issue.artists);
+				pastille.addEventListener('CLICKED', _clickPastilleHandler);
+				pastille.x = i * 70;
+				_artistsClp.issues.addChild(pastille);
+				_listIssuesContainer.push(pastille);
+				i++;
+			}
+			
+			_all = new PastilleBtn('All', _getAllArtists(o.issues));
 			_all.initClick();
 			_all.addEventListener('CLICKED', _clickPastilleHandler);
-			_artistsClp.all.addChild(_all);
-			
 			_lastPastilleBtnClicked = _all;
-
-			_createIssuesContainer();			
-			_createArtistsContainer(_all.listArtists);
+			_createArtistsContainer();
+			_artistsClp.all.addChild(_all);
+						
+			_az = new SmallButton('A-Z', new PlusItem());
+			_az.addEventListener(MouseEvent.CLICK, _sortByName);
+			_artistsClp.az.addChild(_az);
+			
+			_date = new SmallButton('DATE', new PlusItem());
+			_date.addEventListener(MouseEvent.CLICK, _sortByDate);
+			_artistsClp.date.addChild(_date);
+		}
+		
+		private function _sortByName(e:MouseEvent):void
+		{
+			_lastPastilleBtnClicked.sortByName();
+			_refreshPastille();
+		}
+		
+		private function _sortByDate(e:MouseEvent):void
+		{
+			_lastPastilleBtnClicked.sortByDate();
+			_refreshPastille();
 		}
 		
 		private function _clickPastilleHandler(e:Event):void
@@ -95,13 +127,19 @@ package
 			_removeArtistsContainer();
 			_lastPastilleBtnClicked.reinitClick();
 			_lastPastilleBtnClicked = e.currentTarget as PastilleBtn;
-			_createArtistsContainer(_lastPastilleBtnClicked.listArtists);
+			_createArtistsContainer();
 		}
 		
-		private function _getAllArtists():Array
+		private function _refreshPastille():void
+		{
+			_removeArtistsContainer();
+			_createArtistsContainer();
+		}
+		
+		private function _getAllArtists(issues:Array):Array
 		{
 			var array:Array = new Array();
-			for each (var o:Object in _listIssues)
+			for each (var o:Object in issues)
 			{
 				for each (var a:Object in o.artists)
 				{
@@ -111,24 +149,19 @@ package
 			return array;
 		}
 		
-		private function _createIssuesContainer():void
+		private function _removeArtistsContainer():void
 		{
-			_listIssuesContainer = new Array();
+			var nbArtistsContainer:int = Math.ceil(_lastPastilleBtnClicked.listArtists.length / _maxArtists);
 			
-			var i:int = 0;
-			for each(var issue:Object in _listIssues)
+			for(var i:int = 0; i < nbArtistsContainer; i++)
 			{
-				var pastille:PastilleBtn = new PastilleBtn('#' + issue.num, issue.artists);
-				pastille.addEventListener('CLICKED', _clickPastilleHandler);
-				pastille.x = i * 70;
-				i++;
-				_artistsClp.issues.addChild(pastille);
-				_listIssuesContainer.push(pastille);
+				_artistsClp.names.removeChild(_listArtistsContainer.shift());
 			}
 		}
 		
-		private function _createArtistsContainer(listArtists:Array):void
-		{			
+		private function _createArtistsContainer():void
+		{
+			var listArtists:Array = _lastPastilleBtnClicked.artists.toArray();
 			var nbArtistsContainer:int = Math.ceil(listArtists.length / _maxArtists);
 			
 			for(var i:int = 0; i < nbArtistsContainer; i++)
@@ -140,16 +173,6 @@ package
 			}
 			
 			_putArtistsInContainer(listArtists);
-		}
-		
-		private function _removeArtistsContainer():void
-		{
-			var nbArtistsContainer:int = Math.ceil(_lastPastilleBtnClicked.listArtists.length / _maxArtists);
-			
-			for(var i:int = 0; i < nbArtistsContainer; i++)
-			{
-				_artistsClp.names.removeChild(_listArtistsContainer.shift());
-			}
 		}
 		
 		private function _putArtistsInContainer(listArtists:Array):void
