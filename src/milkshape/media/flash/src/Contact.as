@@ -21,7 +21,7 @@ package
 			_email = new Input('Email');
 			_subject = new Input('Subject');
 			_content = new Textarea('Message');
-			_submit = new SmallButton('Send', new PlusItem());
+			_submit = new SmallButton('SEND', new PlusItem());
 			
 			var contactClp:ContactClp = new ContactClp();
 			contactClp.author.addChild(_author);
