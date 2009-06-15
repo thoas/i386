@@ -7,6 +7,7 @@ package
 	
 	import fl.motion.easing.Cubic;
 	
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -23,6 +24,15 @@ package
 		private var _lastPastilleBtnClicked:PastilleBtn;
 		private var _az:SmallButton;
 		private var _date:SmallButton;
+		private var _arrowRight:ArrowBtn;
+		private var _arrowLeft:ArrowBtn;
+		private var _arrowRightIssue:ArrowBtn;
+		private var _arrowLeftIssue:ArrowBtn;
+		private var _nbArtistsContainer:int;
+		private var _nbIssuesContainer:int;
+		private var _countArtistsContainer:int;
+		private var _countIssuesContainer:int;
+		private var _maskModified:Boolean;
 		
 		public function Artists()
 		{
@@ -66,6 +76,105 @@ package
 							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
 							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
 						)
+					},
+					{
+						num: '4',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
+					},
+					{
+						num: '5',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
+					},
+					{
+						num: '6',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
+					},
+					{
+						num: '7',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
+					},
+					{
+						num: '8',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
+					},
+					{
+						num: '9',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
+					},
+					{
+						num: '10',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
+					},
+					{
+						num: '11',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
+					},
+					{
+						num: '12',
+						artists: new Array( 
+							{name: 'David Benmussa', url: 'qsdqsd', date: 9798067},
+							{name: 'Nepomuk', url: 'qsdqsd', date: 87598779},
+							{name: 'Topdos', url: 'qsdqsd', date: 7869878},
+							{name: 'Malota', url: 'qsdqsd', date: 452456},
+							{name: 'CrazyBoys', url: 'qsdqsd', date: 980708},
+							{name: 'Edith Carron', url: 'qsdqsd', date: 3445366}
+						)
 					}
 				)
 			};
@@ -82,16 +191,20 @@ package
 			
 			_artistsClp = new ArtistsClp();
 			addChild(_artistsClp);
+			_createArrows();
 			
-			var i:int = 0;
-			for each(var issue:Object in o.issues)
+			_nbIssuesContainer = o.issues.length;
+			if(_nbIssuesContainer > 10)
+				_artistsClp.arrowRightIssue.addChild(_arrowRightIssue);
+				
+			for(var i:int = 0; i < _nbIssuesContainer; i++)			
 			{
-				var pastille:PastilleBtn = new PastilleBtn('#' + issue.num, issue.artists);
+				var pastille:PastilleBtn = new PastilleBtn('#' + o.issues[i].num, o.issues[i].artists);
 				pastille.addEventListener('CLICKED', _clickPastilleHandler);
-				pastille.x = i * 70;
+				pastille.x = 800;
+				new GTween(pastille, 0.5, { x: i * 62 }, { ease:Cubic.easeInOut, delay: i > 0 ? i * 0.1 : 0 });				
 				_artistsClp.issues.addChild(pastille);
 				_listIssuesContainer.push(pastille);
-				i++;
 			}
 			
 			_all = new PastilleBtn('All', _getAllArtists(o.issues));
@@ -110,6 +223,138 @@ package
 			_artistsClp.date.addChild(_date);
 		}
 		
+		private function _inversePosition(mc:DisplayObject):void
+		{
+			mc.rotation = 180;
+			mc.x += mc.width;
+			mc.y += mc.height;
+		}
+		
+		private function _createArrows():void
+		{
+			_arrowRight = new ArrowBtn();
+		 	_arrowLeft = new ArrowBtn();
+			_arrowRightIssue = new ArrowBtn();
+			_arrowLeftIssue = new ArrowBtn();
+			
+			_inversePosition(_arrowLeft);
+			_inversePosition(_arrowLeftIssue);
+			
+			_arrowsListnerEnabled();
+		}
+		
+		private function _arrowsListnerDisabled(e:Event = null):void
+		{
+			_arrowRight.removeEventListener(MouseEvent.CLICK, _nextArtists);
+			_arrowLeft.removeEventListener(MouseEvent.CLICK, _prevArtists);
+			_arrowRightIssue.removeEventListener(MouseEvent.CLICK, _nextIssues);
+			_arrowLeftIssue.removeEventListener(MouseEvent.CLICK, _prevIssues);
+		}
+		
+		private function _arrowsListnerEnabled(e:Event = null):void
+		{
+			_arrowRight.addEventListener(MouseEvent.CLICK, _nextArtists);
+			_arrowLeft.addEventListener(MouseEvent.CLICK, _prevArtists);
+			_arrowRightIssue.addEventListener(MouseEvent.CLICK, _nextIssues);
+			_arrowLeftIssue.addEventListener(MouseEvent.CLICK, _prevIssues);
+		}
+		
+		private function _initArrows():void
+		{
+			try {_artistsClp.arrowRight.removeChild(_arrowRight);} catch(e:Error) {}
+			try {_artistsClp.arrowLeft.removeChild(_arrowLeft);} catch(e:Error) {}
+			
+			_artistsClp.names.x = 45;
+			_countArtistsContainer = 0;
+		}
+		
+		private function _modifyMask(b:Boolean):void
+		{
+			if(b && !_maskModified)
+			{
+				_maskModified = true;
+				_artistsClp.maskIssues.width -= 62;
+				_artistsClp.maskIssues.x += 62;
+			}
+			else if (!b)
+			{
+				_maskModified = false;
+				_artistsClp.maskIssues.width += 62;
+				_artistsClp.maskIssues.x -= 62;
+			}
+		}
+		
+		private function _checkArrowsIssues(op:int):void
+		{
+			_countIssuesContainer += op;
+			
+			if(_countIssuesContainer < 1)
+			{
+				_artistsClp.arrowLeftIssue.removeChild(_arrowLeftIssue);
+				_artistsClp.arrowRightIssue.addChild(_arrowRightIssue);
+				_modifyMask(false);
+			}
+			else if(_countIssuesContainer >= _nbIssuesContainer - 10)
+			{
+				_artistsClp.arrowRightIssue.removeChild(_arrowRightIssue);
+				_artistsClp.arrowLeftIssue.addChild(_arrowLeftIssue);
+				_modifyMask(true);
+			}
+			else
+			{
+				_artistsClp.arrowLeftIssue.addChild(_arrowLeftIssue);
+				_modifyMask(true);
+			}
+		}
+		
+		private function _checkArrows(op:int):void
+		{
+			_countArtistsContainer += op;
+			
+			if(_countArtistsContainer < 1)
+			{
+				_artistsClp.arrowLeft.removeChild(_arrowLeft);
+				_artistsClp.arrowRight.addChild(_arrowRight);
+			}
+			else if(_countArtistsContainer >= _nbArtistsContainer - 2)
+			{
+				_artistsClp.arrowRight.removeChild(_arrowRight);
+				_artistsClp.arrowLeft.addChild(_arrowLeft);
+			}
+			else
+			{
+				_artistsClp.arrowLeft.addChild(_arrowLeft);
+			}
+		}
+		
+		private function _nextArtists(e:MouseEvent):void
+		{
+			_arrowsListnerDisabled();
+			new GTween(_artistsClp.names, 0.5, { x: _artistsClp.names.x - 360 }, { ease:Cubic.easeInOut, completeListener:_arrowsListnerEnabled });	
+			_checkArrows(1);
+		}
+		
+		private function _prevArtists(e:MouseEvent):void
+		{
+			_arrowsListnerDisabled();
+			new GTween(_artistsClp.names, 0.5, { x: _artistsClp.names.x + 360 }, { ease:Cubic.easeInOut, completeListener:_arrowsListnerEnabled });
+			_checkArrows(-1);
+		}
+		
+		private function _nextIssues(e:MouseEvent):void
+		{
+			_arrowsListnerDisabled();
+			new GTween(_artistsClp.issues, 0.5, { x: _artistsClp.issues.x - 62 }, { ease:Cubic.easeInOut, completeListener:_arrowsListnerEnabled });
+			_checkArrowsIssues(1);
+		}
+		
+		private function _prevIssues(e:MouseEvent):void
+		{
+			_arrowsListnerDisabled();
+			new GTween(_artistsClp.issues, 0.5, { x: _artistsClp.issues.x + 62 }, { ease:Cubic.easeInOut, completeListener:_arrowsListnerEnabled });
+			_checkArrowsIssues(-1);
+		}
+		
 		private function _sortByName(e:MouseEvent):void
 		{
 			_lastPastilleBtnClicked.sortByName();
@@ -124,6 +369,7 @@ package
 		
 		private function _clickPastilleHandler(e:Event):void
 		{
+			_initArrows();
 			_removeArtistsContainer();
 			_lastPastilleBtnClicked.reinitClick();
 			_lastPastilleBtnClicked = e.currentTarget as PastilleBtn;
@@ -162,9 +408,12 @@ package
 		private function _createArtistsContainer():void
 		{
 			var listArtists:Array = _lastPastilleBtnClicked.artists.toArray();
-			var nbArtistsContainer:int = Math.ceil(listArtists.length / _maxArtists);
+			_nbArtistsContainer = Math.ceil(listArtists.length / _maxArtists);
 			
-			for(var i:int = 0; i < nbArtistsContainer; i++)
+			if(_nbArtistsContainer > 2)
+				_artistsClp.arrowRight.addChild(_arrowRight);
+			
+			for(var i:int = 0; i < _nbArtistsContainer; i++)
 			{
 				var mc:MovieClip = new MovieClip();
 				mc.x = i*360;
