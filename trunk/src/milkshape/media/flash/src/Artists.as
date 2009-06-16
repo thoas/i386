@@ -1,6 +1,7 @@
 package
 {
 	import cc.milkshape.artists.*;
+	import cc.milkshape.utils.Calcul;
 	import cc.milkshape.utils.SmallButton;
 	
 	import com.gskinner.motion.GTween;
@@ -185,7 +186,7 @@ package
 		
 		private function _onResult(o:Object):void
 		{
-			_maxArtists = 10;
+			_maxArtists = 13;
 			_listArtistsContainer = new Array();
 			_listIssuesContainer = new Array();
 			
@@ -433,9 +434,9 @@ package
 			{
 				var artistBtn:ArtistBtn = new ArtistBtn(artist.name);
 				artistBtn.y = 400;
-				artistBtn.x = 400;
-				new GTween(artistBtn, 0.5, { y: decalY, x: 0 }, { ease:Cubic.easeInOut, delay: i > 0 ? i * 0.1 : 0 });
-				decalY += 40;
+				artistBtn.x = cc.milkshape.utils.Calcul.randRange(-800, 800);
+				new GTween(artistBtn, 0.2, { y: decalY, x: 0 }, { ease:Cubic.easeInOut, delay: i > 0 ? i * 0.04 : 0 });
+				decalY += 30;
 				_listArtistsContainer[j].addChild(artistBtn);
 				i++;
 				if(i % _maxArtists == 0)
