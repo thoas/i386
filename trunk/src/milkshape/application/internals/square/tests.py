@@ -42,8 +42,8 @@ class SquareTestCase(unittest.TestCase):
     def __testBookSquare(self, pos_x, pos_y):
         c = Client()
         result = c.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
-        response = c.get(reverse('square',\
-                        kwargs={'action': 'book', 'pos_x': pos_x, 'pos_y': pos_y, 'issue_slug': self.issue.slug}))
+        response = c.get(reverse('square_book',\
+                        kwargs={'pos_x': pos_x, 'pos_y': pos_y, 'issue_slug': self.issue.slug}))
         square_open = SquareOpen.objects.get(pos_x=pos_x, pos_y=pos_y, issue=self.issue)
         self.assertEquals(square_open.is_standby, True)
         self.assertEquals(response.status_code, 200)
@@ -53,9 +53,8 @@ class SquareTestCase(unittest.TestCase):
         c = Client()
         result = c.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
         f = open(join(settings.CLI_ROOT, 'push', 'template.jpg'))
-        response = c.post(reverse('square',\
-                        kwargs={'action': 'fill',\
-                                'pos_x': pos_x,\
+        response = c.post(reverse('square_fill',\
+                        kwargs={'pos_x': pos_x,\
                                 'pos_y': pos_y,\
                                 'issue_slug': self.issue.slug}),\
                         {'background_image': f})
