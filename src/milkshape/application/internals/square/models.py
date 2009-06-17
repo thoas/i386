@@ -38,8 +38,8 @@ class SquareOpenManager(AbstractSquareManager):
         neighbors.append(tuple((square.pos_x, square.pos_y)))
         
         logging.info('standby set to %d for %s' % (is_standby, neighbors))
-        self.filter(coord__in=list(str(key)\
-            for key in neighbors)).update(is_standby=is_standby, issue=square.issue)
+        self.filter(issue=square.issue, coord__in=list(str(key)\
+            for key in neighbors)).update(is_standby=is_standby)
         #from django.db import connection, transaction
         #cursor = connection.cursor()
         #cursor.execute("UPDATE square_squareopen SET is_standby = %d WHERE coord IN %s"
@@ -231,7 +231,6 @@ class Square(AbstractSquare):
         
         logging.info('populate %s' % neighbors_keys.keys())
         
-        print neighbors_keys.keys()
         # create square side by side with overlap
         for x, y in neighbors_keys.keys():
             if (x >= 0 and x < self.issue.nb_case_y) and (y >= 0 and y < self.issue.nb_case_x):
