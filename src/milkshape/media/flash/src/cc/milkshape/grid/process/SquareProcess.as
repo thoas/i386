@@ -10,6 +10,7 @@ package cc.milkshape.grid.process
 		{
 			var squareProcessController:SquareProcessController = new SquareProcessController(gridModel);
 			var squareProcessView:SquareProcessView = new SquareProcessView(gridModel, squareProcessController);
+			squareProcessView.alpha = 0;
 			addChild(squareProcessView);
 		}
 	}
