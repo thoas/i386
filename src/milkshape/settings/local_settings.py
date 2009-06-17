@@ -7,7 +7,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 EMAIL_DEBUG = DEBUG
 
-MEDIA_URL = '/media'
+MEDIA_URL = 'http://localhost:8000/media'
 
 DATABASE_ENGINE = 'sqlite3'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
 DATABASE_NAME = dirname(abspath(__file__)) + '/../dev.db'       # Or path to database file if using sqlite3.
