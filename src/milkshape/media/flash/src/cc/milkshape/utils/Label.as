@@ -5,14 +5,26 @@ package cc.milkshape.utils
 
 	public class Label extends Sprite
 	{
+		private var _clip:*;
 		public function Label(clip:*, str:String, clr:int = 0x000000)
 		{
-			clip.label.autoSize = TextFieldAutoSize.LEFT;
-			clip.label.text = str;
-			clip.label.textColor = clr;
-			clip.over.width = Math.round(clip.label.width);
+			_clip = clip;
+			_clip.label.autoSize = TextFieldAutoSize.LEFT;
+			_clip.label.text = str;
+			_clip.label.textColor = clr;
+			_clip.over.width = Math.round(_clip.label.width);
 			
-			addChild(clip);
+			addChild(_clip);
+		}
+		
+		public function set text(text:String):void
+		{
+			_clip.label.text = text;
+		}
+		
+		public function get text():String
+		{
+			return _clip.label.text;
 		}
 	}
 }
