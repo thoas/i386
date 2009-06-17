@@ -3,13 +3,17 @@ package
 	import cc.milkshape.grid.GridBackground;
 	import cc.milkshape.grid.GridController;
 	import cc.milkshape.grid.GridKeyboardController;
-	import cc.milkshape.grid.events.GridLineEvent;
 	import cc.milkshape.grid.GridModel;
 	import cc.milkshape.grid.GridMouseController;
 	import cc.milkshape.grid.GridView;
-	import cc.milkshape.preloader.events.PreloaderEvent;
-	import cc.milkshape.grid.square.events.SquareEvent;
+	import cc.milkshape.grid.events.GridLineEvent;
+	import cc.milkshape.grid.process.SquareProcess;
 	import cc.milkshape.grid.square.events.SquareFormEvent;
+	import cc.milkshape.preloader.events.PreloaderEvent;
+	
+	import com.gskinner.motion.GTween;
+	
+	import fl.motion.easing.Sine;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -28,6 +32,7 @@ package
 		private var _gridController:GridController;
 		private var _gridView:GridView;
 		private var _debugger:MonsterDebugger;
+		private var _squareProcess:SquareProcess;
 		
 		public function Issue()
 		{
@@ -52,6 +57,9 @@ package
 		{
 			loaderInfo.sharedEvents.removeEventListener(PreloaderEvent.INFO, _handlerInit);
 			
+			_squareProcess = new SquareProcess();
+			_squareProcess.alpha = 0;
+			
 			_debugger = new MonsterDebugger(this);
 			_gridModel = new GridModel(e.msg);
 			_gridController = new GridController(_gridModel);
@@ -69,6 +77,7 @@ package
 			
 			addChild(_bg);
 			addChild(_gridView);
+			addChild(_squareProcess);
 			
 			_closeHandCursor = new ClosedHandCursor();
 			_openHandCursor = new OpenHandCursor();
@@ -79,29 +88,6 @@ package
 			_gridModel.addEventListener(GridLineEvent.SHOW, _hideOpenHandCursor);
 			_gridModel.addEventListener(GridLineEvent.HIDE, _showOpenHandCursor);
 		}
-		/*
-		import flash.events.TimerEvent;
-		import flash.utils.Timer;
-		private var _showSquareTimer:Timer;
-		_showSquareTimer = new Timer(2000, 1);
-		_showSquareTimer.stop();
-		if(_currentScale == _maxScale)
-		{
-			var square:Square = _controller.getFocusSquare();
-			if(square is SquareOpen)
-			{
-				_showSquareTimer.removeEventListener('timer', _showSquareBooked);
-        		_showSquareTimer.addEventListener('timer', _showSquareOpen);
-        		_showSquareTimer.start();
-			}
-			else if(square is SquareBooked)
-			{
-				_showSquareTimer.removeEventListener('timer', _showSquareOpen);
-        		_showSquareTimer.addEventListener('timer', _showSquareBooked);
-        		_showSquareTimer.start();
-			}
-		}
-		*/
 		
 		private function _mouseMoveHandler(e:MouseEvent = null):void
 		{
@@ -150,6 +136,13 @@ package
 		
 		private function _showOpenForm(e:SquareFormEvent):void
 		{
+			new GTween(
+				_squareProcess, 
+				1, {
+				alpha: 1 }, {
+				ease:Sine.easeOut}
+			);
+			
 			trace('show open');
 		}
 		
@@ -160,7 +153,12 @@ package
 		
 		private function _closeForm(e:SquareFormEvent):void
 		{
-			trace('close');
+			new GTween(
+				_squareProcess, 
+				1, {
+				alpha: 0 }, {
+				ease:Sine.easeOut}
+			);
 		}
 	}
 }

@@ -204,6 +204,7 @@ package cc.milkshape.grid
 		{
 			if(currentScale == maxScale)// Si on est au zoom maximal
 			{
+				trace('ok');
 				var square:Square = focusSquare;
 				if(square is SquareOpen)
 				{
