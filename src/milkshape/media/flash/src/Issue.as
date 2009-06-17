@@ -45,7 +45,7 @@ package
 		{
 			stage.stageFocusRect = false;
 			//loaderInfo.sharedEvents.addEventListener(PreloaderEvent.INFO, _handlerInit);
-			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, "4x4"));
+			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, '5x5'));
 		}
 		
 		private function _handlerRemovedToStage(e:Event):void
@@ -138,7 +138,7 @@ package
 		{
 			new GTween(
 				_squareProcess, 
-				1, {
+				0.1, {
 				alpha: 1 }, {
 				ease:Sine.easeOut}
 			);
@@ -155,7 +155,7 @@ package
 		{
 			new GTween(
 				_squareProcess, 
-				1, {
+				0.1, {
 				alpha: 0 }, {
 				ease:Sine.easeOut}
 			);
