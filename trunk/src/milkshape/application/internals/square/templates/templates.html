@@ -16,7 +16,7 @@
                     </td>
                     <td>
                         {% ifequal participation.status 0 %}
-                        <a href="{% url square action="release" pos_x=participation.pos_x pos_y=participation.pos_y issue_slug=issue.slug %}">{% trans "release" %}</a>
+                        <a href="{% url square_release pos_x=participation.pos_x pos_y=participation.pos_y issue_slug=issue.slug %}">{% trans "release" %}</a>
                         {% endifequal %}
                     </td>
                 </tr>
