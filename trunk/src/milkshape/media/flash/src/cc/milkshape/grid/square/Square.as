@@ -20,8 +20,8 @@
 			_x = x;
 			_y = y;
 					
-			// alpha = 0.8	
-			alpha = 0;
+			alpha = 0.8	
+			//alpha = 0;
 			
 			graphics.beginFill(color);
 			graphics.drawRect(0, 0, size, size);

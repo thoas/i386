@@ -33,12 +33,10 @@ def _issue(request, slug):
 
     return datas
 
-#@login_required
 @MultiResponse()
 def issues(request, format, template_name):
     return _issues(request)
 
-#@login_required
 @MultiResponse()
 def issue(request, slug, format, template_name):
     datas = _issue(request, slug)
