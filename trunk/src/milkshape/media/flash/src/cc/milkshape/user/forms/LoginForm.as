@@ -44,7 +44,7 @@ package cc.milkshape.user.forms
 			_logout = new Label(new LabelStandard0765Clp(), 'LOGOUT', 0x8f8f8f);
 			_profil = new Label(new LabelStandard0765Clp(), 'PROFIL', Constance.COLOR_YELLOW);
 			_notif = new Label(new LabelStandard0765Clp(), 'You are', 0x8f8f8f);
-			_hello = new Label(new LabelStandard0765Clp(), 'Hello Mec', 0x8f8f8f);
+			_hello = new Label(new LabelStandard0765Clp(), '', 0x8f8f8f);
 			
 			_registerStatut = false;
 			register.buttonMode = true;			
@@ -100,6 +100,7 @@ package cc.milkshape.user.forms
         private function _logged(e:LoginEvent):void {
         	gotoAndPlay('logged');
         	var user:Object = e.user;
+        	_hello.text = 'Hello ' + user.username + '!';
         }
         
         private function _login(e:MouseEvent):void
