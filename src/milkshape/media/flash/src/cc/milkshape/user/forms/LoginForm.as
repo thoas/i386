@@ -5,7 +5,7 @@ package cc.milkshape.user.forms
 	import cc.milkshape.user.LoginController;
 	import cc.milkshape.user.events.LoginEvent;
 	import cc.milkshape.utils.Label;
-	import cc.milkshape.utils.SmallButton;
+	import cc.milkshape.utils.buttons.SmallButton;
 	import cc.milkshape.utils.Constance;
 	
 	import flash.events.Event;

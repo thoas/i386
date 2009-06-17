@@ -1,11 +1,11 @@
-package cc.milkshape.artists
+package cc.milkshape.artists.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class SiteBtn extends SiteBtnClp
+	public class IssueButton extends IssueBtnClp
 	{
-		public function SiteBtn()
+		public function IssueButton()
 		{
 			buttonMode = true;
 			stop();

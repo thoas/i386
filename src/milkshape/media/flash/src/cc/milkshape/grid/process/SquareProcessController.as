@@ -2,11 +2,14 @@ package cc.milkshape.grid.process
 {
 	import cc.milkshape.gateway.GatewayController;
 	import cc.milkshape.grid.process.events.SquareProcessEvent;
+	import cc.milkshape.grid.GridModel;
 
 	public class SquareProcessController extends GatewayController
 	{
-		public function SquareProcessController()
+		private var _gridModel:GridModel;
+		public function SquareProcessController(gridModel:GridModel)
 		{
+			_gridModel = gridModel;
 		}
 		
 		public function book():void

@@ -1,5 +1,7 @@
 package cc.milkshape.main
 {
+	import cc.milkshape.main.buttons.*;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 

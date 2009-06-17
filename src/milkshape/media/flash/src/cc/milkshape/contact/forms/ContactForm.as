@@ -2,7 +2,7 @@ package cc.milkshape.contact.forms
 {
 	import cc.milkshape.user.forms.Input;
 	import cc.milkshape.user.forms.Textarea;
-	import cc.milkshape.utils.SmallButton;
+	import cc.milkshape.utils.buttons.SmallButton;
 	
 	import flash.events.MouseEvent;
 	import cc.milkshape.contact.ContactController;

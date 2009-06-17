@@ -1,31 +1,31 @@
-package cc.milkshape.main
+package cc.milkshape.utils.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextFieldAutoSize;
 	
-	public class MenuButton extends MenuButtonClp
+	public class SmallButton extends SmallButtonClp
 	{
 		private var _overStatut:Boolean;
-		private var _clickStatut:Boolean;
-		private var _slug:String;
+		private var _itemClp:*;
 		
-		public function MenuButton(labelText:String, slug:String)
+		public function SmallButton(labelText:String, itemClp:*)
 		{
-			_slug = slug;
+			_itemClp = itemClp;
+			item.addChild(_itemClp);
 			
 			buttonMode = true;
 			stop();
+			_itemClp.stop();
 			_overStatut = false;
-			_clickStatut = false;
 			
 			addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
 			addEventListener(MouseEvent.CLICK, _clickHandler);
 			
-			txtClp.label.autoSize = TextFieldAutoSize.LEFT;
-			txtClp.label.text = labelText;
-			txtClp.over.width = Math.round(txtClp.label.width);		
+			label.autoSize = TextFieldAutoSize.LEFT;
+			label.text = labelText;
+			over.width = bg.shape.width = Math.round(label.width) + 22;			
 		}
 		
 		private function _overHandler(e:MouseEvent):void
@@ -48,8 +48,10 @@ package cc.milkshape.main
 		{
 			if (_overStatut) {
 				nextFrame();
+				_itemClp.nextFrame();
 			} else {
 				prevFrame();
+				_itemClp.prevFrame();
 			}
 			if (currentLabel == 'start' || currentLabel == 'end')
 			{
@@ -57,32 +59,9 @@ package cc.milkshape.main
 			}
 		}
 		
-		public function reinitClick():void
-		{
-			addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
-			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-			_outHandler(null);
-			_clickStatut = false;
-		}
-		
-		public function initClick():void
-		{
-			removeEventListener(MouseEvent.MOUSE_OVER, _overHandler);
-			removeEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-			_overHandler(null);
-			_clickStatut = true;
-		}
-
 		private function _clickHandler(e:MouseEvent):void
 		{
-			if(!_clickStatut)
-			{
-				dispatchEvent(new Event('CLICKED'));
-				removeEventListener(MouseEvent.MOUSE_OVER, _overHandler);
-				removeEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-				_clickStatut = true;
-			}
+			trace('go to ');
 		}
-
 	}
 }

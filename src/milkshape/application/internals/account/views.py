@@ -1,5 +1,3 @@
-import pyamf
-
 from pyamf.remoting.gateway.django import DjangoGateway
 
 from django.conf import settings
@@ -20,10 +18,10 @@ from account.forms import SignupForm, AddEmailForm, LoginForm, \
         ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
-try:
-    pyamf.register_class(User, 'cc.milkshape.gateway.vo.UserVO')
-except ValueError:
-    print "Classes already registered"
+def _logout(request):
+    from django.contrib.auth import logout
+    logout(request)
+    return True
 
 def _login(request, username=None, password=None, remember=None):
     if request.method == 'POST':
@@ -228,4 +226,5 @@ def invitations(request, template_name, confirmation_key, form_class=InvitationF
 
 accountGateway = DjangoGateway({
     'account.login': _login,
+    'account.logout': _logout,
 })
