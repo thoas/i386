@@ -65,7 +65,6 @@ package
 			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, mouseController.stageDoubleClickHandler);
 			
 			_squareProcess = new SquareProcess(_gridModel);
-			_squareProcess.alpha = 0;
 			
 			addChild(_bg);
 			addChild(_gridView);
