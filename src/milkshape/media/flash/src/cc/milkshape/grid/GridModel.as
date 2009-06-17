@@ -156,7 +156,7 @@ package cc.milkshape.grid
 			{
 				var squareObject:*;
 				// si status = false et pas de background alors c'est une booked
-				if(square.status || square.background_image != null){
+				if(square.status || square.background_image != null && square.status){
 					squareObject = new SquareFull(square.pos_x + minX, square.pos_y + minY, square.background_image_path, squareSize);
 					squareObject.layers = square.layers;
 					squareObject.neighbors = square.neighbors_keys;
@@ -165,7 +165,7 @@ package cc.milkshape.grid
 				}
 				_addPosition(squareObject);
 			}
-
+			/*
 			if(showDisableSquare)
 			{
 				for(i = 0 ; i < nbVSquare ; ++i)
@@ -178,7 +178,7 @@ package cc.milkshape.grid
 						}
 					}
 				}
-			}
+			}*/
 			
 			dispatchEvent(new GridEvent(GridEvent.READY));
 		}

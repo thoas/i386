@@ -28,6 +28,11 @@ package cc.milkshape.user.forms
 			
 			gotoAndStop('focus');
 		}
+		
+		public function get text():String
+		{
+			return label.text;
+		}
 	
 		private function _blurHandler(e:FocusEvent):void
 		{

@@ -1,36 +1,18 @@
 package
-{
-	import cc.milkshape.user.forms.Input;
-	import cc.milkshape.user.forms.Textarea;
-	import cc.milkshape.utils.BigButton;
-	import cc.milkshape.utils.SmallButton;
+{	
+	import cc.milkshape.contact.ContactController;
+	import cc.milkshape.contact.forms.ContactForm;
 	
 	import flash.display.MovieClip;
 
 	public class Contact extends MovieClip
 	{
-		private var _author:Input;
-		private var _email:Input;
-		private var _subject:Input;
-		private var _content:Textarea;
-		private var _submit:SmallButton;
-		
+		private var _contactController:ContactController;
 		public function Contact()
 		{
-			_author = new Input('Name');
-			_email = new Input('Email');
-			_subject = new Input('Subject');
-			_content = new Textarea('Message');
-			_submit = new SmallButton('SEND', new PlusItem());
-			
-			var contactClp:ContactClp = new ContactClp();
-			contactClp.author.addChild(_author);
-			contactClp.email.addChild(_email);
-			contactClp.subject.addChild(_subject);
-			contactClp.content.addChild(_content);
-			contactClp.submit.addChild(_submit);
-			
-			addChild(contactClp);
+			_contactController = new ContactController();
+			var contactView:ContactForm = new ContactForm(_contactController);
+			addChild(contactView);
 		}
 	}
 }
