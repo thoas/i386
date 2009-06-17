@@ -9,7 +9,7 @@
     <div id="basic-form">
     <fieldset>
         <legend>{% trans "Fill position" %} ({{ square.pos_x }}, {{ square.pos_y }})</legend>
-            <form class="signupform" id="fill_form" method="post" action="{% url square action="fill" pos_x=square.pos_x pos_y=square.pos_y issue_slug=issue.slug %}" enctype="multipart/form-data">
+            <form class="signupform" id="fill_form" method="post" action="{% url square_fill pos_x=square.pos_x pos_y=square.pos_y issue_slug=issue.slug %}" enctype="multipart/form-data">
                 <table width="300px">
                     {{ form.as_table }}
                     <tr>

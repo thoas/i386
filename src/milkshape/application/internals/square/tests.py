@@ -67,6 +67,6 @@ class SquareTestCase(unittest.TestCase):
             print '|   |   |-- filled'
         else:
             assert '|   |   |-- FAIL'
-        
+    
     def testKeepDatabase(self):
         shutil.copy(settings.TEST_DATABASE_NAME, join(settings.PROJECT_ROOT, 'test_%s.db' % datetime.now().strftime('%Y-%m-%d--%H-%M-%S')))
