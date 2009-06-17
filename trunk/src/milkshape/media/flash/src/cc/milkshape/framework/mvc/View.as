@@ -1,4 +1,4 @@
-package cc.milkshape.framework
+package cc.milkshape.framework.mvc
 {
 	import flash.display.Sprite;
 	

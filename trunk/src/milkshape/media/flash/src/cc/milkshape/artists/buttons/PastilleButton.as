@@ -1,11 +1,11 @@
-package cc.milkshape.artists
+package cc.milkshape.artists.buttons
 {
 	import fl.data.DataProvider;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class PastilleBtn extends PastilleBtnClp
+	public class PastilleButton extends PastilleBtnClp
 	{
 		private var _overStatut:Boolean;
 		private var _clickStatut:Boolean;
@@ -13,7 +13,7 @@ package cc.milkshape.artists
 		private var _listArtists:Array;
 		private var _artists:DataProvider;
 		
-		public function PastilleBtn(str:String, array:Array)
+		public function PastilleButton(str:String, array:Array)
 		{
 			_artists = new DataProvider(array);
 			_listArtists = array;

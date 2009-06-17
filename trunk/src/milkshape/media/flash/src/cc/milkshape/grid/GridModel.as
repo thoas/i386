@@ -1,6 +1,6 @@
 package cc.milkshape.grid
 {
-	import cc.milkshape.framework.Model;
+	import cc.milkshape.framework.mvc.Model;
 	import cc.milkshape.grid.events.GridEvent;
 	import cc.milkshape.grid.events.GridFocusEvent;
 	import cc.milkshape.grid.events.GridLineEvent;

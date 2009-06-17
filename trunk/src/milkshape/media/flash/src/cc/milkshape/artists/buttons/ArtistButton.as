@@ -1,15 +1,16 @@
-package cc.milkshape.artists
+package cc.milkshape.artists.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class ArtistBtn extends ArtistBtnClp
+
+	public class ArtistButton extends ArtistBtnClp
 	{
 		private var _overStatut:Boolean;
-		private var _issueBtn:IssueBtn;
-		private var _siteBtn:SiteBtn;
+		private var _issueBtn:IssueButton;
+		private var _siteBtn:SiteButton;
 		
-		public function ArtistBtn(artistName:String)
+		public function ArtistButton(artistName:String)
 		{
 			buttonMode = true;
 			_overStatut = false;
@@ -21,8 +22,8 @@ package cc.milkshape.artists
 			addEventListener(MouseEvent.CLICK, _clickHandler);
 			textClp.label.text = artistName;
 			
-			_issueBtn = new IssueBtn();
-			_siteBtn = new SiteBtn();
+			_issueBtn = new IssueButton();
+			_siteBtn = new SiteButton();
 			issue.addChild(_issueBtn);
 			site.addChild(_siteBtn);
 			

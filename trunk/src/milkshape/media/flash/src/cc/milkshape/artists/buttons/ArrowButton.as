@@ -1,17 +1,16 @@
-package cc.milkshape.artists
+package cc.milkshape.artists.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class IssueBtn extends IssueBtnClp
+	public class ArrowButton extends ArrowBtnClp
 	{
-		public function IssueBtn()
+		public function ArrowButton()
 		{
 			buttonMode = true;
 			stop();
 			
 			addEventListener(MouseEvent.ROLL_OVER, _overHandler);
-			addEventListener(MouseEvent.CLICK, _clickHandler);
 		}
 		
 		private function _overHandler(e:MouseEvent):void
@@ -31,11 +30,6 @@ package cc.milkshape.artists
 			{
 				removeEventListener(Event.ENTER_FRAME, _enterFrame);
 			}
-		}
-		
-		private function _clickHandler(e:MouseEvent):void
-		{
-			
 		}
 
 	}

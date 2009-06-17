@@ -8,12 +8,8 @@ package
 	import cc.milkshape.grid.GridView;
 	import cc.milkshape.grid.events.GridLineEvent;
 	import cc.milkshape.grid.process.SquareProcess;
-	import cc.milkshape.grid.square.events.SquareFormEvent;
+
 	import cc.milkshape.preloader.events.PreloaderEvent;
-	
-	import com.gskinner.motion.GTween;
-	
-	import fl.motion.easing.Sine;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -57,9 +53,6 @@ package
 		{
 			loaderInfo.sharedEvents.removeEventListener(PreloaderEvent.INFO, _handlerInit);
 			
-			_squareProcess = new SquareProcess();
-			_squareProcess.alpha = 0;
-			
 			_debugger = new MonsterDebugger(this);
 			_gridModel = new GridModel(e.msg);
 			_gridController = new GridController(_gridModel);
@@ -67,13 +60,12 @@ package
 			var mouseController:GridMouseController = new GridMouseController(_gridModel);
 			_gridView = new GridView(_gridModel, _gridController, keyboardController, mouseController);
 			
-			_gridModel.addEventListener(SquareFormEvent.SHOW_OPEN, _showOpenForm);
-			_gridModel.addEventListener(SquareFormEvent.SHOW_BOOKED, _showBookedForm);
-			_gridModel.addEventListener(SquareFormEvent.CLOSE, _closeForm);		
-			
 			_bg = new GridBackground();
 			_bg.addEventListener(MouseEvent.CLICK, mouseController.stageClickHandler);
 			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, mouseController.stageDoubleClickHandler);
+			
+			_squareProcess = new SquareProcess(_gridModel);
+			_squareProcess.alpha = 0;
 			
 			addChild(_bg);
 			addChild(_gridView);
@@ -132,33 +124,6 @@ package
 			
 			_bg.removeEventListener(MouseEvent.CLICK, _gridView.mouseController.stageClickHandler);
 			_bg.removeEventListener(MouseEvent.DOUBLE_CLICK, _gridView.mouseController.stageDoubleClickHandler);
-		}
-		
-		private function _showOpenForm(e:SquareFormEvent):void
-		{
-			new GTween(
-				_squareProcess, 
-				0.1, {
-				alpha: 1 }, {
-				ease:Sine.easeOut}
-			);
-			
-			trace('show open');
-		}
-		
-		private function _showBookedForm(e:SquareFormEvent):void
-		{
-			trace('show booked');
-		}
-		
-		private function _closeForm(e:SquareFormEvent):void
-		{
-			new GTween(
-				_squareProcess, 
-				0.1, {
-				alpha: 0 }, {
-				ease:Sine.easeOut}
-			);
 		}
 	}
 }

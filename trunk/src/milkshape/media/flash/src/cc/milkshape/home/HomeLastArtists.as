@@ -1,6 +1,6 @@
 package cc.milkshape.home
 {
-	import cc.milkshape.utils.SmallButton;
+	import cc.milkshape.utils.buttons.SmallButton;
 	
 	public class HomeLastArtists extends HomeLastArtistsClp
 	{

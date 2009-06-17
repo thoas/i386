@@ -1,6 +1,6 @@
 package cc.milkshape.gateway
 {
-	import cc.milkshape.framework.Controller;
+	import cc.milkshape.framework.mvc.Controller;
 	
 	import flash.events.NetStatusEvent;
 	import flash.net.NetConnection;

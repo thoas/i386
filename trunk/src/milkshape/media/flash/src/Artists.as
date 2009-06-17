@@ -1,8 +1,8 @@
 package
 {
-	import cc.milkshape.artists.*;
+	import cc.milkshape.artists.buttons.*;
 	import cc.milkshape.utils.Calcul;
-	import cc.milkshape.utils.SmallButton;
+	import cc.milkshape.utils.buttons.SmallButton;
 	
 	import com.gskinner.motion.GTween;
 	
@@ -17,18 +17,18 @@ package
 
 	public class Artists extends MovieClip
 	{
-		private var _all:PastilleBtn;
+		private var _all:PastilleButton;
 		private var _maxArtists:int;
 		private var _artistsClp:ArtistsClp;
 		private var _listArtistsContainer:Array;
 		private var _listIssuesContainer:Array;
-		private var _lastPastilleBtnClicked:PastilleBtn;
+		private var _lastPastilleBtnClicked:PastilleButton;
 		private var _az:SmallButton;
 		private var _date:SmallButton;
-		private var _arrowRight:ArrowBtn;
-		private var _arrowLeft:ArrowBtn;
-		private var _arrowRightIssue:ArrowBtn;
-		private var _arrowLeftIssue:ArrowBtn;
+		private var _arrowRight:ArrowButton;
+		private var _arrowLeft:ArrowButton;
+		private var _arrowRightIssue:ArrowButton;
+		private var _arrowLeftIssue:ArrowButton;
 		private var _nbArtistsContainer:int;
 		private var _nbIssuesContainer:int;
 		private var _countArtistsContainer:int;
@@ -200,7 +200,7 @@ package
 				
 			for(var i:int = 0; i < _nbIssuesContainer; i++)			
 			{
-				var pastille:PastilleBtn = new PastilleBtn('#' + o.issues[i].num, o.issues[i].artists);
+				var pastille:PastilleButton = new PastilleButton('#' + o.issues[i].num, o.issues[i].artists);
 				pastille.addEventListener('CLICKED', _clickPastilleHandler);
 				pastille.x = 800;
 				new GTween(pastille, 0.5, { x: i * 62 }, { ease:Cubic.easeInOut, delay: i > 0 ? i * 0.1 : 0 });				
@@ -208,7 +208,7 @@ package
 				_listIssuesContainer.push(pastille);
 			}
 			
-			_all = new PastilleBtn('All', _getAllArtists(o.issues));
+			_all = new PastilleButton('All', _getAllArtists(o.issues));
 			_all.initClick();
 			_all.addEventListener('CLICKED', _clickPastilleHandler);
 			_lastPastilleBtnClicked = _all;
@@ -233,10 +233,10 @@ package
 		
 		private function _createArrows():void
 		{
-			_arrowRight = new ArrowBtn();
-		 	_arrowLeft = new ArrowBtn();
-			_arrowRightIssue = new ArrowBtn();
-			_arrowLeftIssue = new ArrowBtn();
+			_arrowRight = new ArrowButton();
+		 	_arrowLeft = new ArrowButton();
+			_arrowRightIssue = new ArrowButton();
+			_arrowLeftIssue = new ArrowButton();
 			
 			_inversePosition(_arrowLeft);
 			_inversePosition(_arrowLeftIssue);
@@ -373,7 +373,7 @@ package
 			_initArrows();
 			_removeArtistsContainer();
 			_lastPastilleBtnClicked.reinitClick();
-			_lastPastilleBtnClicked = e.currentTarget as PastilleBtn;
+			_lastPastilleBtnClicked = e.currentTarget as PastilleButton;
 			_createArtistsContainer();
 		}
 		
@@ -432,7 +432,7 @@ package
 			var j:int = 0;
 			for each(var artist:Object in listArtists)
 			{
-				var artistBtn:ArtistBtn = new ArtistBtn(artist.name);
+				var artistBtn:ArtistButton = new ArtistButton(artist.name);
 				artistBtn.y = 400;
 				artistBtn.x = cc.milkshape.utils.Calcul.randRange(-800, 800);
 				new GTween(artistBtn, 0.2, { y: decalY, x: 0 }, { ease:Cubic.easeInOut, delay: i > 0 ? i * 0.04 : 0 });
