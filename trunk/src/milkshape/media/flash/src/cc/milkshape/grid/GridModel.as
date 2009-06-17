@@ -165,6 +165,11 @@ package cc.milkshape.grid
 				}
 				_addPosition(squareObject);
 			}
+			
+			for each(square in squaresOpen)
+			{
+				_addPosition(new SquareOpen(square.pos_x + minX, square.pos_y + minY, squareSize));
+			}
 			/*
 			if(showDisableSquare)
 			{
