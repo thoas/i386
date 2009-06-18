@@ -1,12 +1,15 @@
 package cc.milkshape.grid.process
 {
-	import cc.milkshape.utils.buttons.BigButton;
-	import cc.milkshape.grid.process.events.SquareProcessEvent;
 	import cc.milkshape.grid.GridModel;
-	import flash.events.MouseEvent;
-	import com.gskinner.motion.GTween;
-	import fl.motion.easing.Sine;
+	import cc.milkshape.grid.process.events.SquareProcessEvent;
 	import cc.milkshape.grid.square.events.SquareFormEvent;
+	import cc.milkshape.utils.buttons.BigButton;
+	
+	import com.gskinner.motion.GTween;
+	
+	import fl.motion.easing.Sine;
+	
+	import flash.events.MouseEvent;
 
 	public class SquareProcessView extends SquareProcessClp
 	{
@@ -17,6 +20,7 @@ package cc.milkshape.grid.process
 		private var _releaseBtn:BigButton;
 		private var _fillBtn:BigButton;
 		private var _reloadBtn:BigButton;
+		private var _showFormTween:GTween;
 		
 		public function SquareProcessView(gridModel:GridModel, o:SquareProcessController)
 		{
@@ -106,7 +110,7 @@ package cc.milkshape.grid.process
 		
 		private function _showOpenForm(e:SquareFormEvent):void
 		{
-			new GTween(
+			_showFormTween = new GTween(
 				this, 
 				0.1, 
 				{ alpha: 1 }, 
@@ -123,7 +127,8 @@ package cc.milkshape.grid.process
 		
 		private function _closeForm(e:SquareFormEvent):void
 		{
-			new GTween(
+			_showFormTween.pause();
+			_showFormTween = new GTween(
 				this, 
 				0.1, 
 				{ alpha: 0 }, 
