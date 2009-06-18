@@ -301,7 +301,11 @@ class Square(AbstractSquare):
             self._template = Image.open(self.template_path())
             self._template.filename = self.template_name
         return self._template
-
+    
+    @property
+    def template_url(self):
+        return '%s/%s' % (self.issue.template_url(), self.template_name)
+    
     def template_path(self):
         return join(self.issue.template_path(), self.template_name)
 
