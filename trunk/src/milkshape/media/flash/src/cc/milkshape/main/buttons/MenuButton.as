@@ -6,8 +6,8 @@ package cc.milkshape.main.buttons
 	
 	public class MenuButton extends MenuButtonClp
 	{
-		private var _overStatut:Boolean;
-		private var _clickStatut:Boolean;
+		private var _overStatus:Boolean;
+		private var _clickStatus:Boolean;
 		private var _option:Object;
 		
 		public function MenuButton(labelText:String, option:Object)
@@ -16,8 +16,8 @@ package cc.milkshape.main.buttons
 			
 			buttonMode = true;
 			stop();
-			_overStatut = false;
-			_clickStatut = false;
+			_overStatus = false;
+			_clickStatus = false;
 			
 			addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
@@ -40,7 +40,7 @@ package cc.milkshape.main.buttons
 
 		private function _overHandler(e:MouseEvent):void
 		{
-			_overStatut = true;
+			_overStatus = true;
 			
 			if (!hasEventListener(Event.ENTER_FRAME))
 				addEventListener(Event.ENTER_FRAME, _enterFrame);
@@ -48,7 +48,7 @@ package cc.milkshape.main.buttons
 		
 		private function _outHandler(e:MouseEvent):void
 		{
-			_overStatut = false;
+			_overStatus = false;
 			
 			if (!hasEventListener(Event.ENTER_FRAME))
 				addEventListener(Event.ENTER_FRAME, _enterFrame);
@@ -56,7 +56,7 @@ package cc.milkshape.main.buttons
 		
 		private function _enterFrame(e:Event):void
 		{
-			if (_overStatut) {
+			if (_overStatus) {
 				nextFrame();
 			} else {
 				prevFrame();
@@ -72,7 +72,7 @@ package cc.milkshape.main.buttons
 			addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
 			_outHandler(null);
-			_clickStatut = false;
+			_clickStatus = false;
 		}
 		
 		public function initClick():void
@@ -80,17 +80,17 @@ package cc.milkshape.main.buttons
 			removeEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			removeEventListener(MouseEvent.MOUSE_OUT, _outHandler);
 			_overHandler(null);
-			_clickStatut = true;
+			_clickStatus = true;
 		}
 
 		private function _clickHandler(e:MouseEvent):void
 		{
-			if(!_clickStatut)
+			if(!_clickStatus)
 			{
 				dispatchEvent(new Event('CLICKED'));
 				removeEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 				removeEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-				_clickStatut = true;
+				_clickStatus = true;
 			}
 		}
 	}
