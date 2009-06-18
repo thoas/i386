@@ -19,7 +19,7 @@ package cc.milkshape.main
             
             for(var i:int = 0; i < array.length; i++)
             {
-            	var menuButton:MenuButton = new MenuButton(array[i].label, array[i].slug);
+            	var menuButton:MenuButton = new MenuButton(array[i].label, array[i]);
 				menuButton.x = _deplaceX;
 				_deplaceX += menuButton.width + 20;            	
             	addChild(menuButton);
@@ -46,7 +46,7 @@ package cc.milkshape.main
 		{
 			_lastBtnClicked.reinitClick();
 			_lastBtnClicked = e.currentTarget as MenuButton;
-			dispatchEvent(new PreloaderEvent(PreloaderEvent.LOAD, _lastBtnClicked.slug));
+			dispatchEvent(new PreloaderEvent(PreloaderEvent.LOAD, {url: _lastBtnClicked.option.url, background: _lastBtnClicked.option.background}));
 		}
 		
 	}

@@ -6,22 +6,22 @@ package cc.milkshape.preloader.events
 	{
 		public static const INFO:String = 'INFO';
 		public static const LOAD:String = 'LOAD';
-		private var _msg:String;
+		private var _option:Object;
 		
-		public function get msg():String
+		public function get option():Object
 		{
-			return _msg;
+			return _option;
 		}
 
-		public function set msg(v:String):void
+		public function set option(v:Object):void
 		{
-			_msg = v;
+			_option = v;
 		}
 
-		public function PreloaderEvent(eventType:String, msg:String):void
+		public function PreloaderEvent(eventType:String, option:Object):void
 		{
 			super(eventType);
-			_msg = msg;
+			_option = option;
 		}
 	}
 }

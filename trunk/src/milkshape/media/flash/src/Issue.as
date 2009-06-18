@@ -8,7 +8,6 @@ package
 	import cc.milkshape.grid.GridView;
 	import cc.milkshape.grid.events.GridLineEvent;
 	import cc.milkshape.grid.process.SquareProcess;
-
 	import cc.milkshape.preloader.events.PreloaderEvent;
 	
 	import flash.display.Sprite;
@@ -41,7 +40,7 @@ package
 		{
 			stage.stageFocusRect = false;
 			//loaderInfo.sharedEvents.addEventListener(PreloaderEvent.INFO, _handlerInit);
-			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, '5x5'));
+			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, {slug: '5x5'}));
 		}
 		
 		private function _handlerRemovedToStage(e:Event):void
@@ -49,12 +48,12 @@ package
 			
 		}
 		
-		private function _handlerInit(e:PreloaderEvent = null):void
+		private function _handlerInit(e:PreloaderEvent):void
 		{
 			loaderInfo.sharedEvents.removeEventListener(PreloaderEvent.INFO, _handlerInit);
 			
 			_debugger = new MonsterDebugger(this);
-			_gridModel = new GridModel(e.msg);
+			_gridModel = new GridModel(e.option.slug);
 			_gridController = new GridController(_gridModel);
 			var keyboardController:GridKeyboardController = new GridKeyboardController(_gridModel);
 			var mouseController:GridMouseController = new GridMouseController(_gridModel);

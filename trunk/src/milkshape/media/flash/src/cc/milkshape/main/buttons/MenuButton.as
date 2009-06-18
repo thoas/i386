@@ -8,11 +8,11 @@ package cc.milkshape.main.buttons
 	{
 		private var _overStatut:Boolean;
 		private var _clickStatut:Boolean;
-		private var _slug:String;
+		private var _option:Object;
 		
-		public function MenuButton(labelText:String, slug:String)
+		public function MenuButton(labelText:String, option:Object)
 		{
-			_slug = slug;
+			_option = option;
 			
 			buttonMode = true;
 			stop();
@@ -28,6 +28,16 @@ package cc.milkshape.main.buttons
 			txtClp.over.width = Math.round(txtClp.label.width);		
 		}
 		
+		public function get option():Object
+		{
+			return _option;
+		}
+
+		public function set option(v:Object):void
+		{
+			_option = v;
+		}
+
 		private function _overHandler(e:MouseEvent):void
 		{
 			_overStatut = true;
@@ -83,16 +93,5 @@ package cc.milkshape.main.buttons
 				_clickStatut = true;
 			}
 		}
-
-		public function get slug():String
-		{
-			return _slug;
-		}
-
-		public function set slug(v:String):void
-		{
-			_slug = v;
-		}
-
 	}
 }
