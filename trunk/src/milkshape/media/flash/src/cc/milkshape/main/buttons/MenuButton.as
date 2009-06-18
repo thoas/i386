@@ -84,5 +84,15 @@ package cc.milkshape.main.buttons
 			}
 		}
 
+		public function get slug():String
+		{
+			return _slug;
+		}
+
+		public function set slug(v:String):void
+		{
+			_slug = v;
+		}
+
 	}
 }

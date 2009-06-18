@@ -2,8 +2,8 @@
 {
 	import cc.milkshape.home.*;
 	import cc.milkshape.preloader.PreloaderWiper;
-	import cc.milkshape.utils.SmallButton;
-	import cc.milkshape.utils.BigButton;
+	import cc.milkshape.utils.buttons.BigButton;
+	import cc.milkshape.utils.buttons.SmallButton;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -84,7 +84,7 @@
 		}
 		
 		private function _handlerResize(e:Event):void
-		{			
+		{
 			_mask.graphics.clear();
 			_mask.graphics.beginFill(0x000000);
 			_mask.graphics.drawRect(0, 0, stage.stageWidth, Math.round(stage.stageHeight/2));

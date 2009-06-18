@@ -1,4 +1,4 @@
-package cc.milkshape.issues
+package cc.milkshape.issue
 {
 	import cc.milkshape.preloader.PreloaderWiper;
 	
@@ -6,31 +6,24 @@ package cc.milkshape.issues
 
 	public class IssuePreview extends IssuePreviewClp
 	{
-		private var _contentClp:IssuePreviewContentClp;
-		
-		public function IssuePreview(issue:Object = null)
+		public function IssuePreview(issue:Object)
 		{
-			if(issue)
-			{
-				addEventListener(MouseEvent.ROLL_OVER, _overHandler);
-				addEventListener(MouseEvent.ROLL_OUT, _outHandler);
-				over.alpha = 0.7;
-				buttonMode = true;
-				_contentClp = new IssuePreviewContentClp();
-				_contentClp.pastilleClp.stop();
-				_contentClp.titleClp.descLabel.text = issue.desc;
-				_contentClp.titleClp.titleLabel.text = issue.title;
-				_contentClp.infoClp.creatorsLabel.text = issue.nbCreators + ' CREATORS';
-				_contentClp.infoClp.squaresLabel.text = issue.nbIssues + ' SQUARES';
-				_contentClp.scheduleClp.scheduleLabel.text = issue.schedule;
-				_contentClp.pastilleClp.textClp.label.text = '#' + issue.num;
+			addEventListener(MouseEvent.ROLL_OVER, _overHandler);
+			addEventListener(MouseEvent.ROLL_OUT, _outHandler);
+			over.alpha = 0.7;
+			buttonMode = true;
+			pastilleClp.stop();
+			titleClp.descLabel.text = issue.desc;
+			titleClp.titleLabel.text = issue.title;
+			infoClp.creatorsLabel.text = issue.nbCreators + ' CREATORS';
+			infoClp.squaresLabel.text = issue.nbIssues + ' SQUARES';
+			scheduleClp.scheduleLabel.text = issue.schedule;
+			pastilleClp.textClp.label.text = '#' + issue.num;
 				
-				var img:PreloaderWiper = new PreloaderWiper();
-				img.loadMedia(issue.url);
-				
-				_contentClp.loaderClp.addChild(img); 
-				content.addChild(_contentClp);
-			}	
+			var img:PreloaderWiper = new PreloaderWiper();
+			img.loadMedia(issue.url);
+			
+			loaderClp.addChild(img);
 		}
 		
 		private function _overHandler(e:MouseEvent):void
