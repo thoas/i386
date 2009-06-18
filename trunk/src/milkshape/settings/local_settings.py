@@ -3,7 +3,7 @@
 from os.path import dirname, abspath
 
 SITE_ID = 1
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 EMAIL_DEBUG = DEBUG
 
