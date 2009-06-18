@@ -1,6 +1,7 @@
 package cc.milkshape.main
 {
 	import cc.milkshape.main.buttons.*;
+	import cc.milkshape.preloader.events.PreloaderEvent;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -45,6 +46,7 @@ package cc.milkshape.main
 		{
 			_lastBtnClicked.reinitClick();
 			_lastBtnClicked = e.currentTarget as MenuButton;
+			dispatchEvent(new PreloaderEvent(PreloaderEvent.LOAD, _lastBtnClicked.slug));
 		}
 		
 	}

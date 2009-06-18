@@ -20,6 +20,7 @@ package cc.milkshape.grid.process
 		
 		public function SquareProcessView(gridModel:GridModel, o:SquareProcessController)
 		{
+			alpha = 0;
 			_squareProcessController = o;
 			_gridModel = gridModel;
 			

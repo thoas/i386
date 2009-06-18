@@ -5,6 +5,7 @@ package cc.milkshape.preloader.events
 	public class PreloaderEvent extends Event
 	{
 		public static const INFO:String = 'INFO';
+		public static const LOAD:String = 'LOAD';
 		private var _msg:String;
 		
 		public function get msg():String
