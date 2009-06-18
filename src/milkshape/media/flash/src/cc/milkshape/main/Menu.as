@@ -8,14 +8,15 @@ package cc.milkshape.main
 
 	public class Menu extends Sprite
 	{
+		private const DEFAULT_MENU:String = 'home';
 		private var _deplaceX:int;
-		private var _listMenuItem:Array;
+		private var _listMenuItem:Object;
 		private var _lastBtnClicked:MenuButton;
 		
 		public function Menu(array:Array)
 		{
 			_deplaceX = 0;
-			_listMenuItem = new Array();
+			_listMenuItem = new Object();
             
             for(var i:int = 0; i < array.length; i++)
             {
@@ -26,7 +27,7 @@ package cc.milkshape.main
             	
             	menuButton.addEventListener('CLICKED', _clickHandler);
             	
-            	_listMenuItem.push(menuButton);
+            	_listMenuItem[array[i].label] = menuButton;
             	
             	if(i != array.length - 1)// si on est pas au dernier item, on affiche une separation
             	{
@@ -38,15 +39,20 @@ package cc.milkshape.main
             	}
             }
             
-            _listMenuItem[0].initClick();
-            _lastBtnClicked = _listMenuItem[0];
+            _lastBtnClicked = _listMenuItem[DEFAULT_MENU];
+            _lastBtnClicked.initClick();
+		}
+		
+		public function getMenuButton(label:String):MenuButton
+		{
+			return _listMenuItem[label];
 		}
 		
 		private function _clickHandler(e:Event):void
 		{
 			_lastBtnClicked.reinitClick();
 			_lastBtnClicked = e.currentTarget as MenuButton;
-			dispatchEvent(new PreloaderEvent(PreloaderEvent.LOAD, {url: _lastBtnClicked.option.url, background: _lastBtnClicked.option.background}));
+			dispatchEvent(new PreloaderEvent(PreloaderEvent.LOAD, _lastBtnClicked.option));
 		}
 		
 	}

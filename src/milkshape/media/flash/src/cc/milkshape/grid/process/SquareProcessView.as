@@ -110,7 +110,7 @@ package cc.milkshape.grid.process
 				this, 
 				0.1, 
 				{ alpha: 1 }, 
-				{ ease:Sine.easeOut }
+				{ ease: Sine.easeOut, delay: 1 }
 			);
 			
 			trace('show open');
@@ -127,7 +127,7 @@ package cc.milkshape.grid.process
 				this, 
 				0.1, 
 				{ alpha: 0 }, 
-				{ ease:Sine.easeOut }
+				{ ease: Sine.easeOut }
 			);
 		}
 	}
