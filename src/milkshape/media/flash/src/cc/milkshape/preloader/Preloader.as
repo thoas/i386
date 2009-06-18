@@ -1,6 +1,7 @@
 package cc.milkshape.preloader
 {
 	import cc.milkshape.preloader.events.PreloaderEvent;
+	
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -20,6 +21,11 @@ package cc.milkshape.preloader
 		public function Preloader()
 		{
 			_loader = new Loader();
+			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
+		}
+		
+		private function _handlerAddedToStage(e:Event):void
+		{
 			_loader.contentLoaderInfo.addEventListener(Event.OPEN, _openHandler);
 			_loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, _progressHandler);
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, _completeHandler);

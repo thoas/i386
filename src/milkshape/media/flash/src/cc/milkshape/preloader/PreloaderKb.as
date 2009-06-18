@@ -26,8 +26,8 @@ package cc.milkshape.preloader
             _label.text = "Milkshape";
             _label.embedFonts = true;
             
-            _label.x = stage.stageWidth / 2;
-            _label.y = stage.stageHeight / 2;
+            //_label.x = stage.stageWidth / 2;
+            //_label.y = stage.stageHeight / 2;
             
             addChild(_label);
 		}
