@@ -6,6 +6,8 @@ package cc.milkshape.grid
 	import cc.milkshape.grid.square.*;
 	import cc.milkshape.grid.square.events.SquareEvent;
 	import cc.milkshape.manager.SoundManager;
+	
+	import nl.demonsters.debugger.MonsterDebugger;
 
 	public class GridController extends GatewayController
 	{
@@ -67,8 +69,6 @@ package cc.milkshape.grid
 		{
 			var squareFocus:* = _gridModel.focusSquare;
 			if(squareFocus is SquareFull){
-				//MonsterDebugger.trace(this, _gridModel.issue);
-				
 				var currentLayer:Object = squareFocus.layers[_gridModel.currentStep];
 					
 				_loader = new LayerLoader();

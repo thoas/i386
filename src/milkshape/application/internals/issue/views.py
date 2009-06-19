@@ -1,3 +1,5 @@
+import pyamf
+
 from pyamf.remoting.gateway.django import DjangoGateway
 
 from django.shortcuts import get_object_or_404
@@ -21,7 +23,7 @@ def _issue(request, slug):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
     squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
-    squares = Square.objects.select_related().filter(issue=issue)
+    squares = Square.objects.select_related('user', 'issue').filter(issue=issue)
 
     datas = {
         'issue': issue,

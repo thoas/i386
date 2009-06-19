@@ -156,14 +156,17 @@ package cc.milkshape.grid
 			{
 				var squareObject:*;
 				// si status = false et pas de background alors c'est une booked
-				if(square.status || (square.background_image != null && !square.status)){
-					squareObject = new SquareFull(square.pos_x + minX, square.pos_y + minY, square.background_image_path, squareSize);
-					squareObject.layers = square.layers;
-					squareObject.neighbors = square.neighbors_keys;
-				} else {
+				if(!square.status && square.user != null){
 					squareObject = new SquareBooked(square.pos_x + minX, square.pos_y + minY, squareSize);
+					_addPosition(squareObject);
+				} else {
+					if(square.user != null){
+						squareObject = new SquareFull(square.pos_x + minX, square.pos_y + minY, square.background_image_path, squareSize);
+						squareObject.layers = square.layers;
+						squareObject.neighbors = square.neighbors_keys;
+						_addPosition(squareObject);
+					}
 				}
-				_addPosition(squareObject);
 			}
 			
 			for each(square in squaresOpen)
