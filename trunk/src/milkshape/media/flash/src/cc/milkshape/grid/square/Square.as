@@ -20,7 +20,7 @@
 			_x = x;
 			_y = y;
 					
-			alpha = 0.8	
+			alpha = 0.6;	
 			//alpha = 0;
 			
 			graphics.beginFill(color);
@@ -34,6 +34,16 @@
 			SquareManager.add(this);
 		}
 		
+		public function get color():int
+		{
+			return _color;
+		}
+
+		public function set color(v:int):void
+		{
+			_color = v;
+		}
+
 		public function get Y():int
 		{
 			return _y;
@@ -56,14 +66,14 @@
 
 		private function _focusIn(e:Event):void
 		{
-			//alpha = 1;
+			alpha = 0.8;
 			dispatchEvent(new SquareEvent(SquareEvent.FOCUS, this));
 		}
 		
 		private function _focusOut(e:FocusEvent):void
 		{
-			// alpha = 0.8	
-			alpha = 0;
+			alpha = 0.6;	
+			//alpha = 0;
 		}
 		
 		private function _rollOver(e:MouseEvent):void

@@ -63,11 +63,11 @@ package
 			_bg.addEventListener(MouseEvent.CLICK, mouseController.stageClickHandler);
 			_bg.addEventListener(MouseEvent.DOUBLE_CLICK, mouseController.stageDoubleClickHandler);
 			
-			_squareProcess = new SquareProcess(_gridModel);
+			//_squareProcess = new SquareProcess(_gridModel);
 			
 			addChild(_bg);
 			addChild(_gridView);
-			addChild(_squareProcess);
+			//addChild(_squareProcess);
 			
 			_closeHandCursor = new ClosedHandCursor();
 			_openHandCursor = new OpenHandCursor();
