@@ -1,5 +1,3 @@
-from pyamf.remoting.gateway.django import DjangoGateway
-
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -22,6 +20,11 @@ def _logout(request):
     from django.contrib.auth import logout
     logout(request)
     return True
+
+def _is_authenticated(request):
+    if request.user.is_authenticated():
+        return request.user
+    return False
 
 def _login(request, username=None, password=None, remember=None):
     if request.method == 'POST':
@@ -223,8 +226,3 @@ def invitations(request, template_name, confirmation_key, form_class=InvitationF
         'unused_invitations': unused_invitations,
         'users_invited': users_invited,
     }, context_instance=RequestContext(request))
-
-accountGateway = DjangoGateway({
-    'account.login': _login,
-    'account.logout': _logout,
-})

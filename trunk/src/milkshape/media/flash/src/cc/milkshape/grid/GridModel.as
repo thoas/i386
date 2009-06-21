@@ -158,12 +158,14 @@ package cc.milkshape.grid
 				// si status = false et pas de background alors c'est une booked
 				if(!square.status && square.user != null){
 					squareObject = new SquareBooked(square.pos_x + minX, square.pos_y + minY, squareSize);
+					squareObject.user = square.user;
 					_addPosition(squareObject);
 				} else {
 					if(square.user != null){
 						squareObject = new SquareFull(square.pos_x + minX, square.pos_y + minY, square.background_image_path, squareSize);
 						squareObject.layers = square.layers;
 						squareObject.neighbors = square.neighbors_keys;
+						squareObject.user = square.user;
 						_addPosition(squareObject);
 					}
 				}
@@ -200,7 +202,7 @@ package cc.milkshape.grid
 				if(_isShowForm)
 				{
 					_isShowForm = false;
-					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE));
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE, focusSquare));
 				}
 				currentScale = futurScale;
 				dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, futurScale));
@@ -213,20 +215,21 @@ package cc.milkshape.grid
 			if(currentScale == maxScale)// Si on est au zoom maximal
 			{
 				var square:Square = focusSquare;
+				trace(square);
 				if(square is SquareOpen)
 				{
 					_isShowForm = true;
-					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_OPEN));
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_OPEN, square));
 				}
 				else if(square is SquareBooked)
 				{
 					_isShowForm = true;
-					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_BOOKED));
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_BOOKED, square));
 				}
 				else if(_isShowForm)
 				{
 					_isShowForm = false;
-					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE));
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE, square));
 				}
 			}
 				
@@ -292,7 +295,7 @@ package cc.milkshape.grid
 			return issue.nb_case_y; 
 		}
 		
-		public function get focusSquare():Square { 
+		public function get focusSquare():* { 
 			return SquareManager.get(_lstPosition[_focusY][_focusX]);
 		}
 		

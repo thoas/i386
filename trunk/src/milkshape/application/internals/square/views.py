@@ -1,7 +1,5 @@
 import logging
 
-from pyamf.remoting.gateway.django import DjangoGateway
-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.models import User
@@ -40,7 +38,7 @@ def _book(request, pos_x, pos_y, issue_slug):
             square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue,\
                         user=request.user, status=0)
         if not square.status:
-            SquareOpen.objects.neighbors_standby(square_open, 1)
+            SquareOpen.objects.neighbors_standby(square_open, True)
     except Exception, error:
         print error
         logging.error(error)
@@ -54,7 +52,7 @@ def _book(request, pos_x, pos_y, issue_slug):
 def book(request, pos_x, pos_y, issue_slug):
     result = _book(request, pos_x, pos_y, issue_slug)
     if result:
-        return _template(request, result.template())
+        return __template(request, result.template())
     return templates('templates.html')
 
 @login_required
@@ -62,7 +60,11 @@ def _release(request, pos_x, pos_y, issue_slug):
     square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
     square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug, status=0)
     SquareOpen.objects.neighbors_standby(square_open, False)
-    square.delete()
+    if square.background_image:
+        square.user = None
+        square.save()
+    else:
+        square.delete()
     return True
     
 @login_required
@@ -93,7 +95,7 @@ def fill(request, pos_x, pos_y, issue_slug):
                 square = form.save()
                 
                 # upload good, now allow book square open
-                SquareOpen.objects.neighbors_standby(square_open, 0)
+                SquareOpen.objects.neighbors_standby(square_open, False)
                 
                 # delete old square open
                 square_open.delete()
@@ -112,6 +114,44 @@ def fill(request, pos_x, pos_y, issue_slug):
         'form': form
     }, context_instance=RequestContext(request))
 
+@transaction.commit_manually
+def _fill(request, pos_x, pos_y, issue_slug, background_image):
+    issue = get_object_or_404(Issue, slug=issue_slug)
+    square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue=issue)
+
+    # http://groups.google.com/group/django-developers/browse_thread/thread/818c2ee766550426/e311d8fe6a04bb22
+    # no get_object_or_404 with select_related()
+    try:
+        square = Square.objects.select_related('user', 'issue').get(pos_x=pos_x,\
+                    pos_y=pos_y, user=request.user, issue=issue)
+    except Square.DoesNotExist:
+        return False
+
+    if request.method == 'POST':
+        square.status = 1
+        transaction.commit()
+        try:
+            dest = open(square.template_full_path(), 'wb+')
+            dest.write(background_image.getvalue())
+            dest.close()
+            
+            square.save()
+            
+            # upload good, now allow book square open
+            SquareOpen.objects.neighbors_standby(square_open, False)
+
+            # delete old square open
+            square_open.delete()
+        except Exception, error:
+            print error
+            logging.error(error)
+            transaction.rollback()
+        else:
+            transaction.commit()
+            return square
+    else:
+        return False
+
 @login_required
 def templates(request, template_name):
     return render_to_response(template_name, {
@@ -121,23 +161,20 @@ def templates(request, template_name):
 @login_required
 def template(request, pos_x, pos_y, issue_slug):
     square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
-    return _template(request, square.template())
+    return __template(request, square.template())
 
-def _template(request, template):
+@login_required
+def _template(request, pos_x, pos_y, issue_slug):
+    square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
+    return square.template_url
+
+def __template(request, template):
     buffer = Square.buffer(template)
     response = HttpResponse(mimetype=MIMETYPE_IMAGE)
     response['Content-Disposition'] = 'attachment; filename=%s' % template.filename
     response.write(buffer.getvalue())
     return response
 
-services = {
-    'square.book': _book,
-    'square.release': _release,
-    'square.template': template,
-}
-
-squareGateway = DjangoGateway(services)
-    
 #def square(request, action, pos_x, pos_y, issue_slug):
 #    logging.debug('x: %s - y: %s - issue: %s' % (pos_x, pos_y, issue_slug))
 #    issue = get_object_or_404(Issue, slug=issue_slug)

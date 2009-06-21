@@ -2,7 +2,8 @@ package cc.milkshape.user
 {
 	public class User
 	{
-		private var _attributes:Array;
+		private var _attributes:Object;
+		private var _authenticated:Boolean;
 		protected static var _instance:User = null;
  
 		public function User() {
@@ -11,11 +12,26 @@ package cc.milkshape.user
 			_attributes = new Array();
 			_instance = this;
 		}
- 
+		
 		static public function getInstance():User {
 			if(_instance == null)
 				new User();
 			return _instance;
+		}
+ 
+		public function get authenticated():Boolean
+		{
+			return _authenticated;
+		}
+
+		public function set authenticated(v:Boolean):void
+		{
+			_authenticated = v;
+		}
+		
+		public function isAuthenticated():Boolean
+		{
+			return _authenticated;
 		}
 
 		public function setAttribute(key:String, data:*):void
@@ -32,7 +48,8 @@ package cc.milkshape.user
 		
 		public function hasAttribute(key:String):Boolean
 		{
-			return _attributes.indexOf(key) != -1;
+			return _attributes[key] != null;
 		}
+		
 	}
 }

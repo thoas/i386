@@ -6,6 +6,7 @@ package cc.milkshape.user.events
 	{
 		public static const SUBMIT:String = 'SUBMIT';
 		public static const LOGGED:String = 'LOGGED';
+		public static const LOGOUT:String = 'LOGOUT';
 		private var _user:Object;
 		public function LoginEvent(type:String, user:Object)
 		{

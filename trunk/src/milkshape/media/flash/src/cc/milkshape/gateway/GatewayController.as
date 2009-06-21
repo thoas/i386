@@ -8,21 +8,15 @@ package cc.milkshape.gateway
 	import nl.demonsters.debugger.MonsterDebugger;
 	
 	import cc.milkshape.utils.Constance;
+	import cc.milkshape.gateway.Gateway;
 	
 	public class GatewayController extends Controller
 	{
-		protected var _gateway:NetConnection;
 		protected var _responder:Responder;
 		public function GatewayController()
 		{
-			_gateway = new NetConnection();
-			_gateway.addEventListener(NetStatusEvent.NET_STATUS, _netStatus)
+			Gateway.getInstance().addEventListener(NetStatusEvent.NET_STATUS, _netStatus)
 			_responder = new Responder(_onResult, _onFault);
-		}
-		
-		protected function _connect(URI:String):void
-		{
-			_gateway.connect(Constance.url(URI));
 		}
 		
 		protected function _netStatus(e:NetStatusEvent):void

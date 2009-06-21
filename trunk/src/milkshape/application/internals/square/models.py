@@ -6,9 +6,11 @@ from os.path import join, exists
 from PIL import Image
 from datetime import datetime
 
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -339,7 +341,7 @@ class Square(AbstractSquare):
     
     def layer_url(self, step):
         return '%s/%s' % (self.issue.layer_url(), self.layer_name(step))
-
+    
     @property 
     def background_image_thumb_url(self):
         return self.issue.upload_thumb_url() + '/' + self.background_image

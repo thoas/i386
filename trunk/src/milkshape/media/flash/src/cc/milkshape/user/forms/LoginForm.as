@@ -4,14 +4,12 @@ package cc.milkshape.user.forms
 	import cc.milkshape.manager.KeyboardManager;
 	import cc.milkshape.user.LoginController;
 	import cc.milkshape.user.events.LoginEvent;
+	import cc.milkshape.utils.Constance;
 	import cc.milkshape.utils.Label;
 	import cc.milkshape.utils.buttons.SmallButton;
-	import cc.milkshape.utils.Constance;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	
-	import nl.demonsters.debugger.MonsterDebugger;
 
 	public class LoginForm extends LoginClp implements Formable
 	{
@@ -31,7 +29,8 @@ package cc.milkshape.user.forms
 		{
 			_loginController = loginController;
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
-			_loginController.addEventListener(LoginEvent.LOGGED, _logged);			
+			_loginController.addEventListener(LoginEvent.LOGGED, _logged);	
+			_loginController.addEventListener(LoginEvent.LOGOUT, _disconnected);		
 		}
 		
 		private function _handlerAddedToStage(e:Event):void
@@ -65,7 +64,12 @@ package cc.milkshape.user.forms
 			connectBtn.tabIndex = 3;
 			
 			login.buttonMode = true;
-			login.addEventListener(MouseEvent.CLICK, _clickHandler);
+			login.addEventListener(MouseEvent.CLICK, _loginHandler);
+			
+			logout.buttonMode = true;
+			logout.addEventListener(MouseEvent.CLICK, _logoutHandler);
+			
+			_loginController.isAuthenticated();
 		} 
 		
 		private function _clickHandlerRegister(e:MouseEvent):void
@@ -89,7 +93,12 @@ package cc.milkshape.user.forms
 			}
 		}
 		
-		private function _clickHandler(e:MouseEvent):void
+		private function _logoutHandler(e:MouseEvent):void
+		{
+			_loginController.logout();
+		}
+		
+		private function _loginHandler(e:MouseEvent):void
 		{
 			stage.focus = _inputLogin.label;
 			KeyboardManager.enabled = false;
@@ -97,7 +106,8 @@ package cc.milkshape.user.forms
 			_connectBtn.addEventListener(MouseEvent.CLICK, _login);
         }
         
-        private function _logged(e:LoginEvent):void {
+        private function _logged(e:LoginEvent):void 
+        {
         	gotoAndPlay('logged');
         	var user:Object = e.user;
         	_hello.text = 'Hello ' + user.username + '!';
@@ -106,6 +116,11 @@ package cc.milkshape.user.forms
         private function _login(e:MouseEvent):void
         {
         	_loginController.login(_inputLogin.label.text, _inputPassword.label.text);
+        }
+        
+        private function _disconnected(e:LoginEvent):void
+        {
+        	gotoAndStop('button');
         }
 		
 		public function values():Object
