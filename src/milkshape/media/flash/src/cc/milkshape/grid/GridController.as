@@ -1,6 +1,7 @@
 package cc.milkshape.grid
 {
 	import cc.milkshape.gateway.GatewayController;
+	import cc.milkshape.gateway.Gateway;
 	import cc.milkshape.grid.layer.LayerLoader;
 	import cc.milkshape.grid.layer.events.LayerEvent;
 	import cc.milkshape.grid.square.*;
@@ -21,14 +22,12 @@ package cc.milkshape.grid
 			SoundManager.getInstance().addLibrarySound(SoundSquareFocus, "SoundSquareFocus");
 			//_soundSquareFocus = new SoundSquareFocus();
 			
-			_connect("issue/gateway/");
-
 			_gridModel = gridModel;
 		}
 		
 		public function getGridInfo():void
 		{
-			_gateway.call("issue.issue", _responder, _gridModel.issueSlug);
+			Gateway.getInstance().call("issue.issue", _responder, _gridModel.issueSlug);
 		}
 		
 		override protected function _onResult(result:Object):void {

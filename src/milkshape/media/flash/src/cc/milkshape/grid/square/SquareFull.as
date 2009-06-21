@@ -1,6 +1,6 @@
 package cc.milkshape.grid.square
 {	
-	public class SquareFull extends Square
+	public class SquareFull extends SquareOwned
 	{		
 		private var _layers:Object;
 		private var _neighbors:Object;

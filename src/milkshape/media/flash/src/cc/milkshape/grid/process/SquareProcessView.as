@@ -1,6 +1,7 @@
 package cc.milkshape.grid.process
 {
 	import cc.milkshape.grid.GridModel;
+	import cc.milkshape.user.User;
 	import cc.milkshape.grid.process.events.SquareProcessEvent;
 	import cc.milkshape.grid.square.events.SquareFormEvent;
 	import cc.milkshape.utils.buttons.BigButton;
@@ -110,30 +111,47 @@ package cc.milkshape.grid.process
 		
 		private function _showOpenForm(e:SquareFormEvent):void
 		{
-			_showFormTween = new GTween(
-				this, 
-				0.1, 
-				{ alpha: 1 }, 
-				{ ease: Sine.easeOut, delay: 1 }
-			);
-			
-			trace('show open');
+			if(User.getInstance().isAuthenticated() === true){
+				_showFormTween = new GTween(
+					this, 
+					0.1, 
+					{ alpha: 1 }, 
+					{ ease: Sine.easeOut, delay: 1 }
+				);
+				trace('show open');
+			}
 		}
 		
 		private function _showBookedForm(e:SquareFormEvent):void
 		{
-			trace('show booked');
+			if(User.getInstance().isAuthenticated() === true 
+				&& e.focusSquare.user.id == User.getInstance().getAttribute('account').id){
+				gotoAndPlay('booked');
+				_showFormTween = new GTween(
+					this, 
+					0.1, 
+					{ alpha: 1 }, 
+					{ ease: Sine.easeOut, delay: 1 }
+				);
+				trace('show booked');
+				
+				// Need a user action to download the template, 
+				// so we preload the template before the click on "download template"
+				_squareProcessController.loadTemplate();
+			}
 		}
 		
 		private function _closeForm(e:SquareFormEvent):void
 		{
-			_showFormTween.pause();
-			_showFormTween = new GTween(
-				this, 
-				0.1, 
-				{ alpha: 0 }, 
-				{ ease: Sine.easeOut }
-			);
+			if(_showFormTween is GTween){
+				_showFormTween.pause();
+				_showFormTween = new GTween(
+					this, 
+					0.1, 
+					{ alpha: 0 }, 
+					{ ease: Sine.easeOut }
+				);
+			}
 		}
 	}
 }

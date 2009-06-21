@@ -8,8 +8,11 @@ admin.autodiscover()
 
 import os
 
+from gateway import *
+
 urlpatterns = patterns('',
     #url(r'^$', direct_to_template, {'template': 'homepage.html'}, name='home'),
+    url(r'^gateway/$', gateway, name='gateway'),
     url(r'^home/$', direct_to_template, {'template': 'homepage.html'}, name='home'),
     (r'^about/', include('about.urls')),
     (r'^account/', include('account.urls')),

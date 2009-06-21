@@ -4,7 +4,6 @@ from django.conf import settings
 
 
 urlpatterns = patterns('issue.views',
-    url(r'^gateway/$', 'issueGateway', name='issue_gateway'),
     url(r'^issues.(?P<format>[\w]{3,4})$', 'issues', {'template_name': 'issues.html'}, name='issue_list'),
     url(r'^$', 'issues', {'format': settings.DEFAULT_FORMAT, 'template_name': 'issues.html'}, name='issue_list'),
     

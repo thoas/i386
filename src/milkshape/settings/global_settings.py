@@ -163,7 +163,7 @@ DEFAULT_INVITATION_LAST_NAME = 'Anonymous'
 DEFAULT_MIMETYPE = 'text/html'
 FORMAT_STRING = 'format'
 DEFAULT_FORMAT = 'html'
-ALLOWED_EXTENSIONS = ('image/jpeg', 'image/tif', 'application/octet-stream')
+ALLOWED_EXTENSIONS = ('image/jpeg', 'image/tiff', 'application/octet-stream')
 ALLOWED_FORMAT = {
     'json': 'applicaiton/json',
     'xml': 'applicaiton/xml',

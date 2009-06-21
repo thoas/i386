@@ -19,10 +19,6 @@ urlpatterns = patterns('account.views',
     url(r'^timezone/$', 'timezone_change', {'template_name': 'timezone_change.html'}, name='acct_timezone_change'),
     
     url(r'^language/$', 'language_change', {'template_name': 'language_change.html'}, name='acct_language_change'),
-    
-    #(r'^validate/$', 'ajax_validation.views.validate', {'form_class': SignupForm}, 'signup_form_validate'),
-    
-    url(r'^gateway/$', 'accountGateway', name='account_gateway'),
 )
 
 urlpatterns += patterns('',
