@@ -304,10 +304,6 @@ class Square(AbstractSquare):
             self._template.filename = self.template_name
         return self._template
     
-    @property
-    def template_url(self):
-        return '%s/%s' % (self.issue.template_url(), self.template_name)
-    
     def template_path(self):
         return join(self.issue.template_path(), self.template_name)
 
@@ -342,9 +338,13 @@ class Square(AbstractSquare):
     def layer_url(self, step):
         return '%s/%s' % (self.issue.layer_url(), self.layer_name(step))
     
+    @property
+    def template_url(self):
+        return '%s/%s' % (self.issue.template_url(), self.template_name)
+    
     @property 
     def background_image_thumb_url(self):
-        return self.issue.upload_thumb_url() + '/' + self.background_image
+        return '%s/%s' % (self.issue.upload_thumb_url(), self.background_image)
     
     @property
     def formatted_background_image(self):

@@ -26,7 +26,7 @@ def _issue(request, slug):
     # bad, but defer() (in django 1.1 beta) function raises an error in PyAMF
     for square in squares:
         if square.user:
-            square.user.password = None;
+            square.user.password = None
     
     datas = {
         'issue': issue,
