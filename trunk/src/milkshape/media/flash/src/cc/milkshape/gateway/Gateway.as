@@ -14,7 +14,7 @@ package cc.milkshape.gateway
 			_instance.connect(Constance.url("gateway/"));
 		}
 		
-		static public function getInstance():Gateway {
+		public static function getInstance():Gateway {
 			if(_instance == null)
 				new Gateway();
 			return _instance;
