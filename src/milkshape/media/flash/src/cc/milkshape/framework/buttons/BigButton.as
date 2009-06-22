@@ -1,15 +1,15 @@
-package cc.milkshape.utils.buttons
+package cc.milkshape.framework.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextFieldAutoSize;
 	
-	public class SmallButton extends SmallButtonClp
+	public class BigButton extends BigButtonClp
 	{
 		private var _overStatut:Boolean;
 		private var _itemClp:*;
 		
-		public function SmallButton(labelText:String, itemClp:*)
+		public function BigButton(labelText:String, itemClp:*)
 		{
 			_itemClp = itemClp;
 			item.addChild(_itemClp);
@@ -25,7 +25,7 @@ package cc.milkshape.utils.buttons
 			
 			label.autoSize = TextFieldAutoSize.LEFT;
 			label.text = labelText;
-			over.width = bg.shape.width = Math.round(label.width) + 22;			
+			over.width = bg.shape.width = Math.round(label.width) + 50;		
 		}
 		
 		private function _overHandler(e:MouseEvent):void

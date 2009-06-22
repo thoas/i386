@@ -1,8 +1,8 @@
 package
 {
 	import cc.milkshape.artists.buttons.*;
-	import cc.milkshape.utils.buttons.ArrowButton;
-	import cc.milkshape.utils.buttons.SmallButton;
+	import cc.milkshape.framework.buttons.ArrowButton;
+	import cc.milkshape.framework.buttons.SmallButton;
 	
 	import com.gskinner.motion.GTween;
 	

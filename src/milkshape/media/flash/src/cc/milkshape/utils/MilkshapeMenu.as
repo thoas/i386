@@ -10,7 +10,7 @@ package cc.milkshape.utils
 
 	public class MilkshapeMenu
 	{
-			private var _cm:ContextMenu;
+		private var _cm:ContextMenu;
 
 		public function MilkshapeMenu()
 		{

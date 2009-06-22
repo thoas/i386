@@ -2,6 +2,7 @@ package cc.milkshape.account.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import cc.milkshape.account.events.AccountMenuButtonEvent;
 	
 	public class AccountMenuButton extends AccountMenuBtnClp
 	{
@@ -69,7 +70,7 @@ package cc.milkshape.account.buttons
 		
 		private function _clickHandler(e:MouseEvent):void
 		{
-			dispatchEvent(new Event('CLICKED'));
+			dispatchEvent(new AccountMenuButtonEvent(AccountMenuButtonEvent.CLICKED));
 		}
 
 		public function get params():Object
