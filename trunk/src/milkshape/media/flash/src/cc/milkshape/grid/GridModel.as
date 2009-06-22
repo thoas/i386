@@ -142,6 +142,7 @@ package cc.milkshape.grid
 		public function setFocus(x:int, y:int):void {
 			focusX = y;
 			focusY = x;
+			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS)); 
 		}
 		
 		public function initSquares(squares:Array, squaresOpen:Array):void
@@ -175,8 +176,8 @@ package cc.milkshape.grid
 			{
 				_addPosition(new SquareOpen(square.pos_x + minX, square.pos_y + minY, squareSize));
 			}
-			/*
-			if(showDisableSquare)
+			
+			if(/*showDisableSquare*/true)
 			{
 				for(i = 0 ; i < nbVSquare ; ++i)
 				{
@@ -188,7 +189,7 @@ package cc.milkshape.grid
 						}
 					}
 				}
-			}*/
+			}
 			
 			dispatchEvent(new GridEvent(GridEvent.READY));
 		}
@@ -205,7 +206,6 @@ package cc.milkshape.grid
 					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE, focusSquare));
 				}
 				currentScale = futurScale;
-				dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, futurScale));
 				moveTo();
 			}
 		}
@@ -219,6 +219,7 @@ package cc.milkshape.grid
 				if(square is SquareOpen)
 				{
 					_isShowForm = true;
+					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE, square));
 					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_OPEN, square));
 				}
 				else if(square is SquareBooked)
@@ -260,14 +261,11 @@ package cc.milkshape.grid
 		
 		public function set focusX(x:int):void { 
 			_focusX = x < 0 ? 0 : x >= nbVSquare ? nbVSquare - 1 : x;
-			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS)); 
 		}
 
 		public function set focusY(y:int):void {
 			_focusY = y < 0 ? 0 : y >= nbHSquare ? nbHSquare - 1 : y;
-			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS));
-		}
-		
+		}		
 		
 		public function set gridLineVisible(b:Boolean):void
 		{

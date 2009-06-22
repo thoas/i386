@@ -46,7 +46,7 @@ package cc.milkshape.grid
 		{ 
 			_overX = e.square.X;
 			_overY = e.square.Y;
-			_clickEnabled = (_gridModel.focusX == _overX && _gridModel.focusY == _overY) ? true : false;
+			_clickEnabled = (_gridModel.focusY == _overX && _gridModel.focusX == _overY);
 		}
 		
 		
@@ -63,7 +63,7 @@ package cc.milkshape.grid
 			{
 				_gridModel.zoomTo(e.shiftKey ? -1 : 1);
 			}
-			_clickEnabled = (_gridModel.focusX == _overX && _gridModel.focusY == _overY) ? true : false;
+			_clickEnabled = (_gridModel.focusY == _overX && _gridModel.focusX == _overY);
 		}
 		
 		public function stageClickHandler(mouseEvent:MouseEvent):void
