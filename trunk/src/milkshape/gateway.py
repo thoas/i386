@@ -1,5 +1,3 @@
-import pyamf
-
 from pyamf.remoting.gateway.django import DjangoGateway
 
 from account.views import _login, _logout, _is_authenticated
