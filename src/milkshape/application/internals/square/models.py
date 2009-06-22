@@ -260,7 +260,8 @@ class Square(AbstractSquare):
             if not self.status:
                 self._template = self.build_template()
         else:
-            self.background_image = self.formatted_background_image
+            if not self.background_image:
+                self.background_image = self.formatted_background_image
         
         if self.pk and self.status:
             self.date_finished = datetime.now()

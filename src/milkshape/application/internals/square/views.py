@@ -20,7 +20,7 @@ MIMETYPE_IMAGE = 'image/tiff'
 @transaction.commit_manually
 def _book(request, pos_x, pos_y, issue_slug):
     issue = get_object_or_404(Issue, slug=issue_slug)
-    square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue=issue)
+    square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue=issue, is_standby=False)
     pos_x = square_open.pos_x
     pos_y = square_open.pos_y
     

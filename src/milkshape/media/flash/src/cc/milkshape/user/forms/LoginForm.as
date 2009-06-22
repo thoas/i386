@@ -69,6 +69,9 @@ package cc.milkshape.user.forms
 			logout.buttonMode = true;
 			logout.addEventListener(MouseEvent.CLICK, _logoutHandler);
 			
+			profil.buttonMode = true;
+			profil.addEventListener(MouseEvent.CLICK, _profilHandler);
+			
 			_loginController.isAuthenticated();
 		} 
 		
@@ -129,6 +132,11 @@ package cc.milkshape.user.forms
 				'login': _inputLogin.label.text,
 				'password': _inputPassword.label.text
 			};
+		}
+		
+		private function _profilHandler(e:MouseEvent):void
+		{
+			
 		}
 		
 	}
