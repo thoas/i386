@@ -4,7 +4,7 @@ package cc.milkshape.grid.process
 	import cc.milkshape.user.User;
 	import cc.milkshape.grid.process.events.SquareProcessEvent;
 	import cc.milkshape.grid.square.events.SquareFormEvent;
-	import cc.milkshape.utils.buttons.BigButton;
+	import cc.milkshape.framework.buttons.BigButton;
 	
 	import com.gskinner.motion.GTween;
 	

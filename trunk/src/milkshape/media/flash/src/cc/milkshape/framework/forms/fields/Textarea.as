@@ -1,4 +1,4 @@
-package cc.milkshape.user.forms
+package cc.milkshape.framework.forms.fields
 {
 	import flash.events.FocusEvent;
 	

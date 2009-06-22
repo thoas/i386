@@ -1,4 +1,4 @@
-package cc.milkshape.utils.buttons
+package cc.milkshape.framework.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;

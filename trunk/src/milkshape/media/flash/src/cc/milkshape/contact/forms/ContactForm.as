@@ -1,8 +1,8 @@
 package cc.milkshape.contact.forms
 {
-	import cc.milkshape.user.forms.Input;
-	import cc.milkshape.user.forms.Textarea;
-	import cc.milkshape.utils.buttons.SmallButton;
+	import cc.milkshape.framework.forms.fields.Input;
+	import cc.milkshape.framework.forms.fields.Textarea;
+	import cc.milkshape.framework.buttons.SmallButton;
 	
 	import flash.events.MouseEvent;
 	import cc.milkshape.contact.ContactController;

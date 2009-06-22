@@ -1,6 +1,7 @@
 package cc.milkshape.account
 {
 	import cc.milkshape.account.buttons.AccountMenuButton;
+	import cc.milkshape.account.events.AccountMenuButtonEvent;
 	
 	import flash.events.Event;
 
@@ -18,7 +19,7 @@ package cc.milkshape.account
 			for each(var menuItem:Object in menuArray)
 			{
 				var accountMenuButton:AccountMenuButton = new AccountMenuButton(menuItem);
-				accountMenuButton.addEventListener('CLICKED', _clickHandler);
+				accountMenuButton.addEventListener(AccountMenuButtonEvent.CLICKED, _clickHandler);
 				accountMenuButton.y = deplaceY;
 				deplaceY += accountMenuButton.height + 1;
 				menu.addChild(accountMenuButton);
@@ -35,7 +36,9 @@ package cc.milkshape.account
 			_lastBtnClicked.reinitClick();
 			_lastBtnClicked = e.currentTarget as AccountMenuButton;
 			_lastBtnClicked.initClick();
-			trace('new ' + _lastBtnClicked.params.slug);
+			if(page.numChildren > 0)
+				page.removeChildAt(0);
+			page.addChild(_lastBtnClicked.params.view);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿package
 {
 	import cc.milkshape.issue.*;
-	import cc.milkshape.utils.buttons.ArrowButton;
+	import cc.milkshape.framework.buttons.ArrowButton;
 	
 	import com.gskinner.motion.GTween;
 	
