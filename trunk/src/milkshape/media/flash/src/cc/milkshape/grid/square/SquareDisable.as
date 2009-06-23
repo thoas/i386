@@ -4,7 +4,7 @@ package cc.milkshape.grid.square
 	{
 		public function SquareDisable(x:int, y:int, size:int)
 		{
-			super(x, y, 0xEEEEEE, size);
+			super(x, y, 0x191919, size);
 		}
 		
 	}
