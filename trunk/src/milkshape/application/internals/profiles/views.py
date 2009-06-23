@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.translation import ugettext_lazy as _, ugettext
+from django.contrib.auth.decorators import login_required
 
 from profiles.models import Profile
 from profiles.forms import ProfileForm
@@ -17,6 +18,7 @@ def profiles(request, template_name):
         'users': User.objects.all().order_by('-date_joined'),
     }, context_instance=RequestContext(request))
 
+@login_required
 def profile(request, username, template_name):
     other_user = get_object_or_404(User, username=username)
     if request.user.is_authenticated():
@@ -46,3 +48,20 @@ def profile(request, username, template_name):
         'is_me': is_me,
         'other_user': other_user,
     }, context_instance=RequestContext(request))
+
+@login_required
+def _profile(request):        
+    return request.user.get_profile()
+
+@login_required
+def _profile_change(request, name, location, website):
+    datas = request.POST.copy()
+    datas['name'] = name
+    datas['location'] = location
+    datas['website'] = website
+    if request.method == 'POST':
+        profile_form = ProfileForm(datas, instance=request.user)
+        if profile_form.is_valid():
+            profile = profile_form.save()
+            return profile
+    return False
