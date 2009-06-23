@@ -156,6 +156,7 @@ class ChangePasswordForm(UserForm):
     def save(self):
         self.user.set_password(self.cleaned_data['password1'])
         self.user.save()
+        print self.user
         self.user.message_set.create(message=ugettext(u"Password successfully changed."))
 
 

@@ -151,6 +151,20 @@ def password_change(request, template_name, form_class=ChangePasswordForm):
     }, context_instance=RequestContext(request))
 
 @login_required
+def _password_change(request, oldpassword, password1, password2):
+    if request.method == 'POST':
+        datas = request.POST.copy()
+        datas['oldpassword'] = oldpassword
+        datas['password1'] = password1
+        datas['password2'] = password2
+        password_change_form = ChangePasswordForm(request.user, datas)
+        if password_change_form.is_valid():
+            password_change_form.save()
+            return request.user
+        
+    return False
+
+@login_required
 def timezone_change(request, template_name, form_class=ChangeTimezoneForm):
     if request.method == 'POST':
         form = form_class(request.user, request.POST)
