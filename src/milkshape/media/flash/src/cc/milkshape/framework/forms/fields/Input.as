@@ -14,11 +14,11 @@ package cc.milkshape.framework.forms.fields
 			stop();
 			label.text = defautText;
 			
-			addEventListener(FocusEvent.FOCUS_IN, _focusHandler);
-			addEventListener(FocusEvent.FOCUS_OUT, _blurHandler);
+			addEventListener(FocusEvent.FOCUS_IN, focus);
+			addEventListener(FocusEvent.FOCUS_OUT, blur);
 		}
 		
-		private function _focusHandler(e:FocusEvent):void
+		public function focus(e:FocusEvent = null):void
 		{
 			if(_password)
 				label.displayAsPassword = true;
@@ -34,7 +34,7 @@ package cc.milkshape.framework.forms.fields
 			return label.text;
 		}
 	
-		private function _blurHandler(e:FocusEvent):void
+		public function blur(e:FocusEvent = null):void
 		{
 			if(label.text == '')
 			{

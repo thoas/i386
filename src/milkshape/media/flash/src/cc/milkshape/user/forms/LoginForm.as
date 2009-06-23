@@ -18,9 +18,9 @@ package cc.milkshape.user.forms
 	{
 		private var _loginController:LoginController;
 		private var _connectBtn:SmallButton;
-		private var _checkboxRemember:CheckboxClp;
-		private var _inputLogin:InputClp;
-		private var _inputPassword:InputClp;
+		private var _checkboxRemember:Checkbox;
+		private var _login:Input;
+		private var _password:Input;
 		private var _forgetIt:Label;
 		private var _logout:Label;
 		private var _profil:Label;
@@ -41,8 +41,8 @@ package cc.milkshape.user.forms
 			_connectBtn = new SmallButton('LOGIN', new PlusItem());
 			_forgetIt = new Label(new LabelStandard0758Clp(), 'forget it ?', 0x8f8f8f);
 			_checkboxRemember = new Checkbox();
-			_inputLogin = new Input('username');
-			_inputPassword = new Input('password', true);
+			_login = new Input('username');
+			_password = new Input('password', true);
 			_logout = new Label(new LabelStandard0765Clp(), 'LOGOUT', 0x8f8f8f);
 			_profil = new Label(new LabelStandard0765Clp(), 'PROFIL', Constance.COLOR_YELLOW);
 			_notif = new Label(new LabelStandard0765Clp(), 'You are', 0x8f8f8f);
@@ -56,18 +56,18 @@ package cc.milkshape.user.forms
 			connectBtn.addChild(_connectBtn);
 			forgetIt.addChild(_forgetIt);
 			checkboxRemember.addChild(_checkboxRemember);
-			inputLogin.addChild(_inputLogin);
-			inputPassword.addChild(_inputPassword);
+			inputLogin.addChild(_login);
+			inputPassword.addChild(_password);
 			logout.addChild(_logout);
 			profil.addChild(_profil);
 			hello.addChild(_hello);
 			
-			_inputLogin.label.tabIndex = 1;
-			_inputPassword.label.tabIndex = 2;
+			_login.label.tabIndex = 1;
+			_password.label.tabIndex = 2;
 			connectBtn.tabIndex = 3;
 			
 			login.buttonMode = true;
-			login.addEventListener(MouseEvent.CLICK, _loginHandler);
+			login.addEventListener(MouseEvent.CLICK, _formHandler);
 			
 			logout.buttonMode = true;
 			logout.addEventListener(MouseEvent.CLICK, _logoutHandler);
@@ -104,12 +104,12 @@ package cc.milkshape.user.forms
 			_loginController.logout();
 		}
 		
-		private function _loginHandler(e:MouseEvent):void
+		private function _formHandler(e:MouseEvent):void
 		{
-			stage.focus = _inputLogin.label;
+			stage.focus = _login.label;
 			KeyboardManager.enabled = false;
 			gotoAndPlay('form');
-			_connectBtn.addEventListener(MouseEvent.CLICK, _login);
+			_connectBtn.addEventListener(MouseEvent.CLICK, _loginHandler);
         }
         
         private function _logged(e:LoginEvent):void 
@@ -119,9 +119,9 @@ package cc.milkshape.user.forms
         	_hello.text = 'Hello ' + user.username + '!';
         }
         
-        private function _login(e:MouseEvent):void
+        private function _loginHandler(e:MouseEvent):void
         {
-        	_loginController.login(_inputLogin.label.text, _inputPassword.label.text);
+        	_loginController.login(_login.label.text, _password.label.text);
         }
         
         private function _disconnected(e:LoginEvent):void
@@ -132,9 +132,15 @@ package cc.milkshape.user.forms
 		public function values():Object
 		{
 			return {
-				'login': _inputLogin.label.text,
-				'password': _inputPassword.label.text
+				'login': _login.label.text,
+				'password': _password.label.text
 			};
+		}
+		
+		public function reset():void
+		{
+			_login.blur();
+			_password.blur();
 		}
 		
 		private function _profilHandler(e:MouseEvent):void

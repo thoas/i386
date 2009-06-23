@@ -64,6 +64,7 @@ def _release(request, pos_x, pos_y, issue_slug):
         square.user = None
         square.save()
     else:
+        print square
         square.delete()
     return True
     
