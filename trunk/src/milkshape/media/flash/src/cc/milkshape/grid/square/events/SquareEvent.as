@@ -8,6 +8,7 @@ package cc.milkshape.grid.square.events
 	{
 		public static const CREATION:String = 'CREATION';
 		public static const FOCUS:String = 'FOCUS';
+		public static const FOCUS_OUT:String = 'FOCUS_OUT';
 		public static const OVER:String = 'OVER';
 		public static const CLICK:String = 'CLICK';
 		private var _square:Square;

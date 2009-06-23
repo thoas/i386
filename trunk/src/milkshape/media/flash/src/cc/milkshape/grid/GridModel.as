@@ -21,6 +21,8 @@ package cc.milkshape.grid
 		private var _lstPosition:Array;
 		private var _focusX:int;
 		private var _focusY:int;
+		private var _lastFocusX:int;
+		private var _lastFocusY:int;
 		private var _currentScale:int;
 		private var _minScale:int;
 		private var _maxScale:int;
@@ -199,11 +201,20 @@ package cc.milkshape.grid
 			var futurScale:int = currentScale + op < minScale ? minScale : currentScale + op > maxScale ? maxScale : currentScale + op;
 			
 			if(currentScale != futurScale)// Si le zoom change
-			{
+			{			
 				if(_isShowForm)
 				{
 					_isShowForm = false;
 					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE, focusSquare));
+					var square:Square = focusSquare;
+					if(square is SquareOpen)
+					{
+						SquareOpen(square).showShape();
+					}
+					else if(square is SquareBooked)
+					{
+						SquareBooked(square).showShape();
+					}
 				}
 				currentScale = futurScale;
 				moveTo();
@@ -215,15 +226,17 @@ package cc.milkshape.grid
 			if(currentScale == maxScale)// Si on est au zoom maximal
 			{
 				var square:Square = focusSquare;
-				trace(square);
 				if(square is SquareOpen)
 				{
 					_isShowForm = true;
+					trace ('hide' + square);
+					SquareOpen(square).hideShape();
 					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE, square));
 					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_OPEN, square));
 				}
 				else if(square is SquareBooked)
 				{
+					SquareBooked(square).hideShape();
 					_isShowForm = true;
 					dispatchEvent(new SquareFormEvent(SquareFormEvent.SHOW_BOOKED, square));
 				}
@@ -231,6 +244,17 @@ package cc.milkshape.grid
 				{
 					_isShowForm = false;
 					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE, square));
+				}
+				
+				square = lastFocusSquare;
+				if(square is SquareOpen)
+				{
+					trace ('show' + square);
+					SquareOpen(square).showShape();
+				}
+				else if(square is SquareBooked)
+				{
+					SquareBooked(square).showShape();
 				}
 			}
 				
@@ -259,7 +283,7 @@ package cc.milkshape.grid
 			dispatchEvent(new GridZoomEvent(GridZoomEvent.ZOOM, scale));
 		}
 		
-		public function set focusX(x:int):void { 
+		public function set focusX(x:int):void {
 			_focusX = x < 0 ? 0 : x >= nbVSquare ? nbVSquare - 1 : x;
 		}
 
@@ -293,6 +317,10 @@ package cc.milkshape.grid
 			return issue.nb_case_y; 
 		}
 		
+		public function get lastFocusSquare():* { 
+			return SquareManager.get(_lstPosition[_lastFocusY][_lastFocusX]);
+		}
+		
 		public function get focusSquare():* { 
 			return SquareManager.get(_lstPosition[_focusY][_focusX]);
 		}
@@ -301,5 +329,27 @@ package cc.milkshape.grid
 		{
 			return _issue.steps[_currentScale];
 		}
+
+		public function get lastFocusY():int
+		{
+			return _lastFocusY;
+		}
+
+		public function set lastFocusY(v:int):void
+		{
+			_lastFocusY = v;
+		}
+
+		public function get lastFocusX():int
+		{
+			return _lastFocusX;
+		}
+
+		public function set lastFocusX(v:int):void
+		{
+			_lastFocusX = v;
+		}
+
+
 	}
 }

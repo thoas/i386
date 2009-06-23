@@ -1,28 +1,36 @@
 ﻿package cc.milkshape.grid.square 
 {
+	import cc.milkshape.grid.square.events.SquareEvent;
+	
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;
-	import cc.milkshape.grid.square.events.SquareEvent;
-	
+
 	public class Square extends Sprite
 	{
 		private var _x:int;
 		private var _y:int;
 		private var _color:int;
+		protected var _bg:Shape;
+		private var _size:int;
 		
 		public function Square(x:int, y:int, color:int, size:int) 
 		{
 			buttonMode = true;
 			doubleClickEnabled = true;
 			
+			_color = color;
 			_x = x;
 			_y = y;
+			_size = size;
 			
-			graphics.beginFill(color);
-			graphics.drawRect(0, 0, size, size);
-			graphics.endFill();
+			_bg = new Shape();
+			_bg.graphics.beginFill(_color);
+			_bg.graphics.drawRect(0, 0, _size, _size);
+			_bg.graphics.endFill();
+			addChild(_bg);
 			
 			addEventListener(FocusEvent.FOCUS_IN, _focusIn);
 			addEventListener(FocusEvent.FOCUS_OUT, _focusOut);
@@ -68,12 +76,17 @@
 		
 		protected function _focusOut(e:FocusEvent):void
 		{
-			
+			dispatchEvent(new SquareEvent(SquareEvent.FOCUS_OUT, this));
 		}
 		
 		private function _rollOver(e:MouseEvent):void
 		{
 			dispatchEvent(new SquareEvent(SquareEvent.OVER, this));			
+		}
+		
+		override public function toString():String
+		{
+			return '(' + X + ', ' + Y + ')';
 		}
 	}
 	
