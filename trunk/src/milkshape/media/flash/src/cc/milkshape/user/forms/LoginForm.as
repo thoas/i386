@@ -1,20 +1,19 @@
 package cc.milkshape.user.forms
 {
+	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.framework.forms.Formable;
+	import cc.milkshape.framework.forms.fields.Checkbox;
+	import cc.milkshape.framework.forms.fields.Input;
 	import cc.milkshape.manager.KeyboardManager;
 	import cc.milkshape.user.LoginController;
 	import cc.milkshape.user.events.LoginEvent;
 	import cc.milkshape.utils.Constance;
 	import cc.milkshape.utils.Label;
-	import cc.milkshape.framework.buttons.SmallButton;
+	import cc.milkshape.preloader.events.PreloaderEvent;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-
-	import cc.milkshape.framework.forms.fields.Checkbox;
-
-	import cc.milkshape.framework.forms.fields.Input;
-
+	
 	public class LoginForm extends LoginClp implements Formable
 	{
 		private var _loginController:LoginController;
@@ -140,8 +139,7 @@ package cc.milkshape.user.forms
 		
 		private function _profilHandler(e:MouseEvent):void
 		{
-			
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {'url': 'account.swf', 'background': true}));
 		}
-		
 	}
 }

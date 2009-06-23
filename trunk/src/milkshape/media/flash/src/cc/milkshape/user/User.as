@@ -5,7 +5,7 @@ package cc.milkshape.user
 		private var _attributes:Object;
 		private var _authenticated:Boolean;
 		protected static var _instance:User = null;
- 
+       
 		public function User() {
 			if(_instance != null) 
 				throw new Error("Cannot instance this class a second time, use getInstance instead.");
@@ -13,7 +13,7 @@ package cc.milkshape.user
 			_instance = this;
 		}
 		
-		static public function getInstance():User {
+		public static function getInstance():User {
 			if(_instance == null)
 				new User();
 			return _instance;

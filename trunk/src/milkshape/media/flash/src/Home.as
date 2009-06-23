@@ -2,8 +2,8 @@
 {
 	import cc.milkshape.home.*;
 	import cc.milkshape.preloader.PreloaderWiper;
-	import cc.milkshape.utils.buttons.BigButton;
-	import cc.milkshape.utils.buttons.SmallButton;
+	import cc.milkshape.framework.buttons.BigButton;
+	import cc.milkshape.framework.buttons.SmallButton;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
