@@ -161,7 +161,8 @@ def _password_change(request, oldpassword, password1, password2):
         if password_change_form.is_valid():
             password_change_form.save()
             return request.user
-        
+        else:
+            return password_change_form.errors['__all__']
     return False
 
 @login_required
