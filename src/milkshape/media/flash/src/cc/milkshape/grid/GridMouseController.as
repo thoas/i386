@@ -47,8 +47,7 @@ package cc.milkshape.grid
 			_overX = e.square.X;
 			_overY = e.square.Y;
 			_clickEnabled = (_gridModel.focusY == _overX && _gridModel.focusX == _overY);
-		}
-		
+		}		
 		
 		public function mouseWheelHandler(e:MouseEvent):void
 		{

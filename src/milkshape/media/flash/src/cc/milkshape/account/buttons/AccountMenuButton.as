@@ -28,7 +28,7 @@ package cc.milkshape.account.buttons
 		}
 		
 		private function _outHandler(e:MouseEvent):void
-		{			
+		{			 
 			if (!hasEventListener(Event.ENTER_FRAME))
 				addEventListener(Event.ENTER_FRAME, _enterFrame);
 		}

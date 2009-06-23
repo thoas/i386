@@ -8,6 +8,8 @@ package cc.milkshape.utils
 		
 		public static var COLOR_YELLOW:int = 0xffdd00;
 		
+		public static var COLOR_BLUE:int = 0x9df7ff;
+		
 		public static function url(url:String):String {
 			return URL_SITE + "/" + url;
 		}

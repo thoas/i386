@@ -173,6 +173,7 @@ package cc.milkshape.grid
 			square.tabIndex = _nbHSquare * square.Y + square.X;// Numéro tabulation = nombre de colonne * y + x
 			square.addEventListener(SquareEvent.OVER, _mouseController.rollOverHandler);
 			square.addEventListener(SquareEvent.FOCUS, _controller.onFocusHandler);// Focus : tabulation, clic, double clic, clavier...
+			square.addEventListener(SquareEvent.FOCUS_OUT, _controller.onFocusOutHandler);
 			_layerSquare.addChild(square);
 		}
 		

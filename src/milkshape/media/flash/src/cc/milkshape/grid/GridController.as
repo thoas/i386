@@ -86,6 +86,12 @@ package cc.milkshape.grid
 			}
 		}
 		
+		public function onFocusOutHandler(e:SquareEvent):void
+		{
+			_gridModel.lastFocusX = e.square.Y;
+			_gridModel.lastFocusY = e.square.X;
+		}
+		
 		public function getFocusSquare():Square {
 			return _gridModel.focusSquare;
 		}

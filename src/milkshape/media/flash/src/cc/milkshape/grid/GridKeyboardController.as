@@ -17,7 +17,7 @@ package cc.milkshape.grid
 		public function keyDownHandler(gridEvent:KeyboardEvent):void
 		{
 			if(KeyboardManager.enabled)
-			{
+			{				
 				switch(gridEvent.keyCode)
 				{
 					case Keyboard.UP:
