@@ -442,7 +442,7 @@ package
 				{
 					artistBtn.y = decalY;
 				}				
-				decalY += 30;
+				decalY += 26;
 				_listArtistsContainer[j].addChild(artistBtn);
 				i++;
 				if(i % _maxArtists == 0)

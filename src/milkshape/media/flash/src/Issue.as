@@ -5,6 +5,8 @@ package
 	import cc.milkshape.grid.GridKeyboardController;
 	import cc.milkshape.grid.GridModel;
 	import cc.milkshape.grid.GridMouseController;
+	import cc.milkshape.grid.GridNavPanel;
+	import cc.milkshape.grid.GridSidebar;
 	import cc.milkshape.grid.GridView;
 	import cc.milkshape.grid.events.GridLineEvent;
 	import cc.milkshape.grid.process.SquareProcess;
@@ -28,6 +30,8 @@ package
 		private var _gridView:GridView;
 		private var _debugger:MonsterDebugger;
 		private var _squareProcess:SquareProcess;
+		private var _sidebar:GridSidebar;
+		private var _navPanel:GridNavPanel;
 		
 		public function Issue()
 		{
@@ -69,6 +73,13 @@ package
 			addChild(_gridView);
 			addChild(_squareProcess);
 			
+			_sidebar = new GridSidebar();
+			addChild(_sidebar);
+			
+			_navPanel = new GridNavPanel(_gridModel);
+			_navPanel.x = 20;
+			addChild(_navPanel);
+			
 			_closeHandCursor = new ClosedHandCursor();
 			_openHandCursor = new OpenHandCursor();
 			_closeHandCursor.visible = false;
@@ -77,6 +88,9 @@ package
 			addChild(_openHandCursor);
 			_gridModel.addEventListener(GridLineEvent.SHOW, _hideOpenHandCursor);
 			_gridModel.addEventListener(GridLineEvent.HIDE, _showOpenHandCursor);
+			
+			addEventListener(Event.RESIZE, _handlerResize);
+			_handlerResize(null);
 		}
 		
 		private function _mouseMoveHandler(e:MouseEvent = null):void
@@ -122,6 +136,12 @@ package
 			
 			_bg.removeEventListener(MouseEvent.CLICK, _gridView.mouseController.stageClickHandler);
 			_bg.removeEventListener(MouseEvent.DOUBLE_CLICK, _gridView.mouseController.stageDoubleClickHandler);
+		}
+		
+		private function _handlerResize(e:Event):void
+		{
+			_sidebar.x = stage.stageWidth - 136;
+			_navPanel.y = Math.round(stage.stageHeight * 0.5) - 96;
 		}
 	}
 }
