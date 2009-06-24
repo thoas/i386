@@ -2,7 +2,7 @@ package cc.milkshape.artists.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	
+	import flash.text.TextField;
 
 	public class ArtistButton extends ArtistBtnClp
 	{
@@ -26,7 +26,6 @@ package cc.milkshape.artists.buttons
 			_siteBtn = new SiteButton();
 			issue.addChild(_issueBtn);
 			site.addChild(_siteBtn);
-			
 		}
 		
 		private function _overHandler(e:MouseEvent):void

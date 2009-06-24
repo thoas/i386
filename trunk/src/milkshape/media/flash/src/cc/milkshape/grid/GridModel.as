@@ -31,10 +31,29 @@ package cc.milkshape.grid
 		private var _posY:int;
 		private var _isShowForm:Boolean;
 		
+		/*
+		protected static var _instance:GridModel = null;
+       
+		public function GridModel(issueSlug:String) 
+		{
+			if(_instance != null) 
+				throw new Error("Cannot instance this class a second time, use getInstance instead.");
+			_issueSlug = issueSlug;
+			_instance = this;
+		}
+		
+		public static function getInstance(issueSlug:String = ''):GridModel {
+			if(_instance == null)
+				new GridModel(issueSlug);
+			return _instance;
+		}
+		/*/
+		
 		public function GridModel(issueSlug:String) 
 		{ 
 			_issueSlug = issueSlug;
 		}
+		//*/
 
 		public function get showDisableSquare():int
 		{
@@ -221,6 +240,13 @@ package cc.milkshape.grid
 			}
 		}
 		
+		public function zoomToScale(scale:int):void
+		{	
+			var op:int = 0;
+			op = scale - currentScale; 
+			zoomTo(op);
+		}
+		
 		public function moveTo():void
 		{
 			if(currentScale == maxScale)// Si on est au zoom maximal
@@ -245,16 +271,19 @@ package cc.milkshape.grid
 					_isShowForm = false;
 					dispatchEvent(new SquareFormEvent(SquareFormEvent.CLOSE, square));
 				}
-				
-				square = lastFocusSquare;
-				if(square is SquareOpen)
-				{
-					trace ('show' + square);
-					SquareOpen(square).showShape();
-				}
-				else if(square is SquareBooked)
-				{
-					SquareBooked(square).showShape();
+
+				var lastSquare:Square = lastFocusSquare;
+				if(lastSquare !== square)
+				{		
+					if(lastSquare is SquareOpen)
+					{
+						trace ('show' + square);
+						SquareOpen(lastSquare).showShape();
+					}
+					else if(lastSquare is SquareBooked)
+					{
+						SquareBooked(lastSquare).showShape();
+					}
 				}
 			}
 				
