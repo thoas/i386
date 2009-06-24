@@ -16,6 +16,8 @@ from account.forms import SignupForm, AddEmailForm, LoginForm, \
         ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
+from misc.views import pyamf_format
+
 def _logout(request):
     from django.contrib.auth import logout
     logout(request)
