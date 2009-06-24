@@ -48,3 +48,9 @@ class MultiResponse(object):
             return response
         update_wrapper(wrapper, view_func)
         return wrapper
+
+def pyamf_format(func):
+    def wrapper(request, *args, **kwargs):
+        result = func(request, *args, **kwargs)
+        return result
+    return wrapper

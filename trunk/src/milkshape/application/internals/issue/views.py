@@ -9,6 +9,8 @@ from misc.views import MultiResponse
 from issue.models import Issue
 from square.models import Square, SquareOpen
 
+from misc.views import pyamf_format
+
 def _issues(request):
     """docstring for issues"""
     datas = {
@@ -17,6 +19,7 @@ def _issues(request):
     
     return datas
 
+@pyamf_format
 def _issue(request, slug):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)
