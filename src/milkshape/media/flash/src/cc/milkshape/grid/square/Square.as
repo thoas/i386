@@ -14,7 +14,7 @@
 		private var _y:int;
 		private var _color:int;
 		protected var _bg:Shape;
-		private var _size:int;
+		protected var _size:int;
 		
 		public function Square(x:int, y:int, color:int, size:int) 
 		{

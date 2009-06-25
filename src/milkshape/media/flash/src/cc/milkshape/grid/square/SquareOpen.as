@@ -19,10 +19,15 @@ package cc.milkshape.grid.square
 		{
 			_shape = new Shape();
 			_shape.graphics.lineStyle(1, cc.milkshape.utils.Constance.COLOR_BLUE);
-			_shape.graphics.moveTo(400, 300);
-			_shape.graphics.lineTo(400, 500);
-			_shape.graphics.moveTo(300, 400);
-			_shape.graphics.lineTo(500, 400);
+			
+			var i:int = Math.round((3 * _size) / 8); // 300 pour 800
+			var j:int = Math.round((5 * _size) / 8); // 500 pour 800
+			var k:int = Math.round(_size / 2); // 400 pour 800
+			
+			_shape.graphics.moveTo(k, i);
+			_shape.graphics.lineTo(k, j);
+			_shape.graphics.moveTo(i, k);
+			_shape.graphics.lineTo(j, k);
 			
 			_bg.blendMode = BlendMode.DARKEN;
 			
