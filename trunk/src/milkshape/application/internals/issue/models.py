@@ -29,6 +29,10 @@ class Issue(models.Model):
         default=settings.DEFAULT_MAX_PARTICIPATION)
     slug = models.SlugField(unique=True)
     
+    constraint_text = models.TextField(_('constraint_text'), blank=True, null=True)
+    constraint_time = models.IntegerField(_('constraint_time'), default=settings.DEFAULT_TIME)
+    thumb = models.CharField(_('thumb'), max_length=255, blank=True, null=True)
+    
     objects = IssueManager()
     
     def __init__(self, *args, **kwargs):
@@ -89,8 +93,22 @@ class Issue(models.Model):
         return ('issue.views.issue', [str(self.slug)])
     
     @property
+    def url(self):
+        return '%s/%s' % (settings.ISSUES_DIR, self.slug)
+    
+    @property
+    def thumb_url(self):
+        return '%s/%s' % (self.media_url, self.thumb)
+    
+    @property
     def media_url(self):
-        return '%s/%s/%s' % (settings.MEDIA_URL, settings.ISSUES_DIR, self.slug)
+        return '%s/%s' % (settings.MEDIA_URL, self.url)
+    
+    @property
+    def nb_creators(self):
+    
+    def thumb_path(self):
+        return '%s/%s' % (self.path(), self.thumb)
     
     def path(self):
         return join(settings.ISSUES_ROOT, self.slug)
@@ -143,3 +161,6 @@ def create_tree(sender, instance=None, **kwargs):
             print error
 
 post_save.connect(create_tree, sender=Issue)
+
+#from pyamf import register_class
+#register_class(Issue, 'Issue', attrs=['title'])

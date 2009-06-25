@@ -44,7 +44,7 @@ package
 		{
 			stage.stageFocusRect = false;
 			//loaderInfo.sharedEvents.addEventListener(PreloaderEvent.INFO, _handlerInit);
-			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, {slug: 'test'}));
+			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, {slug: '5x5'}));
 		}
 		
 		private function _handlerRemovedToStage(e:Event):void
