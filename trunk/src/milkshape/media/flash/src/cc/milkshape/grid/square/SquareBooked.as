@@ -1,8 +1,8 @@
 package cc.milkshape.grid.square
 {
 	import cc.milkshape.utils.Constance;
+	
 	import flash.display.BlendMode;
-
 	import flash.display.Shape;
 
 	public class SquareBooked extends SquareOwned
@@ -11,7 +11,7 @@ package cc.milkshape.grid.square
 
 		public function SquareBooked(x:int, y:int, size:int)
 		{
-			super(x, y, 0xFF0000, size);
+			super(x, y, 0x141414, size);
 			_drawCross();
 		}
 		
@@ -19,10 +19,14 @@ package cc.milkshape.grid.square
 		{
 			_shape = new Shape();
 			_shape.graphics.lineStyle(1, cc.milkshape.utils.Constance.COLOR_YELLOW);
-			_shape.graphics.moveTo(300, 300);
-			_shape.graphics.lineTo(500, 500);
-			_shape.graphics.moveTo(500, 300);
-			_shape.graphics.lineTo(300, 500);
+			
+			var i:int = Math.round((3 * _size) / 8); // 300 pour 800
+			var j:int = Math.round((5 * _size) / 8); // 500 pour 800
+			
+			_shape.graphics.moveTo(i, i);
+			_shape.graphics.lineTo(j, j);
+			_shape.graphics.moveTo(j, i);
+			_shape.graphics.lineTo(i, j);
 			
 			_bg.blendMode = BlendMode.DARKEN;
 			
