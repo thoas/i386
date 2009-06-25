@@ -58,11 +58,11 @@ package cc.milkshape.grid
 		
 		private function _overSquareHandler(e:GridOverEvent):void
 		{
-			trace(e.userId);
 			if(_lastOverArtistBtn)
 				_lastOverArtistBtn.gotoAndStop('off');
 			_lastOverArtistBtn = _listArtists[e.userId];
 			_lastOverArtistBtn.gotoAndStop('on');
+			trace(_lastOverArtistBtn.textClp.label.text);
 		}
 		
 		private function _clickHandler(e:MouseEvent):void
