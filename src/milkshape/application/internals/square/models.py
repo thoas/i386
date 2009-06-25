@@ -42,17 +42,11 @@ class SquareOpenManager(AbstractSquareManager):
         logging.info('standby set to %d for %s' % (is_standby, neighbors))
         self.filter(issue=square.issue, coord__in=list(str(key)\
             for key in neighbors)).update(is_standby=is_standby)
-        #from django.db import connection, transaction
-        #cursor = connection.cursor()
-        #cursor.execute("UPDATE square_squareopen SET is_standby = %d WHERE coord IN %s"
-        #                    % (int(is_standby), str(tuple(str(neighbor) for neighbor in neighbors))))
-        #transaction.commit_unless_managed()
 
 class AbstractSquare(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
     pos_y = models.IntegerField(_('pos_y'))
     coord = models.CharField(_('coord'), max_length=20, blank=True)
-    issue = models.ForeignKey(Issue, verbose_name=_('issue'))
 
     class Meta:
         abstract = True
@@ -76,6 +70,7 @@ class Square(AbstractSquare):
     date_finished = models.DateTimeField(_('date_finished'), blank=True, null=True)
     # 1 : full | 0 : booked
     status = models.BooleanField(_('status'), default=0)
+    issue = models.ForeignKey(Issue, verbose_name=_('issue'), related_name='squares')
 
     user = models.ForeignKey(User, verbose_name=_('user'),\
                         related_name='participations', blank=True, null=True)
@@ -376,5 +371,6 @@ class SquareOpen(AbstractSquare):
 
     # 0 : can be booked ; 1 : a square has been booked next to
     is_standby = models.BooleanField(_('is_standby'), default=settings.DEFAULT_IS_STANDBY)
+    issue = models.ForeignKey(Issue, verbose_name=_('issue'), related_name='squares_open')
     objects = SquareOpenManager()
         

@@ -1,6 +1,6 @@
 format 66
 "uml"
-  revision 23
+  revision 24
   modified_by 2 "thoas"
 
 
@@ -485,6 +485,33 @@ format 66
 	  a role_name "" private
 	    classrelation_ref 139650 // <directional composition>
 	  b parent class_ref 135298 // AbstractSquare
+      end
+
+      attribute 149890 "constraint_text"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 150018 "constraint_time"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 150146 "thumb"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
       end
     end
 
