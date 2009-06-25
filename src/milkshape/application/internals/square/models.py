@@ -69,10 +69,6 @@ class AbstractSquare(models.Model):
                 for i in range(LEN_POS))
         return self._neighbors
 
-#def get_filename(instance, filename):
-#    """docstring for get_filename"""
-#    return instance.template_name
-
 class Square(AbstractSquare):
     # ImageField raises an error in PyAMF
     background_image = models.CharField(max_length=255, blank=True, null=True)
@@ -82,7 +78,7 @@ class Square(AbstractSquare):
     status = models.BooleanField(_('status'), default=0)
 
     user = models.ForeignKey(User, verbose_name=_('user'),\
-                        related_name=_('participations'), blank=True, null=True)
+                        related_name='participations', blank=True, null=True)
     # PyAMF ERROR
     # square_parent = models.ForeignKey('Square', verbose_name=_('square_parent'),\
     #                    related_name=_('squares_child'), blank=True, null=True)
