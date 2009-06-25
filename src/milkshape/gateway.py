@@ -4,7 +4,7 @@ from account.views import _login, _logout, _is_authenticated, _password_change
 from profiles.views import _profile, _profile_change
 from square.views import _book, _release, _template, _fill
 from about.views import _contact
-from issue.views import _issues, _issue
+from issue.views import _issues, _issue, _last_issues
 
 gateway = DjangoGateway({
     'account.login': _login,
@@ -22,6 +22,7 @@ gateway = DjangoGateway({
     
     'issue.issues': _issues,
     'issue.issue': _issue,
+    'issue.last_issues': _last_issues,
     
     'about.contact': _contact,
 })
