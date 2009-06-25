@@ -4,7 +4,7 @@ package cc.milkshape.account.forms
 	import cc.milkshape.account.events.PasswordEvent;
 	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.framework.forms.Formable;
-	import cc.milkshape.framework.forms.fields.Input;
+	import cc.milkshape.framework.forms.fields.LabelInput;
 	
 	import flash.events.MouseEvent;
 
@@ -12,15 +12,15 @@ package cc.milkshape.account.forms
 	{
 		private var _passwordController:PasswordController;
 		private var _update:SmallButton;
-		private var _currentPassword:Input;
-		private var _newPassword:Input;
-		private var _confirmPassword:Input;
+		private var _currentPassword:LabelInput;
+		private var _newPassword:LabelInput;
+		private var _confirmPassword:LabelInput;
 		public function PasswordForm(passwordController:PasswordController)
 		{
 			_passwordController = passwordController;
-			_currentPassword = new Input('CURRENT PASSWORD', true);
-			_newPassword = new Input('PASSWORD', true);
-			_confirmPassword = new Input('CONFIRMATION PASSWORD', true);
+			_currentPassword = new LabelInput('CURRENT PASSWORD:', true);
+			_newPassword = new LabelInput('NEW PASSWORD:', true);
+			_confirmPassword = new LabelInput('CONFIRMATION PASSWORD:', true);
 			_update = new SmallButton('UPDATE', new PlusItem());
 			newPassword.addChild(_newPassword);
 			confirmPassword.addChild(_confirmPassword);

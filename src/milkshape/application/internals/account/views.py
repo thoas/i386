@@ -28,14 +28,10 @@ def _is_authenticated(request):
         return request.user
     return False
 
+@pyamf_format
 def _login(request, username=None, password=None, remember=None):
     if request.method == 'POST':
-        datas = request.POST.copy()
-        
-        datas['username'] = username
-        datas['password'] = password
-        datas['remember'] = remember
-        form = LoginForm(datas)
+        form = LoginForm(request.POST)
         if form.login(request):
             return request.user
         return form.errors['__all__']
@@ -153,13 +149,10 @@ def password_change(request, template_name, form_class=ChangePasswordForm):
     }, context_instance=RequestContext(request))
 
 @login_required
+@pyamf_format
 def _password_change(request, oldpassword, password1, password2):
     if request.method == 'POST':
-        datas = request.POST.copy()
-        datas['oldpassword'] = oldpassword
-        datas['password1'] = password1
-        datas['password2'] = password2
-        password_change_form = ChangePasswordForm(request.user, datas)
+        password_change_form = ChangePasswordForm(request.user, request.POST)
         if password_change_form.is_valid():
             password_change_form.save()
             return request.user

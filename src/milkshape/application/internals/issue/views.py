@@ -19,7 +19,6 @@ def _issues(request):
     
     return datas
 
-@pyamf_format
 def _issue(request, slug):
     """docstring for issues"""
     issue = get_object_or_404(Issue, slug=slug)

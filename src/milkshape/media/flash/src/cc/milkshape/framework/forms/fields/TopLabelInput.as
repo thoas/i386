@@ -2,13 +2,13 @@ package cc.milkshape.framework.forms.fields
 {
 	import flash.events.FocusEvent;
 	
-	public class Input extends TopLabelInputClp
+	public class TopLabelInput extends TopLabelInputClp
 	{		
-		public function Input(label:String, password:Boolean = false)
+		public function TopLabelInput(labelText:String, password:Boolean = false)
 		{
 			input.stop();
 						
-			label.text = label;		
+			label.text = labelText;		
 			
 			if(password)
 				input.label.displayAsPassword = true;

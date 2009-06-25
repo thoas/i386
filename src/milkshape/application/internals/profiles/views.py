@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from profiles.models import Profile
 from profiles.forms import ProfileForm
 
+from misc.views import pyamf_format
+
 try:
     from notification import models as notification
 except ImportError:
@@ -54,13 +56,10 @@ def _profile(request):
     return request.user.get_profile()
 
 @login_required
+@pyamf_format
 def _profile_change(request, name, location, website):
-    datas = request.POST.copy()
-    datas['name'] = name
-    datas['location'] = location
-    datas['website'] = website
     if request.method == 'POST':
-        profile_form = ProfileForm(datas, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user)
         if profile_form.is_valid():
             profile = profile_form.save()
             return profile

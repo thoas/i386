@@ -5,6 +5,7 @@ except ImportError:
 
 import mimeparse
 
+from inspect import getargspec
 from django.conf import settings
 from django.shortcuts import render_to_response
 from django.http import Http404
@@ -50,7 +51,12 @@ class MultiResponse(object):
         return wrapper
 
 def pyamf_format(func):
-    def wrapper(request, *args, **kwargs):
-        result = func(request, *args, **kwargs)
+    def wrapped(request, *func_args, **func_kwargs):
+        args, varargs, varkw, defaults = getargspec(func)
+        datas = request.POST.copy()
+        for i in range(len(func_args)):
+            datas[args[i + 1]] = func_args[i]
+        request.POST = datas
+        result = func(request, *func_args, **func_kwargs)
         return result
-    return wrapper
+    return wrapped
