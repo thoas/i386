@@ -50,3 +50,9 @@ def issue(request, slug, format, template_name):
     datas['t_squares_open'] = dict((square_open.coord, square_open) for square_open in datas['squares_open'])
     datas['t_squares'] = dict((square.coord, square) for square in datas['squares'])
     return datas
+
+def _last_issues(request):
+    return {
+        'current_issues': Issue.objects.get_current_issues(),
+        'complete_issues': Issue.objects.get_complete_issues()
+    }

@@ -30,7 +30,7 @@ class IssueManager(models.Manager):
     def get_current_issues(self):
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT *
+            SELECT id
             FROM issue_issue
             WHERE 
                 (issue_issue.nb_case_x * issue_issue.nb_case_y) > (
@@ -52,7 +52,7 @@ class IssueManager(models.Manager):
     def get_complete_issues(self):
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT *
+            SELECT id
             FROM issue_issue
             WHERE 
                 (issue_issue.nb_case_x * issue_issue.nb_case_y) <= (
@@ -69,6 +69,25 @@ class IssueManager(models.Manager):
         """)
         rows = cursor.fetchall()
         found = self.in_bulk([r[0] for r in rows])
+        return found.values()
+    
+    def get_creators(self, issue):
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT id
+            FROM auth_user
+            GROUP BY id
+            HAVING (
+                (
+                    SELECT count(id) 
+                    FROM square_square 
+                    WHERE issue_id = %d 
+                    AND user_id = auth_user.id
+                ) > 0
+            )
+        """ % (issue.id))
+        rows = cursor.fetchall()
+        found = User.objects.in_bulk([r[0] for r in rows])
         return found.values()
 
 class Issue(models.Model):
@@ -174,6 +193,10 @@ class Issue(models.Model):
     @property
     def nb_squares_booked(self):
         return self.squares_booked().count()
+    
+    @property
+    def nb_creators(self):
+        return len(Issue.objects.get_creators(self))
     
     def squares_booked(self):
         return self.squares.filter(status=True, user__isnull=False)

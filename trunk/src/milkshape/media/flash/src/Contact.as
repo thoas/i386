@@ -7,11 +7,10 @@ package
 
 	public class Contact extends MovieClip
 	{
-		private var _contactController:ContactController;
 		public function Contact()
 		{
-			_contactController = new ContactController();
-			var contactView:ContactForm = new ContactForm(_contactController);
+			var contactController:ContactController = new ContactController();
+			var contactView:ContactForm = new ContactForm(contactController);
 			addChild(contactView);
 		}
 	}

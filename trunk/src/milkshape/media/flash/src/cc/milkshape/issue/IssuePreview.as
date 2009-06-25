@@ -13,15 +13,15 @@ package cc.milkshape.issue
 			over.alpha = 0.7;
 			buttonMode = true;
 			pastilleClp.stop();
-			titleClp.descLabel.text = issue.desc;
+			titleClp.descLabel.htmlText = issue.text_presentation;
 			titleClp.titleLabel.text = issue.title;
-			infoClp.creatorsLabel.text = issue.nbCreators + ' CREATORS';
-			infoClp.squaresLabel.text = issue.nbIssues + ' SQUARES';
-			scheduleClp.scheduleLabel.text = issue.schedule;
-			pastilleClp.textClp.label.text = '#' + issue.num;
+			infoClp.creatorsLabel.text = issue.nb_creators + ' CREATORS';
+			infoClp.squaresLabel.text = issue.nb_squares + ' SQUARES';
+			scheduleClp.scheduleLabel.text = issue.date_created;
+			pastilleClp.textClp.label.text = '#' + issue.id;
 				
 			var img:PreloaderWiper = new PreloaderWiper();
-			img.loadMedia(issue.url);
+			img.loadMedia(issue.thumb_url);
 			
 			loaderClp.addChild(img);
 		}
