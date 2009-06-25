@@ -1,12 +1,12 @@
 window_sizes 1680 1002 319 1355 947 0
 diagrams
-  classdiagram_ref 128002 // DBDC
+  active  classdiagram_ref 128002 // DBDC
     1351 873 190 4 0 0
-  active  usecasediagram_ref 129154 // DCU
+  usecasediagram_ref 129154 // DCU
     1351 927 120 4 60 0
 end
 show_stereotypes
-selected usecasediagram_ref 129154 // DCU
+selected attribute_ref 150146 // thumb
 open
   attribute_ref 144002 // about
   attribute_ref 129282 // website

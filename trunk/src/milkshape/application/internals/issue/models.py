@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
+from django.db import connection, transaction
 
 from os.path import join, exists
 from os import makedirs
@@ -10,7 +11,65 @@ from os import makedirs
 
 class IssueManager(models.Manager):
     """docstring for IssueManager"""
-    pass
+    def get_nb_squares(self, issue):
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT count(*) AS nb_squares 
+            FROM square_square
+            WHERE coord 
+                NOT IN (
+                    SELECT coord 
+                    FROM square_squareopen 
+                    WHERE issue_id = %d
+                )
+            AND issue_id = %d
+        """ % (issue.id, issue.id))
+        row = cursor.fetchone()
+        return row[0]
+    
+    def get_current_issues(self):
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT *
+            FROM issue_issue
+            WHERE 
+                (issue_issue.nb_case_x * issue_issue.nb_case_y) > (
+                    SELECT count(*) 
+                    FROM square_square
+                    WHERE coord 
+                        NOT IN (
+                            SELECT coord 
+                            FROM square_squareopen 
+                            WHERE issue_id = issue_issue.id
+                        )
+                    AND issue_id = issue_issue.id
+                )
+        """)
+        rows = cursor.fetchall()
+        found = self.in_bulk([r[0] for r in rows])
+        return found.values()
+    
+    def get_complete_issues(self):
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT *
+            FROM issue_issue
+            WHERE 
+                (issue_issue.nb_case_x * issue_issue.nb_case_y) <= (
+                    SELECT count(*) 
+                    FROM square_square
+                    WHERE coord 
+                        NOT IN (
+                            SELECT coord 
+                            FROM square_squareopen 
+                            WHERE issue_id = issue_issue.id
+                        )
+                    AND issue_id = issue_issue.id
+                )
+        """)
+        rows = cursor.fetchall()
+        found = self.in_bulk([r[0] for r in rows])
+        return found.values()
 
 class Issue(models.Model):
     title = models.CharField(_('title'), max_length=255)
@@ -105,7 +164,19 @@ class Issue(models.Model):
         return '%s/%s' % (settings.MEDIA_URL, self.url)
     
     @property
-    def nb_creators(self):
+    def nb_squares(self):
+        return Issue.objects.get_nb_squares(self)
+    
+    @property
+    def nb_squares_open(self):
+        return self.squares_open.count()
+
+    @property
+    def nb_squares_booked(self):
+        return self.squares_booked().count()
+    
+    def squares_booked(self):
+        return self.squares.filter(status=True, user__isnull=False)
     
     def thumb_path(self):
         return '%s/%s' % (self.path(), self.thumb)

@@ -10,7 +10,7 @@ classcanvas 128130 class_ref 128130 // Profile
 end
 classcanvas 128258 class_ref 128258 // Issue
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
-  xyz 402 279 2000
+  xyz 399 275 2000
 end
 classcanvas 128386 class_ref 128386 // Square
   draw_all_relations default hide_attributes default hide_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_infonote default shadow default show_stereotype_properties default
@@ -58,9 +58,9 @@ relationcanvas 131330 relation_ref 128642 // <association>
   no_multiplicity_a no_multiplicity_b
 end
 relationcanvas 131714 relation_ref 128770 // <association>
-  from ref 128258 z 1999 stereotype "<<correspond with>>" xyz 477 378 3000 to ref 128770
+  from ref 128258 z 1999 stereotype "<<correspond with>>" xyz 475 383 3000 to ref 128770
   no_role_a no_role_b
-  multiplicity_a_pos 563 374 3000 multiplicity_b_pos 481 362 3000
+  multiplicity_a_pos 563 375 3000 multiplicity_b_pos 478 370 3000
 end
 relationcanvas 132610 relation_ref 129410 // <association>
   from ref 128002 z 1999 to ref 128386
