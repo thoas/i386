@@ -36,7 +36,8 @@ package cc.milkshape.user
 		
 		override protected function _onResult(result:Object):void 
 		{
-			if(result){
+			if(result)
+			{
 				this.getUser().setAttribute('account', result);
 				this.getUser().authenticated = true;
 				dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result));
