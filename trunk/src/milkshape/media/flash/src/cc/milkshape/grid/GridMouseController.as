@@ -1,20 +1,19 @@
 package cc.milkshape.grid
 {
+	import cc.milkshape.grid.events.GridMoveEvent;
+	import cc.milkshape.grid.events.GridOverEvent;
+	import cc.milkshape.grid.square.SquareManager;
+	import cc.milkshape.grid.square.SquareOwned;
 	import cc.milkshape.grid.square.events.SquareEvent;
-	
-	import flash.events.MouseEvent;
-	import cc.milkshape.grid.GridModel;
 	import cc.milkshape.manager.KeyboardManager;
 	
-	import cc.milkshape.grid.events.GridMoveEvent;
+	import flash.events.MouseEvent;
 
 	public class GridMouseController
 	{
 		private var _gridModel:GridModel;
 		private var _pointClickX:int;
 		private var _pointClickY:int;
-		private var _overX:int;
-		private var _overY:int;
 		private var _clickEnabled:Boolean;
 		
 		public function GridMouseController(gridModel:GridModel)
@@ -44,14 +43,20 @@ package cc.milkshape.grid
 		
 		public function rollOverHandler(e:SquareEvent):void
 		{ 
-			_overX = e.square.X;
-			_overY = e.square.Y;
-			_clickEnabled = (_gridModel.focusY == _overX && _gridModel.focusX == _overY);
+			_gridModel.overX = e.square.X;
+			_gridModel.overY = e.square.Y;
+
+			if(_gridModel.overSquare is SquareOwned)
+			{
+				_gridModel.dispatchEvent(new GridOverEvent(GridOverEvent.OVER, SquareOwned(_gridModel.overSquare).user.id));
+			}
+			
+			_clickEnabled = (_gridModel.focusY == _gridModel.overX  && _gridModel.focusX == _gridModel.overY);
 		}		
 		
 		public function mouseWheelHandler(e:MouseEvent):void
 		{
-			_gridModel.setFocus(_overX, _overY);
+			_gridModel.setFocus(_gridModel.overX, _gridModel.overY);
 			_gridModel.zoomTo(Math.round(e.delta/4));
 		}
 		
@@ -62,7 +67,7 @@ package cc.milkshape.grid
 			{
 				_gridModel.zoomTo(e.shiftKey ? -1 : 1);
 			}
-			_clickEnabled = (_gridModel.focusY == _overX && _gridModel.focusX == _overY);
+			_clickEnabled = (_gridModel.focusY == _gridModel.overX && _gridModel.focusX == _gridModel.overY);
 		}
 		
 		public function stageClickHandler(mouseEvent:MouseEvent):void

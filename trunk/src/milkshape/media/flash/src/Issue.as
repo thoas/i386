@@ -73,7 +73,7 @@ package
 			addChild(_gridView);
 			addChild(_squareProcess);
 			
-			_sidebar = new GridSidebar();
+			_sidebar = new GridSidebar(_gridModel);
 			addChild(_sidebar);
 			
 			_navPanel = new GridNavPanel(_gridModel);

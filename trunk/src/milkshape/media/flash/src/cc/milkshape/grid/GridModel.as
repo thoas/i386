@@ -21,6 +21,8 @@ package cc.milkshape.grid
 		private var _lstPosition:Array;
 		private var _focusX:int;
 		private var _focusY:int;
+		private var _overX:int;
+		private var _overY:int;
 		private var _lastFocusX:int;
 		private var _lastFocusY:int;
 		private var _currentScale:int;
@@ -178,12 +180,12 @@ package cc.milkshape.grid
 			{
 				var squareObject:*;
 				// si status = false et pas de background alors c'est une booked
-				if(!square.status && square.user != null){
-					squareObject = new SquareBooked(square.pos_x + minX, square.pos_y + minY, squareSize);
-					squareObject.user = square.user;
-					_addPosition(squareObject);
-				} else {
-					if(square.user != null){
+				if(square.user != null) {
+					if(!square.status) {
+						squareObject = new SquareBooked(square.pos_x + minX, square.pos_y + minY, squareSize);
+						squareObject.user = square.user;
+						_addPosition(squareObject);
+					} else {
 						squareObject = new SquareFull(square.pos_x + minX, square.pos_y + minY, square.background_image_path, squareSize);
 						squareObject.layers = square.layers;
 						squareObject.neighbors = square.neighbors_keys;
@@ -354,6 +356,10 @@ package cc.milkshape.grid
 			return SquareManager.get(_lstPosition[_focusY][_focusX]);
 		}
 		
+		public function get overSquare():* { 
+			return SquareManager.get(_lstPosition[_overY][_overX]);
+		}
+		
 		public function get currentStep():int
 		{
 			return _issue.steps[_currentScale];
@@ -377,6 +383,26 @@ package cc.milkshape.grid
 		public function set lastFocusX(v:int):void
 		{
 			_lastFocusX = v;
+		}
+
+		public function get overX():int
+		{
+			return _overX;
+		}
+
+		public function set overX(v:int):void
+		{
+			_overX = v;
+		}
+
+		public function get overY():int
+		{
+			return _overY;
+		}
+
+		public function set overY(v:int):void
+		{
+			_overY = v;
 		}
 
 
