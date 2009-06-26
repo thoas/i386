@@ -1,6 +1,7 @@
 package cc.milkshape.main
 {
 	import cc.milkshape.main.buttons.*;
+	import cc.milkshape.main.events.MenuButtonEvent;
 	import cc.milkshape.preloader.events.PreloaderEvent;
 	
 	import flash.display.Sprite;
@@ -25,7 +26,7 @@ package cc.milkshape.main
 				_deplaceX += menuButton.width + 20;            	
             	addChild(menuButton);
             	
-            	menuButton.addEventListener('CLICKED', _clickHandler);
+            	menuButton.addEventListener(MenuButtonEvent.CLICKED, _clickHandler);
             	
             	_listMenuItem[array[i].label] = menuButton;
             	

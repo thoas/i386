@@ -2,6 +2,7 @@ package cc.milkshape.main.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import cc.milkshape.main.events.MenuButtonEvent;
 	import flash.text.TextFieldAutoSize;
 	
 	public class MenuButton extends MenuButtonClp
@@ -87,7 +88,7 @@ package cc.milkshape.main.buttons
 		{
 			if(!_clickStatus)
 			{
-				dispatchEvent(new Event('CLICKED'));
+				dispatchEvent(new MenuButtonEvent(MenuButtonEvent.CLICKED));
 				removeEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 				removeEventListener(MouseEvent.MOUSE_OUT, _outHandler);
 				_clickStatus = true;

@@ -6,7 +6,7 @@ from StringIO import StringIO
 from issue.models import Issue
 
 class IssueAdminForm(forms.ModelForm):
-    thumb = forms.ImageField()
+    thumb = forms.ImageField(required=False)
     
     class Meta:
         model = Issue
