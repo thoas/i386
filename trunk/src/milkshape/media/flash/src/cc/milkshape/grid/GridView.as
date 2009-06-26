@@ -229,7 +229,6 @@ package cc.milkshape.grid
 		
 		private function _zoomTo(e:GridZoomEvent):void
 		{
-			trace('A');
 			new GTween(
 				this, 
 				_speed * 0.001, {
@@ -241,7 +240,6 @@ package cc.milkshape.grid
 		
 		private function _moveTo(e:GridMoveEvent):void
 		{
-			trace('B');
 			new GTween(
 				this, 
 				_speed * 0.001, {

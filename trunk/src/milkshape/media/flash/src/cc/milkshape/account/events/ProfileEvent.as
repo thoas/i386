@@ -5,9 +5,24 @@ package cc.milkshape.account.events
 	public class ProfileEvent extends Event
 	{
 		public static const SUCCESS:String = 'SUCCESS';
-		public function ProfileEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+		public static const LAST_PROFILES:String = 'LAST_PROFILES';
+		
+		private var _lastProfiles:Array;
+		public function ProfileEvent(type:String, lastProfiles:Array=null, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
+			_lastProfiles = lastProfiles;
 			super(type, bubbles, cancelable);
 		}
+
+		public function get lastProfiles():Array
+		{
+			return _lastProfiles;
+		}
+
+		public function set lastProfiles(v:Array):void
+		{
+			_lastProfiles = v;
+		}
+
 	}
 }

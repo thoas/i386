@@ -2,17 +2,21 @@ package cc.milkshape.home.buttons
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.text.TextFieldAutoSize;
-	
+
 	public class HomeArtistButton extends HomeArtistClp
 	{
 		private var _overStatut:Boolean;
+		private var _profile:Object;
 		
-		public function HomeArtistButton(o:Object, pair:Boolean = true)
+		public function HomeArtistButton(profile:Object, pair:Boolean = true)
 		{
 			buttonMode = true;
 			stop();
 			_overStatut = false;
+			_profile = profile;
 			
 			addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
@@ -22,13 +26,13 @@ package cc.milkshape.home.buttons
 			artistText2.label.autoSize = TextFieldAutoSize.LEFT;
 			if(pair)
 			{
-				artistText.label.text = o.name;
+				artistText.label.text = _profile.user.username;
 				artistText2.label.text = '';
 				over.width = artistText.width;
 			}
 			else
 			{
-				artistText2.label.text = o.name;
+				artistText2.label.text = _profile.user.username;
 				artistText.label.text = '';
 				over.width = artistText2.width;
 			}			
@@ -65,7 +69,10 @@ package cc.milkshape.home.buttons
 		
 		private function _clickHandler(e:MouseEvent):void
 		{
-			trace('go to ');
+			if(_profile.website)
+			{
+				navigateToURL(new URLRequest(_profile.website));
+			}
 		}
 	}
 }
