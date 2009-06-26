@@ -18,8 +18,16 @@ class SquareTestCase(unittest.TestCase):
     ACCT_EMAIL = 'hello@milkshape.cc'
     
     def setUp(self):
-        self.issue, self.created = Issue.objects.get_or_create(title='4x4', text_presentation='10x10',\
-                        nb_case_x=4, nb_case_y=4, nb_step=5, size=800, margin=200, slug='4x4')
+        self.issue, self.created = Issue.objects.get_or_create(
+            title='4x4', 
+            text_presentation='10x10', 
+            nb_case_x=4, 
+            nb_case_y=4, 
+            nb_step=5, 
+            size=800, 
+            margin=200, 
+            slug='4x4'
+        )
         try:
             self.user = User.objects.get(username=self.ACCT_USERNAME)
         except User.DoesNotExist:
@@ -42,8 +50,11 @@ class SquareTestCase(unittest.TestCase):
     def __testBookSquare(self, pos_x, pos_y):
         c = Client()
         result = c.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
-        response = c.get(reverse('square_book',\
-                        kwargs={'pos_x': pos_x, 'pos_y': pos_y, 'issue_slug': self.issue.slug}))
+        response = c.get(reverse('square_book', kwargs={
+            'pos_x': pos_x, 
+            'pos_y': pos_y, 
+            'issue_slug': self.issue.slug
+        }))
         square_open = SquareOpen.objects.get(pos_x=pos_x, pos_y=pos_y, issue=self.issue)
         self.assertEquals(square_open.is_standby, True)
         self.assertEquals(response.status_code, 200)
@@ -53,11 +64,11 @@ class SquareTestCase(unittest.TestCase):
         c = Client()
         result = c.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
         f = open(join(settings.CLI_ROOT, 'push', 'template.jpg'))
-        response = c.post(reverse('square_fill',\
-                        kwargs={'pos_x': pos_x,\
-                                'pos_y': pos_y,\
-                                'issue_slug': self.issue.slug}),\
-                        {'background_image': f})
+        response = c.post(reverse('square_fill', kwargs={
+            'pos_x': pos_x,
+            'pos_y': pos_y,
+            'issue_slug': self.issue.slug
+        }), {'background_image': f})
         f.close()
         self.assertEquals(response.status_code, 200)
         try:

@@ -92,7 +92,7 @@ class IssueManager(models.Manager):
 
 class Issue(models.Model):
     title = models.CharField(_('title'), max_length=255)
-    text_presentation = models.TextField(_('text_presentation'))
+    text_presentation = models.TextField(_('text_presentation'), blank=True, null=True)
     nb_case_x = models.IntegerField(_('nb_case_x'))
     nb_case_y = models.IntegerField(_('nb_case_y'))
     show_disable_square = models.BooleanField(_('show_disable_square'), default=0)
