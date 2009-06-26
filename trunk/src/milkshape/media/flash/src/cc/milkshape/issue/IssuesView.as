@@ -31,66 +31,6 @@ package cc.milkshape.issue
 		private function _handlerAddedToStage(e:Event):void
 		{
 			_issueController.lastIssues()
-			var oGateway:Object = {
-				currentIssues: new Array(
-					{
-						num: 4,
-						title: 'BLACK & WHITE',
-						desc: 'Not very hard',
-						url: 'assets/currentissue1.jpg',
-						schedule: 'START 27-06-09',
-						nbCreators: 9,
-						nbIssues: 25
-					}
-				),
-				completeIssues: new Array(
-					{
-						num: 1,
-						title: 'BLACK & WHITE',
-						desc: 'Not very hard',
-						url: 'assets/currentissue1.jpg',
-						schedule: 'START 27-06-09',
-						nbCreators: 9,
-						nbIssues: 25
-					},
-					{
-						num: 2,
-						title: 'BLACK & WHITE',
-						desc: 'Not very hard',
-						url: 'assets/currentissue1.jpg',
-						schedule: 'START 27-06-09',
-						nbCreators: 9,
-						nbIssues: 25
-					},
-					{
-						num: 3,
-						title: 'BLACK & WHITE',
-						desc: 'Not very hard',
-						url: 'assets/currentissue1.jpg',  
-						schedule: 'START 27-06-09',
-						nbCreators: 9,
-						nbIssues: 25
-					},
-					{
-						num: 4,
-						title: 'BLACK & WHITE',
-						desc: 'Not very hard',
-						url: 'assets/currentissue1.jpg',  
-						schedule: 'START 27-06-09',
-						nbCreators: 9,
-						nbIssues: 25
-					},
-					{
-						num: 5,
-						title: 'BLACK & WHITE',
-						desc: 'Not very hard',
-						url: 'assets/currentissue1.jpg',  
-						schedule: 'START 27-06-09',
-						nbCreators: 9,
-						nbIssues: 25
-					}
-				)
-			};
 		}
 		
 		private function _loadIssues(e:IssuesEvent):void

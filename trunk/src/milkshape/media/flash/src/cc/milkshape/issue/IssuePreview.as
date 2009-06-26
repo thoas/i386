@@ -16,14 +16,16 @@ package cc.milkshape.issue
 			titleClp.descLabel.htmlText = issue.text_presentation;
 			titleClp.titleLabel.text = issue.title;
 			infoClp.creatorsLabel.text = issue.nb_creators + ' CREATORS';
-			infoClp.squaresLabel.text = issue.nb_squares + ' SQUARES';
-			scheduleClp.scheduleLabel.text = issue.date_created;
+			infoClp.squaresLabel.text = issue.nb_case_x * issue.nb_case_y + ' SQUARES';
+			scheduleClp.scheduleLabel.text = issue.date_created.month + '.' + issue.date_created.date + '.' + issue.date_created.fullYear;
 			pastilleClp.textClp.label.text = '#' + issue.id;
-				
-			var img:PreloaderWiper = new PreloaderWiper();
-			img.loadMedia(issue.thumb_url);
 			
-			loaderClp.addChild(img);
+			if(issue.thumb_url){
+				var img:PreloaderWiper = new PreloaderWiper();
+				img.loadMedia(issue.thumb_url);
+				
+				loaderClp.addChild(img);
+			}
 		}
 		
 		private function _overHandler(e:MouseEvent):void
