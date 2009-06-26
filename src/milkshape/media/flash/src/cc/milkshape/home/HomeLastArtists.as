@@ -7,7 +7,7 @@ package cc.milkshape.home
 	{
 		private var _allArtistBtn:SmallButton;
 		
-		public function HomeLastArtists(a:Array)
+		public function init(a:Array):void
 		{
 			var decalX:int = 0;
 			var decalY:int = 0;

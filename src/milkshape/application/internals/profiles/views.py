@@ -64,3 +64,6 @@ def _profile_change(request, name, location, website):
             profile = profile_form.save()
             return profile
     return False
+
+def _last_profiles(request):
+    return Profile.objects.select_related('user').order_by('user__date_joined')

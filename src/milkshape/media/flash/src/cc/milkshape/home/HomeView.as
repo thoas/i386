@@ -1,5 +1,7 @@
 package cc.milkshape.home
 {
+	import cc.milkshape.account.ProfileController;
+	import cc.milkshape.account.events.ProfileEvent;
 	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.home.*;
 	import cc.milkshape.issue.IssueController;
@@ -9,11 +11,12 @@ package cc.milkshape.home
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	
+
 	public class HomeView extends MovieClip
 	{
 		private static const HEADER_IMG_URL:String = 'assets/bg.jpg';
 		private var _issueController:IssueController;
+		private var _profileController:ProfileController;
 		private var _header:PreloaderWiper;
 		private var _mask:Sprite;
 		private var _welcomeText:WelcomeText;
@@ -21,35 +24,45 @@ package cc.milkshape.home
 		private var _completeIssue:HomeCompleteIssueClp;
 		private var _lastArtists:HomeLastArtists;
 		
-		public function HomeView(issueController:IssueController):void
+		public function HomeView(issueController:IssueController, profileController:ProfileController):void
 		{
 			_issueController = issueController;
+			_profileController = profileController;
 			_issueController.addEventListener(IssuesEvent.LAST_ISSUES_LOADED, _loadIssues);
+			_profileController.addEventListener(ProfileEvent.LAST_PROFILES, _loadProfiles);
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 		}
 		
 		private function _handlerAddedToStage(e:Event):void
 		{
+			stage.addEventListener(Event.RESIZE, _handlerResize);
+			
+			_lastArtists = new HomeLastArtists();
+			_currentIssues = new HomeCurrentIssuesClp();
+			_completeIssue = new HomeCompleteIssueClp();
+			_header = new PreloaderWiper();
+			_header.loadMedia(HEADER_IMG_URL);
+				
+			_welcomeText = new WelcomeText();
+            _welcomeText.y = 80;
+			
+			_mask = new Sprite();
+			_header.mask = _mask;
+			
+			addChild(_header);
+			addChild(_welcomeText);
+			addChild(_currentIssues);
+			addChild(_completeIssue);
+			
+			_handlerResize(null);	
 			_issueController.lastIssues();
-			var oGateway:Object = {
-				current1: {url: 'assets/currentissue1.jpg', title: 'BLACK & WHITE', info: 'sdfljsdflsdfmlkdfj, dsfmsdfsdfmsldf'},
-				current2: {url: 'assets/currentissue2.jpg', title: 'OVER THE LAND', info: 'sdlfjjpfj sdfj s'},
-				complete1: {url: 'assets/completeissue1.jpg', title: 'GENERATION 80', info: 'sdlfjjpfj sdfj s'},
-				artists: new Array(
-					{name: 'John', url: 'qsdqsd'},
-					{name: 'Topdos', url: 'qsdqsd'},
-					{name: 'Afrika bsta', url: 'qsdqsd'},{name: 'John', url: 'qsdqsd'},
-					{name: 'Topdos', url: 'qsdqsd'},
-					{name: 'Afrika bsta', url: 'qsdqsd'},{name: 'John', url: 'qsdqsd'},
-					{name: 'Topdos', url: 'qsdqsd'},
-					{name: 'Afrika bsta', url: 'qsdqsd'},{name: 'John', url: 'qsdqsd'},
-					{name: 'Topdos', url: 'qsdqsd'},
-					{name: 'Afrika bsta...', url: 'qsdqsd'}
-				)
-			};
-			
-			_onResult(oGateway);
-			
+			_profileController.lastProfiles();
+		}
+		
+		private function _loadProfiles(e:ProfileEvent):void
+		{
+			_lastArtists.init(e.lastProfiles);
+			addChild(_lastArtists);
 		}
 		
 		private function _loadIssues(e:IssuesEvent):void
@@ -72,32 +85,6 @@ package cc.milkshape.home
 			_completeIssue.allIssues.addChild(new SmallButton("ALL ISSUES", new PlusItem()));
 			
 			_lastArtists.x = _completeIssue.x + _completeIssue.width;
-		}
-		
-		private function _onResult(o:Object):void
-		{
-			stage.addEventListener(Event.RESIZE, _handlerResize);
-			
-			_currentIssues = new HomeCurrentIssuesClp();
-			_completeIssue = new HomeCompleteIssueClp();
-			_header = new PreloaderWiper();
-			_header.loadMedia(HEADER_IMG_URL);
-				
-			_welcomeText = new WelcomeText();
-            _welcomeText.y = 80;
-			
-			_lastArtists = new HomeLastArtists(o.artists);
-			
-			_mask = new Sprite();
-			_header.mask = _mask;
-			
-			addChild(_header);
-			addChild(_welcomeText);
-			addChild(_currentIssues);
-			addChild(_completeIssue);
-			addChild(_lastArtists);
-			
-			_handlerResize(null);		
 		}
 		
 		private function _handlerResize(e:Event):void

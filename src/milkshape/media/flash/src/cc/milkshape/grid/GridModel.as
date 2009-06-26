@@ -200,7 +200,7 @@ package cc.milkshape.grid
 				_addPosition(new SquareOpen(square.pos_x + minX, square.pos_y + minY, squareSize));
 			}
 			
-			if(/*showDisableSquare*/true)
+			if(showDisableSquare)
 			{
 				for(i = 0 ; i < nbVSquare ; ++i)
 				{
