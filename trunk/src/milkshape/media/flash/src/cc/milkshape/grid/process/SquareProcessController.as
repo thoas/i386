@@ -79,6 +79,7 @@ package cc.milkshape.grid.process
 		
 		public function _templateLoaded(e:Event):void
 		{
+			dispatchEvent(new SquareProcessEvent(SquareProcessEvent.UPLOADING2));
 			var data:ByteArray = new ByteArray();
 			_fileUpload.data.readBytes(data, 0, _fileUpload.data.length);
 			_responder = new Responder(_uploaded, _onFault);
@@ -95,6 +96,16 @@ package cc.milkshape.grid.process
 		public function reload():void
 		{
 			trace('reload issue');
+		}
+		
+		public function show():void
+		{
+			dispatchEvent(new SquareProcessEvent(SquareProcessEvent.SHOW));
+		}
+		
+		public function hide():void
+		{
+			dispatchEvent(new SquareProcessEvent(SquareProcessEvent.HIDE));
 		}
 	}
 }

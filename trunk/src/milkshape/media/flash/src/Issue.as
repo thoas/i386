@@ -88,7 +88,7 @@ package
 			_gridModel.addEventListener(GridLineEvent.SHOW, _hideOpenHandCursor);
 			_gridModel.addEventListener(GridLineEvent.HIDE, _showOpenHandCursor);
 			
-			addEventListener(Event.RESIZE, _handlerResize);
+			stage.addEventListener(Event.RESIZE, _handlerResize);
 			_handlerResize(null);
 		}
 		
@@ -139,6 +139,9 @@ package
 		
 		private function _handlerResize(e:Event):void
 		{
+			trace('un');
+			_squareProcess.x =  Math.round(stage.stageWidth * 0.5) - 400;
+			_squareProcess.y =  Math.round(stage.stageHeight * 0.5) - 400;
 			_sidebar.x = stage.stageWidth - 136;
 			_navPanel.y = Math.round(stage.stageHeight * 0.5) - 96;
 		}
