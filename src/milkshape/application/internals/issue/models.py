@@ -87,7 +87,7 @@ class IssueManager(models.Manager):
             )
         """ % (issue.id))
         rows = cursor.fetchall()
-        found = User.objects.in_bulk([r[0] for r in rows])
+        found = User.objects.select_related('profile').in_bulk([r[0] for r in rows])
         return found.values()
 
 class Issue(models.Model):

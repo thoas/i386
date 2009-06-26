@@ -1,6 +1,5 @@
 package cc.milkshape.issue
 {
-	import Main;
 	import cc.milkshape.utils.Constance;
 	import cc.milkshape.preloader.PreloaderWiper;
 	import cc.milkshape.preloader.events.PreloaderEvent;

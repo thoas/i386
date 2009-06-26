@@ -51,8 +51,10 @@ package cc.milkshape.main
 		
 		private function _clickHandler(e:Event):void
 		{
-			_lastBtnClicked.reinitClick();
-			_lastBtnClicked = e.currentTarget as MenuButton;
+			if(_lastBtnClicked != e.currentTarget){
+				_lastBtnClicked.reinitClick();
+				_lastBtnClicked = e.currentTarget as MenuButton;
+			}
 			dispatchEvent(new PreloaderEvent(PreloaderEvent.LOAD, _lastBtnClicked.option));
 		}
 		

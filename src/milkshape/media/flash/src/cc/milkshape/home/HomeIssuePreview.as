@@ -1,16 +1,21 @@
 package cc.milkshape.home
 {
 	import cc.milkshape.preloader.PreloaderWiper;
-		
+	import cc.milkshape.preloader.events.PreloaderEvent;
+	
+	import cc.milkshape.utils.Constance;
+	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	public class HomeIssuePreview extends HomeIssuePreviewClp
 	{
 		private var _overStatut:Boolean;
+		private var _issue:Object;
 		
-		public function HomeIssuePreview(o:Object) 
+		public function HomeIssuePreview(issue:Object) 
 		{
+			_issue = issue;
 			buttonMode = true;
 			stop();
 			_overStatut = false;
@@ -19,12 +24,14 @@ package cc.milkshape.home
 			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
 			addEventListener(MouseEvent.CLICK, _clickHandler);
 			
-			titleClp.label.text = o.title;
-			infoClp.label.text = o.info;
-			var img:PreloaderWiper = new PreloaderWiper();
-			img.loadMedia(o.url);
-			bg.addChild(img);
-			
+			titleClp.label.text = issue.title;
+			infoClp.label.htmlText = issue.text_presentation;
+			if(issue.thumb_url)
+			{
+				var img:PreloaderWiper = new PreloaderWiper();
+				img.loadMedia(issue.thumb_url);
+				bg.addChild(img);	
+			}			
 		}
 		
 		private function _overHandler(e:MouseEvent):void
@@ -58,7 +65,7 @@ package cc.milkshape.home
 		
 		private function _clickHandler(e:MouseEvent):void
 		{
-			trace('go to ');			
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {url: Constance.ISSUE_SWF, background: false, params: {slug: _issue.slug}}));
 		}
 	}
 }
