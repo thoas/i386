@@ -37,8 +37,7 @@ class Command(BaseCommand):
         result = c.login(username=ACCT_USERNAME, password=ACCT_PASSWORD)
         if result:
             image = Image.open(image_root)
-            print image.__dict__
-            exit()
+            """"
             print 'Issue\'s title?'
             title = sys.stdin.readline()
             
@@ -61,7 +60,6 @@ class Command(BaseCommand):
             until_fill = sys.stdin.readline()
             
             
-            """
             issue = Issue.objects.get_or_create(
                 title=title, 
                 nb_case_x=nb_case_x, 
@@ -80,30 +78,63 @@ class Command(BaseCommand):
             )
             
             process(c, image, issue)
-
             """
-
+            
+            fill(c, 0, 0, Issue.objects.get(slug="5x5"), image)
 
 def process(c, image, issue):    
     for square_open in squares_open:
-        book(c, square_open.pos_x, square_open.pos_y, issue.slug)
-        fill(c, square_open.pos_x, square_open.pos_y, issue.slug, image)
+        book(c, square_open.pos_x, square_open.pos_y, issue)
+        fill(c, square_open.pos_x, square_open.pos_y, issue, image)
     
     if SquareOpen.objects.filter(is_standby=False, issue=self.issue).count() > 0:
         process(c, image, issue)
-    
-    
-def book(c, pos_x, pos_y, issue_slug):
+
+def book(c, pos_x, pos_y, issue):
     response = c.get(reverse('square_book', kwargs={
-        'pos_x': pos_x, 
-        'pos_y':pos_y, 
-        'issue_slug': issue_slug
+        'pos_x': pos_x,
+        'pos_y':pos_y,
+        'issue_slug': issue.slug
     }))
 
-def fill(c, pos_x, pos_y, issue_slug, image):
+def fill(c, pos_x, pos_y, issue, image):
+    template_size = issue.size + issue.margin * 2
+    width, height = image.size
     
-    response = c.post(reverse('square_fill', kwargs={
-        'pos_x': pos_x,
-        'pos_y': pos_y,
-        'issue_slug': issue_slug
-    }), {'background_image': f})
+    left_x = pos_y * issue.size
+    paste_left_x = 0
+    paste_right_x = template_size
+    
+    top_y = pos_x * issue.size
+    paste_top_y = 0
+    paste_bottom_y = template_size
+    
+    if left_x == 0:
+        paste_left_x += issue.margin
+        right_x = left_x + issue.size + issue.margin
+    else:
+        left_x -= issue.margin
+        right_x = left_x + template_size
+    
+    if top_y == 0:
+        paste_top_y += issue.margin
+        bottom_y = top_y + issue.size + issue.margin
+    else:
+        top_y -= issue.margin
+        bottom_y = top_y + template_size
+    
+    crop = image.crop((left_x, top_y, right_x, bottom_y))
+    print (left_x, top_y, right_x, bottom_y)
+    paste_image = Image.new('RGB', (template_size, template_size), 'white')
+    print (paste_left_x, paste_top_y, paste_right_x, paste_bottom_y)
+    paste_image.paste(crop, (paste_left_x, paste_top_y, paste_right_x, paste_bottom_y))
+    
+    paste_image_path = join(settings.TMP_ROOT, '%d_%d.jpg' % (pos_x, pos_y))
+    paste_image.save(paste_image_path, format='JPEG', quality=90)
+
+    
+    #response = c.post(reverse('square_fill', kwargs={
+    #    'pos_x': pos_x,
+    #    'pos_y': pos_y,
+    #    'issue_slug': issue.slug
+    #}), {'background_image': f})
