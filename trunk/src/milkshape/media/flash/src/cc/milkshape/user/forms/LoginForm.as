@@ -44,7 +44,7 @@ package cc.milkshape.user.forms
 			_login = new Input('username');
 			_password = new Input('password', true);
 			_logout = new Label(new LabelStandard0765Clp(), 'LOGOUT', 0x8f8f8f);
-			_profil = new Label(new LabelStandard0765Clp(), 'PROFIL', Constance.COLOR_YELLOW);
+			_profil = new Label(new LabelStandard0765Clp(), 'PROFILE', Constance.COLOR_YELLOW);
 			_notif = new Label(new LabelStandard0765Clp(), 'You are', 0x8f8f8f);
 			_hello = new Label(new LabelStandard0765Clp(), '', 0x8f8f8f);
 			

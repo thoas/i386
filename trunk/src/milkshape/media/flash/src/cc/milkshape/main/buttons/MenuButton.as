@@ -86,13 +86,9 @@ package cc.milkshape.main.buttons
 
 		private function _clickHandler(e:MouseEvent):void
 		{
-			if(!_clickStatus)
-			{
-				dispatchEvent(new MenuButtonEvent(MenuButtonEvent.CLICKED));
-				removeEventListener(MouseEvent.MOUSE_OVER, _overHandler);
-				removeEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-				_clickStatus = true;
-			}
+			dispatchEvent(new MenuButtonEvent(MenuButtonEvent.CLICKED));
+			removeEventListener(MouseEvent.MOUSE_OVER, _overHandler);
+			removeEventListener(MouseEvent.MOUSE_OUT, _outHandler);
 		}
 	}
 }
