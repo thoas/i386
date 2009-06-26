@@ -176,7 +176,9 @@ class Issue(models.Model):
     
     @property
     def thumb_url(self):
-        return '%s/%s' % (self.media_url, self.thumb)
+        if self.thumb:
+            return '%s/%s' % (self.media_url, self.thumb)
+        return None
     
     @property
     def media_url(self):
