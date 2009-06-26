@@ -11,7 +11,7 @@ package cc.milkshape.grid.square
 
 		public function SquareBooked(x:int, y:int, size:int)
 		{
-			super(x, y, 0x141414, size);
+			super(x, y, 0x393939, size);
 			_drawCross();
 		}
 		

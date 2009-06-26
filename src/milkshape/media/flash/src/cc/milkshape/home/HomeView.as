@@ -31,6 +31,12 @@ package cc.milkshape.home
 			_issueController.addEventListener(IssuesEvent.LAST_ISSUES_LOADED, _loadIssues);
 			_profileController.addEventListener(ProfileEvent.LAST_PROFILES, _loadProfiles);
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
+			addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
+		}
+		
+		private function _handlerRemovedFromStage(e:Event):void
+		{
+			stage.removeEventListener(Event.RESIZE, _handlerResize);
 		}
 		
 		private function _handlerAddedToStage(e:Event):void

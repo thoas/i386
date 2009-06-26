@@ -1,10 +1,10 @@
 package cc.milkshape.grid.process
 {
+	import cc.milkshape.framework.buttons.BigButton;
 	import cc.milkshape.grid.GridModel;
-	import cc.milkshape.user.User;
 	import cc.milkshape.grid.process.events.SquareProcessEvent;
 	import cc.milkshape.grid.square.events.SquareFormEvent;
-	import cc.milkshape.framework.buttons.BigButton;
+	import cc.milkshape.user.User;
 	
 	import com.gskinner.motion.GTween;
 	
@@ -21,7 +21,8 @@ package cc.milkshape.grid.process
 		private var _releaseBtn:BigButton;
 		private var _fillBtn:BigButton;
 		private var _reloadBtn:BigButton;
-		private var _showFormTween:GTween;
+		private var _preloaderLogo:PreloadLogoClp;
+		private var _tween:GTween;
 		
 		public function SquareProcessView(gridModel:GridModel, o:SquareProcessController)
 		{
@@ -29,6 +30,7 @@ package cc.milkshape.grid.process
 			_squareProcessController = o;
 			_gridModel = gridModel;
 			
+			_preloaderLogo = new PreloadLogoClp();
 			_bookBtn = new BigButton('Reserver', new CirclePlusItem());
 			_releaseBtn = new BigButton('Annuler', new CircleCrossItem());
 		 	_templateBtn = new BigButton('Telecharger', new CircleArrowDownItem());
@@ -43,6 +45,7 @@ package cc.milkshape.grid.process
 			
 			_squareProcessController.addEventListener(SquareProcessEvent.DOWNLOAD, _download);	
 			_squareProcessController.addEventListener(SquareProcessEvent.UPLOADING, _uploading);
+			_squareProcessController.addEventListener(SquareProcessEvent.UPLOADING2, _uploading2);
 			_squareProcessController.addEventListener(SquareProcessEvent.SUCCESS, _success);	
 			_squareProcessController.addEventListener(SquareProcessEvent.CANCELED, _canceled);	
 			_squareProcessController.addEventListener(SquareProcessEvent.BOOKED, _booked);	
@@ -66,6 +69,13 @@ package cc.milkshape.grid.process
 		private function _uploading(e:SquareProcessEvent):void
 		{
 			gotoAndPlay('uploading');
+			infoUploadText.label.htmlText = 'Step 1/2<br>Uploading your .tiff';
+			uploadingClp.addChild(_preloaderLogo);
+		}
+		
+		private function _uploading2(e:SquareProcessEvent):void
+		{
+			infoUploadText.label.htmlText = 'Step 2/2<br>Updating the issue';
 		}
 		
 		private function _canceled(e:SquareProcessEvent):void
@@ -81,6 +91,8 @@ package cc.milkshape.grid.process
 		
 		private function _success(e:SquareProcessEvent):void
 		{
+			if(uploadingClp.contains(_preloaderLogo))
+				uploadingClp.removeChild(_preloaderLogo);
 			gotoAndPlay('success');
 		}
 		
@@ -96,6 +108,7 @@ package cc.milkshape.grid.process
 		
 		private function _template(e:MouseEvent):void
 		{
+			//FIX stage.displayState = 'normal';
 			_squareProcessController.template();
 		}
 		
@@ -111,8 +124,10 @@ package cc.milkshape.grid.process
 		
 		private function _showOpenForm(e:SquareFormEvent):void
 		{
-			if(User.getInstance().isAuthenticated() === true){
-				_showFormTween = new GTween(
+			if(User.getInstance().isAuthenticated() === true)
+			{
+				_squareProcessController.show();
+				_tween = new GTween(
 					this, 
 					0.1, 
 					{ alpha: 1 }, 
@@ -125,9 +140,11 @@ package cc.milkshape.grid.process
 		private function _showBookedForm(e:SquareFormEvent):void
 		{
 			if(User.getInstance().isAuthenticated() === true 
-				&& e.focusSquare.user.id == User.getInstance().getAttribute('account').id){
+				&& e.focusSquare.user.id == User.getInstance().getAttribute('account').id)
+			{
+				_squareProcessController.show();
 				gotoAndPlay('booked');
-				_showFormTween = new GTween(
+				_tween = new GTween(
 					this, 
 					0.1, 
 					{ alpha: 1 }, 
@@ -143,15 +160,10 @@ package cc.milkshape.grid.process
 		
 		private function _closeForm(e:SquareFormEvent):void
 		{
-			if(_showFormTween is GTween){
-				_showFormTween.pause();
-				_showFormTween = new GTween(
-					this, 
-					0.1, 
-					{ alpha: 0 }, 
-					{ ease: Sine.easeOut }
-				);
-			}
+			if(_tween is GTween)
+            	_tween.pause();
+			_squareProcessController.hide();
+			alpha = 0;
 		}
 	}
 }
