@@ -12,7 +12,7 @@ package cc.milkshape.preloader
 	public class Preloader extends Sprite
 	{
 		private var _url:String;
-		private var _msg:*;
+		private var _params:Object;
 		protected var _loader:Loader;
 		protected var _bytesTotal:int;
 		protected var _bytesLoaded:int;
@@ -24,6 +24,16 @@ package cc.milkshape.preloader
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 		}
 		
+		public function get params():Object
+		{
+			return _params;
+		}
+
+		public function set params(v:Object):void
+		{
+			_params = v;
+		}
+
 		private function _handlerAddedToStage(e:Event):void
 		{
 			_loader.contentLoaderInfo.addEventListener(Event.OPEN, _openHandler);
@@ -56,7 +66,7 @@ package cc.milkshape.preloader
 		
 		private function _completeHandler(e:Event):void 
 		{
-			e.target.sharedEvents.dispatchEvent(new PreloaderEvent(PreloaderEvent.INFO, _msg));// Passage de variable
+			e.target.sharedEvents.dispatchEvent(new PreloaderEvent(PreloaderEvent.INFO, _params));// Passage de variable
 			_close();
 		}
 		

@@ -43,8 +43,7 @@ package
 		private function _handlerAddedToStage(e:Event):void
 		{
 			stage.stageFocusRect = false;
-			//loaderInfo.sharedEvents.addEventListener(PreloaderEvent.INFO, _handlerInit);
-			_handlerInit(new PreloaderEvent(PreloaderEvent.INFO, {slug: '5x5'}));
+			loaderInfo.sharedEvents.addEventListener(PreloaderEvent.INFO, _handlerInit);
 		}
 		
 		private function _handlerRemovedToStage(e:Event):void
