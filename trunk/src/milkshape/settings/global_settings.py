@@ -136,18 +136,14 @@ SECRET_KEY = 'bk-e2zv3humar79nm=j*bwc=-ymeit(8a20whp3goq4dh71t)s'
 CLI_ROOT = join(PROJECT_ROOT, 'cli')
 
 UPLOAD_DIR = 'upload'
-
 UPLOAD_HD_DIR = 'hd'
-
 TEMPLATE_DIR = 'template'
-
 UPLOAD_TEMPLATE_DIR = 'template'
-
 UPLOAD_THUMB_DIR = 'thumb'
-
 LAYER_DIR = 'layer'
-
 ISSUES_DIR = 'issues'
+
+TMP_ROOT = join(PROJECT_ROOT, 'tmp')
 ISSUES_ROOT = join(MEDIA_ROOT, ISSUES_DIR)
 
 # Default values
