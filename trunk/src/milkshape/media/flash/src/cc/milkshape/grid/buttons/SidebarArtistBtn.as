@@ -4,7 +4,6 @@ package cc.milkshape.grid.buttons
 	
 	public class SidebarArtistBtn extends SidebarArtistBtnClp
 	{
-		public static var i:int;
 		public function SidebarArtistBtn(str:String, newArtist:Boolean = false)
 		{
 			buttonMode = true;
@@ -19,12 +18,10 @@ package cc.milkshape.grid.buttons
 				featured.x = 0;
 				username.x =+ 28;
 			}
-			i++;
 		}
 		
 		public function on():void
 		{
-			trace(i);
 			username.textColor = Constance.COLOR_BLUE;
 		}
 		

@@ -42,7 +42,7 @@ package cc.milkshape.grid
 		
 		public function GridView(model:GridModel, controller:GridController, keyboardController:GridKeyboardController, mouseController:GridMouseController)
 		{
-			_lineColor = 0x1E1E1E;
+			_lineColor = 0x343434;
 			_stagePadding = 50;
 			_speed = 800;
 			_controller = controller;
