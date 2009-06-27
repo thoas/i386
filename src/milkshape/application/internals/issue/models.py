@@ -257,6 +257,3 @@ def create_tree(sender, instance=None, **kwargs):
             print error
 
 post_save.connect(create_tree, sender=Issue)
-
-#from pyamf import register_class
-#register_class(Issue, 'Issue', attrs=['title'])
