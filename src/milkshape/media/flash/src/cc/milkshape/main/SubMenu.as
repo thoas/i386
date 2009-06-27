@@ -1,7 +1,9 @@
 package cc.milkshape.main
 {
 	import cc.milkshape.preloader.events.PreloaderEvent;
-	
+	import cc.milkshape.utils.Constance;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.events.MouseEvent;
 
 	public class SubMenu extends SubMenuClp
@@ -15,10 +17,10 @@ package cc.milkshape.main
 			terms.slug = 'terms';
 			rss.addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			rss.addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-			rss.addEventListener(MouseEvent.CLICK, _clickHandler);
+			rss.addEventListener(MouseEvent.CLICK, _clickHandlerRSS);
 			terms.addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			terms.addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-			terms.addEventListener(MouseEvent.CLICK, _clickHandler);
+			terms.addEventListener(MouseEvent.CLICK, _clickHandlerTerms);
 		}
 		
 		private function _overHandler(e:MouseEvent):void
@@ -31,10 +33,14 @@ package cc.milkshape.main
 			e.currentTarget.gotoAndPlay('out');
 		}
 		
-		private function _clickHandler(e:MouseEvent):void
+		private function _clickHandlerTerms(e:MouseEvent):void
 		{
-			trace(e.currentTarget.slug);
-			//dispatchEvent(new PreloaderEvent(PreloaderEvent.INFO, e.currentTarget.slug));
+			dispatchEvent(new PreloaderEvent(PreloaderEvent.LOAD, {url: Constance.TERMS_SWF}));
+		}
+		
+		private function _clickHandlerRSS(e:MouseEvent):void
+		{
+			navigateToURL(new URLRequest('http://rss.feedsportal.com/c/302/f/6947/index.rss'), 'blank');
 		}
 		
 	}
