@@ -42,18 +42,18 @@ package cc.milkshape.grid
 				square = SquareManager.get(i);
 				if(square is SquareOwned)
 				{
-					_listArtists[SquareOwned(square).user.id] = new SidebarArtistBtn(SquareOwned(square).user.username);
-					_listArtists[SquareOwned(square).user.id].y = decalY;
+					_listArtists[i] = new SidebarArtistBtn(SquareOwned(square).user.username);
+					_listArtists[i].y = decalY;
 					decalY += 12;
-					listArtists.addChild(_listArtists[SquareOwned(square).user.id]);
+					listArtists.addChild(_listArtists[i]);
 				}
 			}
 			
 			// le premier ArtistBtn on est celui qui a le focus 
 			if(_gridModel.focusSquare is SquareOwned)
 			{
-				_lastOverArtistBtn = _listArtists[_gridModel.focusSquare.user.id];
-				_lastOverArtistBtn.gotoAndStop('on');
+				_lastOverArtistBtn = _listArtists[SquareManager.getIndice(_gridModel.focusSquare)];
+				_lastOverArtistBtn.on();
 			}
 			
 			_gridModel.addEventListener(GridOverEvent.OVER, _overSquareHandler);
@@ -62,10 +62,9 @@ package cc.milkshape.grid
 		private function _overSquareHandler(e:GridOverEvent):void
 		{
 			if(_lastOverArtistBtn)
-				_lastOverArtistBtn.gotoAndStop('off');
-			_lastOverArtistBtn = _listArtists[e.userId];
-			_lastOverArtistBtn.gotoAndStop('on');
-			trace(_lastOverArtistBtn.textClp.label.text);
+				_lastOverArtistBtn.off();
+			_lastOverArtistBtn = _listArtists[e.indice];
+			_lastOverArtistBtn.on();
 		}
 		
 		private function _clickHandler(e:MouseEvent):void

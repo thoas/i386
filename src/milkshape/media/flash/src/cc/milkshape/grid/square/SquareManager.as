@@ -23,6 +23,11 @@
 		{
 			return _lstSquare[i];
 		}
+		
+		public static function getIndice(s:Square):int
+		{
+			return _lstSquare.indexOf(s);
+		}
 	}
 	
 }

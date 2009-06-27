@@ -5,17 +5,17 @@ package cc.milkshape.grid.events
 	public class GridOverEvent extends Event
 	{
 		public static const OVER:String = 'OVER';
-		private var _userId:int;
+		private var _indice:int;
 		
-		public function GridOverEvent(e:String, userId:int):void
+		public function GridOverEvent(e:String, indice:int):void
 		{
 			super(e);
-			_userId = userId;
+			_indice = indice;
 		}
 		
-		public function get userId():int
+		public function get indice():int
 		{
-			return _userId;
+			return _indice;
 		}
 
 	}

@@ -1,11 +1,14 @@
 package cc.milkshape.grid.buttons
 {
+	import cc.milkshape.utils.Constance;
+	
 	public class SidebarArtistBtn extends SidebarArtistBtnClp
 	{
-		public function SidebarArtistBtn(username:String, newArtist:Boolean = false)
+		public static var i:int;
+		public function SidebarArtistBtn(str:String, newArtist:Boolean = false)
 		{
 			buttonMode = true;
-			textClp.label.text = username.toUpperCase();
+			username.text = str.toUpperCase();
 			
 			if(!newArtist) 
 			{
@@ -14,8 +17,20 @@ package cc.milkshape.grid.buttons
 			else
 			{
 				featured.x = 0;
-				textClp.label.x =+ 28;
+				username.x =+ 28;
 			}
+			i++;
+		}
+		
+		public function on():void
+		{
+			trace(i);
+			username.textColor = Constance.COLOR_BLUE;
+		}
+		
+		public function off():void
+		{
+			username.textColor = 0xffffff;
 		}
 	}
 }
