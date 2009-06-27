@@ -35,7 +35,7 @@ def _book(request, pos_x, pos_y, issue_slug):
                 square.user = request.user
                 square.save()
         except Square.DoesNotExist:
-            square = Square.objects.create(pos_x=pos_x, pos_y=pos_x, issue=issue,\
+            square = Square.objects.create(pos_x=pos_x, pos_y=pos_y, issue=issue,\
                         user=request.user, status=0)
         if not square.status:
             SquareOpen.objects.neighbors_standby(square_open, True)
