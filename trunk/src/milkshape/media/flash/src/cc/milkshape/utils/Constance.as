@@ -8,6 +8,7 @@ package cc.milkshape.utils
 		public static const CONTACT_SWF:String = 'contact.swf';
 		public static const HOME_SWF:String = 'home.swf';
 		public static const ABOUT_SWF:String = 'about.swf';
+		public static const TERMS_SWF:String = 'terms.swf';
 		
 		public static var URL_SITE:String = "http://localhost:8000";
 		
