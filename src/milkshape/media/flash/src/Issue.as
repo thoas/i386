@@ -5,9 +5,11 @@ package
 	import cc.milkshape.grid.GridKeyboardController;
 	import cc.milkshape.grid.GridModel;
 	import cc.milkshape.grid.GridMouseController;
+	import cc.milkshape.grid.GridNavInfos;
 	import cc.milkshape.grid.GridNavPanel;
 	import cc.milkshape.grid.GridSidebar;
 	import cc.milkshape.grid.GridView;
+	import cc.milkshape.grid.events.GridEvent;
 	import cc.milkshape.grid.events.GridLineEvent;
 	import cc.milkshape.grid.process.SquareProcess;
 	import cc.milkshape.preloader.events.PreloaderEvent;
@@ -32,6 +34,8 @@ package
 		private var _squareProcess:SquareProcess;
 		private var _sidebar:GridSidebar;
 		private var _navPanel:GridNavPanel;
+		private var _preloader:PreloadLogoClp;
+		private var _navInfos:GridNavInfos;
 		
 		public function Issue()
 		{
@@ -68,16 +72,19 @@ package
 			
 			_squareProcess = new SquareProcess(_gridModel);
 			
+			_navInfos = new GridNavInfos();
+			_preloader = new PreloadLogoClp();
+			addChild(_preloader);
 			addChild(_bg);
 			addChild(_gridView);
 			addChild(_squareProcess);
+			addChild(_preloader);
+			addChild(_navInfos);
 			
 			_sidebar = new GridSidebar(_gridModel);
-			addChild(_sidebar);
 			
 			_navPanel = new GridNavPanel(_gridModel);
 			_navPanel.x = 20;
-			addChild(_navPanel);
 			
 			_closeHandCursor = new ClosedHandCursor();
 			_openHandCursor = new OpenHandCursor();
@@ -87,9 +94,20 @@ package
 			addChild(_openHandCursor);
 			_gridModel.addEventListener(GridLineEvent.SHOW, _hideOpenHandCursor);
 			_gridModel.addEventListener(GridLineEvent.HIDE, _showOpenHandCursor);
+			_gridModel.addEventListener(GridEvent.READY, _hidePreloader);
 			
 			stage.addEventListener(Event.RESIZE, _handlerResize);
 			_handlerResize(null);
+		}
+		
+		private function _hidePreloader(e:GridEvent):void
+		{
+			removeChild(_preloader);
+			
+			addChild(_sidebar);
+			addChild(_navPanel);
+			_sidebar.show();
+			_navPanel.gotoAndPlay('go');
 		}
 		
 		private function _mouseMoveHandler(e:MouseEvent = null):void
@@ -139,6 +157,11 @@ package
 		
 		private function _handlerResize(e:Event):void
 		{
+			if(contains(_preloader))
+			{
+				_preloader.x = Math.round(stage.stageWidth * 0.5 - _preloader.width);
+				_preloader.y = Math.round(stage.stageHeight * 0.5 - _preloader.height);
+			}
 			_sidebar.x = stage.stageWidth - 136;
 			_sidebar.y = Math.round(stage.stageHeight * 0.5 - _sidebar.height * 0.5);
 			_navPanel.y = Math.round(stage.stageHeight * 0.5 - _navPanel.height * 0.5);

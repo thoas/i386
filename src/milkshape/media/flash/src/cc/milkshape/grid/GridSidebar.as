@@ -22,14 +22,17 @@ package cc.milkshape.grid
 			_gridModel = gridModel;
 			_gridModel.addEventListener(GridEvent.READY, _gridReadyHandler);
 			stop();
-
+			
+			open.buttonMode = true;
+			open.addEventListener(MouseEvent.CLICK, _clickHandler);
+		}
+		
+		public function show():void
+		{
 			_nextFrame = true;
 			
 			if (!hasEventListener(Event.ENTER_FRAME))
 				addEventListener(Event.ENTER_FRAME, _enterFrame);
-			
-			open.buttonMode = true;
-			open.addEventListener(MouseEvent.CLICK, _clickHandler);
 		}
 		
 		private function _gridReadyHandler(e:GridEvent):void
@@ -48,6 +51,11 @@ package cc.milkshape.grid
 					listArtists.addChild(_listArtists[i]);
 				}
 			}
+			
+			decalY -= 11;
+			bg.bg.height += decalY;
+			bg.download.y += decalY;
+			bg.bottomBar.y += decalY;
 			
 			// le premier ArtistBtn on est celui qui a le focus 
 			if(_gridModel.focusSquare is SquareOwned)
