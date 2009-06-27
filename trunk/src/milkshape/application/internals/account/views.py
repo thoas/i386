@@ -188,24 +188,17 @@ def language_change(request, template_name, form_class=ChangeLanguageForm):
 
 @login_required
 def invitations(request, template_name, confirmation_key, form_class=InvitationForm):
-    
-    user = request.user
-    remain_invitation = user.get_profile().remain_invitation()
-    users_invited = user.get_profile().users_invited()
-    unused_invitations = list(user.get_profile().unused_invitations())
-    sent_invitations = user.get_profile().sent_invitations()
-    
+    invitations = _invitations(request)
     form = form_class()
     
-    from django.forms.fields import email_re
     if request.method == 'POST':
         if request.POST['action'] == 'add':
-            if remain_invitation > 0:
+            if invitations['remain_invitation'] > 0:
                 new_invitation = Invitation.objects.create(user=request.user, 
                     confirmation_key=User.objects.make_random_password())
                 
-                unused_invitations.append(new_invitation)
-                remain_invitation -= 1
+                invitations['unused_invitations'].append(new_invitation)
+                invitations['remain_invitation'] -= 1
         elif request.POST['action'] == 'update':
             from datetime import datetime
             current_site = Site.objects.get_current()
@@ -213,26 +206,55 @@ def invitations(request, template_name, confirmation_key, form_class=InvitationF
             for i in range(int(request.POST['nb_unused_invitations'])):
                 index = str(i)
                 email = request.POST['email_' + index]
-                if email_re.match(email):
-                    try:
-                        invitation = Invitation.objects.get(email=email)
-                        request.user.message_set.create(message=_('%s already exists in our database') % email)
-                    except Invitation.DoesNotExist:
-                        invitation = get_object_or_404(Invitation, 
-                            confirmation_key=request.POST['confirmation_key_' + index])
-                        invitation.email = email
-                        invitation.first_name = request.POST['first_name_' + index]
-                        invitation.last_name = request.POST['last_name_' + index]
-                        invitation.subject = request.POST['subject_' + index]
-                        invitation.content = request.POST['content_' + index]
-                        invitation.save()
-                        unused_invitations.remove(invitation)
-                        Invitation.objects.send_invitation(invitation, \
-                            request.user, user_profile, current_site)
+                confirmation_key = request.POST['confirmation_key_' + index]
+                content = request.POST['content_' + index]
+                invitation = _send_invitation(request, confirmation_key, email, content)
+                if not invitation:
+                    request.user.message_set.create(message=_('%s already exists in our database') % email)
+                else:
+                    invitations['unused_invitations'].remove(invitation)
     return render_to_response(template_name, {
         'form': form,
-        'remain_invitation': remain_invitation,
-        'sent_invitations': sent_invitations,
-        'unused_invitations': unused_invitations,
-        'users_invited': users_invited,
+        'invitations': invitations,
     }, context_instance=RequestContext(request))
+
+@login_required
+def _create_invitation(request):
+    remain_invitation = user.get_profile().remain_invitation()
+    if remain_invitation > 0:
+        new_invitation = Invitation.objects.create(
+            user=request.user,
+            confirmation_key=User.objects.make_random_password()
+        )
+        return new_invitation
+    return False
+
+
+@login_required
+def _invitations(request):
+    remain_invitation = request.user.get_profile().remain_invitation()
+    users_invited = request.user.get_profile().users_invited()
+    unused_invitations = list(request.user.get_profile().unused_invitations())
+    sent_invitations = request.user.get_profile().sent_invitations()
+    return {
+        'remain_invitation': remain_invitation,
+        'users_invited': users_invited,
+        'unused_invitations': unused_invitations,
+        'sent_invitations': sent_invitations
+    }
+
+@login_required
+def _send_invitation(request, confirmation_key, email, content):
+    from django.forms.fields import email_re
+    if email_re.match(email):
+        try:
+            invitation = Invitation.objects.get(email=email)
+            return False
+        except Invitation.DoesNotExist:
+            invitation = get_object_or_404(Invitation, confirmation_key=confirmation_key)
+            invitation.email = email
+            invitation.content = content
+            invitation.save()
+            return invitation
+    return False
+

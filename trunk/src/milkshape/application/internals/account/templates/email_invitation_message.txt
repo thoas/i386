@@ -1,6 +1,6 @@
 {% load i18n %}
-{% blocktrans with current_site.name as site_name and invitation.first_name as first_name and invitation.last_name as last_name and profile.name as profile_name %}
-Hi {{ first_name }} {{ last_name }},
+{% blocktrans with current_site.name as site_name and user.username as profile_name %}
+Hi,
 
 {{ profile_name }} invites you at {{ site_name }}
 

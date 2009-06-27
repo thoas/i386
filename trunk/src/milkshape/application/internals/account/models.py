@@ -30,25 +30,20 @@ post_save.connect(create_account, sender=User)
 class InvitationManager(models.Manager):
     '''manager for Invitation model'''
 
-    def send_invitation(self, invitation_instance, user_instance=None, user_profile=None, current_site=None):
+    def send_invitation(self, invitation_instance):
         from emailconfirmation.utils import get_send_mail
         send_mail = get_send_mail()
         
         confirmation_key = invitation_instance.confirmation_key
-        if current_site is None:
-            current_site = Site.objects.get_current()
+        
+        current_site = Site.objects.get_current()
         activate_url = u'http://%s%s' % (
             unicode(current_site.domain),
             reverse('acct_signup_key', args=(confirmation_key,))
         )
-        if user_instance is None:
-            user_instance = invitation.user
         
-        if user_profile is None:
-            user_profile = user_instance.get_profile()
         context = {
-            'user': user_instance,
-            'user_profile': user_profile,
+            'user': invitation_instance.user,
             'invitation': invitation_instance,
             'activate_url': activate_url,
             'current_site': current_site,
@@ -63,10 +58,7 @@ class InvitationManager(models.Manager):
             print 'error (%s) for %s' % (msg, invitation_instance.email)
 
 class Invitation(models.Model):
-    last_name = models.CharField(_('last_name'), max_length=150, blank=True, null=True)
-    first_name = models.CharField(_('first_name'), max_length=150, blank=True, null=True)
     email = models.EmailField(_('email'), max_length=255, blank=True, null=True)
-    subject = models.CharField(_('subject'), blank=True, null=True, max_length=255)
     confirmation_key = models.CharField(_('confirmation_key'), max_length=50)
     content = models.TextField(_('content'), blank=True, null=True)
     date_sent = models.DateField(_('date_sent'), auto_now_add=True, blank=True, null=True)
@@ -77,4 +69,6 @@ class Invitation(models.Model):
     objects = InvitationManager()
     def save(self, force_insert=False, force_update=False):
         '''override save'''
+        if self.email:
+            Invitation.objects.send_invitation(self)
         super(Invitation, self).save(force_insert, force_update)
