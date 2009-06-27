@@ -8,7 +8,14 @@ package cc.milkshape.grid.buttons
 			textClp.label.text = username.toUpperCase();
 			
 			if(!newArtist) 
+			{
 				featured.text = '';
+			}
+			else
+			{
+				featured.x = 0;
+				textClp.label.x =+ 28;
+			}
 		}
 	}
 }
