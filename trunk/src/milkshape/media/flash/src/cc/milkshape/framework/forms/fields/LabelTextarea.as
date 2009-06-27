@@ -2,9 +2,9 @@ package cc.milkshape.framework.forms.fields
 {
 	import flash.events.FocusEvent;
 	
-	public class TopLabelTextarea extends TopLabelTextareaClp
+	public class LabelTextarea extends LabelTextareaClp
 	{		
-		public function TopLabelTextarea(label:String = '')
+		public function LabelTextarea(label:String = '')
 		{
 			textarea.stop();
 			label.text = label;
