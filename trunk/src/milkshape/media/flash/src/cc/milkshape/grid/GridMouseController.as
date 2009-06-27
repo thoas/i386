@@ -48,7 +48,7 @@ package cc.milkshape.grid
 
 			if(_gridModel.overSquare is SquareOwned)
 			{
-				_gridModel.dispatchEvent(new GridOverEvent(GridOverEvent.OVER, SquareOwned(_gridModel.overSquare).user.id));
+				_gridModel.dispatchEvent(new GridOverEvent(GridOverEvent.OVER, SquareManager.getIndice(_gridModel.overSquare)));
 			}
 			
 			_clickEnabled = (_gridModel.focusY == _gridModel.overX  && _gridModel.focusX == _gridModel.overY);
