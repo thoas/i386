@@ -62,7 +62,9 @@ package cc.milkshape.preloader
 			if(_bytesLoaded != _bytesTotal) _onProgress(); 
 		}
 		
-		private function _openHandler(e:Event):void { _init(); }
+		private function _openHandler(e:Event):void { 
+			_init(); 
+		}
 		
 		private function _completeHandler(e:Event):void 
 		{
@@ -74,9 +76,14 @@ package cc.milkshape.preloader
 			throw new Error('Unable to load ' + _url); 
 		}
 		
-		protected function _init():void	{ }
-        protected function _close():void { }
-        protected function _onProgress():void { }
+		protected function _init():void	
+		{}
+        
+        protected function _close():void
+        {}
+        
+        protected function _onProgress():void 
+        {}
         
 	}
 }

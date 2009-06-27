@@ -1,6 +1,7 @@
 from pyamf.remoting.gateway.django import DjangoGateway
 
-from account.views import _login, _logout, _is_authenticated, _password_change
+from account.views import _login, _logout, _is_authenticated, _password_change,\
+    _create_invitation, _invitations
 from profiles.views import _profile, _profile_change, _last_profiles
 from square.views import _book, _release, _template, _fill
 from about.views import _contact
@@ -11,6 +12,8 @@ gateway = DjangoGateway({
     'account.logout': _logout,
     'account.is_authenticated': _is_authenticated,
     'account.password_change': _password_change,
+    'account.create_invitation': _create_invitation,
+    'account.invitations': _invitations,
     
     'profile.profile': _profile,
     'profile.profile_change': _profile_change,

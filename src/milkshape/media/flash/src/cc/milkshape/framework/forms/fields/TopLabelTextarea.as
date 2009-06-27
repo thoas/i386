@@ -4,10 +4,10 @@ package cc.milkshape.framework.forms.fields
 	
 	public class TopLabelTextarea extends TopLabelTextareaClp
 	{		
-		public function TopLabelTextarea(label:String = '')
+		public function TopLabelTextarea(labelText:String = '')
 		{
 			textarea.stop();
-			label.text = label;
+			label.text = labelText;
 			
 			textarea.addEventListener(FocusEvent.FOCUS_IN, _focusHandler);
 			textarea.addEventListener(FocusEvent.FOCUS_OUT, _blurHandler);

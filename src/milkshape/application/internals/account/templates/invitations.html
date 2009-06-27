@@ -7,22 +7,19 @@
 {% block body %}
     <h1>{% trans "Manage my invitations" %}</h1>
     <div>
-        {% if unused_invitations %}
+        {% if invitations.unused_invitations %}
         <h2>{% trans "Unused invitations" %}</h2>
         <form method="post" action="{% url acct_invitations %}">
             <input type="hidden" value="update" name="action" />
-            <input type="hidden" value="{{ unused_invitations|length }}" name="nb_unused_invitations" />
+            <input type="hidden" value="{{ invitations.unused_invitations|length }}" name="nb_unused_invitations" />
             <ul class="none">
-            {% for unused_invitation in unused_invitations %}
+            {% for unused_invitation in invitations.unused_invitations %}
                 <li>
                     <div class="token new">{{ unused_invitation.confirmation_key }}</div>
                     <div class="token-form">
                         <table width="300px">
                             <input id="id_{{ form.confirmation_key.html_name }}_{{ forloop.counter0 }}" type="hidden" name="confirmation_key_{{ forloop.counter0 }}" value="{{ unused_invitation.confirmation_key }}" />
-                            <tr><th>{{ form.last_name.label }}</th><td><input id="id_{{ form.last_name.html_name }}_{{ forloop.counter0 }}" type="text" name="last_name_{{ forloop.counter0 }}" maxlength="150" /></td></tr>
-                            <tr><th>{{ form.first_name.label }}</th><td><input id="id_{{ form.first_name.html_name }}_{{ forloop.counter0 }}" type="text" name="first_name_{{ forloop.counter0 }}" maxlength="150" /></td></tr>
                             <tr><th>{{ form.email.label }}</th><td><input id="id_{{ form.email.html_name }}_{{ forloop.counter0 }}" type="text" name="email_{{ forloop.counter0 }}" maxlength="255" /></td></tr>
-                            <tr><th>{{ form.subject.label }}</th><td><input id="id_{{ form.subject.html_name }}_{{ forloop.counter0 }}" type="text" name="subject_{{ forloop.counter0 }}" maxlength="255" /></td></tr>
                             <tr><th>{{ form.content.label }}</th><td><textarea id="id_{{ form.content.html_name }}_{{ forloop.counter0 }}" rows="10" cols="40" name="content_{{ forloop.counter0 }}"></textarea></td></tr>
                         </table>
                     </div>
@@ -34,24 +31,26 @@
             </ul>
         </form>
         {% endif %}
-        {% ifnotequal remain_invitation 0 %}
+        {% ifnotequal invitations.remain_invitation 0 %}
         <form action="{% url acct_invitations %}" method="post">
             <input type="hidden" value="add" name="action" />
             <div class="button">
               <input type="submit" name="create" value="{% trans 'Create invitation' %}" />
             </div>
             <div class="text">
-               {% blocktrans %}You have {{ remain_invitation }} invitations left.{% endblocktrans %}
+                {% with invitations.remain_invitation as remain_invitation %}
+                    {% blocktrans %}You have {{ remain_invitation }} invitations left.{% endblocktrans %}
+                {% endwith %}
             </div>
         </form>
         {% endifnotequal %}
     </div>
     
-    {% if sent_invitations %}
+    {% if invitations.sent_invitations %}
     <div>
         <h2>{% trans "Sent invitations" %}</h2>
         <ul>
-        {% for sent_invitation in sent_invitations %}
+        {% for sent_invitation in invitations.sent_invitations %}
             <li>
                 <div class="token sent">{{ sent_invitation.confirmation_key }}</div>
                 <div class="token-info">
@@ -65,11 +64,11 @@
         </ul>
     </div>
     {% endif %}
-    {% if users_invited %}
+    {% if invitations.users_invited %}
     <div>
         <h2>{% trans "Users you have invited" %}</h2>
         <ul>
-        {% for user_invited in users_invited %}
+        {% for user_invited in invitations.users_invited %}
             <li>
                 {{ user_invited.user_created.username }} with <em>{{ user_invited.confirmation_key }}</em> sent to <strong>{{ user_invited.email }}</strong>
             </li>
