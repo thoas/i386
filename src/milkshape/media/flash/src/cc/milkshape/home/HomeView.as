@@ -42,27 +42,41 @@ package cc.milkshape.home
 		private function _handlerAddedToStage(e:Event):void
 		{
 			stage.addEventListener(Event.RESIZE, _handlerResize);
-			
-			_lastArtists = new HomeLastArtists();
+
 			_currentIssues = new HomeCurrentIssuesClp();
 			_completeIssue = new HomeCompleteIssueClp();
+			_lastArtists = new HomeLastArtists();
+			
 			_header = new PreloaderWiper();
 			_header.loadMedia(HEADER_IMG_URL);
 				
 			_welcomeText = new WelcomeText();
-            _welcomeText.y = 80;
-			
+            
 			_mask = new Sprite();
+			_mask.graphics.beginFill(0x000000);
+			_mask.graphics.drawRect(0, 0, stage.stageWidth, 402);
+			_mask.graphics.endFill();
 			_header.mask = _mask;
 			
 			addChild(_header);
 			addChild(_welcomeText);
 			addChild(_currentIssues);
 			addChild(_completeIssue);
-			
-			_handlerResize(null);	
+
 			_issueController.lastIssues();
 			_profileController.lastProfiles();
+			
+			_placeElements();
+		}
+		
+		private function _placeElements():void
+		{
+			_lastArtists.y = _currentIssues.y = _completeIssue.y = 370;
+			_currentIssues.x = 38;
+			_completeIssue.x = 520;
+			_lastArtists.x = 768;
+			_welcomeText.y = 88;
+            _welcomeText.x = 520;
 		}
 		
 		private function _loadProfiles(e:ProfileEvent):void
@@ -80,29 +94,18 @@ package cc.milkshape.home
 				if(o.current_issues.length > 1)
 					_currentIssues.preview2.addChild(new HomeIssuePreview(o.current_issues[1]));	
 			}
-			_currentIssues.x = 37;
 			_currentIssues.allIssues.addChild(new SmallButton("ALL ISSUES", new PlusItem()));
 			
 			if(o.complete_issues.length > 0)
 			{
 				_completeIssue.preview1.addChild(new HomeIssuePreview(o.complete_issues[0]));	
 			}
-			_completeIssue.x = _currentIssues.x + _currentIssues.width;
 			_completeIssue.allIssues.addChild(new SmallButton("ALL ISSUES", new PlusItem()));
-			
-			_lastArtists.x = _completeIssue.x + _completeIssue.width;
 		}
 		
 		private function _handlerResize(e:Event):void
 		{
-			_mask.graphics.clear();
-			_mask.graphics.beginFill(0x000000);
-			_mask.graphics.drawRect(0, 0, stage.stageWidth, Math.round(stage.stageHeight/2));
-			_mask.graphics.endFill();
-			
-			_welcomeText.x = stage.stageWidth - 504;
-			
-			_currentIssues.y = _completeIssue.y = _lastArtists.y = _mask.height + 30;
+			_mask.width = stage.stageWidth;
 		}
 	}
 	

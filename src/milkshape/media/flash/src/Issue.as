@@ -48,7 +48,7 @@ package
 		
 		private function _handlerRemovedToStage(e:Event):void
 		{
-			
+			stage.removeEventListener(Event.RESIZE, _handlerResize);
 		}
 		
 		private function _handlerInit(e:PreloaderEvent):void
