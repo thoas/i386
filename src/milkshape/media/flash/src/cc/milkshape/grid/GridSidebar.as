@@ -22,8 +22,11 @@ package cc.milkshape.grid
 			_gridModel = gridModel;
 			_gridModel.addEventListener(GridEvent.READY, _gridReadyHandler);
 			stop();
-			super();
-			_nextFrame = false;
+
+			_nextFrame = true;
+			
+			if (!hasEventListener(Event.ENTER_FRAME))
+				addEventListener(Event.ENTER_FRAME, _enterFrame);
 			
 			open.buttonMode = true;
 			open.addEventListener(MouseEvent.CLICK, _clickHandler);
