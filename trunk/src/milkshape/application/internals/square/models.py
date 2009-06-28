@@ -164,7 +164,7 @@ class Square(AbstractSquare):
         self.template_name = self.formatted_background_image
 
         image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size_with_double_margin,\
-                    self.issue.size_with_double_margin), DEFAULT_IMAGE_BACKGROUND_COLOR)
+                    self.issue.size_with_double_margin), DEFAULT_TEMPLATE_BACKGROUND_COLOR)
 
         neighbors_keys = self.neighbors
         logging.info(neighbors_keys)

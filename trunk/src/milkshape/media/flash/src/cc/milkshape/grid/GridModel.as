@@ -33,7 +33,7 @@ package cc.milkshape.grid
 		private var _posY:int;
 		private var _isShowForm:Boolean;
 		
-		/*
+		//*
 		protected static var _instance:GridModel = null;
        
 		public function GridModel(issueSlug:String) 

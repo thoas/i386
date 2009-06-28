@@ -7,8 +7,6 @@ package cc.milkshape.user
 
 	public class Login extends Sprite
 	{		
-		private var _loginController:LoginController;
-		
 		public function Login()
 		{
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
@@ -16,8 +14,8 @@ package cc.milkshape.user
 		
 		public function _handlerAddedToStage(e:Event):void 
 		{
-			_loginController = new LoginController();
-			var loginForm:LoginForm = new LoginForm(_loginController);
+			var loginController:LoginController = new LoginController();
+			var loginForm:LoginForm = new LoginForm(loginController);
 			addChild(loginForm);
 		}
 	}

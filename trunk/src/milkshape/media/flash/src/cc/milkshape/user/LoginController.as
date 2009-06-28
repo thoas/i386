@@ -14,27 +14,28 @@ package cc.milkshape.user
 		
 		public function isAuthenticated():void
 		{
+			_responder = new Responder(_logged, _onFault);
 			Gateway.getInstance().call("account.is_authenticated", _responder);
 		}
 		
 		public function login(login:String, password:String):void 
 		{
-			_responder = new Responder(_onResult, _onFault);
+			_responder = new Responder(_logged, _onFault);
 			Gateway.getInstance().call("account.login", _responder, login, password);
 		}
 		
 		public function logout():void
 		{
-			_responder = new Responder(_logoutResult, _onFault);
+			_responder = new Responder(_logout, _onFault);
 			Gateway.getInstance().call("account.logout", _responder);
 		}
 		
-		private function _logoutResult(result:Object):void
+		private function _logout(result:Object):void
 		{
 			dispatchEvent(new LoginEvent(LoginEvent.LOGOUT, result));
 		}
 		
-		override protected function _onResult(result:Object):void 
+		private function _logged(result:Object):void 
 		{
 			if(result)
 			{

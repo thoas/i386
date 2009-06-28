@@ -67,3 +67,7 @@ def _profile_change(request, name, location, website):
 
 def _last_profiles(request):
     return Profile.objects.select_related('user').order_by('user__date_joined')
+
+@login_required
+def _creations(request):
+    return request.user.get_profile().participations()
