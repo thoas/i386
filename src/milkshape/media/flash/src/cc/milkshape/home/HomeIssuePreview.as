@@ -65,7 +65,13 @@ package cc.milkshape.home
 		
 		private function _clickHandler(e:MouseEvent):void
 		{
-			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {url: Constance.ISSUE_SWF, background: false, params: {slug: _issue.slug}}));
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+				url: Constance.ISSUE_SWF, 
+				background: false,
+				posX: Constance.ISSUE_POSX, 
+				posY: Constance.ISSUE_POSY,  
+				params: {slug: _issue.slug}
+			}));
 		}
 	}
 }

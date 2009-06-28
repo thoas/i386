@@ -7,10 +7,13 @@ package cc.milkshape.home
 	import cc.milkshape.issue.IssueController;
 	import cc.milkshape.issue.events.IssuesEvent;
 	import cc.milkshape.preloader.PreloaderWiper;
+	import cc.milkshape.preloader.events.PreloaderEvent;
+	import cc.milkshape.utils.Constance;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	public class HomeView extends MovieClip
 	{
@@ -66,7 +69,17 @@ package cc.milkshape.home
 			_issueController.lastIssues();
 			_profileController.lastProfiles();
 			
+			_welcomeText.moreInfoBtn.buttonMode = true;
+			_welcomeText.moreInfoBtn.addEventListener(MouseEvent.CLICK, _moreInfoClick);
+			
 			_placeElements();
+		}
+		
+		private function _moreInfoClick(e:MouseEvent):void
+		{
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+				url: Constance.ABOUT_SWF
+			}));
 		}
 		
 		private function _placeElements():void
@@ -101,6 +114,16 @@ package cc.milkshape.home
 				_completeIssue.preview1.addChild(new HomeIssuePreview(o.complete_issues[0]));	
 			}
 			_completeIssue.allIssues.addChild(new SmallButton("ALL ISSUES", new PlusItem()));
+			
+			_currentIssues.allIssues.addEventListener(MouseEvent.CLICK, _handlerClick);
+			_completeIssue.allIssues.addEventListener(MouseEvent.CLICK, _handlerClick);
+		}
+		
+		private function _handlerClick(e:MouseEvent):void
+		{
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+				url: Constance.ISSUES_SWF, posX:0
+			}));
 		}
 		
 		private function _handlerResize(e:Event):void
