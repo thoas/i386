@@ -9,9 +9,9 @@
 
 {% block body %}
 <table id="grid">
-    {% for i in nb_case_x %}
+    {% for j in nb_case_y %}
     <tr>
-        {% for j in nb_case_y %}
+        {% for i in nb_case_x %}
         {% captureas coord %}({{ i }}, {{ j }}){% endcaptureas %}
         <td>
             {% if coord in t_squares_open %}

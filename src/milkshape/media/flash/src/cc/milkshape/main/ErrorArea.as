@@ -7,6 +7,7 @@ package cc.milkshape.main
 	public class ErrorArea extends ErrorAreaLabel
 	{
 		private static var _instance:ErrorArea = null;
+		private static const LIST_CHAR:String = '?,;!.:/+-@#&=%^$*azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890';
 		private var _msg:String;
 		private var _listChar:String;
 		private var _count:int;
@@ -20,7 +21,6 @@ package cc.milkshape.main
 			
 			label.text = '';
 			_progress = '';
-			_listChar = '?,;!.:/+-@#&=%^$*azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890';
 		}
 		
 		public static function getInstance():ErrorArea {
@@ -69,7 +69,7 @@ package cc.milkshape.main
 			else
 			{
 				_msg = _msg.substr(0, _msg.length - 1);
-				label.text = _listChar.charAt(cc.milkshape.utils.Calcul.randRange(0, _listChar.length)) + _progress;
+				label.text = LIST_CHAR.charAt(Calcul.randRange(0, LIST_CHAR.length)) + _progress;
 			}
 		}
 	}

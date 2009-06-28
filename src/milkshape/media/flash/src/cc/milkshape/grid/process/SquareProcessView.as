@@ -69,13 +69,13 @@ package cc.milkshape.grid.process
 		private function _uploading(e:SquareProcessEvent):void
 		{
 			gotoAndPlay('uploading');
-			infoUploadText.label.htmlText = 'Step 1/2<br>Uploading your .tiff';
+			infoUploadText.label.htmlText = 'Step 1/2<br />Uploading your .tiff';
 			uploadingClp.addChild(_preloaderLogo);
 		}
 		
 		private function _uploading2(e:SquareProcessEvent):void
 		{
-			infoUploadText.label.htmlText = 'Step 2/2<br>Updating the issue';
+			infoUploadText.label.htmlText = 'Step 2/2<br />Updating the issue';
 		}
 		
 		private function _canceled(e:SquareProcessEvent):void
@@ -98,12 +98,12 @@ package cc.milkshape.grid.process
 		
 		private function _book(e:MouseEvent):void
 		{
-			_squareProcessController.book();
+			_squareProcessController.book(_gridModel.focusX, _gridModel.focusY, _gridModel.issueSlug);
 		}
 		
 		private function _release(e:MouseEvent):void
 		{
-			_squareProcessController.release();
+			_squareProcessController.release(_gridModel.focusX, _gridModel.focusY, _gridModel.issueSlug);
 		}
 		
 		private function _template(e:MouseEvent):void
@@ -114,7 +114,7 @@ package cc.milkshape.grid.process
 		
 		private function _fill(e:MouseEvent):void
 		{
-			_squareProcessController.fill();
+			_squareProcessController.fill(_gridModel.focusX, _gridModel.focusY, _gridModel.issueSlug);
 		}
 		
 		private function _reload(e:MouseEvent):void
@@ -154,7 +154,7 @@ package cc.milkshape.grid.process
 				
 				// Need a user action to download the template, 
 				// so we preload the template before the click on "download template"
-				_squareProcessController.loadTemplate();
+				_squareProcessController.loadTemplate(_gridModel.focusX, _gridModel.focusY, _gridModel.issueSlug);
 			}
 		}
 		

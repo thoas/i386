@@ -145,8 +145,8 @@ class Square(AbstractSquare):
         indent_x = (self.pos_x * step) / size_x
         indent_y = (self.pos_y * step) / size_y
         
-        x = (self.pos_y * step) - (indent_y * size_y)
-        y = (self.pos_x * step) - (indent_x * size_x)
+        x = (self.pos_x * step) - (indent_x * size_x)
+        y = (self.pos_y * step) - (indent_y * size_y)
         
         layer.paste(image, (x, y, x + height, y + width))
         
@@ -227,7 +227,7 @@ class Square(AbstractSquare):
         
         # create square side by side with overlap
         for x, y in neighbors_keys.keys():
-            if (x >= 0 and x < self.issue.nb_case_y) and (y >= 0 and y < self.issue.nb_case_x):
+            if (x >= 0 and x < self.issue.nb_case_x) and (y >= 0 and y < self.issue.nb_case_y):
                 index = neighbors_keys[tuple((x, y))]
                 
                 # create square in database with no user set

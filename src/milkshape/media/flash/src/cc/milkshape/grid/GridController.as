@@ -81,6 +81,7 @@ package cc.milkshape.grid
 			if(_gridModel.gridLineVisible)
 			{
 				SoundManager.getInstance().playSound("SoundSquareFocus");
+				trace("layer " + e.square.X + " " + e.square.Y);
 				_gridModel.setFocus(e.square.X, e.square.Y);
 				_gridModel.moveTo();
 			}
@@ -88,8 +89,8 @@ package cc.milkshape.grid
 		
 		public function onFocusOutHandler(e:SquareEvent):void
 		{
-			_gridModel.lastFocusX = e.square.Y;
-			_gridModel.lastFocusY = e.square.X;
+			_gridModel.lastFocusX = e.square.X;
+			_gridModel.lastFocusY = e.square.Y;
 		}
 		
 		public function getFocusSquare():Square {
