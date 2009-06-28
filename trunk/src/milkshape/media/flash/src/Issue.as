@@ -165,8 +165,8 @@ package
 			_sidebar.x = stage.stageWidth - 136;
 			_sidebar.y = Math.round(stage.stageHeight * 0.5 - _sidebar.height * 0.5);
 			_navPanel.y = Math.round(stage.stageHeight * 0.5 - _navPanel.height * 0.5);
-			_squareProcess.x =  Math.round(stage.stageWidth * 0.5 - _squareProcess.width * 0.5);
-			_squareProcess.y =  Math.round(stage.stageHeight * 0.5 - _squareProcess.height * 0.5);
+			_squareProcess.x =  Math.round(stage.stageWidth * 0.5 - 400);
+			_squareProcess.y =  Math.round(stage.stageHeight * 0.5 - 400);
 		}
 	}
 }
