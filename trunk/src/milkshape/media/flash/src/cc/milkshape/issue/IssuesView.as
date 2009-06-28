@@ -37,7 +37,6 @@ package cc.milkshape.issue
 		{
 			var o:Object = e.lastIssues;
 			_issueClp = new IssuesClp();
-			_issueClp.x = 40;
 			addChild(_issueClp);
 			createNav();
 			

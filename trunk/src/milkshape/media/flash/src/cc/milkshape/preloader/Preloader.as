@@ -73,7 +73,8 @@ package cc.milkshape.preloader
 		}
 		
 		private function _ioErrorHandler(e:IOErrorEvent):void { 
-			throw new Error('Unable to load ' + _url); 
+			//throw new Error('Unable to load ' + _url);
+			trace('Unable to load ' + _url);
 		}
 		
 		protected function _init():void	

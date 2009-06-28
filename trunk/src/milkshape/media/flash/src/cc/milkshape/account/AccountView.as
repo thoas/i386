@@ -2,7 +2,7 @@ package cc.milkshape.account
 {
 	import cc.milkshape.account.buttons.AccountMenuButton;
 	import cc.milkshape.account.events.AccountMenuButtonEvent;
-	import cc.milkshape.framework.buttons.UnderlineButton;
+	import cc.milkshape.account.events.UpdateViewEvent;
 	
 	import com.gskinner.motion.GTween;
 	import com.reintroducing.ui.AxisScroller;
@@ -17,6 +17,7 @@ package cc.milkshape.account
 		private var _listMenuItem:Object;
 		private var _lastBtnClicked:AccountMenuButton;
 		private var _scrollItems:ScrollItemsClp;
+		private var _scroller:AxisScroller;
 		
 		public function AccountView(menuArray:Array)
 		{
@@ -56,7 +57,7 @@ package cc.milkshape.account
 				autoHideControls: true
 			};
 
-			var scroller:AxisScroller = new AxisScroller(stage, page, _scrollItems.scroller, page.container, _scrollItems.track, page.over, "y", optionalObj);
+			_scroller = new AxisScroller(stage, page, _scrollItems.scroller, page.container, _scrollItems.track, page.over, "y", optionalObj);
 		}
 		
 		private function _clickHandler(e:Event):void
@@ -89,13 +90,8 @@ package cc.milkshape.account
 				page.scrollItems.removeChild(_scrollItems);
 		}
 		
-		private function _deleteAndLoad(e:Event):void
-		{
-			if(page.container.numChildren > 0)
-				page.container.removeChildAt(0);
-			
-			page.container.addChild(_lastBtnClicked.params.view);
-			
+		private function _updateView(e:UpdateViewEvent):void
+		{			
 			var futurHeight:int = 0;
 			if(page.container.height > 334)
 			{
@@ -120,6 +116,18 @@ package cc.milkshape.account
 				height: futurHeight }, {
 				ease:Sine.easeOut}
 			);
+		}
+	
+		private function _deleteAndLoad(e:Event):void
+		{
+			if(page.container.numChildren > 0)
+				page.container.removeChildAt(0);
+			
+			_lastBtnClicked.params.view.addEventListener(UpdateViewEvent.UPDATE, _updateView);
+			page.container.addChild(_lastBtnClicked.params.view);
+			
+			
+			_updateView(null);
 		}
 	}
 }
