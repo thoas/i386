@@ -11,7 +11,6 @@
         <h2>{% trans "Unused invitations" %}</h2>
         <form method="post" action="{% url acct_invitations %}">
             <input type="hidden" value="update" name="action" />
-            <input type="hidden" value="{{ invitations.unused_invitations|length }}" name="nb_unused_invitations" />
             <ul class="none">
             {% for unused_invitation in invitations.unused_invitations %}
                 <li>

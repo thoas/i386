@@ -203,7 +203,7 @@ def invitations(request, template_name, confirmation_key, form_class=InvitationF
             from datetime import datetime
             current_site = Site.objects.get_current()
             user_profile = request.user.get_profile()
-            for i in range(int(request.POST['nb_unused_invitations'])):
+            for i in range(len(invitations['unused_invitations'])):
                 index = str(i)
                 email = request.POST['email_' + index]
                 confirmation_key = request.POST['confirmation_key_' + index]
@@ -220,7 +220,7 @@ def invitations(request, template_name, confirmation_key, form_class=InvitationF
 
 @login_required
 def _create_invitation(request):
-    remain_invitation = user.get_profile().remain_invitation()
+    remain_invitation = request.user.get_profile().remain_invitation()
     if remain_invitation > 0:
         new_invitation = Invitation.objects.create(
             user=request.user,

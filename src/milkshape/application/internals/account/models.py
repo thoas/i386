@@ -61,14 +61,14 @@ class Invitation(models.Model):
     email = models.EmailField(_('email'), max_length=255, blank=True, null=True)
     confirmation_key = models.CharField(_('confirmation_key'), max_length=50)
     content = models.TextField(_('content'), blank=True, null=True)
-    date_sent = models.DateField(_('date_sent'), auto_now_add=True, blank=True, null=True)
-    date_burned = models.DateField(_('date_burned'), null=True, blank=True)
+    date_sent = models.DateTimeField(_('date_sent'), auto_now_add=True, blank=True, null=True)
+    date_burned = models.DateTimeField(_('date_burned'), null=True, blank=True)
     user = models.ForeignKey(User, verbose_name=_('user'), related_name=_('invitations'))
     user_created = models.ForeignKey(User, verbose_name=_('user_created'), related_name=_('invitations_created'), blank=True, null=True)
 
     objects = InvitationManager()
     def save(self, force_insert=False, force_update=False):
         '''override save'''
-        if self.email:
+        if self.email and not date_burned:
             Invitation.objects.send_invitation(self)
         super(Invitation, self).save(force_insert, force_update)

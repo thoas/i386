@@ -9,23 +9,23 @@ package cc.milkshape.framework.forms.fields
 			textarea.stop();
 			label.text = labelText;
 			
-			textarea.addEventListener(FocusEvent.FOCUS_IN, _focusHandler);
-			textarea.addEventListener(FocusEvent.FOCUS_OUT, _blurHandler);
+			textarea.addEventListener(FocusEvent.FOCUS_IN, focus);
+			textarea.addEventListener(FocusEvent.FOCUS_OUT, blur);
 		}
 		
-		private function _focusHandler(e:FocusEvent):void
+		public function focus(e:FocusEvent = null):void
 		{
 			textarea.gotoAndStop('focus');
 		}
 		
-		private function _blurHandler(e:FocusEvent):void
+		public function blur(e:FocusEvent = null):void
 		{
 			textarea.gotoAndStop('blur');
 		}
 		
 		public function get text():String
 		{
-			return label.text;
+			return textarea.label.text;
 		}
 		
 	}	
