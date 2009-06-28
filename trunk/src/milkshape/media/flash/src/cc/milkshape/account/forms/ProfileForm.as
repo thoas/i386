@@ -33,6 +33,7 @@ package cc.milkshape.account.forms
 			location.addChild(_location);
 			ownNotif.addChild(_ownNotif);
 			milkshapeNotif.addChild(_milkshapeNotif);
+			update.addChild(_update);
 			update.addEventListener(MouseEvent.CLICK, _updateHandler);
 			_profileController.addEventListener(ProfileEvent.SUCCESS, _updated);
 		}
