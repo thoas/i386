@@ -176,6 +176,20 @@ def __template(request, template):
     response.write(buffer.getvalue())
     return response
 
+def _squares_full_by_issues(request):
+    squares = Square.objects.select_related('issue', 'user').filter(status=True).order_by('issue__id')
+    datas = []
+    issues = {}
+    for square in squares:
+        if not issues.has_key(square.issue.id):
+            datas.append({
+                'issue': square.issue,
+                'squares': []
+            })
+            issues[square.issue.id] = len(datas) - 1
+        datas[issues[square.issue.id]]['squares'].append(square)
+    return datas
+
 #def square(request, action, pos_x, pos_y, issue_slug):
 #    logging.debug('x: %s - y: %s - issue: %s' % (pos_x, pos_y, issue_slug))
 #    issue = get_object_or_404(Issue, slug=issue_slug)

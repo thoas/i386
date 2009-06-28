@@ -1,18 +1,26 @@
 package cc.milkshape.artists.buttons
 {
+	import cc.milkshape.preloader.events.PreloaderEvent;
+	import cc.milkshape.utils.Constance;
+	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.text.TextField;
 
 	public class ArtistButton extends ArtistBtnClp
 	{
 		private var _overStatut:Boolean;
 		private var _issueBtn:IssueButton;
 		private var _siteBtn:SiteButton;
+		private var _posX:int;
+		private var _posY:int;
+		private var _issueSlug:String
 		
-		public function ArtistButton(artistName:String)
+		public function ArtistButton(artistName:String, posX:int, posY:int, issueSlug:String)
 		{
 			buttonMode = true;
+			_posX = posX;
+			_posY = posY;
+			_issueSlug = issueSlug;
 			_overStatut = false;
 			
 			stop();
@@ -25,6 +33,7 @@ package cc.milkshape.artists.buttons
 			_issueBtn = new IssueButton();
 			_siteBtn = new SiteButton();
 			issue.addChild(_issueBtn);
+			issue.addEventListener(MouseEvent.CLICK, _clickIssueHandler);
 			site.addChild(_siteBtn);
 		}
 		
@@ -66,6 +75,15 @@ package cc.milkshape.artists.buttons
 		private function _clickHandler(e:MouseEvent):void
 		{
 			
+		}
+		
+		private function _clickIssueHandler(e:MouseEvent):void
+		{
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+				url: Constance.ISSUE_SWF, 
+				background: false, 
+				params: {slug: _issueSlug, focusX: _posX, focusY: _posY}
+			}));
 		}
 	}
 }
