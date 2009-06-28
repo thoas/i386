@@ -329,8 +329,8 @@ class Square(AbstractSquare):
         return '%s/%d_%s.%s' % (self.issue.upload_thumb_url(), size, self.background_image, THUMB_EXTENSION_IMAGE)
     
     @property
-    def thumb(self):
-        return background_image_thumb_url_step(THUMB_STEP)
+    def thumb_url(self):
+        return self.background_image_thumb_url_step(THUMB_STEP)
     
     def layer_url(self, step):
         return '%s/%s' % (self.issue.layer_url(), self.layer_name(step))
