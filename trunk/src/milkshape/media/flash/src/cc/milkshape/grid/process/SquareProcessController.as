@@ -25,7 +25,7 @@ package cc.milkshape.grid.process
 		public function book(posX:int, posY:int, issueSlug:String):void
 		{
 			_responder = new Responder(_book, _onFault);
-			Gateway.getInstance().call("square.book", _responder, posY, posX, issueSlug);
+			Gateway.getInstance().call("square.book", _responder, posX, posY, issueSlug);
 		}
 		
 		private function _book(result:Object):void
@@ -39,7 +39,7 @@ package cc.milkshape.grid.process
 		public function release(posX:int, posY:int, issueSlug:String):void
 		{
 			_responder = new Responder(_released, _onFault);
-			Gateway.getInstance().call("square.release", _responder, posY, posX, issueSlug);
+			Gateway.getInstance().call("square.release", _responder, posX, posY, issueSlug);
 		}
 		
 		private function _released(result:Object):void
@@ -50,7 +50,7 @@ package cc.milkshape.grid.process
 		public function loadTemplate(posX:int, posY:int, issueSlug:String):void
 		{
 			_responder = new Responder(_template, _onFault);
-			Gateway.getInstance().call("square.template", _responder, posY, posX, issueSlug);
+			Gateway.getInstance().call("square.template", _responder, posX, posY, issueSlug);
 		}
 		
 		public function template():void
@@ -78,7 +78,7 @@ package cc.milkshape.grid.process
 					var data:ByteArray = new ByteArray();
 					_fileUpload.data.readBytes(data, 0, _fileUpload.data.length);
 					_responder = new Responder(_uploaded, _onFault);
-					Gateway.getInstance().call("square.fill", _responder, posY, posX, issueSlug, data);
+					Gateway.getInstance().call("square.fill", _responder, posX, posY, issueSlug, data);
 					trace("test");
 					dispatchEvent(new SquareProcessEvent(SquareProcessEvent.UPLOADING2));
 				}
