@@ -17,7 +17,7 @@
 		
 		private function _addedToStageHandler(e:Event):void
 		{
-			
+			addChild(new AboutClp());
         }		
 		
 	}

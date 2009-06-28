@@ -2,7 +2,11 @@ package cc.milkshape.home
 {
 	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.home.buttons.*;
+	import cc.milkshape.preloader.events.PreloaderEvent;
+	import cc.milkshape.utils.Constance;
 	
+	import flash.events.MouseEvent;
+
 	public class HomeLastArtists extends HomeLastArtistsClp
 	{
 		private var _allArtistBtn:SmallButton;
@@ -30,10 +34,15 @@ package cc.milkshape.home
 			}
 			
 			_allArtistBtn = new SmallButton("ALL ARTISTS", new PlusItem());
-			_allArtistBtn.x = 155;
-			_allArtistBtn.y = decalY + 90;
-			addChild(_allArtistBtn);		
-			
+			_allArtistBtn.addEventListener(MouseEvent.CLICK, _handlerClick);
+			allArtists.addChild(_allArtistBtn);		
+		}
+		
+		private function _handlerClick(e:MouseEvent):void
+		{
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+				url: Constance.ARTISTS_SWF
+			}));
 		}
 	}
 }

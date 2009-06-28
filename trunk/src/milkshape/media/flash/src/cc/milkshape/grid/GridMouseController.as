@@ -51,7 +51,7 @@ package cc.milkshape.grid
 				_gridModel.dispatchEvent(new GridOverEvent(GridOverEvent.OVER, SquareManager.getIndice(_gridModel.overSquare)));
 			}
 			
-			_clickEnabled = (_gridModel.focusY == _gridModel.overX  && _gridModel.focusX == _gridModel.overY);
+			_clickEnabled = (_gridModel.focusY == _gridModel.overY  && _gridModel.focusX == _gridModel.overX);
 		}		
 		
 		public function mouseWheelHandler(e:MouseEvent):void
@@ -67,7 +67,7 @@ package cc.milkshape.grid
 			{
 				_gridModel.zoomTo(e.shiftKey ? -1 : 1);
 			}
-			_clickEnabled = (_gridModel.focusY == _gridModel.overX && _gridModel.focusX == _gridModel.overY);
+			_clickEnabled = (_gridModel.focusY == _gridModel.overY  && _gridModel.focusX == _gridModel.overX);
 		}
 		
 		public function stageClickHandler(mouseEvent:MouseEvent):void

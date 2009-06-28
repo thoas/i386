@@ -10,6 +10,9 @@ package cc.milkshape.utils
 		public static const ABOUT_SWF:String = 'about.swf';
 		public static const TERMS_SWF:String = 'terms.swf';
 		
+		public static const ISSUE_POSX:int = 0;
+		public static const ISSUE_POSY:int = 37;
+		
 		public static var URL_SITE:String = "http://localhost:8000";
 		
 		public static var COLOR_YELLOW:int = 0xffdd00;

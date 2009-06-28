@@ -65,7 +65,7 @@ package cc.milkshape.grid
 		
 		private function _handlerResize(e:Event):void
 		{
-			y = stage.stageHeight - 96;
+			y = stage.stageHeight - 120/*50 - 37 - 23*/;
 			bg.width = stage.stageWidth;
 			clip.x = Math.round(stage.stageWidth * 0.5 - clip.width * 0.5);
 		}
