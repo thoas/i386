@@ -40,7 +40,7 @@ class Profile(models.Model):
     def users_invited(self):
         return self.user.invitations.filter(date_burned__isnull=False)\
                     .select_related('user_created')
-
+    
     def participations_by_issues(self):
         participations = self.user.participations.select_related('issue').all()
         participations_by_issues = {}

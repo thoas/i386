@@ -13,11 +13,8 @@ from misc.views import pyamf_format
 
 def _issues(request):
     """docstring for issues"""
-    datas = {
-        'issues': Issue.objects.all()
-    }
     
-    return datas
+    return Issue.objects.all()
 
 def _issue(request, slug):
     """docstring for issues"""
