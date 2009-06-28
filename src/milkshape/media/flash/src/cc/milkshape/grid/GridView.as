@@ -152,6 +152,7 @@ package cc.milkshape.grid
 			stage.addEventListener(Event.RESIZE, _resize);
 
 			_resize();
+			dispatchEvent(new GridEvent(GridEvent.VIEW_READY));
 		}
 		
 		private function _handlerLayerThumb(e:LayerEvent):void

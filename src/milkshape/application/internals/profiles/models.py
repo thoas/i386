@@ -42,7 +42,7 @@ class Profile(models.Model):
                     .select_related('user_created')
 
     def participations_by_issues(self):
-        participations = self.user.participations.all()
+        participations = self.user.participations.select_related('issue').all()
         participations_by_issues = {}
         for participation in participations:
             issue = participation.issue
@@ -50,7 +50,13 @@ class Profile(models.Model):
                 participations_by_issues[issue] = []
             participations_by_issues[issue].append(participation)
         return participations_by_issues
-
+    
+    def participations(self):
+        return {
+            'currents': self.user.participations.select_related('issue').filter(status=False),
+            'archives': self.user.participations.select_related('issue').filter(status=True)
+        }
+    
     class Meta:
         verbose_name = _('profile')
         verbose_name_plural = _('profiles')

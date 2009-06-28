@@ -1,11 +1,12 @@
 package cc.milkshape.account
 {
+	import cc.milkshape.account.events.CreationsEvent;
 	import cc.milkshape.account.events.ProfileEvent;
 	import cc.milkshape.gateway.Gateway;
 	import cc.milkshape.gateway.GatewayController;
 	
 	import flash.net.Responder;
-	
+
 	public class ProfileController extends GatewayController
 	{
 		public function update(realname:String, url:String, location:String):void
@@ -25,6 +26,13 @@ package cc.milkshape.account
 			dispatchEvent(new ProfileEvent(ProfileEvent.LAST_PROFILES, result));
 		}
 		
+		public function creations():void
+		{
+			_responder = new Responder(function(result:Object):void {
+				dispatchEvent(new CreationsEvent(CreationsEvent.CREATIONS_LOADED, result));
+			}, _onFault);
+			Gateway.getInstance().call('profile.creations', _responder);
+		}
 		
 		private function _updated(result:Object):void
 		{

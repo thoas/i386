@@ -6,6 +6,7 @@ package cc.milkshape.grid.events
 	{
 		public static const INFO_READY:String = 'INFO_READY';
 		public static const READY:String = 'READY';
+		public static const VIEW_READY:String = 'VIEW_READY';
 		private var _nbHSquare:int;
 		private var _nbVSquare:int;
 		private var _squareSize:int;

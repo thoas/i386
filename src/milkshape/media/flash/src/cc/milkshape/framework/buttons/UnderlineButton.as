@@ -8,7 +8,7 @@ package cc.milkshape.framework.buttons
 		{
 			buttonMode = true;
 			label.autoSize = TextFieldAutoSize.LEFT;
-			label.text = labelText.toUpperCase();
+			label.text = labelText;
 			line.width = label.width - 8;
 			over.width = line.width;
 		}
