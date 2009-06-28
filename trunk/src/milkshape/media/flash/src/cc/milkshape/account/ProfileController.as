@@ -34,6 +34,14 @@ package cc.milkshape.account
 			Gateway.getInstance().call('profile.creations', _responder);
 		}
 		
+		public function release(posX:int, posY:int, issueSlug:String):void
+		{
+			_responder = new Responder(function(result:Object):void {
+				dispatchEvent(new CreationsEvent(CreationsEvent.CREATION_RELEASED));
+			}, _onFault);
+			Gateway.getInstance().call('square.release', _responder, posX, posY, issueSlug);
+		}
+		
 		private function _updated(result:Object):void
 		{
 			if(result){

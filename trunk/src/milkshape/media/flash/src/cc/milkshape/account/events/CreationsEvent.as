@@ -5,8 +5,9 @@ package cc.milkshape.account.events
 	public class CreationsEvent extends Event
 	{
 		public static const CREATIONS_LOADED:String = 'CREATIONS_LOADED';
+		public static const CREATION_RELEASED:String = 'RELEASE';
 		private var _creations:Object;
-		public function CreationsEvent(type:String, creations:Object, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function CreationsEvent(type:String, creations:Object=null, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			_creations = creations;
 			super(type, bubbles, cancelable);

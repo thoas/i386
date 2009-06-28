@@ -1,5 +1,6 @@
 package cc.milkshape.account
 {
+	import cc.milkshape.account.events.CreationPreviewEvent;
 	import cc.milkshape.account.events.CreationsEvent;
 	public class CreationsView extends CreationsClp
 	{
@@ -8,6 +9,7 @@ package cc.milkshape.account
 		{
 			_profileController = profileController;
 			_profileController.addEventListener(CreationsEvent.CREATIONS_LOADED, _creationsLoadedHandler);
+			_profileController.addEventListener(CreationsEvent.CREATION_RELEASED, _creationReleasedHandler);
 			_profileController.creations();
 		}
 		
@@ -17,27 +19,40 @@ package cc.milkshape.account
 			var creation:Object;
 			if(e.creations.archives.length > 0)
 			{
-				invitationsLeft.text = 'YOU HAVE ' + e.creations.archives.length + ' CREATIONS UPLOADED'; 
+				creationArchivedCount.text = 'YOU HAVE ' + e.creations.archives.length + ' CREATIONS UPLOADED'; 
 				var creationPreview:CreationPreview;
 				height = 0;
 				for each(creation in e.creations.archives)
 				{
-					creationPreview = new CreationPreview(creation.issue.title, creation.date_finished, '', creation.pos_y, creation.pos_x, creation.issue.slug, creation.thumb_url);
+					creationPreview = new CreationPreview(creation.issue.title, creation.date_finished, '', creation.pos_y, creation.pos_x, creation.issue.slug, false, creation.thumb_url);
 					creationPreview.y = height;
 					archives.addChild(creationPreview);
 					height = archives.height + 20;
 				}
 			} else
-				invitationsLeft.text = 'YOU HAVE NO CREATION UPLOADED';
+				creationArchivedCount.text = 'YOU HAVE NO CREATION UPLOADED';
 			
 			height = 0;
 			for each(creation in e.creations.currents)
 			{
-				creationPreview = new CreationPreview(creation.issue.title, creation.date_booked, '', creation.pos_y, creation.pos_x, creation.issue.slug);
+				creationPreview = new CreationPreview(creation.issue.title, creation.date_booked, '', creation.pos_y, creation.pos_x, creation.issue.slug, true);
 				creationPreview.y = height;
 				currents.addChild(creationPreview);
+				creationPreview.addEventListener(CreationPreviewEvent.CANCEL_CLICKED, _cancelHandler);
 				height = currents.height + 20;
 			}
+		}
+		
+		private function _cancelHandler(e:CreationPreviewEvent):void
+		{
+			_profileController.release(e.posY, e.posX, e.issueSlug);
+		}
+		
+		private function _creationReleasedHandler(e:CreationsEvent):void
+		{
+			trace("release");
+			// en dur pour l'instant
+			currents.removeChildAt(2);
 		}
 	}
 }
