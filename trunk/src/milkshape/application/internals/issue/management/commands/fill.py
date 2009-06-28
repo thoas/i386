@@ -111,11 +111,11 @@ class Command(BaseCommand):
         )
     
     def fill(self, pos_x, pos_y):
-        left_x = pos_y * self.issue.size
+        left_x = pos_x * self.issue.size
         paste_left_x = 0
         paste_right_x = self.template_size
     
-        top_y = pos_x * self.issue.size
+        top_y = pos_y * self.issue.size
         paste_top_y = 0
         paste_bottom_y = self.template_size
     

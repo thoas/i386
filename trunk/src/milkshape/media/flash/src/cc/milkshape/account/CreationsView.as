@@ -24,7 +24,7 @@ package cc.milkshape.account
 				height = 0;
 				for each(creation in e.creations.archives)
 				{
-					creationPreview = new CreationPreview(creation.issue.title, creation.date_finished, '', creation.pos_y, creation.pos_x, creation.issue.slug, false, creation.thumb_url);
+					creationPreview = new CreationPreview(creation.issue.title, creation.date_finished, '', creation.pos_x, creation.pos_y, creation.issue.slug, false, creation.thumb_url);
 					creationPreview.y = height;
 					archives.addChild(creationPreview);
 					height = archives.height + 20;
@@ -35,7 +35,7 @@ package cc.milkshape.account
 			height = 0;
 			for each(creation in e.creations.currents)
 			{
-				creationPreview = new CreationPreview(creation.issue.title, creation.date_booked, '', creation.pos_y, creation.pos_x, creation.issue.slug, true);
+				creationPreview = new CreationPreview(creation.issue.title, creation.date_booked, '', creation.pos_x, creation.pos_y, creation.issue.slug, true);
 				creationPreview.y = height;
 				currents.addChild(creationPreview);
 				creationPreview.addEventListener(CreationPreviewEvent.CANCEL_CLICKED, _cancelHandler);

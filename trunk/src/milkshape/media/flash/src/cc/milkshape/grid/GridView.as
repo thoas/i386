@@ -169,8 +169,8 @@ package cc.milkshape.grid
 		private function _addSquare(e:SquareEvent):void
 		{
 			var square:Square = e.square;
-			square.x = square.Y * _squareSize;
-			square.y = square.X * _squareSize;
+			square.x = square.X * _squareSize;
+			square.y = square.Y * _squareSize;
 			square.tabIndex = _nbHSquare * square.Y + square.X;// Numéro tabulation = nombre de colonne * y + x
 			square.addEventListener(SquareEvent.OVER, _mouseController.rollOverHandler);
 			square.addEventListener(SquareEvent.FOCUS, _controller.onFocusHandler);// Focus : tabulation, clic, double clic, clavier...

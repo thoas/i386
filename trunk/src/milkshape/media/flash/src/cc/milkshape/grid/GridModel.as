@@ -163,8 +163,9 @@ package cc.milkshape.grid
 		}
 		
 		public function setFocus(x:int, y:int):void {
-			focusX = y;
-			focusY = x;
+			trace("focus " + x + " " + y);
+			focusX = x;
+			focusY = y;
 			dispatchEvent(new GridFocusEvent(GridFocusEvent.FOCUS)); 
 		}
 		
@@ -251,6 +252,7 @@ package cc.milkshape.grid
 		
 		public function moveTo():void
 		{
+			trace("move " + focusX + " " + focusY);
 			if(currentScale == maxScale)// Si on est au zoom maximal
 			{
 				var square:Square = focusSquare;
@@ -349,15 +351,15 @@ package cc.milkshape.grid
 		}
 		
 		public function get lastFocusSquare():* { 
-			return SquareManager.get(_lstPosition[_lastFocusY][_lastFocusX]);
+			return SquareManager.get(_lstPosition[_lastFocusX][_lastFocusY]);
 		}
 		
 		public function get focusSquare():* { 
-			return SquareManager.get(_lstPosition[_focusY][_focusX]);
+			return SquareManager.get(_lstPosition[_focusX][_focusY]);
 		}
 		
 		public function get overSquare():* { 
-			return SquareManager.get(_lstPosition[_overY][_overX]);
+			return SquareManager.get(_lstPosition[_overX][_overY]);
 		}
 		
 		public function get currentStep():int

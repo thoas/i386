@@ -26,7 +26,7 @@ package
 	{
 		private var _closeHandCursor:ClosedHandCursor;
 		private var _openHandCursor:OpenHandCursor;
-		private var _bg:Sprite;
+		private var _bg:GridBackground;
 		private var _gridModel:GridModel;
 		private var _gridController:GridController;
 		private var _gridView:GridView;

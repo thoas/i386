@@ -11,7 +11,7 @@ package cc.milkshape.grid.process
 		
 		public function SquareProcess(gridModel:GridModel)
 		{
-			var squareProcessController:SquareProcessController = new SquareProcessController(gridModel);
+			var squareProcessController:SquareProcessController = new SquareProcessController();
 			_squareProcessView = new SquareProcessView(gridModel, squareProcessController);
 			squareProcessController.addEventListener(SquareProcessEvent.SHOW, _show);
 			squareProcessController.addEventListener(SquareProcessEvent.HIDE, _hide)

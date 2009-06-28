@@ -1,7 +1,7 @@
 # ordre des aiguilles d'une montre
 LITERAL = ['h_c', 'h_r', 'c_r', 'l_r', 'l_c', 'l_l', 'c_l', 'h_l']
-POS_X = [-1, -1, 0, 1, 1, 1, 0, -1]
-POS_Y = [0, 1, 1, 1, 0, -1, -1, -1]
+POS_Y = [-1, -1, 0, 1, 1, 1, 0, -1]
+POS_X = [0, 1, 1, 1, 0, -1, -1, -1]
 
 LEN_POS = len(POS_X)
 

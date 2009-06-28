@@ -13,22 +13,19 @@ package cc.milkshape.grid.process
 
 	public class SquareProcessController extends GatewayController
 	{
-		private var _gridModel:GridModel;
 		private var _fileDownload:SquareProcessFileDownload;
 		private var _fileUpload:SquareProcessFileUpload;
-		public function SquareProcessController(gridModel:GridModel)
+		public function SquareProcessController()
 		{
-			_gridModel = gridModel;
 			_fileDownload = new SquareProcessFileDownload();
 			_fileDownload.addEventListener(Event.COMPLETE, _templateDownloaded);
 			_fileUpload = new SquareProcessFileUpload();
-			_fileUpload.addEventListener(Event.COMPLETE, _templateLoaded);
 		}
 		
-		public function book():void
+		public function book(posX:int, posY:int, issueSlug:String):void
 		{
 			_responder = new Responder(_book, _onFault);
-			Gateway.getInstance().call("square.book", _responder, _gridModel.focusY, _gridModel.focusX, _gridModel.issueSlug);
+			Gateway.getInstance().call("square.book", _responder, posY, posX, issueSlug);
 		}
 		
 		private function _book(result:Object):void
@@ -39,10 +36,10 @@ package cc.milkshape.grid.process
 			}
 		}
 		
-		public function release():void
+		public function release(posX:int, posY:int, issueSlug:String):void
 		{
 			_responder = new Responder(_released, _onFault);
-			Gateway.getInstance().call("square.release", _responder, _gridModel.focusY, _gridModel.focusX, _gridModel.issueSlug);
+			Gateway.getInstance().call("square.release", _responder, posY, posX, issueSlug);
 		}
 		
 		private function _released(result:Object):void
@@ -50,10 +47,10 @@ package cc.milkshape.grid.process
 			dispatchEvent(new SquareProcessEvent(SquareProcessEvent.CANCELED));
 		}
 		
-		public function loadTemplate():void
+		public function loadTemplate(posX:int, posY:int, issueSlug:String):void
 		{
 			_responder = new Responder(_template, _onFault);
-			Gateway.getInstance().call("square.template", _responder, _gridModel.focusY, _gridModel.focusX, _gridModel.issueSlug);
+			Gateway.getInstance().call("square.template", _responder, posY, posX, issueSlug);
 		}
 		
 		public function template():void
@@ -72,24 +69,25 @@ package cc.milkshape.grid.process
 			dispatchEvent(new SquareProcessEvent(SquareProcessEvent.DOWNLOAD));
 		}
 		
-		public function fill():void
+		public function fill(posX:int, posY:int, issueSlug:String):void
 		{
+			_fileUpload.addEventListener(Event.COMPLETE, 
+				function(e:Event):void
+				{
+					dispatchEvent(new SquareProcessEvent(SquareProcessEvent.UPLOADING));
+					var data:ByteArray = new ByteArray();
+					_fileUpload.data.readBytes(data, 0, _fileUpload.data.length);
+					_responder = new Responder(_uploaded, _onFault);
+					Gateway.getInstance().call("square.fill", _responder, posY, posX, issueSlug, data);
+					trace("test");
+					dispatchEvent(new SquareProcessEvent(SquareProcessEvent.UPLOADING2));
+				}
+			);
 			_fileUpload.browseTpl();
-		}
-		
-		public function _templateLoaded(e:Event):void
-		{
-			dispatchEvent(new SquareProcessEvent(SquareProcessEvent.UPLOADING2));
-			var data:ByteArray = new ByteArray();
-			_fileUpload.data.readBytes(data, 0, _fileUpload.data.length);
-			_responder = new Responder(_uploaded, _onFault);
-			Gateway.getInstance().call("square.fill", _responder, _gridModel.focusY, _gridModel.focusX, _gridModel.issueSlug, data);
-			dispatchEvent(new SquareProcessEvent(SquareProcessEvent.UPLOADING));
 		}
 		
 		public function _uploaded(result:Object):void
 		{
-			trace(result);
 			dispatchEvent(new SquareProcessEvent(SquareProcessEvent.SUCCESS));
 		}
 		
