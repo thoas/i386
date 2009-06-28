@@ -1,6 +1,7 @@
 package
 {
 	import com.reintroducing.ui.AxisScroller;
+	
 	import fl.motion.easing.Sine;
 	
 	import flash.display.Sprite;
@@ -27,8 +28,11 @@ package
 				scaleScroller: true,
 				autoHideControls: true
 			};
-
-			var scroller:AxisScroller = new AxisScroller(stage, terms.content_mc, terms.content_mc.scroller_mc, terms.content_mc.movie_mc, terms.content_mc.track_mc, terms.content_mc.mask_mc, "y", optionalObj);
+			
+			var scrollItems:ScrollItemsClp = new ScrollItemsClp();
+			scrollItems.track.height = terms.scrollArea.bg.height - 2;
+			terms.scrollArea.scroll.addChild(scrollItems);
+			var scroller:AxisScroller = new AxisScroller(stage, terms.scrollArea, scrollItems.scroller, terms.scrollArea.content, scrollItems.track, terms.scrollArea.mask, "y", optionalObj);
 		}
 	}
 }
