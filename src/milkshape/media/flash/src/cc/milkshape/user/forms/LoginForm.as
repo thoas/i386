@@ -5,15 +5,18 @@ package cc.milkshape.user.forms
 	import cc.milkshape.framework.forms.fields.Checkbox;
 	import cc.milkshape.framework.forms.fields.Input;
 	import cc.milkshape.manager.KeyboardManager;
+	import cc.milkshape.preloader.events.PreloaderEvent;
 	import cc.milkshape.user.LoginController;
 	import cc.milkshape.user.events.LoginEvent;
 	import cc.milkshape.utils.Constance;
 	import cc.milkshape.utils.Label;
-	import cc.milkshape.preloader.events.PreloaderEvent;
 	
 	import flash.events.Event;
+	import flash.events.FocusEvent;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	
+	import flash.ui.Keyboard;
+
 	public class LoginForm extends LoginClp implements Formable
 	{
 		private var _loginController:LoginController;
@@ -22,7 +25,7 @@ package cc.milkshape.user.forms
 		private var _login:Input;
 		private var _password:Input;
 		private var _forgetIt:Label;
-		private var _logout:Label;
+		private var _logout:LogoutBtnClp;
 		private var _profil:Label;
 		private var _notif:Label;
 		private var _hello:Label;
@@ -43,11 +46,12 @@ package cc.milkshape.user.forms
 			_checkboxRemember = new Checkbox();
 			_login = new Input('username');
 			_password = new Input('password', true);
-			_logout = new Label(new LabelStandard0765Clp(), 'LOGOUT', 0x8f8f8f);
+			_logout = new LogoutBtnClp();
 			_profil = new Label(new LabelStandard0765Clp(), 'PROFILE', Constance.COLOR_YELLOW);
 			_notif = new Label(new LabelStandard0765Clp(), 'You are', 0x8f8f8f);
 			_hello = new Label(new LabelStandard0765Clp(), '', 0x8f8f8f);
 			
+			_logout.btn.stop();
 			_registerStatut = false;
 			register.buttonMode = true;			
 			register.stop();
@@ -61,22 +65,39 @@ package cc.milkshape.user.forms
 			logout.addChild(_logout);
 			profil.addChild(_profil);
 			hello.addChild(_hello);
+			errorArea.label.text = '';
 			
-			_login.label.tabIndex = 1;
 			_password.label.tabIndex = 2;
-			connectBtn.tabIndex = 3;
+			_login.label.tabIndex = 1;
+			
+			_login.label.addEventListener(FocusEvent.FOCUS_OUT, _handlerFocusOut);
+			_password.label.addEventListener(FocusEvent.FOCUS_OUT, _handlerFocusOut);
+			_login.label.addEventListener(FocusEvent.FOCUS_IN, _handlerFocusIn);
+			_password.label.addEventListener(FocusEvent.FOCUS_IN, _handlerFocusIn);
 			
 			login.buttonMode = true;
 			login.addEventListener(MouseEvent.CLICK, _formHandler);
 			
 			logout.buttonMode = true;
 			logout.addEventListener(MouseEvent.CLICK, _logoutHandler);
+			logout.addEventListener(MouseEvent.ROLL_OVER, _logoutOverHandler);
+			logout.addEventListener(MouseEvent.ROLL_OUT, _logoutOutHandler);
 			
 			profil.buttonMode = true;
 			profil.addEventListener(MouseEvent.CLICK, _profilHandler);
 			
 			_loginController.isAuthenticated();
-		} 
+		}
+		
+		private function _logoutOverHandler(e:MouseEvent):void
+		{
+			_logout.btn.play();
+		}
+		
+		private function _logoutOutHandler(e:MouseEvent):void
+		{
+			_logout.btn.gotoAndStop('start');
+		}
 		
 		private function _clickHandlerRegister(e:MouseEvent):void
 		{
@@ -110,6 +131,22 @@ package cc.milkshape.user.forms
 			KeyboardManager.enabled = false;
 			gotoAndPlay('form');
 			_connectBtn.addEventListener(MouseEvent.CLICK, _loginHandler);
+        }
+        
+        private function _handlerFocusOut(e:FocusEvent):void
+        {
+        	e.target.removeEventListener(KeyboardEvent.KEY_DOWN, _handlerKeyboard);
+        }
+        
+        private function _handlerFocusIn(e:FocusEvent):void
+        {
+        	e.target.addEventListener(KeyboardEvent.KEY_DOWN, _handlerKeyboard);
+        }
+        
+        private function _handlerKeyboard(e:KeyboardEvent):void
+        {
+        	if(e.keyCode == Keyboard.ENTER)
+        		_loginHandler(null);        		
         }
         
         private function _logged(e:LoginEvent):void 

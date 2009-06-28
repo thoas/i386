@@ -19,7 +19,7 @@ package cc.milkshape.framework.forms.fields
 		}
 		
 		public function focus(e:FocusEvent = null):void
-		{
+		{			
 			if(_password)
 				label.displayAsPassword = true;
 				
