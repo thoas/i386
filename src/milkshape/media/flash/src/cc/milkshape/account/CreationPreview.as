@@ -1,5 +1,6 @@
 package cc.milkshape.account
 {
+	import cc.milkshape.account.events.CreationPreviewEvent;
 	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.framework.buttons.UnderlineButton;
 	import cc.milkshape.preloader.PreloaderKb;
@@ -18,7 +19,7 @@ package cc.milkshape.account
 		private var _viewIssue:SmallButton;
 		private var _enabledCancel:Boolean;
 		private var _cancel:UnderlineButton;
-		public function CreationPreview($title:String, $date:Date, $info:String, $posX:int, $posY:int, $issueSlug:String, $url:String=null, $enabledCancel:Boolean=false)
+		public function CreationPreview($title:String, $date:Date, $info:String, $posX:int, $posY:int, $issueSlug:String, $enabledCancel:Boolean=false, $url:String=null)
 		{
 			title.text = $title;
 			date.text = $date.toDateString();
@@ -52,6 +53,7 @@ package cc.milkshape.account
 		
 		private function _cancelHandler(e:MouseEvent):void
 		{
+			dispatchEvent(new CreationPreviewEvent(CreationPreviewEvent.CANCEL_CLICKED, _posX, _posY, _issueSlug));
 		}
 
 		public function get issueSlug():String
