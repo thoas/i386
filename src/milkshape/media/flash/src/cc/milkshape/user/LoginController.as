@@ -3,6 +3,9 @@ package cc.milkshape.user
 	import cc.milkshape.gateway.Gateway;
 	import cc.milkshape.gateway.GatewayController;
 	import cc.milkshape.user.events.LoginEvent;
+	import cc.milkshape.preloader.events.PreloaderEvent;
+
+	import cc.milkshape.utils.Constance;
 	
 	import flash.net.Responder;
 
@@ -33,6 +36,9 @@ package cc.milkshape.user
 		private function _logout(result:Object):void
 		{
 			dispatchEvent(new LoginEvent(LoginEvent.LOGOUT, result));
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+				url: Constance.HOME_SWF, posX:0, posY:60
+			}));
 		}
 		
 		private function _logged(result:Object):void 

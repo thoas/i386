@@ -22,7 +22,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-ACCT_USERNAME = 'thoas'
+ACCT_USERNAME = 'jeanjack'
 ACCT_PASSWORD = 'toto'
 BASE_ROOT = dirname(abspath(__file__))
 
