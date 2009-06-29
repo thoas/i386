@@ -53,7 +53,8 @@ class InvitationManager(models.Manager):
         subject = render_to_string('email_invitation_subject.txt', context)
         message = render_to_string('email_invitation_message.txt', context)
         try:
-            send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority='high')
+            pass
+            #send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority='high')
         except socket.error, msg:
             print 'error (%s) for %s' % (msg, invitation_instance.email)
 

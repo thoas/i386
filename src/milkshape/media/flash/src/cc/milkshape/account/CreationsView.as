@@ -18,13 +18,29 @@ package cc.milkshape.account
 		
 		private function _creationsLoadedHandler(e:CreationsEvent):void
 		{
-			var decalY:Number;
+			var decalY:Number = 0;
 			var creation:Object;
+			
+			for each(creation in e.creations.currents)
+			{
+				creationPreview = new CreationPreview(creation.issue.title, creation.date_booked, '', creation.pos_x, creation.pos_y, creation.issue.slug, true);
+				creationPreview.y = decalY;
+				currents.addChild(creationPreview);
+				creationPreview.addEventListener(CreationPreviewEvent.CANCEL_CLICKED, _cancelHandler);
+				decalY = currents.height + 20;
+			}
+			
+			decalY += 80;
+			
+			archives.y = decalY + 40;
+			creationArchivedCount.y = decalY + 8;
+			archivesCreationsTitle.y = decalY;
+			decalY = 0;
+			
 			if(e.creations.archives.length > 0)
 			{
 				creationArchivedCount.text = 'YOU HAVE ' + e.creations.archives.length + ' CREATIONS UPLOADED'; 
 				var creationPreview:CreationPreview;
-				decalY = 0;
 				for each(creation in e.creations.archives)
 				{
 					creationPreview = new CreationPreview(creation.issue.title, creation.date_finished, '', creation.pos_x, creation.pos_y, creation.issue.slug, false, creation.thumb_url);
@@ -34,16 +50,6 @@ package cc.milkshape.account
 				}
 			} else
 				creationArchivedCount.text = 'YOU HAVE NO CREATION UPLOADED';
-			
-			decalY = 0;
-			for each(creation in e.creations.currents)
-			{
-				creationPreview = new CreationPreview(creation.issue.title, creation.date_booked, '', creation.pos_x, creation.pos_y, creation.issue.slug, true);
-				creationPreview.y = decalY;
-				currents.addChild(creationPreview);
-				creationPreview.addEventListener(CreationPreviewEvent.CANCEL_CLICKED, _cancelHandler);
-				decalY = currents.height + 20;
-			}
 			
 			bottomPoint.y = height + 60;
 			dispatchEvent(new UpdateViewEvent(UpdateViewEvent.UPDATE));

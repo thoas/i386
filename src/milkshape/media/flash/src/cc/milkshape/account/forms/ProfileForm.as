@@ -26,7 +26,7 @@ package cc.milkshape.account.forms
 			_location = new LabelInput('LOCATION:');
 			_ownNotif = new Checkbox();
 			_milkshapeNotif = new Checkbox();
-			_update = new SmallButton('UPDATE INFORMATION', new PlusItem());
+			_update = new SmallButton('UPDATE INFORMATION', new UpdateItem());
 			
 			realname.addChild(_realname);
 			url.addChild(_url);
