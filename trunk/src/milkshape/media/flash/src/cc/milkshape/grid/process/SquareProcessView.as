@@ -4,12 +4,15 @@ package cc.milkshape.grid.process
 	import cc.milkshape.grid.GridModel;
 	import cc.milkshape.grid.process.events.SquareProcessEvent;
 	import cc.milkshape.grid.square.events.SquareFormEvent;
+	import cc.milkshape.preloader.events.PreloaderEvent;
 	import cc.milkshape.user.User;
+	import cc.milkshape.utils.Constance;
 	
 	import com.gskinner.motion.GTween;
 	
 	import fl.motion.easing.Sine;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	public class SquareProcessView extends SquareProcessClp
@@ -59,6 +62,13 @@ package cc.milkshape.grid.process
 			templateBtn.addChild(_templateBtn);
 			fillBtn.addChild(_fillBtn);
 			reloadBtn.addChild(_reloadBtn);
+			
+			addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
+		}
+		
+		private function _handlerRemovedFromStage(e:Event):void
+		{
+			gotoAndPlay('open');
 		}
 		
 		private function _download(e:SquareProcessEvent):void
@@ -108,18 +118,53 @@ package cc.milkshape.grid.process
 		
 		private function _template(e:MouseEvent):void
 		{
-			//FIX stage.displayState = 'normal';
+			if(stage.displayState == 'fullScreen')
+			{
+				addEventListener(Event.FULLSCREEN, _templateSecure);
+				stage.displayState = 'normal';
+			}
+			else
+			{
+				_templateSecure(null);
+			}
+		}
+		
+		private function _templateSecure(e:Event):void
+		{
+			if(e)
+				removeEventListener(Event.FULLSCREEN, _templateSecure);
 			_squareProcessController.template();
 		}
 		
 		private function _fill(e:MouseEvent):void
 		{
+			if(stage.displayState == 'fullScreen')
+			{
+				addEventListener(Event.FULLSCREEN, _fillSecure);
+				stage.displayState = 'normal';
+			}
+			else
+			{
+				_fillSecure(null);
+			}
+		}
+		
+		private function _fillSecure(e:Event):void
+		{			
+			if(e)
+				removeEventListener(Event.FULLSCREEN, _fillSecure);
 			_squareProcessController.fill(_gridModel.focusX, _gridModel.focusY, _gridModel.issueSlug);
 		}
 		
 		private function _reload(e:MouseEvent):void
 		{
-			_squareProcessController.reload();
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+				url: Constance.ISSUE_SWF, 
+				background: false,
+				posX: Constance.ISSUE_POSX, 
+				posY: Constance.ISSUE_POSY,  
+				params: {slug: _gridModel.issueSlug, focusX: _gridModel.focusX, focusY: _gridModel.focusY}
+			}));
 		}
 		
 		private function _showOpenForm(e:SquareFormEvent):void
