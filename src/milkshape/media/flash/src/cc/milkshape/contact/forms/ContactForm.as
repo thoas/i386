@@ -19,7 +19,7 @@ package cc.milkshape.contact.forms
 		{
 			_contactController = contactController;
 			_author = new Input('Name');
-			_email = new Input('Email');
+			_email = new Input('E-mail');
 			_subject = new Input('Subject');
 			_content = new Textarea('Message');
 			_submit = new SmallButton('SEND', new PlusItem());
