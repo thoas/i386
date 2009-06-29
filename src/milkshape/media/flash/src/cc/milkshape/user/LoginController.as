@@ -2,9 +2,8 @@ package cc.milkshape.user
 {
 	import cc.milkshape.gateway.Gateway;
 	import cc.milkshape.gateway.GatewayController;
-	import cc.milkshape.user.events.LoginEvent;
 	import cc.milkshape.preloader.events.PreloaderEvent;
-
+	import cc.milkshape.user.events.LoginEvent;
 	import cc.milkshape.utils.Constance;
 	
 	import flash.net.Responder;
@@ -39,11 +38,14 @@ package cc.milkshape.user
 		
 		private function _logged(result:Object):void 
 		{
-			if(result)
+			if(result.success)
 			{
-				this.getUser().setAttribute('account', result);
+				this.getUser().setAttribute('account', result.data);
 				this.getUser().authenticated = true;
-				dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result));
+				dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result.data));
+			} else {
+				if(result.errors)
+					dispatchEvent(new LoginEvent(LoginEvent.ERROR, result));
 			}
 		}
 	}

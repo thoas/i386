@@ -25,16 +25,16 @@ def _logout(request):
 
 def _is_authenticated(request):
     if request.user.is_authenticated():
-        return request.user
-    return False
+        return pyamf_success(request.user)
+    return pyamf_errors()
 
 @pyamf_format
 def _login(request, username=None, password=None, remember=None):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.login(request):
-            return request.user
-        return form.errors['__all__']
+            return pyamf_success(request.user)
+        return pyamf_errors(form.errors.values()[0])
     return None
 
 def login(request, template_name, form_class=LoginForm):
@@ -66,8 +66,7 @@ def _signup(request, username, email, password1, password2, confirmation_key):
             user = authenticate(username=username, password=password)
             auth_login(request, user)
             return pyamf_success(user)
-        else:
-            return pyamf_errors(form.errors)
+        return pyamf_errors(form.errors.values()[0])
     return False
 
 def signup(request, confirmation_key, template_name, form_class=SignupForm):
@@ -264,7 +263,6 @@ def _send_invitation(request, confirmation_key, email, content):
             invitation.email = email
             invitation.content = content
             invitation.save()
-            print invitation
             return invitation
     return False
 
