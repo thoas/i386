@@ -1,8 +1,9 @@
 package cc.milkshape.issue
 {
-	import cc.milkshape.utils.Constance;
 	import cc.milkshape.preloader.PreloaderWiper;
 	import cc.milkshape.preloader.events.PreloaderEvent;
+	import cc.milkshape.utils.Constance;
+	
 	import flash.events.MouseEvent;
 
 	public class IssuePreview extends IssuePreviewClp
@@ -24,12 +25,10 @@ package cc.milkshape.issue
 			scheduleClp.scheduleLabel.text = 'OPENED ' + issue.date_created.month + '.' + issue.date_created.date + '.' + issue.date_created.fullYear;
 			pastilleClp.textClp.label.text = '#' + issue.id;
 			
-			if(issue.thumb_url){
-				var img:PreloaderWiper = new PreloaderWiper();
-				img.loadMedia(issue.thumb_url);
-				
-				loaderClp.addChild(img);
-			}
+			var thumbUrl:String = issue.thumb_url ? issue.thumb_url:Constance.DEFAULT_ISSUE_THUMB;
+			var img:PreloaderWiper = new PreloaderWiper();
+			img.loadMedia(thumbUrl);
+			loaderClp.addChild(img);
 		}
 		
 		private function _clickHandler(e:MouseEvent):void

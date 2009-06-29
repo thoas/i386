@@ -1,10 +1,11 @@
 {% load i18n %}
-{% blocktrans with current_site.name as site_name and user.username as profile_name %}
-Hi,
+{% blocktrans with invitation.content as content %}
 
-{{ profile_name }} invites you at {{ site_name }}
+{{ content }}
 
-To confirm your invitation, go to {{ activate_url }}
+To get your account on #milkshape, click here or copy / paste the URL into your Web browser.
 
-Your invitation code : {{ confirmation_key }}
+{{ activate_url }}
+
+Or note your invitation code: {{ confirmation_key }}
 {% endblocktrans %}

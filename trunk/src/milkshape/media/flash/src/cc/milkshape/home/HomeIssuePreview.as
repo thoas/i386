@@ -26,12 +26,10 @@ package cc.milkshape.home
 			
 			titleClp.label.text = issue.title;
 			infoClp.label.htmlText = issue.text_presentation;
-			if(issue.thumb_url)
-			{
-				var img:PreloaderWiper = new PreloaderWiper();
-				img.loadMedia(issue.thumb_url);
-				bg.addChild(img);	
-			}			
+			var thumbUrl:String = issue.thumb_url ? issue.thumb_url:Constance.DEFAULT_ISSUE_THUMB;
+			var img:PreloaderWiper = new PreloaderWiper();
+			img.loadMedia(thumbUrl);
+			bg.addChild(img);
 		}
 		
 		private function _overHandler(e:MouseEvent):void
