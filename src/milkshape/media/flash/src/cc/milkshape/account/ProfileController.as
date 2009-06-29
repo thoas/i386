@@ -39,6 +39,7 @@ package cc.milkshape.account
 			_responder = new Responder(function(result:Object):void {
 				dispatchEvent(new CreationsEvent(CreationsEvent.CREATION_RELEASED));
 			}, _onFault);
+			trace("release " + posX + " " + posY);
 			Gateway.getInstance().call('square.release', _responder, posX, posY, issueSlug);
 		}
 		

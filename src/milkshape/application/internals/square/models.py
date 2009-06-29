@@ -120,10 +120,16 @@ class Square(AbstractSquare):
         size_y = self.issue.nb_case_y * step
 
         if size_x > self.issue.size:
-            size_x = max_width
+            size_x = (self.issue.nb_case_x - self.pos_x) * step
+            if size_x > self.issue.size:
+                size_x = max_width
         
         if size_y > self.issue.size:
-            size_y = max_height
+            size_y = (self.issue.nb_case_y - self.pos_y) * step
+            if size_y > self.issue.size:
+                size_y = max_height
+        
+        print self.pos_x, self.pos_y, size_x, size_y
         return size_x, size_y
     
     def build_layer(self, image, step):        
@@ -276,7 +282,7 @@ class Square(AbstractSquare):
             self.populate_neighbors(template_full)
 
     def build_background_image(self, im_crop, paste_pos):
-        image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size, self.issue.size), DEFAULT_IMAGE_BACKGROUND_COLOR)
+        image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size, self.issue.size), DEFAULT_TEMPLATE_BACKGROUND_COLOR)
         image.paste(im_crop, paste_pos)
         image.save(self.background_image_path(),\
                         format=FORMAT_IMAGE, quality=QUALITY_IMAGE)

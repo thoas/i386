@@ -12,7 +12,6 @@ package cc.milkshape.register
 		
 		public function Register()
 		{
-			//dispatchEvent(new Event('CLOSE_REGISTER'));
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
 		}
@@ -31,6 +30,7 @@ package cc.milkshape.register
 			
 			addChild(_registerForm);
 			_handlerResize(null);
+			dispatchEvent(new Event('CLOSE_REGISTER'));
 		}
 		
 		private function _handlerResize(e:Event):void
