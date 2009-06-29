@@ -27,7 +27,7 @@ class Profile(models.Model):
         return ('profile_detail', None, {'username': self.user.username})
 
     def remain_invitation(self):
-        if self.user.participations.filter(status=1).count() < 1:
+        if self.user.participations.filter(status=True).count() < 1:
             return 0
         return self.nb_invitation - self.user.invitations.count()
 
@@ -40,6 +40,9 @@ class Profile(models.Model):
     def users_invited(self):
         return self.user.invitations.filter(date_burned__isnull=False)\
                     .select_related('user_created')
+    
+    def remain_participations(self):
+        return self.user.participations.filter(status=False)
     
     def participations_by_issues(self):
         participations = self.user.participations.select_related('issue').all()

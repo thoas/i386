@@ -25,7 +25,10 @@ def _logout(request):
 
 def _is_authenticated(request):
     if request.user.is_authenticated():
-        return pyamf_success(request.user)
+        return pyamf_success({
+            'user': request.user,
+            'remain_participations': request.user.get_profile().remain_participations()
+        })
     return pyamf_errors()
 
 @pyamf_format
@@ -33,7 +36,10 @@ def _login(request, username=None, password=None, remember=None):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.login(request):
-            return pyamf_success(request.user)
+            return pyamf_success({
+                'user': request.user,
+                'remain_participations': request.user.get_profile().remain_participations()
+            })
         return pyamf_errors(form.errors.values()[0])
     return None
 

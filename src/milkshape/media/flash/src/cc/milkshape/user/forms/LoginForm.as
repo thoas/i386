@@ -153,9 +153,14 @@ package cc.milkshape.user.forms
         private function _logged(e:LoginEvent):void 
         {
         	gotoAndPlay('logged');
-        	var user:Object = e.result;
-        	_hello.text = 'Hello ' + user.username + '!';
-        	_notif.text = 'x squares are waiting you';
+        	var result:Object = e.result;
+        	_hello.text = 'Hello ' + result.user.username + '!';
+        	if(result.remain_participations.length > 0)
+        		_notif.text = result.remain_participations.length;
+        		if(result.remain_participations.length > 1)
+        			_notif.text += ' squares are waiting you';
+        		else
+        			_notif.text += ' square is waiting you';
         }
         
         private function _loginHandler(e:MouseEvent):void

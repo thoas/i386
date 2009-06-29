@@ -62,7 +62,6 @@ def pyamf_format(func):
     return wrapped
 
 def pyamf_errors(errors=None):
-    print errors
     return {
         'success': False,
         'errors': list(error for error in errors)
