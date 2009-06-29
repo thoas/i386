@@ -42,13 +42,13 @@ package cc.milkshape.user.forms
 		private function _handlerAddedToStage(e:Event):void
 		{
 			_connectBtn = new SmallButton('LOGIN', new PlusItem());
-			_forgetIt = new Label(new LabelStandard0758Clp(), 'forget it ?', 0x8f8f8f);
+			_forgetIt = new Label(new LabelStandard0758Clp(), 'forgot it ?', 0x8f8f8f);
 			_checkboxRemember = new Checkbox();
 			_login = new Input('username');
 			_password = new Input('password', true);
 			_logout = new LogoutBtnClp();
 			_profil = new Label(new LabelStandard0765Clp(), 'PROFILE', Constance.COLOR_YELLOW);
-			_notif = new Label(new LabelStandard0765Clp(), 'You are', 0x8f8f8f);
+			_notif = new Label(new LabelStandard0765Clp(), '', 0x8f8f8f);
 			_hello = new Label(new LabelStandard0765Clp(), '', 0x8f8f8f);
 			
 			_logout.btn.stop();
@@ -154,6 +154,7 @@ package cc.milkshape.user.forms
         	gotoAndPlay('logged');
         	var user:Object = e.user;
         	_hello.text = 'Hello ' + user.username + '!';
+        	_notif.text = 'x squares are waiting for your creation';
         }
         
         private function _loginHandler(e:MouseEvent):void

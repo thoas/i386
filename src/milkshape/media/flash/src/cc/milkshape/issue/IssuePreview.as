@@ -21,7 +21,7 @@ package cc.milkshape.issue
 			titleClp.titleLabel.text = issue.title;
 			infoClp.creatorsLabel.text = issue.nb_creators + ' CREATORS';
 			infoClp.squaresLabel.text = issue.nb_case_x * issue.nb_case_y + ' SQUARES';
-			scheduleClp.scheduleLabel.text = issue.date_created.month + '.' + issue.date_created.date + '.' + issue.date_created.fullYear;
+			scheduleClp.scheduleLabel.text = 'OPENED ' + issue.date_created.month + '.' + issue.date_created.date + '.' + issue.date_created.fullYear;
 			pastilleClp.textClp.label.text = '#' + issue.id;
 			
 			if(issue.thumb_url){

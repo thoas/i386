@@ -88,7 +88,7 @@ package cc.milkshape.home
 			_currentIssues.x = 38;
 			_completeIssue.x = 520;
 			_lastArtists.x = 768;
-			_welcomeText.y = 88;
+			_welcomeText.y = 28;
             _welcomeText.x = 520;
 		}
 		

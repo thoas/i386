@@ -34,11 +34,11 @@ package cc.milkshape.grid.process
 			_gridModel = gridModel;
 			
 			_preloaderLogo = new PreloadLogoClp();
-			_bookBtn = new BigButton('Reserver', new CirclePlusItem());
-			_releaseBtn = new BigButton('Annuler', new CircleCrossItem());
-		 	_templateBtn = new BigButton('Telecharger', new CircleArrowDownItem());
-			_fillBtn = new BigButton('Upload', new CircleArrowUpItem());
-			_reloadBtn = new BigButton('OK', new CirclePlusItem());
+			_bookBtn = new BigButton('reserve it!', new CirclePlusItem());
+			_releaseBtn = new BigButton('cancel reservation', new CircleCrossItem());
+		 	_templateBtn = new BigButton('download template', new CircleArrowDownItem());
+			_fillBtn = new BigButton('upload creation', new CircleArrowUpItem());
+			_reloadBtn = new BigButton('see', new CirclePlusItem());
 			 
 			_bookBtn.addEventListener(MouseEvent.CLICK, _book);
 			_releaseBtn.addEventListener(MouseEvent.CLICK, _release);
@@ -62,6 +62,11 @@ package cc.milkshape.grid.process
 			templateBtn.addChild(_templateBtn);
 			fillBtn.addChild(_fillBtn);
 			reloadBtn.addChild(_reloadBtn);
+			
+			uploadText.label.text = "Great, you've reserved this square";
+			
+			uploadActionText.label.htmlText = 'Now, download the template and fill your square. <br>Remember, you have <font color="#9df7ff">4 days</font> left to upload your creation with unchanged file size : <br><font color="#9df7ff">.tiff, 300dpi, 1200x1200px</font>';
+			openActionText.label.htmlText = 'to contribute, reserve this place and respect the <font color="#9df7ff">rules</font> :';
 			
 			addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
 		}
