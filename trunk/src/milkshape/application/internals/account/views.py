@@ -57,8 +57,18 @@ def login(request, template_name, form_class=LoginForm):
         'form': form,
     }, context_instance=RequestContext(request))
 
-def _signup(request, confirmation_key):
-    pass
+@pyamf_format
+def _signup(request, username, password, confirmation_key):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            username, password = form.save()
+            user = authenticate(username=username, password=password)
+            auth_login(request, user)
+            return user
+        else:
+            return form.errors['__all__']
+    return False
 
 def signup(request, confirmation_key, template_name, form_class=SignupForm):
     if request.method == 'POST':

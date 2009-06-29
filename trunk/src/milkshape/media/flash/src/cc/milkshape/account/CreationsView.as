@@ -57,14 +57,13 @@ package cc.milkshape.account
 		
 		private function _cancelHandler(e:CreationPreviewEvent):void
 		{
-			_profileController.release(e.posY, e.posX, e.issueSlug);
+			_profileController.release(e.posX, e.posY, e.issueSlug);
 		}
 		
 		private function _creationReleasedHandler(e:CreationsEvent):void
 		{
 			trace("release");
-			// en dur pour l'instant
-			currents.removeChildAt(2);
+			currents.removeChildAt(1);
 		}
 	}
 }

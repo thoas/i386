@@ -11,16 +11,12 @@ package cc.milkshape.user
 
 	public class LoginController extends GatewayController
 	{
-		public function LoginController():void
-		{
-		}
-		
 		public function isAuthenticated():void
 		{
 			_responder = new Responder(_logged, _onFault);
 			Gateway.getInstance().call("account.is_authenticated", _responder);
 		}
-		
+				
 		public function login(login:String, password:String):void 
 		{
 			_responder = new Responder(_logged, _onFault);

@@ -1,6 +1,7 @@
 package cc.milkshape.register
 {
 	import cc.milkshape.register.forms.RegisterForm;
+	import cc.milkshape.user.events.LoginEvent;
 	import cc.milkshape.utils.TableLine;
 	
 	import flash.display.Sprite;
@@ -24,12 +25,18 @@ package cc.milkshape.register
 		private function _handlerAddedToStage(e:Event):void
 		{
 			stage.addEventListener(Event.RESIZE, _handlerResize);
-			_registerForm = new RegisterForm();
+			var registerController:RegisterController = new RegisterController();
+			registerController.addEventListener(LoginEvent.LOGGED, _logged);
+			_registerForm = new RegisterForm(registerController);
 
 			_registerForm.bg2.addChild(new TableLine(stage.stageWidth*2, stage.stageHeight*2, 100, 100, 0x202020));
 			
 			addChild(_registerForm);
 			_handlerResize(null);
+		}
+		
+		private function _logged(e:LoginEvent):void
+		{
 			dispatchEvent(new Event('CLOSE_REGISTER'));
 		}
 		
