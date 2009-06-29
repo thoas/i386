@@ -16,7 +16,7 @@ from account.forms import SignupForm, AddEmailForm, LoginForm, \
         ChangeLanguageForm, InvitationForm
 from emailconfirmation.models import EmailAddress, EmailConfirmation
 
-from misc.views import pyamf_format
+from misc.views import pyamf_format, pyamf_errors, pyamf_success
 
 def _logout(request):
     from django.contrib.auth import logout
@@ -58,16 +58,16 @@ def login(request, template_name, form_class=LoginForm):
     }, context_instance=RequestContext(request))
 
 @pyamf_format
-def _signup(request, username, password, confirmation_key):
+def _signup(request, username, email, password1, password2, confirmation_key):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
             username, password = form.save()
             user = authenticate(username=username, password=password)
             auth_login(request, user)
-            return user
+            return pyamf_success(user)
         else:
-            return form.errors['__all__']
+            return pyamf_errors(form.errors)
     return False
 
 def signup(request, confirmation_key, template_name, form_class=SignupForm):
@@ -259,12 +259,12 @@ def _send_invitation(request, confirmation_key, email, content):
     if email_re.match(email):
         try:
             invitation = Invitation.objects.get(email=email)
-            return False
         except Invitation.DoesNotExist:
             invitation = get_object_or_404(Invitation, confirmation_key=confirmation_key)
             invitation.email = email
             invitation.content = content
             invitation.save()
+            print invitation
             return invitation
     return False
 

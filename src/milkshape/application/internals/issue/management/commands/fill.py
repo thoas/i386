@@ -26,7 +26,7 @@ from django.contrib.auth.models import User
 BASE_ROOT = dirname(abspath(__file__))
 
 RESERVED_USERNAMES = (
-    'matthieu benoit lisa constance camille pierre-alexandre maxime gauthier philippe '
+    'matthieu benoit lisa camille pierre-alexandre maxime gauthier philippe '
     'florent arnaud keyvan rudy emeline juan emilie claire yohan nadege '
     'barbero john terry julie zoe '
 ).split()

@@ -60,3 +60,15 @@ def pyamf_format(func):
         result = func(request, *func_args, **func_kwargs)
         return result
     return wrapped
+
+def pyamf_errors(errors):
+    return {
+        'success': False,
+        'errors': errors.values()
+    }
+
+def pyamf_success(data):
+    return {
+        'success': True,
+        'data': data
+    }

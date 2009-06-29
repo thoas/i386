@@ -8,15 +8,19 @@ package cc.milkshape.register
 
 	public class RegisterController extends GatewayController
 	{
-		public function signup(username:String, password:String, invitationKey:String):void
+		public function signup(username:String, email:String, password:String, confirmPassword:String, ticket:String):void
 		{
 			_responder = new Responder(
 				function(result:Object):void
 				{
-					dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result));
+					if(result.success)
+					{
+						dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result));
+					}
+					// look result.errors for errors list
 				}
 			, _onFault)
-			Gateway.getInstance().call('account.signup', _responder, username, password, invitationKey);
+			Gateway.getInstance().call('account.signup', _responder, username, email, password, confirmPassword, ticket);
 		}
 	}
 }
