@@ -81,7 +81,9 @@ package cc.milkshape.artists.buttons
 		{
 			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
 				url: Constance.ISSUE_SWF, 
-				background: false, 
+				background: false,
+				posX: Constance.ISSUE_POSX,
+				posY: Constance.ISSUE_POSY, 
 				params: {slug: _issueSlug, focusX: _posX, focusY: _posY}
 			}));
 		}

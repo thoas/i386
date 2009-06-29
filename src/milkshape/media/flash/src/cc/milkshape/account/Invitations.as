@@ -4,6 +4,7 @@ package cc.milkshape.account
 	import cc.milkshape.account.events.InvitationsEvent;
 	import cc.milkshape.account.forms.InvitationForm;
 	import cc.milkshape.framework.buttons.SmallButton;
+	import cc.milkshape.account.events.UpdateViewEvent;
 	
 	import flash.events.MouseEvent;
 
@@ -47,6 +48,7 @@ package cc.milkshape.account
 			_remainInvitation--;
 			_createInvitationForm(e.ticket);
 			_initPositions();
+			dispatchEvent(new UpdateViewEvent(UpdateViewEvent.UPDATE));
 		}
 		
 		private function _createInvitationForm(ticket:String):void
@@ -64,11 +66,11 @@ package cc.milkshape.account
 		
 		private function _initPositions():void
 		{
-			var height:Number = 10;
+			var decalY:Number = 10;
 			for each(var form:InvitationForm in _invitationForms)
 			{
-				form.y = height + 10;
-				height += form.y + form.height; 	
+				form.y = decalY + 10;
+				decalY += form.y + form.height; 	
 			}
 			if(_invitationForms.length > 0)
 				if(!sendInvitations.contains(_sendInvitations))
@@ -78,8 +80,11 @@ package cc.milkshape.account
 					sendInvitations.removeChild(_sendInvitations);
 			
 			sendInvitations.y = formContainer.y + formContainer.height + 15;
-			emailSendInvitations.y = emailGuestSigned.y = sendInvitations.y + sendInvitations.height + 15;
+			mailArea.y = sendInvitations.y + sendInvitations.height + 15;
+			
 			invitationsLeft.text = 'You have ' + _remainInvitation + ' invitations left';
+			
+			bottomPoint.y = height + 60;
 		}
 		
 		private function _sendInvitationsHandler(e:MouseEvent):void
@@ -98,16 +103,16 @@ package cc.milkshape.account
 				_createInvitationForm(unusedInvitation.confirmation_key);
 			}
 			
-			emailSendInvitations.htmlText = '';
+			mailArea.emailSendInvitations.htmlText = '';
 			for each(var sentInvitation:Object in e.invitations.sent_invitations)
 			{
-				emailSendInvitations.htmlText += sentInvitation.email + '<br />';
+				mailArea.emailSendInvitations.htmlText += sentInvitation.email + '<br />';
 			}
 			
-			emailGuestSigned.htmlText = '';
+			mailArea.emailGuestSigned.htmlText = '';
 			for each(var userInvited:Object in e.invitations.users_invited)
 			{
-				emailGuestSigned.htmlText += userInvited.email + '<br />';
+				mailArea.emailGuestSigned.htmlText += userInvited.email + '<br />';
 			}
 			
 			_initPositions();
