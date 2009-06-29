@@ -16,6 +16,8 @@ package cc.milkshape.register
 					if(result.success)
 					{
 						dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result.data));
+					} else {
+						dispatchEvent(new LoginEvent(LoginEvent.ERROR, result.errors));
 					}
 					// look result.errors for errors list
 				}

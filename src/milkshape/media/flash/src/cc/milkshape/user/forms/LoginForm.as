@@ -195,7 +195,7 @@ package cc.milkshape.user.forms
 		private function _error(e:LoginEvent):void
 		{
 			errorArea.text = '';
-			for each(var error:String in e.result.errors)
+			for each(var error:String in e.result)
 				errorArea.text += error + "\n";
 		}
 	}

@@ -45,7 +45,7 @@ package cc.milkshape.user
 				dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result.data));
 			} else {
 				if(result.errors)
-					dispatchEvent(new LoginEvent(LoginEvent.ERROR, result));
+					dispatchEvent(new LoginEvent(LoginEvent.ERROR, result.errors));
 			}
 		}
 	}
