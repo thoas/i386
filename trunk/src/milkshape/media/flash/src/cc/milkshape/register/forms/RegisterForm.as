@@ -33,9 +33,6 @@ package cc.milkshape.register.forms
 			_checkTerms = new Checkbox();
 			checkTerms.addChild(_checkTerms);
 			
-			_invitationKey = new LabelInput('INVITATION TICKET *');
-			//invitationKey.addChild(_invitationKey);
-			
 			_submit = new SmallButton('VALID MY SUBSCRIPTION', new PlusItem());
 			submit.addChild(_submit);
 			
@@ -44,16 +41,17 @@ package cc.milkshape.register.forms
 		
 		private function _submitHandler(e:MouseEvent):void
 		{
-			_registerController.signup(_username.text, _password.text, _invitationKey.text);
+			_registerController.signup(_username.text, _email.text, _password.text, _confirmPassword.text, ticket.text);
 		}
 		
 		public function values():Object
 		{
 			return {
 				'username': _username.text,
+				'email': _email.text,
 				'password': _password.text,
 				'confirmPassword': _confirmPassword.text,
-				'invitationKey': _invitationKey.text
+				'invitationKey': ticket.text
 			};
 		}
 		

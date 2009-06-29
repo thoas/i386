@@ -53,8 +53,7 @@ class InvitationManager(models.Manager):
         subject = render_to_string('email_invitation_subject.txt', context)
         message = render_to_string('email_invitation_message.txt', context)
         try:
-            pass
-            #send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority='high')
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority='high')
         except socket.error, msg:
             print 'error (%s) for %s' % (msg, invitation_instance.email)
 
@@ -70,6 +69,6 @@ class Invitation(models.Model):
     objects = InvitationManager()
     def save(self, force_insert=False, force_update=False):
         '''override save'''
-        if self.email and not date_burned:
+        if self.email and not self.date_burned:
             Invitation.objects.send_invitation(self)
         super(Invitation, self).save(force_insert, force_update)
