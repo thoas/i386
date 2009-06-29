@@ -6,6 +6,11 @@ package cc.milkshape.register.forms
 	import cc.milkshape.framework.forms.fields.LabelInput;
 	import cc.milkshape.register.RegisterController;
 	
+	import com.reintroducing.ui.AxisScroller;
+	
+	import fl.motion.easing.Sine;
+	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	public class RegisterForm extends RegisterClp implements Formable
@@ -25,18 +30,39 @@ package cc.milkshape.register.forms
 			username.addChild(_username);
 			_email = new LabelInput('EMAIL *');
 			email.addChild(_email);
-			_password = new LabelInput('PASSWORD *');
+			_password = new LabelInput('PASSWORD *', true);
 			password.addChild(_password);
-			_confirmPassword = new LabelInput('PASSWORD CONFIRMATION *');
+			_confirmPassword = new LabelInput('CONFIRMATION *', true);
 			confirmPassword.addChild(_confirmPassword);
 			
-			_checkTerms = new Checkbox();
+			_checkTerms = new Checkbox("I've read and I accept the terms of use");
 			checkTerms.addChild(_checkTerms);
 			
-			_submit = new SmallButton('VALID MY SUBSCRIPTION', new PlusItem());
+			_submit = new SmallButton('I CONFIRM MY REGISTRATION', new PlusItem());
 			submit.addChild(_submit);
 			
 			_submit.addEventListener(MouseEvent.CLICK, _submitHandler);
+			
+			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
+		}
+		
+		private function _handlerAddedToStage(e:Event):void
+		{
+			var optionalObj:Object = {
+				scrollType: "easing", 
+				isTrackClickable: true, 
+				continuousScroll: false,
+				easeFunc: Sine.easeOut, 
+				duration: .25,
+				scaleScroller: true,
+				autoHideControls: true
+			};
+			
+			var scrollItems:ScrollItemsClp = new ScrollItemsClp();
+			scrollItems.track.height = scrollArea.bg.height - 2;
+			scrollArea.scroll.addChild(scrollItems);
+			var scroller:AxisScroller = new AxisScroller(stage, scrollArea, scrollItems.scroller, scrollArea.content, scrollItems.track, scrollArea.mask, "y", optionalObj);
+		
 		}
 		
 		private function _submitHandler(e:MouseEvent):void

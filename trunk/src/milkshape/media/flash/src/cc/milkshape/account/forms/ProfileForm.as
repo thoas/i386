@@ -24,9 +24,9 @@ package cc.milkshape.account.forms
 			_realname = new LabelInput('NAME:');
 			_url = new LabelInput('URL:');
 			_location = new LabelInput('LOCATION:');
-			_ownNotif = new Checkbox();
-			_milkshapeNotif = new Checkbox();
-			_update = new SmallButton('UPDATE INFORMATION', new UpdateItem());
+			_ownNotif = new Checkbox('I want to be advised by e-mail of any activities around my creations');
+			_milkshapeNotif = new Checkbox('I want to be advised by e-mail of any activities on #milkshape');
+			_update = new SmallButton('UPDATE PROFILE', new UpdateItem());
 			
 			realname.addChild(_realname);
 			url.addChild(_url);
@@ -47,7 +47,7 @@ package cc.milkshape.account.forms
 		{
 			return {
 				'realname': _realname.text,
-				'url': _url.text,
+				'website': _url.text,
 				'location': _location.text
 			};
 		}

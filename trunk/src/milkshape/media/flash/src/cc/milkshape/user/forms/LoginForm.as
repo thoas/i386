@@ -66,7 +66,7 @@ package cc.milkshape.user.forms
 			logout.addChild(_logout);
 			profil.addChild(_profil);
 			hello.addChild(_hello);
-			errorArea.label.text = '';
+			errorArea.text = '';
 			
 			_password.label.tabIndex = 2;
 			_login.label.tabIndex = 1;
@@ -155,7 +155,7 @@ package cc.milkshape.user.forms
         	gotoAndPlay('logged');
         	var user:Object = e.result;
         	_hello.text = 'Hello ' + user.username + '!';
-        	_notif.text = 'x squares are waiting for your creation';
+        	_notif.text = 'x squares are waiting you';
         }
         
         private function _loginHandler(e:MouseEvent):void
@@ -189,9 +189,9 @@ package cc.milkshape.user.forms
 		
 		private function _error(e:LoginEvent):void
 		{
-			errorArea.label.text = '';
+			errorArea.text = '';
 			for each(var error:String in e.result.errors)
-				errorArea.label.text += error + "\n";
+				errorArea.text += error + "\n";
 		}
 	}
 }
