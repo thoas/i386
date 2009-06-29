@@ -1,1 +1,1 @@
-[{"pk": 1, "model": "issue.issue", "fields": {"title": "5x5", "date_finished": null, "nb_case_y": 5, "nb_case_x": 5, "nb_step": 6, "max_participation": 5, "date_created": "2009-05-10", "text_presentation": "5x5", "margin": 200, "slug": "5x5", "size": 800}}]
+[{"pk": 1, "model": "issue.issue", "fields": {"title": "5x5", "date_finished": null, "nb_case_y": 5, "nb_case_x": 5, "nb_step": 6, "max_participation": 5, "date_created": "2009-05-10", "text_presentation": "5x5", "margin": 200, "slug": "5x5", "size": 800, "show_disable_square": True}}]
