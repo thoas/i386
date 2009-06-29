@@ -5,6 +5,7 @@ package cc.milkshape.register.forms
 	import cc.milkshape.framework.forms.fields.Checkbox;
 	import cc.milkshape.framework.forms.fields.LabelInput;
 	import cc.milkshape.register.RegisterController;
+	import cc.milkshape.user.events.LoginEvent;
 	
 	import com.reintroducing.ui.AxisScroller;
 	
@@ -26,6 +27,7 @@ package cc.milkshape.register.forms
 		public function RegisterForm(registerController:RegisterController)
 		{
 			_registerController = registerController;
+			_registerController.addEventListener(LoginEvent.ERROR, _error);
 			_username = new LabelInput('USERNAME *');
 			username.addChild(_username);
 			_email = new LabelInput('EMAIL *');
@@ -87,6 +89,13 @@ package cc.milkshape.register.forms
 			_password.blur();
 			_confirmPassword.blur();
 			_invitationKey.blur();
+		}
+		
+		private function _error(e:LoginEvent):void
+		{
+			errorArea.text = '';
+			for each(var error:String in e.result)
+				errorArea.text += error + "\n";
 		}
 	}
 }
