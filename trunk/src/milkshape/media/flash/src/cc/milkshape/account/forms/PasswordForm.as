@@ -18,10 +18,10 @@ package cc.milkshape.account.forms
 		public function PasswordForm(passwordController:PasswordController)
 		{
 			_passwordController = passwordController;
-			_currentPassword = new LabelInput('CURRENT PASSWORD:', true);
-			_newPassword = new LabelInput('NEW PASSWORD:', true);
-			_confirmPassword = new LabelInput('CONFIRMATION PASSWORD:', true);
-			_update = new SmallButton('UPDATE', new PlusItem());
+			_currentPassword = new LabelInput('CURRENT:', true);
+			_newPassword = new LabelInput('NEW:', true);
+			_confirmPassword = new LabelInput('CONFIRMATION:', true);
+			_update = new SmallButton('UPDATE', new UpdateItem());
 			newPassword.addChild(_newPassword);
 			confirmPassword.addChild(_confirmPassword);
 			currentPassword.addChild(_currentPassword);

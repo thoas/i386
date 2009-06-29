@@ -1,5 +1,6 @@
 package cc.milkshape.grid
 {
+	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.grid.buttons.SidebarArtistBtn;
 	import cc.milkshape.grid.events.GridEvent;
 	import cc.milkshape.grid.events.GridOverEvent;
@@ -52,10 +53,22 @@ package cc.milkshape.grid
 				}
 			}
 			
-			decalY -= 11;
-			bg.bg.height += decalY;
-			bg.download.y += decalY;
-			bg.bottomBar.y += decalY;
+			
+			if(true)
+			{
+				decalY -= 11;
+				bg.download.addChild(new SmallButton('DOWNLOAD', new DownloadItem()));
+				bg.bg.height += decalY + 5;
+				bg.download.y += decalY + 3;
+				bg.bottomBar.y += decalY;
+			}
+			else
+			{
+				decalY -= 41;
+				bg.bg.height += decalY + 5;
+				bg.bottomBar.alpha = 0;
+			}
+			
 			
 			// le premier ArtistBtn on est celui qui a le focus 
 			if(_gridModel.focusSquare is SquareOwned)

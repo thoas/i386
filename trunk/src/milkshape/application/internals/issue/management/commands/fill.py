@@ -77,7 +77,7 @@ class Command(BaseCommand):
             margin=int(margin)
         )
         
-        square_open = SquareOpen.objects.get_or_create(
+        square_open, created = SquareOpen.objects.get_or_create(
             pos_x=0,
             pos_y=0,
             issue=self.issue
