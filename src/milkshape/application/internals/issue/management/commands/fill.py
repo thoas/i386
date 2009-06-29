@@ -4,6 +4,7 @@
 import Image
 import unittest
 import sys
+import random
 
 from os.path import abspath, dirname, join
 from optparse import make_option
@@ -22,76 +23,97 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-ACCT_USERNAME = 'jeanjack'
-ACCT_PASSWORD = 'toto'
 BASE_ROOT = dirname(abspath(__file__))
+
+RESERVED_USERNAMES = (
+    'matthieu benoit lisa constance camille pierre-alexandre maxime gauthier philippe '
+    'florent arnaud keyvan rudy emeline juan emilie claire yohan nadege '
+    'barbero john terry julie zoe '
+).split()
+
+DEFAULT_PASSWORD = 'toto'
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         image_root = args[0]
+        self.accounts = []
         self.client = Client()
-        result = self.client.login(username=ACCT_USERNAME, password=ACCT_PASSWORD)
-        if result:
-            self.image = Image.open(image_root)
-            self.width, self.height = self.image.size
+        self.image = Image.open(image_root)
+        self.width, self.height = self.image.size
+        
+        
+        print 'Issue\'s title?'
+        title = sys.stdin.readline()
+        
+        print 'Issue\'s text presentation?'
+        text_presentation = sys.stdin.readline()
+        
+        print 'How much squares in x?'
+        nb_case_x = sys.stdin.readline()
+        
+        print 'How much squares in y?'
+        nb_case_y = sys.stdin.readline()
+        
+        print 'How much steps during the scroll?'
+        nb_step = sys.stdin.readline()
+        
+        print 'Creation\'s size?'
+        size = sys.stdin.readline()
+        
+        print 'Margin\'s size?'
+        margin = sys.stdin.readline()
+        
+        print 'How much squares to fill?'
+        self.until_fill = sys.stdin.readline()
+                    
+        self.issue, created = Issue.objects.get_or_create(
+            title=title,
+            text_presentation=text_presentation,
+            nb_case_x=int(nb_case_x),
+            nb_case_y=int(nb_case_y),
+            nb_step=int(nb_step),
+            slug=defaultfilters.slugify(title),
+            size=int(size),
+            margin=int(margin)
+        )
+        
+        square_open = SquareOpen.objects.get_or_create(
+            pos_x=0,
+            pos_y=0,
+            issue=self.issue
+        )
+        
+        
+        #self.issue = Issue.objects.get(slug="5x5")
+        self.template_size = self.issue.size + (self.issue.margin * 2)
+        
+        self.max_square_x = ceil(self.width / self.issue.size)
+        self.max_square_y = ceil(self.height / self.issue.size)
+        
+        self.cpt = 0
+        for i in range(int(self.until_fill)):
+            choice = random.choice(RESERVED_USERNAMES)
+            #username = '%s-%s' % (choice, User.objects.make_random_password())
+            username = choice
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                user = User.objects.create_user(username, settings.EMAIL_HOST_USER, DEFAULT_PASSWORD)
+            user.is_staff = True
+            user.save()
+            self.accounts.append(user)
             
-            
-            print 'Issue\'s title?'
-            title = sys.stdin.readline()
-            
-            print 'Issue\'s text presentation?'
-            text_presentation = sys.stdin.readline()
-            
-            print 'How much squares in x?'
-            nb_case_x = sys.stdin.readline()
-            
-            print 'How much squares in y?'
-            nb_case_y = sys.stdin.readline()
-            
-            print 'How much steps during the scroll?'
-            nb_step = sys.stdin.readline()
-            
-            print 'Creation\'s size?'
-            size = sys.stdin.readline()
-            
-            print 'Margin\'s size?'
-            margin = sys.stdin.readline()
-            
-            print 'How much squares to fill?'
-            self.until_fill = sys.stdin.readline()
-                        
-            self.issue, created = Issue.objects.get_or_create(
-                title=title,
-                text_presentation=text_presentation,
-                nb_case_x=int(nb_case_x),
-                nb_case_y=int(nb_case_y),
-                nb_step=int(nb_step),
-                slug=defaultfilters.slugify(title),
-                size=int(size),
-                margin=int(margin)
-            )
-            
-            square_open = SquareOpen.objects.get_or_create(
-                pos_x=0,
-                pos_y=0,
-                issue=self.issue
-            )
-            
-            
-            #self.issue = Issue.objects.get(slug="5x5")
-            self.template_size = self.issue.size + (self.issue.margin * 2)
-            
-            self.max_square_x = ceil(self.width / self.issue.size)
-            self.max_square_y = ceil(self.height / self.issue.size)
-            
-            self.cpt = 0
-            self.process()
+        self.process()
     
     def process(self):
         squares_open = self.__squares_open()
         for square_open in squares_open:
-            self.book(square_open.pos_x, square_open.pos_y)
-            self.fill(square_open.pos_x, square_open.pos_y)
+            user = random.choice(self.accounts)
+            result = self.client.login(username=user.username, password=DEFAULT_PASSWORD)
+            if result:
+                self.book(square_open.pos_x, square_open.pos_y)
+                self.fill(square_open.pos_x, square_open.pos_y)
+                self.client.logout()
         if self.__squares_open().count() > 0:
             self.process()
 

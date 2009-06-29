@@ -129,7 +129,6 @@ class Square(AbstractSquare):
             if size_y > self.issue.size:
                 size_y = max_height
         
-        print self.pos_x, self.pos_y, size_x, size_y
         return size_x, size_y
     
     def build_layer(self, image, step):        
