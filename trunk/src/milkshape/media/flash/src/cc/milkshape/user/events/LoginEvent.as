@@ -6,22 +6,23 @@ package cc.milkshape.user.events
 	{
 		public static const SUBMIT:String = 'SUBMIT';
 		public static const LOGGED:String = 'LOGGED';
+		public static const ERROR:String = 'ERROR';
 		public static const LOGOUT:String = 'LOGOUT';
-		private var _user:Object;
-		public function LoginEvent(type:String, user:Object)
+		private var _result:Object;
+		public function LoginEvent(type:String, result:Object)
 		{
 			super(type, bubbles, cancelable);
-			_user = user;
+			_result = result;
 		}
 
-		public function get user():Object
+		public function get result():Object
 		{
-			return _user;
+			return _result;
 		}
 
-		public function set user(v:Object):void
+		public function set result(v:Object):void
 		{
-			_user = v;
+			_result = v;
 		}
 
 	}

@@ -36,7 +36,8 @@ package cc.milkshape.user.forms
 			_loginController = loginController;
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 			_loginController.addEventListener(LoginEvent.LOGGED, _logged);	
-			_loginController.addEventListener(LoginEvent.LOGOUT, _disconnected);		
+			_loginController.addEventListener(LoginEvent.LOGOUT, _disconnected);
+			_loginController.addEventListener(LoginEvent.ERROR, _error);		
 		}
 		
 		private function _handlerAddedToStage(e:Event):void
@@ -152,7 +153,7 @@ package cc.milkshape.user.forms
         private function _logged(e:LoginEvent):void 
         {
         	gotoAndPlay('logged');
-        	var user:Object = e.user;
+        	var user:Object = e.result;
         	_hello.text = 'Hello ' + user.username + '!';
         	_notif.text = 'x squares are waiting for your creation';
         }
@@ -184,6 +185,13 @@ package cc.milkshape.user.forms
 		private function _profilHandler(e:MouseEvent):void
 		{
 			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {'url': 'account.swf', 'background': true}));
+		}
+		
+		private function _error(e:LoginEvent):void
+		{
+			errorArea.label.text = '';
+			for each(var error:String in e.result.errors)
+				errorArea.label.text += error + "\n";
 		}
 	}
 }
