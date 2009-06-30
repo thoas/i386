@@ -24,43 +24,48 @@ package cc.milkshape.account
 		
 		public function update(realname:String, url:String, location:String):void
 		{
-			_responder = new Responder(_updated, _onFault);
+			_responder = new Responder(
+				function(result:Object):void
+				{
+					if(result){
+						dispatchEvent(new ProfilesEvent(ProfilesEvent.SUCCESS));
+					}
+				}
+			, _onFault);
 			Gateway.getInstance().call('profile.profile_change', _responder, realname, url, location);
 		}
 		
 		public function lastProfiles():void
 		{
-			_responder = new Responder(_lastProfiles, _onFault);
+			_responder = new Responder(
+				function(result:Array):void
+				{
+					dispatchEvent(new ProfilesEvent(ProfilesEvent.LAST_PROFILES, result));
+				}
+			, _onFault);
 			Gateway.getInstance().call('profile.last_profiles', _responder);
-		}
-		
-		private function _lastProfiles(result:Array):void
-		{
-			dispatchEvent(new ProfilesEvent(ProfilesEvent.LAST_PROFILES, result));
 		}
 		
 		public function creations():void
 		{
-			_responder = new Responder(function(result:Object):void {
-				dispatchEvent(new CreationsEvent(CreationsEvent.CREATIONS_LOADED, result));
-			}, _onFault);
+			_responder = new Responder(
+				function(result:Object):void 
+				{
+					dispatchEvent(new CreationsEvent(CreationsEvent.CREATIONS_LOADED, result));
+				}
+			, _onFault);
 			Gateway.getInstance().call('profile.creations', _responder);
 		}
 		
 		public function release(posX:int, posY:int, issueSlug:String):void
 		{
-			_responder = new Responder(function(result:Object):void {
-				dispatchEvent(new CreationsEvent(CreationsEvent.CREATION_RELEASED));
-			}, _onFault);
-			trace("release " + posX + " " + posY);
+			_responder = new Responder(
+				function(result:Object):void 
+				{
+					dispatchEvent(new CreationsEvent(CreationsEvent.CREATION_RELEASED));
+				}
+			, _onFault);
 			Gateway.getInstance().call('square.release', _responder, posX, posY, issueSlug);
-		}
-		
-		private function _updated(result:Object):void
-		{
-			if(result){
-				dispatchEvent(new ProfilesEvent(ProfilesEvent.SUCCESS));
-			}
 		}
 	}
 }

@@ -22,11 +22,6 @@ def _issue(request, slug):
     squares_open = SquareOpen.objects.filter(issue=issue, is_standby=0)
     squares = Square.objects.select_related('user', 'issue').filter(issue=issue)
     
-    # bad, but defer() (in django 1.1 beta) function raises an error in PyAMF
-    for square in squares:
-        if square.user:
-            square.user.password = None
-    
     datas = {
         'issue': issue,
         'squares_open': squares_open,

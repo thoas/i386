@@ -24,16 +24,16 @@ package cc.milkshape.user
 		
 		public function logout():void
 		{
-			_responder = new Responder(_logout, _onFault);
+			_responder = new Responder(
+				function(result:Object):void
+				{
+					dispatchEvent(new LoginEvent(LoginEvent.LOGOUT, result));
+					Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+						url: Constance.HOME_SWF, posX:0, posY:60
+					}));
+				}
+			, _onFault);
 			Gateway.getInstance().call("account.logout", _responder);
-		}
-		
-		private function _logout(result:Object):void
-		{
-			dispatchEvent(new LoginEvent(LoginEvent.LOGOUT, result));
-			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
-				url: Constance.HOME_SWF, posX:0, posY:60
-			}));
 		}
 		
 		private function _logged(result:Object):void 
