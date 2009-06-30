@@ -40,7 +40,7 @@ package cc.milkshape.user
 		{
 			if(result.success)
 			{
-				this.getUser().setAttribute('account', result.data);
+				this.getUser().setAttribute('account', result.data.user);
 				this.getUser().authenticated = true;
 				dispatchEvent(new LoginEvent(LoginEvent.LOGGED, result.data));
 			} else {
