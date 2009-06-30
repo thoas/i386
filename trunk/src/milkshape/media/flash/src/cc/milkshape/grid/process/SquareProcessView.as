@@ -189,6 +189,8 @@ package cc.milkshape.grid.process
 		
 		private function _showBookedForm(e:SquareFormEvent):void
 		{
+			trace(User.getInstance().getAttribute('account').id);
+			trace(e.focusSquare.user.id);
 			if(User.getInstance().isAuthenticated() === true 
 				&& e.focusSquare.user.id == User.getInstance().getAttribute('account').id)
 			{
