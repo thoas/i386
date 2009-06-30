@@ -4,24 +4,22 @@ package cc.milkshape.account.events
 	
 	public class ProfileEvent extends Event
 	{
-		public static const SUCCESS:String = 'SUCCESS';
-		public static const LAST_PROFILES:String = 'LAST_PROFILES';
-		
-		private var _lastProfiles:Array;
-		public function ProfileEvent(type:String, lastProfiles:Array=null, bubbles:Boolean=false, cancelable:Boolean=false)
+		public static const PROFILE:String = 'PROFILE';
+		private var _result:Object;
+		public function ProfileEvent(type:String, result:Object, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
-			_lastProfiles = lastProfiles;
+			_result = result;
 			super(type, bubbles, cancelable);
 		}
 
-		public function get lastProfiles():Array
+		public function get result():Object
 		{
-			return _lastProfiles;
+			return _result;
 		}
 
-		public function set lastProfiles(v:Array):void
+		public function set result(v:Object):void
 		{
-			_lastProfiles = v;
+			_result = v;
 		}
 
 	}

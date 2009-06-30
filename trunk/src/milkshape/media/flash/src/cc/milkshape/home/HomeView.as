@@ -1,7 +1,7 @@
 package cc.milkshape.home
 {
 	import cc.milkshape.account.ProfileController;
-	import cc.milkshape.account.events.ProfileEvent;
+	import cc.milkshape.account.events.ProfilesEvent;
 	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.home.*;
 	import cc.milkshape.issue.IssueController;
@@ -32,7 +32,7 @@ package cc.milkshape.home
 			_issueController = issueController;
 			_profileController = profileController;
 			_issueController.addEventListener(IssuesEvent.LAST_ISSUES_LOADED, _loadIssues);
-			_profileController.addEventListener(ProfileEvent.LAST_PROFILES, _loadProfiles);
+			_profileController.addEventListener(ProfilesEvent.LAST_PROFILES, _loadProfiles);
 			addEventListener(Event.ADDED_TO_STAGE, _handlerAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
 		}
@@ -92,7 +92,7 @@ package cc.milkshape.home
             _welcomeText.x = 520;
 		}
 		
-		private function _loadProfiles(e:ProfileEvent):void
+		private function _loadProfiles(e:ProfilesEvent):void
 		{
 			_lastArtists.init(e.lastProfiles);
 			addChild(_lastArtists);

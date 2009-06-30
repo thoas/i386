@@ -1,6 +1,7 @@
 package cc.milkshape.account
 {
 	import cc.milkshape.account.events.CreationsEvent;
+	import cc.milkshape.account.events.ProfilesEvent;
 	import cc.milkshape.account.events.ProfileEvent;
 	import cc.milkshape.gateway.Gateway;
 	import cc.milkshape.gateway.GatewayController;
@@ -9,6 +10,18 @@ package cc.milkshape.account
 
 	public class ProfileController extends GatewayController
 	{
+		
+		public function profile():void
+		{
+			_responder = new Responder(
+				function(result:Object):void
+				{
+					dispatchEvent(new ProfileEvent(ProfileEvent.PROFILE, result));
+				}
+			, _onFault);
+			Gateway.getInstance().call('profile.profile', _responder);
+		}
+		
 		public function update(realname:String, url:String, location:String):void
 		{
 			_responder = new Responder(_updated, _onFault);
@@ -23,7 +36,7 @@ package cc.milkshape.account
 		
 		private function _lastProfiles(result:Array):void
 		{
-			dispatchEvent(new ProfileEvent(ProfileEvent.LAST_PROFILES, result));
+			dispatchEvent(new ProfilesEvent(ProfilesEvent.LAST_PROFILES, result));
 		}
 		
 		public function creations():void
@@ -46,7 +59,7 @@ package cc.milkshape.account
 		private function _updated(result:Object):void
 		{
 			if(result){
-				dispatchEvent(new ProfileEvent(ProfileEvent.SUCCESS));
+				dispatchEvent(new ProfilesEvent(ProfilesEvent.SUCCESS));
 			}
 		}
 	}

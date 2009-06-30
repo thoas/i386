@@ -57,9 +57,9 @@ def _profile(request):
 
 @login_required
 @pyamf_format
-def _profile_change(request, name, location, website):
+def _profile_change(request, name, website, location):
     if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.get_profile())
         if profile_form.is_valid():
             profile = profile_form.save()
             return profile

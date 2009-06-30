@@ -6,6 +6,7 @@ package cc.milkshape.utils
 		public static const ISSUES_SWF:String = 'issues.swf';
 		public static const ARTISTS_SWF:String = 'artists.swf';
 		public static const CONTACT_SWF:String = 'contact.swf';
+		public static const ACCOUNT_SWF:String = 'account.swf';
 		public static const HOME_SWF:String = 'home.swf';
 		public static const ABOUT_SWF:String = 'about.swf';
 		public static const TERMS_SWF:String = 'terms.swf';
