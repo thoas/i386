@@ -12,13 +12,26 @@ package cc.milkshape.account
 	{
 		public function invitations():void
 		{
-			_responder = new Responder(_invitationsHandler, _onFault);
+			_responder = new Responder(
+				function(result:Object):void
+				{
+					dispatchEvent(new InvitationsEvent(InvitationsEvent.INVITATIONS_LOADED, result));
+				}
+			, _onFault);
 			Gateway.getInstance().call('account.invitations', _responder);
 		}
 		
 		public function createInvitation():void
 		{
-			_responder = new Responder(_createInvitationHandler, _onFault);
+			_responder = new Responder(
+				function(result:Object):void
+				{
+					if(result)
+					{
+						dispatchEvent(new InvitationEvent(InvitationEvent.TICKET_CREATED, null, result.confirmation_key));
+					}
+				}
+			, _onFault);
 			Gateway.getInstance().call('account.create_invitation', _responder);
 		}
 		
@@ -31,20 +44,6 @@ package cc.milkshape.account
 				}
 			}, _onFault);
 			Gateway.getInstance().call('account.send_invitation', _responder, values.ticket, values.email, values.content);
-		}
-		
-		private function _invitationsHandler(result:Object):void
-		{
-			dispatchEvent(new InvitationsEvent(InvitationsEvent.INVITATIONS_LOADED, result));
-		}
-		
-		private function _createInvitationHandler(result:Object):void
-		{
-			if(result)
-			{
-				trace(result);
-				dispatchEvent(new InvitationEvent(InvitationEvent.TICKET_CREATED, null, result.confirmation_key));
-			}
 		}
 	}
 }

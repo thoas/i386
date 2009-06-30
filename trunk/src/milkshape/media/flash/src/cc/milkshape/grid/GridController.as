@@ -81,7 +81,6 @@ package cc.milkshape.grid
 			if(_gridModel.gridLineVisible)
 			{
 				SoundManager.getInstance().playSound("SoundSquareFocus");
-				trace("layer " + e.square.X + " " + e.square.Y);
 				_gridModel.setFocus(e.square.X, e.square.Y);
 				_gridModel.moveTo();
 			}
