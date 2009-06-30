@@ -155,12 +155,16 @@ package cc.milkshape.user.forms
         	gotoAndPlay('logged');
         	var result:Object = e.result;
         	_hello.text = 'Hello ' + result.user.username + '!';
-        	if(result.remain_participations.length > 0)
+        	_notif.text = '';
+        	if(result.remain_participations.length > 0){
         		_notif.text = result.remain_participations.length;
         		if(result.remain_participations.length > 1)
         			_notif.text += ' squares are waiting you';
         		else
         			_notif.text += ' square is waiting you';
+        	} else {
+        		_notif.text = '';
+        	}
         }
         
         private function _loginHandler(e:MouseEvent):void
