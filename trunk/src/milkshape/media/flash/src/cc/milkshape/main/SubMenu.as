@@ -40,7 +40,7 @@ package cc.milkshape.main
 		
 		private function _clickHandlerRSS(e:MouseEvent):void
 		{
-			navigateToURL(new URLRequest(Constance.url('/square/feeds/rss/')), 'blank');
+			navigateToURL(new URLRequest(Constance.url('square/feeds/rss/')), 'blank');
 		}
 		
 	}
