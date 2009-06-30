@@ -65,13 +65,15 @@ package
 			var keyboardController:GridKeyboardController = new GridKeyboardController(_gridModel);
 			var mouseController:GridMouseController = new GridMouseController(_gridModel);
 			_gridView = new GridView(_gridModel, _gridController, keyboardController, mouseController);
-			if(e.option.focusX != null && e.option.focusY != null)
-			{
-				_gridView.addEventListener(GridEvent.VIEW_READY, function(event:GridEvent):void {
+			_gridView.addEventListener(GridEvent.VIEW_READY, function(event:GridEvent):void {
+				if(e.option.focusX != null && e.option.focusY != null)
+				{
 					_gridModel.setFocus(e.option.focusX, e.option.focusY);
 					_gridModel.zoomToScale(_gridModel.maxScale);
-				});
-			}
+				} else {
+					_gridModel.setFocus(0, 0);
+				}
+			});
 			
 			_bg = new GridBackground();
 			_bg.addEventListener(MouseEvent.CLICK, mouseController.stageClickHandler);
