@@ -376,6 +376,11 @@ class Square(AbstractSquare):
     def neighbors_keys(self):
         return list(({'pos_x': pos_x, 'pos_y': pos_y}) for pos_x, pos_y in self.neighbors)
 
+    @models.permalink
+    def get_absolute_url(self):
+        """docstring for get_absolute_url"""
+        return ('square.views.fill', [str(self.pos_x), str(self.pos_y), str(self.issue.slug)])
+
 class SquareOpen(AbstractSquare):
     date_created = models.DateTimeField(_('date_created'), auto_now_add=True)
 
