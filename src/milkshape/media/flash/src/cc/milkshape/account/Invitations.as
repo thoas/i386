@@ -40,7 +40,7 @@ package cc.milkshape.account
 			var values:Object = form.values();
 			_invitationForms = _invitationForms.splice(_invitationForms.indexOf(form), 1);
 			formContainer.removeChild(form);
-			_initPositions();
+			_invitationController.invitations();
 		}
 		
 		private function _ticketCreated(e:InvitationEvent):void
