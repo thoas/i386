@@ -1,0 +1,10 @@
+{% load i18n %}
+{% blocktrans with invitation.content as content %}
+{{ content }}
+
+To get your account on #milkshape, click here or copy / paste the URL into your Web browser.
+
+{{ activate_url }}
+
+Or note your invitation code: {{ confirmation_key }}
+{% endblocktrans %}
