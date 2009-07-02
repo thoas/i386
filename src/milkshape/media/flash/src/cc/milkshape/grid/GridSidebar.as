@@ -55,7 +55,7 @@ package cc.milkshape.grid
 			
 			openDate.label.text = _gridModel.issue.date_created.month + '.' + _gridModel.issue.date_created.date + '.' + _gridModel.issue.date_created.fullYear;
 			title.label.text = _gridModel.issue.title;
-			desc.label.text = _gridModel.issue.text_presentation;
+			desc.label.htmlText = _gridModel.issue.text_presentation;
 			openItem.label.text = _gridModel.issue.nb_squares_open;
 			booked.label.text = _gridModel.issue.nb_squares_booked;
 			full.label.text =  _gridModel.issue.nb_creators;
