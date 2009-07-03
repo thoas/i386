@@ -1,0 +1,6 @@
+dependences:
+    python
+    python-sqlite
+    python-mysqldb
+    python-setuptools
+    python-imaging (pil)

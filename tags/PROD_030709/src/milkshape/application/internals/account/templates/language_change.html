@@ -1,0 +1,15 @@
+{% extends "base_account.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Language" %}{% endblock %}
+
+{% block body %}
+    <h1>{% trans "Language" %}</h1>
+    <form method="POST" action="">
+        <table>
+            {{ form }}
+            <tr><td></td><td><input type="submit" value="{% trans "Change my language" %}" /></td></tr>
+        </table>
+    </form>
+{% endblock %}

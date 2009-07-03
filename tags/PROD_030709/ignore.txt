@@ -1,0 +1,6 @@
+.actionScriptProperties
+.project
+*.db
+*.pyc
+*.as3proj
+media/flash/bin-debug/*

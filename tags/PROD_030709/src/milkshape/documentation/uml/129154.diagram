@@ -1,0 +1,318 @@
+format 66
+
+classcanvas 128002 class_ref 130434 // Utilisateur
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 14 87 2000
+end
+classcanvas 128130 class_ref 130562 // Créateur
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 15 451 2000
+end
+usecasecanvas 128514 usecase_ref 128002 // Gérer mes créations
+  xyzwh 311 721 3005 127 40 label_xy 335 733
+end
+usecasecanvas 128642 usecase_ref 128130 // S'inscrire
+  color yellow
+  xyzwh 307 396 3005 64 32 label_xy 319 406
+end
+usecasecanvas 128770 usecase_ref 128258 // Se connecter
+  color yellow
+  xyzwh 761 402 3005 76 38 label_xy 771 414
+end
+usecasecanvas 128898 usecase_ref 128386 // Définir son profil
+  color yellow
+  xyzwh 740 852 3005 91 36 label_xy 752 863
+end
+usecasecanvas 129026 usecase_ref 128514 // Regénérer son mot de passe
+  color yellow
+  xyzwh 50 355 3005 157 45 label_xy 73 370
+end
+usecasecanvas 129154 usecase_ref 128642 // Envoyer une invitation
+  color yellow
+  xyzwh 636 774 3005 120 43 label_xy 653 787
+end
+usecasecanvas 129282 usecase_ref 128770 // Réserver une case
+  color yellow
+  xyzwh 418 312 3005 106 45 label_xy 431 328
+end
+usecasecanvas 129410 usecase_ref 128898 // Envoyer une message (contact)
+  color yellow
+  xyzwh 44 295 3005 177 42 label_xy 69 309
+end
+usecasecanvas 129666 usecase_ref 129154 // Transférer un travail
+  color yellow
+  xyzwh 537 879 3005 110 39 label_xy 548 893
+end
+usecasecanvas 129794 usecase_ref 129282 // Mettre le site en plein écran
+  xyzwh 25 8 3005 150 37 label_xy 47 19
+end
+usecasecanvas 129922 usecase_ref 129410 // Modifier l'atmosphère sonore
+  xyzwh 99 221 3005 154 49 label_xy 122 239
+end
+usecasecanvas 130050 usecase_ref 129538 // Naviguer dans la grille
+  xyzwh 587 174 3005 98 45 label_xy 592 192
+end
+usecasecanvas 130178 usecase_ref 129666 // Zoomer sur une création
+  xyzwh 682 90 3005 122 45 label_xy 695 106
+end
+usecasecanvas 130306 usecase_ref 129794 // Répondre à un message
+  xyzwh 415 409 3005 142 56 label_xy 439 429
+end
+usecasecanvas 130434 usecase_ref 129922 // Ecrire un message
+  xyzwh 465 507 3005 113 46 label_xy 478 521
+end
+usecasecanvas 130562 usecase_ref 130050 // S'abonner au flux d'informations
+  xyzwh 105 52 3005 172 47 label_xy 129 69
+end
+classcanvas 132226 class_ref 131714 // Administrateur
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz -4 902 2000
+end
+note 135170 "Si possède une invitation"
+  xyzwh 243 440 2004 106 48
+subject 135426 ""
+  xyzwh 883 23 2000 31 31
+subject 135554 ""
+  xyzwh 887 40 2000 31 31
+subject 135682 "Navigation"
+  color lightgray  xyzwh 572 69 2000 240 173
+usecasecanvas 135810 usecase_ref 131330 // Se déconnecter
+  color yellow
+  xyzwh 467 256 3005 87 35 label_xy 479 266
+end
+usecasecanvas 136450 usecase_ref 131458 // Editer son profil
+  color yellow
+  xyzwh 631 934 3005 91 34 label_xy 643 945
+end
+usecasecanvas 136578 usecase_ref 131586 // Supprimer son profil
+  color yellow
+  xyzwh 689 969 3005 115 39 label_xy 708 982
+end
+subject 137346 "Gestion du profil"
+  color gray  xyzwh 293 672 2000 542 345
+subject 138370 "Zone d'échange"
+  color lightgray  xyzwh 403 383 2000 205 182
+subject 141314 "Gestion des créations"
+  color verylightgray  xyzwh 307 699 2000 296 169
+usecasecanvas 141698 usecase_ref 131842 // S'abonner au flux des créations
+  xyzwh 303 3 3005 175 40 label_xy 331 16
+end
+usecasecanvas 141954 usecase_ref 131970 // S'abonner au flux des artistes
+  xyzwh 396 41 3010 158 39 label_xy 420 53
+end
+usecasecanvas 142210 usecase_ref 132098 // Télécharger le template de création
+  color yellow
+  xyzwh 452 962 3005 189 39 label_xy 473 976
+end
+usecasecanvas 142466 usecase_ref 132226 // Voir la liste des participants
+  color yellow
+  xyzwh 407 612 3005 149 44 label_xy 426 626
+end
+usecasecanvas 143106 usecase_ref 132354 // Transférer une création
+  color yellow
+  xyzwh 309 815 3005 125 40 label_xy 323 828
+end
+usecasecanvas 143618 usecase_ref 132482 // Télécharger la création du jour
+  xyzwh 219 95 3005 189 42 label_xy 254 108
+end
+usecasecanvas 143874 usecase_ref 132610 // Basse définition
+  xyzwh 449 84 3005 89 33 label_xy 464 93
+end
+usecasecanvas 144130 usecase_ref 132738 // Haute définition
+  xyzwh 478 125 3010 91 32 label_xy 493 134
+end
+usecasecanvas 144514 usecase_ref 132866 // Télécharger la création finale
+  xyzwh 260 257 3010 179 42 label_xy 296 271
+end
+note 144770 "Si l'issue en cours est finie"
+  xyzwh 300 161 2004 69 80
+usecasecanvas 145026 usecase_ref 134018 // Accéder aux créations
+  xyzwh 456 789 3005 130 35 label_xy 477 799
+end
+subject 146050 "Gestion des utilisateurs"
+  xyzwh 36 674 2000 243 195
+subject 146178 "Gestion des issues"
+  xyzwh 48 1022 2000 235 153
+usecasecanvas 146306 usecase_ref 135298 // Gérer les utilisateurs
+  xyzwh 35 753 3005 94 35 label_xy 45 766
+end
+usecasecanvas 146434 usecase_ref 135426 // Supprimer un utilisateur
+  xyzwh 49 686 3005 104 31 label_xy 58 694
+end
+usecasecanvas 146562 usecase_ref 135554 // Editer un utilisateur
+  xyzwh 146 836 3010 108 31 label_xy 164 846
+end
+usecasecanvas 146690 usecase_ref 135682 // Ajouter un utilisateur
+  xyzwh 187 728 3015 90 35 label_xy 197 741
+end
+usecasecanvas 147202 usecase_ref 135810 // Editer un profil
+  xyzwh 165 690 3021 75 31 label_xy 178 701
+end
+usecasecanvas 147458 usecase_ref 135938 // Gérer les issues
+  xyzwh 52 1034 3005 90 35 label_xy 63 1046
+end
+usecasecanvas 147586 usecase_ref 136066 // Ajouter une issue
+  xyzwh 194 1041 3005 80 32 label_xy 201 1049
+end
+usecasecanvas 147714 usecase_ref 136194 // Supprimer une issue
+  xyzwh 50 1131 3005 93 31 label_xy 60 1139
+end
+usecasecanvas 148098 usecase_ref 136322 // Ajouter une square ouverte
+  xyzwh 162 1123 3005 113 39 label_xy 173 1137
+end
+usecasecanvas 148738 usecase_ref 128642 // Envoyer une invitation
+  xyzwh 137 896 3005 108 35 label_xy 151 908
+end
+usecasecanvas 148866 usecase_ref 136450 // Définir le nombre d'invitation
+  xyzwh 155 793 3010 121 32 label_xy 166 802
+end
+usecasecanvas 149762 usecase_ref 136578 // Ajouter une annonce
+  xyzwh 87 980 3005 104 31 label_xy 102 990
+end
+usecasecanvas 149890 usecase_ref 136706 // Ajouter une notification
+  xyzwh 133 937 3010 115 35 label_xy 152 950
+end
+relationcanvas 128258 relation_ref 131458 // <generalisation>
+  from ref 128130 z 1999 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+line 130946 ----
+  from ref 128130 z 1999 to ref 128642
+line 131330 ----
+  from ref 128002 z 1999 to ref 129794
+line 131458 ----
+  from ref 128002 z 1999 to ref 129922
+line 131586 ----
+  from ref 128130 z 1999 to ref 129026
+line 131714 ----
+  from ref 128130 z 1999 to ref 129026
+line 131842 ----
+  from ref 128130 z 1999 to point 418 731
+  line 143234 z 1999 to ref 129154
+line 131970 ----
+  from ref 128002 z 1999 to ref 130562
+relationcanvas 132354 relation_ref 132610 // <generalisation>
+  from ref 132226 z 1999 to ref 128130
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+line 132610 ----
+  from ref 128130 z 1999 to ref 129282
+simplerelationcanvas 133378 simplerelation_ref 128130
+  from ref 130178 z 3004 stereotype "<<extend>>" xyz 679 157 3000 to ref 130050
+end
+line 133762 ----
+  from ref 128130 z 1999 to ref 130434
+simplerelationcanvas 133890 simplerelation_ref 128386
+  from ref 130306 z 3004 stereotype "<<extend>>" xyz 505 474 3000 to ref 130434
+end
+line 134018 ----
+  from ref 128002 z 1999 to ref 129410
+simplerelationcanvas 134146 simplerelation_ref 128514
+  from ref 129154 z 3004 stereotype "<<include>>" xyz 654 842 3000 to ref 129666
+end
+simplerelationcanvas 134658 simplerelation_ref 128770
+  from ref 130434 z 3004 stereotype "<<include>>" xyz 648 476 3000 to ref 128770
+end
+simplerelationcanvas 134786 simplerelation_ref 128898
+  from ref 129154 z 3004 to point 736 679
+  line 141442 z 3004 stereotype "<<include>>" xyz 759 691 3000 to ref 128770
+end
+simplerelationcanvas 134914 simplerelation_ref 129026
+  from ref 128898 z 3004 to point 798 676
+  line 139650 z 3004 stereotype "<<include>>" xyz 714 730 3000 to ref 128770
+end
+simplerelationcanvas 135042 simplerelation_ref 129154
+  from ref 129282 z 3004 stereotype "<<include>>" xyz 578 344 3000 to ref 128770
+end
+line 135938 ----
+  from ref 128130 z 1999 to ref 135810
+simplerelationcanvas 136066 simplerelation_ref 129282
+  from ref 135810 z 3004 stereotype "<<include>>" xyz 600 301 3000 to ref 128770
+end
+line 136706 ----
+  from ref 128130 z 1999 to ref 128514
+simplerelationcanvas 136834 simplerelation_ref 129538
+  from ref 128514 z 3004 to point 688 598
+  line 139778 z 3004 stereotype "<<include>>" xyz 657 615 3000 to ref 128770
+end
+simplerelationcanvas 137090 simplerelation_ref 129794
+  from ref 136578 z 3004 stereotype "<<extend>>" xyz 768 926 3000 to ref 128898
+end
+simplerelationcanvas 137730 simplerelation_ref 129922
+  from ref 136450 z 3004 stereotype "<<extend>>" xyz 674 892 3000 to ref 128898
+end
+simplerelationcanvas 141826 simplerelation_ref 130306
+  from ref 141698 z 3004 stereotype "<<extend>>" xyz 252 31 3000 to ref 130562
+end
+simplerelationcanvas 142082 simplerelation_ref 130434
+  from ref 141954 z 3004 stereotype "<<extend>>" xyz 305 63 3000 to ref 130562
+end
+simplerelationcanvas 142338 simplerelation_ref 130562
+  from ref 129666 z 3004 stereotype "<<include>>" xyz 528 925 3000 to ref 142210
+end
+line 142594 ----
+  from ref 128130 z 1999 to ref 142466
+simplerelationcanvas 142722 simplerelation_ref 130690
+  from ref 142466 z 3004 stereotype "<<include>>" xyz 598 582 3000 to point 667 558
+  line 142850 z 3004 to ref 128770
+end
+simplerelationcanvas 143490 simplerelation_ref 130946
+  from ref 143106 z 3004 stereotype "<<extend>>" xyz 344 786 3000 to ref 128514
+end
+line 143746 ----
+  from ref 128002 z 1999 to ref 143618
+simplerelationcanvas 144258 simplerelation_ref 131074
+  from ref 143874 z 3004 stereotype "<<extend>>" xyz 399 102 3000 to ref 143618
+end
+simplerelationcanvas 144386 simplerelation_ref 131202
+  from ref 144130 z 3004 stereotype "<<extend>>" xyz 414 129 3000 to ref 143618
+end
+line 144642 ----
+  from ref 128002 z 1999 to ref 144514
+simplerelationcanvas 145154 simplerelation_ref 132354
+  from ref 145026 z 3004 stereotype "<<extend>>" xyz 422 775 3000 to ref 128514
+end
+line 145794 ----
+  from ref 128002 z 3006 to ref 130050
+simplerelationcanvas 146818 simplerelation_ref 133506
+  from ref 146690 z 3016 stereotype "<<extend>>" xyz 159 759 3000 to ref 146306
+end
+simplerelationcanvas 146946 simplerelation_ref 133634
+  from ref 146562 z 3011 stereotype "<<extend>>" xyz 104 816 3000 to ref 146306
+end
+simplerelationcanvas 147074 simplerelation_ref 133762
+  decenter_end 500
+  from ref 146434 z 3006 stereotype "<<extend>>" xyz 46 726 3000 to ref 146306
+end
+simplerelationcanvas 147330 simplerelation_ref 133890
+  from ref 147202 z 3022 stereotype "<<extend>>" xyz 112 721 3000 to ref 146306
+end
+simplerelationcanvas 147842 simplerelation_ref 134018
+  from ref 147586 z 3006 stereotype "<<extend>>" xyz 146 1052 3000 to ref 147458
+end
+simplerelationcanvas 147970 simplerelation_ref 134146
+  from ref 147714 z 3006 stereotype "<<extend>>" xyz 75 1097 3000 to ref 147458
+end
+simplerelationcanvas 148226 simplerelation_ref 134274
+  from ref 148098 z 3006 stereotype "<<extend>>" xyz 134 1096 3000 to ref 147458
+end
+line 148482 ----
+  from ref 132226 z 3006 to ref 146306
+line 148610 ----
+  from ref 132226 z 3006 to ref 147458
+simplerelationcanvas 148994 simplerelation_ref 134402
+  from ref 148866 z 3011 stereotype "<<extend>>" xyz 152 778 3000 to ref 146306
+end
+line 150018 ----
+  from ref 132226 z 3006 to ref 148738
+line 150146 ----
+  from ref 132226 z 3011 to ref 149890
+line 150274 ----
+  from ref 132226 z 3006 to ref 149762
+line 135298 -_-_
+  from ref 135170 z 1998 to ref 130946
+line 144898 -_-_
+  from ref 144642 z 1998 to ref 144770
+end
