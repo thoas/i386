@@ -193,7 +193,7 @@ package cc.milkshape.user.forms
 		
 		private function _profilHandler(e:MouseEvent):void
 		{
-			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {'url': 'account.swf', 'background': true}));
+			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {'url': Constance.ACCOUNT_SWF, 'background': true}));
 		}
 		
 		private function _error(e:LoginEvent):void

@@ -33,7 +33,7 @@ LOCALE_PATHS = (
 
 USE_I18N = True
 
-ADMIN_MEDIA_PREFIX = '/media/admin/'
+ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
