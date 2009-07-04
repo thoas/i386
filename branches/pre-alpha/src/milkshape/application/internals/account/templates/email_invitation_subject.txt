@@ -1,0 +1,1 @@
+{% load i18n %}{% blocktrans with user.username as profile_name %}{{ profile_name }} wants to share his #milkshape's experience with you{% endblocktrans %}
