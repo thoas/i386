@@ -49,7 +49,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'account.middleware.LocaleMiddleware',
     'django.middleware.doc.XViewMiddleware',
-    'pagination.middleware.PaginationMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )
 
@@ -87,9 +86,7 @@ INSTALLED_APPS = (
     'notification', # must be first
     'emailconfirmation',
     'announcements',
-    'pagination',
     'timezones',
-    'ajax_validation',
     
     # internal (for now)
     'issue',

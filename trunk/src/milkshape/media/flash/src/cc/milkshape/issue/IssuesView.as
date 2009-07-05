@@ -12,6 +12,8 @@ package cc.milkshape.issue
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
+	import cc.milkshape.navigation.issue.IssuePreviewUI;
+
 	public class IssuesView extends MovieClip
 	{
 		private var _issueController:IssueController;
@@ -40,7 +42,7 @@ package cc.milkshape.issue
 			addChild(_issueClp);
 			createNav();
 			
-			var issuePreview:IssuePreview;
+			var issuePreview:IssuePreviewUI;
 			var i:int;
 			
 			for(i = 0; i < o.current_issues.length; i++)

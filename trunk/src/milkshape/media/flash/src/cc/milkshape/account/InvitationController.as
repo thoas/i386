@@ -38,11 +38,14 @@ package cc.milkshape.account
 		public function sendInvitation(form:InvitationForm):void
 		{
 			var values:Object = form.values();
-			_responder = new Responder(function(result:Object):void {
-				if(result){
-					dispatchEvent(new InvitationEvent(InvitationEvent.SUCCESS, form));
+			_responder = new Responder(
+				function(result:Object):void 
+				{
+					if(result){
+						dispatchEvent(new InvitationEvent(InvitationEvent.SUCCESS, form));
+					}
 				}
-			}, _onFault);
+			, _onFault);
 			Gateway.getInstance().call('account.send_invitation', _responder, values.ticket, values.email, values.content);
 		}
 	}
