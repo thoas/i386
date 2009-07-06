@@ -16,12 +16,12 @@ package cc.milkshape.navigation.issue
 		private var _container:Sprite;
 		public function IssuesPlugin(container:Sprite)
 		{
-			super();
-			getController().pushCommandClass(PrivateEventList.onClickIssuePreviewUI, OnClickIssuePreviewUI);
-			getController().pushCommandClass(PrivateEventList.onLoadIssuesUI, OnLoadIssuesUI);
 			_container = container;
-			
-			var issuesUI:IssuesUI = new IssuesUI(this, UIList.ISSUES_UI, _container);
+			super();
+			getController().pushCommandClass(PrivateEventList.onLoadIssuesUI, OnLoadIssuesUI);
+			getController().pushCommandClass(PrivateEventList.onClickIssuePreviewUI, OnClickIssuePreviewUI);
+			getLogger().debug('issuesPlugin');
+			var issuesUI:IssuesUI = new IssuesUI(this, UIList.ISSUES, _container);
 		}
 	}
 }
