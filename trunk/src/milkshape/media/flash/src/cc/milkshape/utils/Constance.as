@@ -12,12 +12,12 @@ package cc.milkshape.utils
 		public static const TERMS_SWF:String = 'Terms.swf';
 		
 		public static const ISSUE_POSX:int = 0;
-		public static const ISSUE_POSY:int = 37;
+		public static const ISSUE_POSY:int = 0;
 		
 		public static const DEFAULT_ISSUE_THUMB:String = 'assets/vignette_pattern.jpg';
 		
 		public static var URL_SITE:String = "http://localhost:8000";
-		public static var GATEWAY_URL:String = "http://localhost:800";
+		public static var GATEWAY_URL:String = "http://localhost:8000/gateway/";
 		//public static var URL_SITE:String = "http://milkshape.cc";
 		
 		public static var COLOR_YELLOW:int = 0xffdd00;

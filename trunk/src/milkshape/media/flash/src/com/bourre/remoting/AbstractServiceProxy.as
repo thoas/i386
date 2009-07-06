@@ -123,7 +123,7 @@ package com.bourre.remoting {
 			var connection : RemotingConnection = getRemotingConnection( );
 			connection.addEventListener( NetStatusEvent.NET_STATUS, fDelegate) ;
 			
-			var a : Array = [ getFullyQualifiedMethodName( oServiceMethodName ), patchResponder ].concat( args );
+			var a : Array = [ oServiceMethodName , patchResponder ].concat( args );
 			connection.call.apply( connection, a );
 		}
 		
@@ -142,7 +142,7 @@ package com.bourre.remoting {
 			var connection : RemotingConnection = getRemotingConnection( );
 			connection.addEventListener( NetStatusEvent.NET_STATUS, fDelegate) ;
 			
-			var a : Array = [ getFullyQualifiedMethodName( oServiceMethodName ), patchResponder ].concat( args );
+			var a : Array = [ oServiceMethodName , patchResponder ].concat( args );
 			connection.call.apply( connection, a );
 		}
 
