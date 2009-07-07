@@ -1,14 +1,12 @@
 package cc.milkshape.navigation.issue.view
 {
 	import cc.milkshape.framework.buttons.ArrowButton;
-	import cc.milkshape.navigation.generic.PluginsEventList;
 	import cc.milkshape.navigation.generic.PrivateEventList;
 	import cc.milkshape.navigation.generic.UIList;
 	
 	import com.bourre.events.BasicEvent;
 	import com.bourre.events.EventBroadcaster;
 	import com.bourre.plugin.Plugin;
-	import com.bourre.remoting.events.BasicResultEvent;
 	import com.bourre.view.AbstractView;
 	import com.gskinner.motion.GTween;
 	
@@ -38,10 +36,9 @@ package cc.milkshape.navigation.issue.view
 			EventBroadcaster.getInstance().broadcastEvent(new BasicEvent(PrivateEventList.onLoadIssuesUI, this));
 		}
 		
-		public function init(result:BasicResultEvent):void
+		public function init(o:Object):void
 		{
 			createNav();
-			var o:Object = result.getResult();	
 			var issuePreview:IssuePreviewUI;
 			var i:int;
 			
