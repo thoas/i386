@@ -1,24 +1,25 @@
 ﻿package
 {	
+	import cc.milkshape.framework.Application;
+	import cc.milkshape.framework.events.ApplicationEvent;
+	import cc.milkshape.navigation.generic.ApplicationList;
 	import cc.milkshape.navigation.generic.ChannelList;
 	import cc.milkshape.navigation.issue.IssuesPlugin;
 	
 	import com.bourre.events.ApplicationBroadcaster;
 	import com.bourre.events.EventBroadcaster;
 	import com.bourre.events.EventChannel;
-	import com.bourre.log.Logger;
 	import com.bourre.plugin.ChannelExpert;
-	import com.bourre.utils.AirLoggerLayout;
-	
-	import flash.display.Sprite;
-	import flash.events.Event;
 
-	public class Issues extends Sprite
+	public class Issues extends Application
 	{
 		public function Issues()
+		{	
+			super(ApplicationList.ISSUES, this);
+		}
+		
+		override protected function _applicationLoaded(e:ApplicationEvent):void
 		{
-			Logger.getInstance().addLogListener(AirLoggerLayout.getInstance());
-			
 			var container:IssuesClp = new IssuesClp();
 			
 			ChannelExpert.getInstance().registerChannel(new EventChannel(ChannelList.ISSUES));
@@ -28,11 +29,6 @@
 			ApplicationBroadcaster.getInstance().addListener(this, issues.getChannel());
 			
 			addChild(container);
-		}
-		
-		public function loadIssues(e:Event):void
-		{
-			Logger.DEBUG( this + ".loadIssues");
 		}
 	}
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item>
+		<key>SITE_URL</key>
+		<value><![CDATA[http://localhost:8000/]]></value>
+	</item>
+	<item>
+		<key>GATEWAY_URL</key>
+		<value><![CDATA[http://localhost:8000/gateway/]]></value>
+	</item>
+</items>

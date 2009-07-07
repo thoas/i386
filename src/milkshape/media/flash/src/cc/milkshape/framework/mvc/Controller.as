@@ -1,12 +1,3 @@
-package cc.milkshape.framework.mvc
-{
-	import flash.events.EventDispatcher;
-	import cc.milkshape.user.User;
-	public class Controller extends EventDispatcher
-	{
-		public function getUser():User
-		{
-			return User.getInstance();
-		}
-	}
-}
+package cc.milkshape.framework.mvc{	import com.bourre.commands.FrontController;
+
+	public class Controller extends FrontController	{		private static var _oI:Controller;		public static function getInstance():Controller		{			if(!_oI) 				_oI = new Controller(new PrivateConstructorAccess());			return _oI;		}		public function Controller(access:PrivateConstructorAccess)		{		}		public function init():void		{		}	}}internal class PrivateConstructorAccess{}

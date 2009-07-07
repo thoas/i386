@@ -1,7 +1,5 @@
 package cc.milkshape.gateway
 {
-	import cc.milkshape.framework.mvc.Controller;
-	
 	import flash.events.NetStatusEvent;
 	import flash.net.NetConnection;
 	import flash.net.Responder;
@@ -10,13 +8,21 @@ package cc.milkshape.gateway
 	import cc.milkshape.utils.Constance;
 	import cc.milkshape.gateway.Gateway;
 	
-	public class GatewayController extends Controller
+	import flash.events.EventDispatcher;
+	import cc.milkshape.user.User;
+	
+	public class GatewayController extends EventDispatcher
 	{
 		protected var _responder:Responder;
 		public function GatewayController()
 		{
 			Gateway.getInstance().addEventListener(NetStatusEvent.NET_STATUS, _netStatus)
 			_responder = new Responder(_onResult, _onFault);
+		}
+
+		public function getUser():User
+		{
+			return User.getInstance();
 		}
 		
 		protected function _netStatus(e:NetStatusEvent):void
