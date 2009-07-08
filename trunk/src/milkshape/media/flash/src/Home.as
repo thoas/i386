@@ -1,19 +1,36 @@
 ﻿package
-{
-	import cc.milkshape.account.ProfileController;
-	import cc.milkshape.home.HomeView;
-	import cc.milkshape.issue.IssueController;
+{	
+	import cc.milkshape.framework.Application;
+	import cc.milkshape.framework.events.ApplicationEvent;
+	import cc.milkshape.navigation.generic.ApplicationList;
+	import cc.milkshape.navigation.generic.ChannelList;
+	import cc.milkshape.navigation.home.HomePlugin;
 	
-	import flash.display.Sprite;
+	import com.bourre.events.ApplicationBroadcaster;
+	import com.bourre.events.EventBroadcaster;
+	import com.bourre.events.EventChannel;
+	import com.bourre.plugin.ChannelExpert;
+	
+	import flash.display.MovieClip;
 
-	public class Home extends Sprite
-	{	
+	public class Home extends Application
+	{
 		public function Home()
+		{	
+			super(ApplicationList.HOME, this);
+		}
+		
+		override protected function _applicationLoaded(e:ApplicationEvent):void
 		{
-			var issueController:IssueController = new IssueController();
-			var profileController:ProfileController = new ProfileController();
-			var homeView:HomeView = new HomeView(issueController, profileController);		
-			addChild(homeView);	
+			var container:MovieClip = new MovieClip();
+			
+			ChannelExpert.getInstance().registerChannel(new EventChannel(ChannelList.HOME));
+			var home:HomePlugin = new HomePlugin(container);
+			
+			EventBroadcaster.getInstance().addListener(home.getController());
+			ApplicationBroadcaster.getInstance().addListener(this, home.getChannel());
+			
+			addChild(container);
 		}
 	}
 }

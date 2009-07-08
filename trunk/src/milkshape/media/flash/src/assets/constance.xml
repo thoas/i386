@@ -8,4 +8,8 @@
 		<key>GATEWAY_URL</key>
 		<value><![CDATA[http://localhost:8000/gateway/]]></value>
 	</item>
+	<item>
+		<key>HEADER_IMG_URL</key>
+		<value><![CDATA[assets/bg.jpg]]></value>
+	</item>
 </items>

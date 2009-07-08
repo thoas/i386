@@ -18,6 +18,8 @@ package cc.milkshape.navigation.issue.view
 		public function IssuePreviewUI(issue:Object, owner:Plugin=null, name:String=null, mc:DisplayObject=null)
 		{
 			super(owner, name, mc);
+			var thumbUrl:String = issue.thumb_url ? issue.thumb_url:Constance.DEFAULT_ISSUE_THUMB;
+			var img:PreloaderWiper = new PreloaderWiper();
 			_issue = issue;
 			with(view as IssuePreviewClp)
 			{
@@ -34,8 +36,6 @@ package cc.milkshape.navigation.issue.view
 				scheduleClp.scheduleLabel.text = 'OPENED ' + issue.date_created.month + '.' + issue.date_created.date + '.' + issue.date_created.fullYear;
 				pastilleClp.textClp.label.text = '#' + issue.id;
 				
-				var thumbUrl:String = issue.thumb_url ? issue.thumb_url:Constance.DEFAULT_ISSUE_THUMB;
-				var img:PreloaderWiper = new PreloaderWiper();
 				img.loadMedia(thumbUrl);
 				loaderClp.addChild(img);
 			}

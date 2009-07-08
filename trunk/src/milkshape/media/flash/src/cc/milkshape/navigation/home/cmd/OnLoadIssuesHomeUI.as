@@ -1,16 +1,16 @@
-package cc.milkshape.navigation.issue.cmd
+package cc.milkshape.navigation.home.cmd
 {
 	import cc.milkshape.framework.remoting.ServerAbstractCommand;
 	import cc.milkshape.navigation.generic.UIList;
 	import cc.milkshape.navigation.generic.PluginsServiceList;
 	import cc.milkshape.navigation.issue.IssuePluginService;
 	import cc.milkshape.framework.remoting.ProxyService;
-	import cc.milkshape.navigation.issue.view.IssuesUI;
+	import cc.milkshape.navigation.home.view.HomeUI;
 	import com.bourre.remoting.events.BasicResultEvent;
 	
 	import flash.events.Event;
 
-	public class OnLoadIssuesUI extends ServerAbstractCommand
+	public class OnLoadIssuesHomeUI extends ServerAbstractCommand
 	{
 		override public function execute(e:Event = null):void
 		{
@@ -19,7 +19,7 @@ package cc.milkshape.navigation.issue.cmd
 		
 		override public function onResult(e:BasicResultEvent):void
 		{
-			IssuesUI(getView(UIList.ISSUES)).init(e.getResult());
+			HomeUI(getView(UIList.HOME)).initIssues(e.getResult());
 		}
 	}
 }
