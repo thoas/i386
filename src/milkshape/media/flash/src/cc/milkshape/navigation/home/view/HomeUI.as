@@ -5,7 +5,6 @@ package cc.milkshape.navigation.home.view
 	import cc.milkshape.preloader.PreloaderWiper;
 	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.preloader.events.PreloaderEvent;
-	import cc.milkshape.utils.Constance;
 	
 	import com.bourre.ioc.bean.BeanFactory;
 	import com.bourre.plugin.Plugin;
@@ -96,13 +95,13 @@ package cc.milkshape.navigation.home.view
 				if(o.current_issues.length > 1)
 					_currentIssues.preview2.addChild((new HomeIssuePreviewUI(o.current_issues[1], getOwner(), UIList.HOME_ISSUE_PREVIEW_CURRENT_2, new HomeIssuePreviewClp())).view);	
 			}
-			_currentIssues.allIssues.addChild(new SmallButton("ALL ISSUES", new PlusItem()));
+			_currentIssues.allIssues.addChild(new SmallButton(BeanFactory.getInstance().locate('ALL_ISSUES') as String, new PlusItem()));
 			
 			if(o.complete_issues.length > 0)
 			{
 				_completeIssue.preview1.addChild((new HomeIssuePreviewUI(o.complete_issues[0], getOwner(), UIList.HOME_ISSUE_PREVIEW_COMPLETE, new HomeIssuePreviewClp())).view);	
 			}
-			_completeIssue.allIssues.addChild(new SmallButton("ALL ISSUES", new PlusItem()));
+			_completeIssue.allIssues.addChild(new SmallButton(BeanFactory.getInstance().locate('ALL_ISSUES') as String, new PlusItem()));
 			
 			_currentIssues.allIssues.addEventListener(MouseEvent.CLICK, _handlerClick);
 			_completeIssue.allIssues.addEventListener(MouseEvent.CLICK, _handlerClick);
@@ -111,7 +110,7 @@ package cc.milkshape.navigation.home.view
 		private function _handlerClick(e:MouseEvent):void
 		{
 			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
-				url: Constance.ISSUES_SWF
+				url: BeanFactory.getInstance().locate('ISSUES_SWF') as String
 			}));
 		}
 		

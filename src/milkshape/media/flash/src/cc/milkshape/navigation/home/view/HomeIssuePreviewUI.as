@@ -2,9 +2,10 @@ package cc.milkshape.navigation.home.view
 {
 	import cc.milkshape.preloader.PreloaderWiper;
 	import cc.milkshape.preloader.events.PreloaderEvent;
-	import cc.milkshape.utils.Constance;
 	import cc.milkshape.navigation.generic.PrivateEventList;
+	import cc.milkshape.navigation.generic.view.PreviewUI;
 	
+	import com.bourre.ioc.bean.BeanFactory;
 	import com.bourre.events.EventBroadcaster;
 	import com.bourre.events.ObjectEvent;
 	import com.bourre.plugin.Plugin;
@@ -14,10 +15,9 @@ package cc.milkshape.navigation.home.view
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	public class HomeIssuePreviewUI extends AbstractView
+	public class HomeIssuePreviewUI extends PreviewUI
 	{
 		private var _overStatut:Boolean;
-		private var _issue:Object;
 		
 		public function HomeIssuePreviewUI(issue:Object, owner:Plugin=null, name:String=null, mc:DisplayObject=null):void
 		{
@@ -25,16 +25,12 @@ package cc.milkshape.navigation.home.view
 			_issue = issue;
 			_overStatut = false;
 			
-			var thumbUrl:String = issue.thumb_url ? issue.thumb_url:Constance.DEFAULT_ISSUE_THUMB;
+			var thumbUrl:String = issue.thumb_url ? issue.thumb_url:BeanFactory.getInstance().locate('DEFAULT_ISSUE_THUMB') as String;
 			var img:PreloaderWiper = new PreloaderWiper();
 			
 			with(view as HomeIssuePreviewClp){
 				buttonMode = true;
 				stop();
-				
-				addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
-				addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-				addEventListener(MouseEvent.CLICK, _clickHandler);
 				
 				titleClp.label.text = issue.title;
 				infoClp.label.htmlText = issue.text_presentation;
@@ -43,7 +39,7 @@ package cc.milkshape.navigation.home.view
 			}
 		}
 		
-		private function _overHandler(e:MouseEvent):void
+		override protected function _overHandler(e:MouseEvent):void
 		{
 			_overStatut = true;
 			
@@ -51,7 +47,7 @@ package cc.milkshape.navigation.home.view
 				(view as HomeIssuePreviewClp).addEventListener(Event.ENTER_FRAME, _enterFrame);
 		}
 		
-		private function _outHandler(e:MouseEvent):void
+		override protected function _outHandler(e:MouseEvent):void
 		{
 			_overStatut = false;
 			
@@ -71,17 +67,6 @@ package cc.milkshape.navigation.home.view
 			{
 				(view as HomeIssuePreviewClp).removeEventListener(Event.ENTER_FRAME, _enterFrame);
 			}
-		}
-		
-		private function _clickHandler(e:MouseEvent):void
-		{
-			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.onClickIssuePreviewUI, {
-				url: Constance.ISSUE_SWF, 
-				background: false,
-				posX: Constance.ISSUE_POSX, 
-				posY: Constance.ISSUE_POSY,  
-				params: {slug: _issue.slug}
-			}));
 		}
 	}
 }

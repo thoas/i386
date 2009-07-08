@@ -14,7 +14,6 @@ package cc.milkshape.utils
 		public static const ISSUE_POSX:int = 0;
 		public static const ISSUE_POSY:int = 0;
 		
-		public static const DEFAULT_ISSUE_THUMB:String = 'assets/vignette_pattern.jpg';
 		public static const CONSTANCE_XML_ROOT:String = 'assets/constance.xml';
 		
 		public static var URL_SITE:String = "http://localhost:8000";
