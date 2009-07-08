@@ -9,10 +9,10 @@ package cc.milkshape.navigation.issue
 	
 	import flash.net.URLRequest;
 	
-	public class IssuesPluginService extends AbstractServiceProxy
+	public class IssuePluginService extends AbstractServiceProxy
 	{
 		protected static const LAST_ISSUES:ServiceMethod = new ServiceMethod('issue.last_issues'); 
-		public function IssuesPluginService(sURL:URLRequest, sServiceName:String=null)
+		public function IssuePluginService(sURL:URLRequest, sServiceName:String=null)
 		{
 			super(sURL, sServiceName);
 		}
