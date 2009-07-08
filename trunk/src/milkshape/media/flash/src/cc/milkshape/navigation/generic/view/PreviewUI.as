@@ -28,7 +28,7 @@ package cc.milkshape.navigation.generic.view
 		
 		protected function _clickHandler(e:MouseEvent):void
 		{
-			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.onClickIssuePreviewUI, {
+			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.loadApplication, {
 				url: BeanFactory.getInstance().locate('ISSUE_SWF') as String, 
 				background: false,
 				posX: BeanFactory.getInstance().locate('ISSUE_POSX') as String, 

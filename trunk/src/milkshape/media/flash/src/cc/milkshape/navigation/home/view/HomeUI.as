@@ -1,15 +1,15 @@
 package cc.milkshape.navigation.home.view
 {
-	import cc.milkshape.navigation.generic.UIList;
-	import cc.milkshape.navigation.generic.PrivateEventList;
-	import cc.milkshape.preloader.PreloaderWiper;
 	import cc.milkshape.framework.buttons.SmallButton;
-	import cc.milkshape.preloader.events.PreloaderEvent;
+	import cc.milkshape.navigation.generic.PrivateEventList;
+	import cc.milkshape.navigation.generic.UIList;
+	import cc.milkshape.preloader.PreloaderWiper;
 	
-	import com.bourre.ioc.bean.BeanFactory;
-	import com.bourre.plugin.Plugin;
 	import com.bourre.events.BasicEvent;
 	import com.bourre.events.EventBroadcaster;
+	import com.bourre.events.ObjectEvent;
+	import com.bourre.ioc.bean.BeanFactory;
+	import com.bourre.plugin.Plugin;
 	import com.bourre.view.AbstractView;
 	
 	import flash.display.DisplayObject;
@@ -109,7 +109,7 @@ package cc.milkshape.navigation.home.view
 		
 		private function _handlerClick(e:MouseEvent):void
 		{
-			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
+			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.loadApplication, {
 				url: BeanFactory.getInstance().locate('ISSUES_SWF') as String
 			}));
 		}
