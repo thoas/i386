@@ -1,4 +1,4 @@
-package cc.milkshape.navigation.issue.cmd
+package cc.milkshape.navigation.generic.cmd
 {
 	import cc.milkshape.preloader.events.PreloaderEvent;
 	
@@ -8,7 +8,7 @@ package cc.milkshape.navigation.issue.cmd
 	
 	import flash.events.Event;	
 
-	public class OnClickIssuePreviewUI extends AbstractCommand implements Command
+	public class LoadApplication extends AbstractCommand implements Command
 	{
 		override public function execute(e:Event = null):void
 		{
