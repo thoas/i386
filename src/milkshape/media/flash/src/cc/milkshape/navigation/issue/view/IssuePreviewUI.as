@@ -26,7 +26,7 @@ package cc.milkshape.navigation.issue.view
 				over.alpha = 0.7;
 				buttonMode = true;
 				pastilleClp.stop();
-				titleClp.descLabel.htmlText = issue.text_presentation;
+				titleClp.descLabel.htmlText = issue.text_presentation ;
 				titleClp.titleLabel.text = issue.title;
 				infoClp.creatorsLabel.text = issue.nb_creators + ' CREATORS';
 				infoClp.squaresLabel.text = issue.nb_case_x * issue.nb_case_y + ' SQUARES';
