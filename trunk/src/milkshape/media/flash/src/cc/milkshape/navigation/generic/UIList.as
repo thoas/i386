@@ -12,11 +12,14 @@ package cc.milkshape.navigation.generic
 		public static const HOME_LAST_ARTISTS:String = "HOME_LAST_ARTISTS";
 		public static const WELCOME_TEXT:String = "WELCOME_TEXT";
 		public static const HOME_ARTISTS_BUTTON:String = "HOME_ARTISTS_BUTTON";
+		public static const CONTACT:String = "CONTACT";
 
-		public function UIList( access : PrivateConstructorAccess ) {
+		public function UIList(access:PrivateConstructorAccess)
+		{
 		};
 	}
 }
 
-internal class PrivateConstructorAccess {
+internal class PrivateConstructorAccess
+{
 }
