@@ -6,6 +6,7 @@ package cc.milkshape.navigation.home.view
 	import cc.milkshape.preloader.events.PreloaderEvent;
 	import cc.milkshape.utils.Constance;
 	
+	import com.bourre.ioc.bean.BeanFactory;
 	import com.bourre.plugin.Plugin;
 	import com.bourre.view.AbstractView;
 	
@@ -40,7 +41,7 @@ package cc.milkshape.navigation.home.view
 				(view as HomeLastArtistsClp).preview1.addChild(artistButton.view);
 			}
 			
-			_allArtistBtn = new SmallButton("ALL ARTISTS", new PlusItem());
+			_allArtistBtn = new SmallButton(BeanFactory.getInstance().locate('ALL_ARTISTS') as String, new PlusItem());
 			_allArtistBtn.addEventListener(MouseEvent.CLICK, _handlerClick);
 			(view as HomeLastArtistsClp).allArtists.addChild(_allArtistBtn);		
 		}
