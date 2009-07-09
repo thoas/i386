@@ -4,7 +4,7 @@ package cc.milkshape.framework.forms.widgets
 	
 	import flash.events.FocusEvent;
 	
-	public class WidgetFormInput extends WidgetForm
+	public class WidgetFormInput extends WidgetFormText
 	{
 		private var _password:Boolean;
 		public function WidgetFormInput(owner:Plugin=null, name:String=null, password:Boolean=false)

@@ -44,7 +44,7 @@ package cc.milkshape.navigation.home.view
 			_overStatut = true;
 			
 			if (!(view as HomeIssuePreviewClp).hasEventListener(Event.ENTER_FRAME))
-				(view as HomeIssuePreviewClp).addEventListener(Event.ENTER_FRAME, _enterFrame);
+				(view as HomeIssuePreviewClp).addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
 		}
 		
 		override protected function _outHandler(e:MouseEvent):void
@@ -52,10 +52,10 @@ package cc.milkshape.navigation.home.view
 			_overStatut = false;
 			
 			if (!(view as HomeIssuePreviewClp).hasEventListener(Event.ENTER_FRAME))
-				(view as HomeIssuePreviewClp).addEventListener(Event.ENTER_FRAME, _enterFrame);
+				(view as HomeIssuePreviewClp).addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
 		}
 		
-		private function _enterFrame(e:Event):void
+		private function _enterFrameHandler(e:Event):void
 		{
 			if (_overStatut)
 				(view as HomeIssuePreviewClp).nextFrame();
@@ -65,7 +65,7 @@ package cc.milkshape.navigation.home.view
 			var currentLabel:String = (view as HomeIssuePreviewClp).currentLabel;
 			if (currentLabel == 'start' || currentLabel == 'end')
 			{
-				(view as HomeIssuePreviewClp).removeEventListener(Event.ENTER_FRAME, _enterFrame);
+				(view as HomeIssuePreviewClp).removeEventListener(Event.ENTER_FRAME, _enterFrameHandler);
 			}
 		}
 	}

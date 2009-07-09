@@ -21,7 +21,6 @@ package cc.milkshape.framework.buttons
 			
 			addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
 			addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-			addEventListener(MouseEvent.CLICK, _clickHandler);
 			
 			label.autoSize = TextFieldAutoSize.LEFT;
 			label.text = labelText;
@@ -57,11 +56,6 @@ package cc.milkshape.framework.buttons
 			{
 				removeEventListener(Event.ENTER_FRAME, _enterFrame);
 			}
-		}
-		
-		private function _clickHandler(e:MouseEvent):void
-		{
-			trace('go to ');
 		}
 	}
 }
