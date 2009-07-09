@@ -31,17 +31,17 @@ package cc.milkshape.navigation.home.view
 		{
 			super(owner, name, mc);
 			view.addEventListener(Event.ADDED_TO_STAGE, _initUI);
-			view.addEventListener(Event.REMOVED_FROM_STAGE, _handlerRemovedFromStage);
+			view.addEventListener(Event.REMOVED_FROM_STAGE, _removedFromStageHandler);
 		}
 		
-		private function _handlerRemovedFromStage(e:Event):void
+		private function _removedFromStageHandler(e:Event):void
 		{
-			view.stage.removeEventListener(Event.RESIZE, _handlerResize);
+			view.stage.removeEventListener(Event.RESIZE, _resizeHandler);
 		}
 		
 		private function _initUI(e:Event):void
 		{
-			view.stage.addEventListener(Event.RESIZE, _handlerResize);
+			view.stage.addEventListener(Event.RESIZE, _resizeHandler);
 
 			_currentIssues = new HomeCurrentIssuesClp();
 			_completeIssue = new HomeCompleteIssueClp();
@@ -103,18 +103,18 @@ package cc.milkshape.navigation.home.view
 			}
 			_completeIssue.allIssues.addChild(new SmallButton(BeanFactory.getInstance().locate('ALL_ISSUES') as String, new PlusItem()));
 			
-			_currentIssues.allIssues.addEventListener(MouseEvent.CLICK, _handlerClick);
-			_completeIssue.allIssues.addEventListener(MouseEvent.CLICK, _handlerClick);
+			_currentIssues.allIssues.addEventListener(MouseEvent.CLICK, _clickHandler);
+			_completeIssue.allIssues.addEventListener(MouseEvent.CLICK, _clickHandler);
 		}
 		
-		private function _handlerClick(e:MouseEvent):void
+		private function _clickHandler(e:MouseEvent):void
 		{
 			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.loadApplication, {
 				url: BeanFactory.getInstance().locate('ISSUES_SWF') as String
 			}));
 		}
 		
-		private function _handlerResize(e:Event):void
+		private function _resizeHandler(e:Event):void
 		{
 			_mask.width = view.stage.stageWidth;
 		}

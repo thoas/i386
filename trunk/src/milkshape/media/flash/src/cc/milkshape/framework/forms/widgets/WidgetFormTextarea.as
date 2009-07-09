@@ -2,7 +2,7 @@ package cc.milkshape.framework.forms.widgets
 {
 	import com.bourre.plugin.Plugin;
 	
-	public class WidgetFormTextarea extends WidgetForm
+	public class WidgetFormTextarea extends WidgetFormText
 	{
 		public function WidgetFormTextarea(owner:Plugin=null, name:String=null)
 		{

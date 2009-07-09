@@ -3,10 +3,15 @@ package cc.milkshape.framework.forms
 	import cc.milkshape.framework.forms.widgets.WidgetForm;
 	import cc.milkshape.framework.forms.widgets.WidgetFormSchema;
 	
+	import com.bourre.events.EventBroadcaster;
+	import com.bourre.events.ObjectEvent;
 	import com.bourre.plugin.Plugin;
 	import com.bourre.view.AbstractView;
 	
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	public class FormUI extends AbstractView
 	{
@@ -49,10 +54,24 @@ package cc.milkshape.framework.forms
 			_widgetSchema[key] = widget;
 		}
 		
+		public function setSubmit(widget:WidgetForm, commandName:String):void
+		{
+			(widget.view as MovieClip).addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void
+				{
+					onSubmit(e.clone(), commandName);
+				}
+			);
+		}
+		
+		public function onSubmit(e:Event, commandName:String):void
+		{
+			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(commandName, this));
+		}
+		
 		public function getWidget(key:String):WidgetForm
 		{
 			if(_widgetSchema.containsKey(key))
-				return _widgetSchema[key];
+				return _widgetSchema.get(key);
 			return null;
 		}
 		

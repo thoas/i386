@@ -4,7 +4,7 @@ package
 	import cc.milkshape.framework.events.ApplicationEvent;
 	import cc.milkshape.navigation.generic.ApplicationList;
 	import cc.milkshape.navigation.generic.ChannelList;
-	import cc.milkshape.navigation.contact.ContactPlugin;
+	import cc.milkshape.navigation.about.AboutPlugin;
 	
 	import com.bourre.events.ApplicationBroadcaster;
 	import com.bourre.events.EventBroadcaster;
@@ -25,10 +25,10 @@ package
 			var container:ContactClp = new ContactClp();
 			
 			ChannelExpert.getInstance().registerChannel(new EventChannel(ChannelList.CONTACT));
-			var contact:ContactPlugin = new ContactPlugin(container);
+			var about:AboutPlugin = new AboutPlugin(container);
 			
-			EventBroadcaster.getInstance().addListener(contact.getController());
-			ApplicationBroadcaster.getInstance().addListener(this, contact.getChannel());
+			EventBroadcaster.getInstance().addListener(about.getController());
+			ApplicationBroadcaster.getInstance().addListener(this, about.getChannel());
 			
 			addChild(container);
 		}

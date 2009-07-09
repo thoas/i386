@@ -6,6 +6,7 @@ package cc.milkshape.navigation.generic
 		public static const onLoadIssuesUI:String = "onLoadIssuesUI";
 		public static const onLoadIssuesHomeUI:String = "onLoadIssuesHomeUI";
 		public static const onLoadProfilesHomeUI:String = "onLoadProfilesHomeUI";
+		public static const onSubmitContactFormUI:String = "onSubmitContactFormUI";
 
 		public function PrivateEventList(access:PrivateConstructorAccess)
 		{		};

@@ -1,10 +1,12 @@
 package cc.milkshape.navigation.home.view
 {
-	import cc.milkshape.preloader.events.PreloaderEvent;
-	import cc.milkshape.utils.Constance;
+	import cc.milkshape.navigation.generic.PrivateEventList;
 	
 	import com.bourre.plugin.Plugin;
+	import com.bourre.events.EventBroadcaster;
+	import com.bourre.events.ObjectEvent;
 	import com.bourre.view.AbstractView;
+	import com.bourre.ioc.bean.BeanFactory;
 	
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
@@ -17,14 +19,14 @@ package cc.milkshape.navigation.home.view
 			with(view as WelcomeTextClp)
 			{
 				moreInfoBtn.buttonMode = true;
-				moreInfoBtn.addEventListener(MouseEvent.CLICK, _moreInfoClick);	
+				moreInfoBtn.addEventListener(MouseEvent.CLICK, _clickHandler);	
 			}
 		}
 		
-		private function _moreInfoClick(e:MouseEvent):void
+		private function _clickHandler(e:MouseEvent):void
 		{
-			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
-				url: Constance.ABOUT_SWF
+			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.loadApplication, {
+				url: BeanFactory.getInstance().locate('ABOUT_SWF') as String
 			}));
 		}
 	}

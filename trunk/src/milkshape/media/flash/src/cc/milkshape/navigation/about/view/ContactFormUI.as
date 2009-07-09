@@ -1,4 +1,4 @@
-package cc.milkshape.navigation.contact.view
+package cc.milkshape.navigation.about.view
 {
 	import cc.milkshape.framework.forms.FormUI;
 	import cc.milkshape.framework.forms.widgets.*;
@@ -19,7 +19,8 @@ package cc.milkshape.navigation.contact.view
 			setWidgets({
 				author: new WidgetFormInput(getOwner(), 'Name'),
 				email: new WidgetFormInput(getOwner(), 'Subject'),
-				content: new WidgetFormTextarea(getOwner(), 'Message')
+				content: new WidgetFormTextarea(getOwner(), 'Message'),
+				submit: new WidgetFormSmallButton(getOwner(), 'SEND', new PlusItem())
 			});
 		}
 	}

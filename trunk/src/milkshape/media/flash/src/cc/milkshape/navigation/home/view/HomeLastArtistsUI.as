@@ -2,10 +2,11 @@ package cc.milkshape.navigation.home.view
 {
 	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.navigation.generic.UIList;
+	import cc.milkshape.navigation.generic.PrivateEventList;
 	import cc.milkshape.navigation.home.view.buttons.HomeArtistButtonUI;
-	import cc.milkshape.preloader.events.PreloaderEvent;
-	import cc.milkshape.utils.Constance;
 	
+	import com.bourre.events.EventBroadcaster;
+	import com.bourre.events.ObjectEvent;
 	import com.bourre.ioc.bean.BeanFactory;
 	import com.bourre.plugin.Plugin;
 	import com.bourre.view.AbstractView;
@@ -42,14 +43,14 @@ package cc.milkshape.navigation.home.view
 			}
 			
 			_allArtistBtn = new SmallButton(BeanFactory.getInstance().locate('ALL_ARTISTS') as String, new PlusItem());
-			_allArtistBtn.addEventListener(MouseEvent.CLICK, _handlerClick);
+			_allArtistBtn.addEventListener(MouseEvent.CLICK, _clickHandler);
 			(view as HomeLastArtistsClp).allArtists.addChild(_allArtistBtn);		
 		}
 		
-		private function _handlerClick(e:MouseEvent):void
+		private function _clickHandler(e:MouseEvent):void
 		{
-			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
-				url: Constance.ARTISTS_SWF
+			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.loadApplication, {
+				url: BeanFactory.getInstance().locate('ARTISTS_SWF') as String
 			}));
 		}
 	}

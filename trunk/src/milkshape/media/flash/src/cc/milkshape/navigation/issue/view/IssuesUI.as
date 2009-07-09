@@ -84,16 +84,16 @@ package cc.milkshape.navigation.issue.view
 			
 			_inversePosition(_prevBtn);
 			
-			_navListnerEnabled();
+			_navListenerEnabledHandler();
 		}
 		
-		private function _navListnerEnabled(e:Event = null):void
+		private function _navListenerEnabledHandler(e:Event = null):void
 		{
 			_nextBtn.addEventListener(MouseEvent.CLICK, _nextIssue);
 			_prevBtn.addEventListener(MouseEvent.CLICK, _prevIssue);
 		}
 		
-		private function _navListnerDisabled(e:Event = null):void
+		private function _navListenerDisabledHandler(e:Event = null):void
 		{
 			_nextBtn.removeEventListener(MouseEvent.CLICK, _nextIssue);
 			_prevBtn.removeEventListener(MouseEvent.CLICK, _prevIssue);
@@ -121,15 +121,15 @@ package cc.milkshape.navigation.issue.view
 		
 		private function _nextIssue(e:MouseEvent):void
 		{
-			_navListnerDisabled();
-			new GTween((view as IssuesClp).completeContainer, 0.5, { x: (view as IssuesClp).completeContainer.x - 239 }, { ease:Cubic.easeInOut, completeListener:_navListnerEnabled });	
+			_navListenerDisabledHandler();
+			new GTween((view as IssuesClp).completeContainer, 0.5, { x: (view as IssuesClp).completeContainer.x - 239 }, { ease:Cubic.easeInOut, completeListener:_navListenerEnabledHandler });	
 			_checkNav(1);
 		}
 		
 		private function _prevIssue(e:MouseEvent):void
 		{
-			_navListnerDisabled();
-			new GTween((view as IssuesClp).completeContainer, 0.5, { x: (view as IssuesClp).completeContainer.x + 239 }, { ease:Cubic.easeInOut, completeListener:_navListnerEnabled });
+			_navListenerDisabledHandler();
+			new GTween((view as IssuesClp).completeContainer, 0.5, { x: (view as IssuesClp).completeContainer.x + 239 }, { ease:Cubic.easeInOut, completeListener:_navListenerEnabledHandler });
 			_checkNav(-1);
 		}
 	}
