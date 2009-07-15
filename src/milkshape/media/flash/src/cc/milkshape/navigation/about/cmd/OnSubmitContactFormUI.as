@@ -16,11 +16,18 @@ package cc.milkshape.navigation.about.cmd
 		override public function execute(e:Event = null):void
 		{
 			var contactFormUI:ContactFormUI = ((e as ObjectEvent).getTarget() as ContactFormUI);
-			AboutPluginService(ProxyService.getInstance().locate(PluginsServiceList.ABOUT)).contact(this); 
+			AboutPluginService(ProxyService.getInstance().locate(PluginsServiceList.ABOUT)).contact(
+				this, 
+				contactFormUI.getValue('author'), 
+				contactFormUI.getValue('email'),
+				contactFormUI.getValue('subject'),
+				contactFormUI.getValue('content')
+			); 
 		}
 		
 		override public function onResult(e:BasicResultEvent):void
 		{
+			trace(e);
 			//ContactFormUI(getView(UIList.CONTACT_FORM))
 		}
 	}

@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from about.models import Contact
 from about.forms import ContactForm
 from misc.utils import get_send_mail as send_mail
+from misc.views import pyamf_format, pyamf_errors, pyamf_success
 
 def __contact(form):
     form.save()
@@ -20,26 +21,21 @@ def __contact(form):
     
     send_mail(subject, content, sender, recipients)
 
+@pyamf_format
 def _contact(request, name, email, subject, content):
     if request.method == 'POST':
-        datas = request.POST.copy()
-        
-        datas['subject'] = subject
-        datas['content'] = content
-        datas['name'] = name
-        datas['email'] = email
-        form = ContactForm(datas)
+        form = ContactForm(request.POST)
         if form.is_valid():
             __contact(form)
-            return True
-        return form.errors['__all__']
+            return pyamf_success()
+        return pyamf_errors(form.errors.values()[0])
     return None
 
 def contact(request, template_name='contact.html'):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            _contact_save(form)
+            __contact(form)
             return HttpResponseRedirect(reverse('contact_thanks'))
     else:
         form = ContactForm()
