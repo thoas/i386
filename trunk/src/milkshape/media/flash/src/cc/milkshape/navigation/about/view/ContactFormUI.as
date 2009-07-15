@@ -18,7 +18,8 @@ package cc.milkshape.navigation.about.view
 		{
 			setWidgets({
 				author: new WidgetFormInput(getOwner(), 'Name'),
-				email: new WidgetFormInput(getOwner(), 'Subject'),
+				email: new WidgetFormInput(getOwner(), 'Email'),
+				subject: new WidgetFormInput(getOwner(), 'Subject'),
 				content: new WidgetFormTextarea(getOwner(), 'Message'),
 				submit: new WidgetFormSmallButton(getOwner(), 'SEND', new PlusItem())
 			});

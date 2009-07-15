@@ -1,9 +1,9 @@
 package cc.milkshape.navigation.about
 {
-	import cc.milkshape.framework.remoting.ServerAbstractCommand;
 	import cc.milkshape.framework.remoting.ProxyService;
+	import cc.milkshape.framework.remoting.ServerAbstractCommand;
 	
-    import com.bourre.remoting.AbstractServiceProxy;
+	import com.bourre.remoting.AbstractServiceProxy;
 	import com.bourre.remoting.ServiceMethod;
 	import com.bourre.remoting.ServiceResponder;
 	
@@ -17,10 +17,10 @@ package cc.milkshape.navigation.about
 			super(sURL, sServiceName);
 		}
 		
-		public function contact(remoteCommand:ServerAbstractCommand, ...args):void
+		public function contact(remoteCommand:ServerAbstractCommand, name:String, email:String, subject:String, message:String):void
 		{
 			var sr:ServiceResponder = new ServiceResponder(remoteCommand.onResult, remoteCommand.onFault);
-			ProxyService.getInstance().callServiceMethod(this, CONTACT, sr, args);
+			ProxyService.getInstance().callServiceMethod(this, CONTACT, sr, name, email, subject, message);
 		} 
 	}
 }

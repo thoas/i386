@@ -8,5 +8,10 @@ package cc.milkshape.framework.forms.widgets
 		{
 			super(owner, WidgetFormList.TEXTAREA, name, new TextareaClp());
 		}
+		
+		public function get text():String
+		{
+			return (view as TextareaClp).label.text;
+		}
 	}
 }

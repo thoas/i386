@@ -48,10 +48,11 @@ package cc.milkshape.framework.remoting
 		{
 			Logger.INFO("ProxyService::callServiceMethod");
 			Logger.INFO(service.toString() + " -> " + method.toString());
-			if(rest.length > 0)
-				service.callServiceWithResponderOnly(method, sr, rest);
-			else
-				service.callServiceWithResponderOnly(method, sr);
+			var args:Array = new Array();
+			args.push(method);
+			args.push(sr);
+			args = args.concat(rest);
+			service.callServiceWithResponderOnly.apply(service, args);
 		}
 	}
 }

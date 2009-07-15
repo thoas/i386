@@ -68,6 +68,11 @@ package cc.milkshape.framework.forms
 			EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(commandName, this));
 		}
 		
+		public function getValue(key:String):String
+		{
+			return (getWidget(key) as Object).text;
+		}
+		
 		public function getWidget(key:String):WidgetForm
 		{
 			if(_widgetSchema.containsKey(key))
