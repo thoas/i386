@@ -2,6 +2,7 @@ package cc.milkshape.framework.forms
 {
 	import cc.milkshape.framework.forms.widgets.WidgetForm;
 	import cc.milkshape.framework.forms.widgets.WidgetFormSchema;
+	import cc.milkshape.framework.forms.error.WidgetException;
 	
 	import com.bourre.events.EventBroadcaster;
 	import com.bourre.events.ObjectEvent;
@@ -77,7 +78,7 @@ package cc.milkshape.framework.forms
 		{
 			if(_widgetSchema.containsKey(key))
 				return _widgetSchema.get(key);
-			return null;
+			throw new WidgetException(WidgetException.WIDGET_NOT_FOUND.replace('{{__name__}}', key));
 		}
 		
 		public function resetFormFields():void
