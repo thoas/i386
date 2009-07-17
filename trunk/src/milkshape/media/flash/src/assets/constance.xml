@@ -10,11 +10,11 @@
 	</item>
 	<item>
 		<key>HEADER_IMG_URL</key>
-		<value><![CDATA[assets/bg.jpg]]></value>
+		<value><![CDATA[http://localhost:8000/media/flash/bin-debug/assets/bg.jpg]]></value>
 	</item>
 	<item>
 		<key>DEFAULT_ISSUE_THUMB</key>
-		<value><![CDATA[assets/vignette_pattern.jpg]]></value>
+		<value><![CDATA[http://localhost:8000/media/flash/bin-debug/assets/vignette_pattern.jpg]]></value>
 	</item>
 	<item>
 		<key>ALL_ISSUES</key>

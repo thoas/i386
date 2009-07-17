@@ -4,9 +4,7 @@ package cc.milkshape.grid.process
 	import cc.milkshape.grid.GridModel;
 	import cc.milkshape.grid.process.events.SquareProcessEvent;
 	import cc.milkshape.grid.square.events.SquareFormEvent;
-	import cc.milkshape.preloader.events.PreloaderEvent;
 	import cc.milkshape.user.User;
-	import cc.milkshape.utils.Constance;
 	
 	import com.gskinner.motion.GTween;
 	

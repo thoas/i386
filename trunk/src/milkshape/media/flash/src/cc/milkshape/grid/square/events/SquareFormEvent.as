@@ -1,7 +1,5 @@
 package cc.milkshape.grid.square.events
 {
-	import cc.milkshape.grid.square.Square;
-	
 	import flash.events.Event;
 	
 	public class SquareFormEvent extends Event

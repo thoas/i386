@@ -14,7 +14,7 @@ package cc.milkshape.utils
 		public static const ISSUE_POSX:int = 0;
 		public static const ISSUE_POSY:int = 0;
 		
-		public static const CONSTANCE_XML_ROOT:String = 'assets/constance.xml';
+		public static const CONSTANCE_XML_ROOT:String = 'http://localhost:8000/media/flash/src/assets/constance.xml';
 		
 		public static var URL_SITE:String = "http://localhost:8000";
 		public static var GATEWAY_URL:String = "http://localhost:8000/gateway/";

@@ -10,7 +10,6 @@ package cc.milkshape.navigation.about
 	import com.bourre.plugin.AbstractPlugin;
 	
 	import flash.display.MovieClip;
-
 	public class AboutPlugin extends AbstractPlugin
 	{
 		private var _container:MovieClip;

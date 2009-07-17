@@ -30,7 +30,7 @@
 			
 			ChannelExpert.getInstance().registerChannel(new EventChannel(ChannelList.ISSUES));
 			var issues:IssuesPlugin = new IssuesPlugin(container);
-			BeanFactory.getInstance().register(PluginsList.ISSUES_PLUGIN, issues);
+			BeanFactory.getInstance().register(PluginsList.ISSUES, issues);
 			EventBroadcaster.getInstance().addListener(issues.getController());
 			ApplicationBroadcaster.getInstance().addListener(this, issues.getChannel());
 			
@@ -39,14 +39,14 @@
 		
 		override public function applicationDisabledHandler(e:Event):void
 		{
-			EventBroadcaster.getInstance().removeListener(BeanFactory.getInstance().locate(PluginsList.ISSUES_PLUGIN).getController());
+			EventBroadcaster.getInstance().removeListener(BeanFactory.getInstance().locate(PluginsList.ISSUES).getController());
 			_releaseApplication(ApplicationList.ISSUES, this);
-			BeanFactory.getInstance().locate(PluginsList.ISSUES_PLUGIN).release();
+			BeanFactory.getInstance().locate(PluginsList.ISSUES).release();
 		}
 		
 		public function onReleasePlugin(e:PluginEvent):void
 		{
-			BeanFactory.getInstance().unregister(PluginsList.ISSUES_PLUGIN);
+			BeanFactory.getInstance().unregister(PluginsList.ISSUES);
 		}
 	}
 }

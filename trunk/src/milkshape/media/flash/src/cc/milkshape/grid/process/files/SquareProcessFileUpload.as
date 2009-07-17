@@ -2,18 +2,15 @@ package cc.milkshape.grid.process.files
 {
 	import flash.events.Event;
 	import flash.net.FileReference;
-	import flash.net.URLVariables;
-	
-	import cc.milkshape.user.User;
 
 	public class SquareProcessFileUpload extends SquareProcessFile
 	{
-		public function SquareProcessFileUpload(URI:String=null)
+		public function SquareProcessFileUpload(URI:String = null)
 		{
 			super(URI);
 		}
 		
-		public function browseTpl(typeFilter:Array=null) : Boolean
+		public function browseTpl(typeFilter:Array = null) : Boolean
 		{
 			return browse(_getTypes());
 		}

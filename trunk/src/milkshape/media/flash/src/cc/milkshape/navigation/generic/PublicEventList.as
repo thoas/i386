@@ -1,10 +1,11 @@
 package cc.milkshape.navigation.generic
 {
-	public class PublicEventList 
-	{
-		public function PublicEventList(access:PrivateConstructorAccess)
-		{		};
-	}
+    public class PublicEventList 
+    {
+        public function PublicEventList(access:PrivateConstructorAccess):void
+        {        }
+    }
 }
 
-internal class PrivateConstructorAccess {}
+internal class PrivateConstructorAccess 
+{}

@@ -63,7 +63,7 @@ package cc.milkshape.register.forms
 			var scrollItems:ScrollItemsClp = new ScrollItemsClp();
 			scrollItems.track.height = scrollArea.bg.height - 2;
 			scrollArea.scroll.addChild(scrollItems);
-			var scroller:AxisScroller = new AxisScroller(stage, scrollArea, scrollItems.scroller, scrollArea.content, scrollItems.track, scrollArea.mask, "y", optionalObj);
+			new AxisScroller(stage, scrollArea, scrollItems.scroller, scrollArea.content, scrollItems.track, scrollArea.mask, "y", optionalObj);
 		
 		}
 		
@@ -85,7 +85,7 @@ package cc.milkshape.register.forms
 		
 		public function reset():void
 		{
-			_username.blur()
+			_username.blur();
 			_password.blur();
 			_confirmPassword.blur();
 			_invitationKey.blur();

@@ -31,7 +31,7 @@
 			
 			ChannelExpert.getInstance().registerChannel(new EventChannel(ChannelList.HOME));
 			var home:HomePlugin = new HomePlugin(container);
-			BeanFactory.getInstance().register(PluginsList.HOME_PLUGIN, home);
+			BeanFactory.getInstance().register(PluginsList.HOME, home);
 			
 			EventBroadcaster.getInstance().addListener(home.getController());
 			ApplicationBroadcaster.getInstance().addListener(this, home.getChannel());
@@ -41,14 +41,14 @@
 		
 		override public function applicationDisabledHandler(e:Event):void
 		{
-			EventBroadcaster.getInstance().removeListener(BeanFactory.getInstance().locate(PluginsList.HOME_PLUGIN).getController());
-			BeanFactory.getInstance().locate(PluginsList.HOME_PLUGIN).release();
+			EventBroadcaster.getInstance().removeListener(BeanFactory.getInstance().locate(PluginsList.HOME).getController());
+			BeanFactory.getInstance().locate(PluginsList.HOME).release();
 			_releaseApplication(ApplicationList.HOME, this);
 		}
 		
 		public function onReleasePlugin(e:PluginEvent):void
 		{
-			BeanFactory.getInstance().unregister(PluginsList.HOME_PLUGIN);
+			BeanFactory.getInstance().unregister(PluginsList.HOME);
 		}
 	}
 }
