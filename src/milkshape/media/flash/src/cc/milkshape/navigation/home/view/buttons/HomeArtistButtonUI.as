@@ -22,11 +22,11 @@ package cc.milkshape.navigation.home.view.buttons
                 stop();
                 _overStatut = false;
                 _profile = profile;
-				
+                
                 addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
                 addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
                 addEventListener(MouseEvent.CLICK, _clickHandler);
-				
+                
                 artistText.label.autoSize = TextFieldAutoSize.LEFT;
                 artistText2.label.autoSize = TextFieldAutoSize.LEFT;
                 if(_pair) {
@@ -37,34 +37,34 @@ package cc.milkshape.navigation.home.view.buttons
                     artistText2.label.text = _profile.user.username;
                     artistText.label.text = '';
                     over.width = artistText2.width;
-                }	
+                }   
             }
-            _pair = !_pair;		
+            _pair = !_pair;     
         }
 
         private function _overHandler(e:MouseEvent):void
         {
             _overStatut = true;
-			
+            
             if (!(view as HomeArtistClp).hasEventListener(Event.ENTER_FRAME))
-				(view as HomeArtistClp).addEventListener(Event.ENTER_FRAME, _enterFrame);
+                (view as HomeArtistClp).addEventListener(Event.ENTER_FRAME, _enterFrame);
         }
 
         private function _outHandler(e:MouseEvent):void
         {
             _overStatut = false;
-			
+            
             if (!(view as HomeArtistClp).hasEventListener(Event.ENTER_FRAME))
-				(view as HomeArtistClp).addEventListener(Event.ENTER_FRAME, _enterFrame);
+                (view as HomeArtistClp).addEventListener(Event.ENTER_FRAME, _enterFrame);
         }
 
         private function _enterFrame(e:Event):void
         {
             if (_overStatut)
-				(view as HomeArtistClp).nextFrame();
-			else
-				(view as HomeArtistClp).prevFrame();
-			
+                (view as HomeArtistClp).nextFrame();
+            else
+                (view as HomeArtistClp).prevFrame();
+            
             var currentLabel:String = (view as HomeArtistClp).currentLabel;
             if (currentLabel == 'start' || currentLabel == 'end') {
                 (view as HomeArtistClp).removeEventListener(Event.ENTER_FRAME, _enterFrame);

@@ -40,14 +40,14 @@ package cc.milkshape.navigation.issue.view
             createNav();
             var issuePreview:IssuePreviewUI;
             var i:int;
-			
+            
             for(i = 0;i < o.current_issues.length; i++) { 
                 issuePreview = new IssuePreviewUI(o.current_issues[i], getOwner(), UIList.ISSUE_PREVIEW_CURRENT + '_' + i);
                 issuePreview.view.x = 1000;
                 new GTween(issuePreview.view, 0.5, { x: i * 239 }, { ease:Cubic.easeInOut, delay: i * 0.04 });
                 (view as IssuesClp).currentContainer.addChild(issuePreview.view);
             }
-			
+            
             _nbCompleteIssues = o.complete_issues.length;
             for(i = 0;i < _nbCompleteIssues; i++) {
                 issuePreview = new IssuePreviewUI(o.complete_issues[i], getOwner(), UIList.ISSUE_PREVIEW_COMPLETE + '_' + i);
@@ -59,9 +59,9 @@ package cc.milkshape.navigation.issue.view
                 }
                 (view as IssuesClp).completeContainer.addChild(issuePreview.view);
             }
-			
+            
             if(_nbCompleteIssues > 4)
-				(view as IssuesClp).next.addChild(_nextBtn);
+                (view as IssuesClp).next.addChild(_nextBtn);
         }
 
         private function _inversePosition(mc:DisplayObject):void
@@ -75,9 +75,9 @@ package cc.milkshape.navigation.issue.view
         {
             _nextBtn = new ArrowButton();
             _prevBtn = new ArrowButton();
-			
+            
             _inversePosition(_prevBtn);
-			
+            
             _navListenerEnabledHandler();
         }
 
@@ -96,12 +96,12 @@ package cc.milkshape.navigation.issue.view
         private function _checkNav(op:int):void
         {
             _countIssues += op;
-			
+            
             if(_countIssues < 1) {
                 (view as IssuesClp).prev.removeChild(_prevBtn);
                 (view as IssuesClp).next.addChild(_nextBtn);
             }
-			else if(_countIssues >= _nbCompleteIssues - 4) {
+            else if(_countIssues >= _nbCompleteIssues - 4) {
                 (view as IssuesClp).next.removeChild(_nextBtn);
                 (view as IssuesClp).prev.addChild(_prevBtn);
             } else {
@@ -112,7 +112,7 @@ package cc.milkshape.navigation.issue.view
         private function _nextIssue(e:MouseEvent):void
         {
             _navListenerDisabledHandler();
-            new GTween((view as IssuesClp).completeContainer, 0.5, { x: (view as IssuesClp).completeContainer.x - 239 }, { ease:Cubic.easeInOut, completeListener:_navListenerEnabledHandler });	
+            new GTween((view as IssuesClp).completeContainer, 0.5, { x: (view as IssuesClp).completeContainer.x - 239 }, { ease:Cubic.easeInOut, completeListener:_navListenerEnabledHandler });    
             _checkNav(1);
         }
 

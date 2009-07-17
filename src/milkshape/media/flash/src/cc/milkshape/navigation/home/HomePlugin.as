@@ -21,13 +21,13 @@ package cc.milkshape.navigation.home
         {
             super();
             _container = container;
-			
+            
             ProxyService.getInstance().registerService(PluginsServiceList.ISSUE, new IssuePluginService(ProxyService.getInstance().gatewayURL));
             ProxyService.getInstance().registerService(PluginsServiceList.PROFILE, new ProfilePluginService(ProxyService.getInstance().gatewayURL));
             getController().pushCommandClass(PrivateEventList.onLoadIssuesHomeUI, OnLoadIssuesHomeUI);
             getController().pushCommandClass(PrivateEventList.loadApplication, LoadApplication);
             getController().pushCommandClass(PrivateEventList.onLoadProfilesHomeUI, OnLoadProfilesHomeUI);
-			
+            
             var homeUI:HomeUI = new HomeUI(this, UIList.HOME, container);
         }
     }

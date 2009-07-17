@@ -25,7 +25,7 @@ package cc.milkshape.navigation.issue.view
                 infoClp.squaresLabel.text = issue.nb_case_x * issue.nb_case_y + ' SQUARES';
                 scheduleClp.scheduleLabel.text = 'OPENED ' + issue.date_created.month + '.' + issue.date_created.date + '.' + issue.date_created.fullYear;
                 pastilleClp.textClp.label.text = '#' + issue.id;
-				
+                
                 img.loadMedia(thumbUrl);
                 loaderClp.addChild(img);
             }
@@ -34,13 +34,13 @@ package cc.milkshape.navigation.issue.view
         override protected function _overHandler(e:MouseEvent):void
         {
             if(view)
-				(view as IssuePreviewClp).over.alpha = 0;
+                (view as IssuePreviewClp).over.alpha = 0;
         }
 
         override protected function _outHandler(e:MouseEvent):void
         {
             if(view)
-				(view as IssuePreviewClp).over.alpha = 0.7;
+                (view as IssuePreviewClp).over.alpha = 0.7;
         }
     }
 }

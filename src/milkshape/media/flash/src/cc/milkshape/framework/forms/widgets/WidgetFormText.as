@@ -21,13 +21,13 @@ package cc.milkshape.framework.forms.widgets
         }
 
         public function focus(e:FocusEvent = null):void
-        {	
+        {   
             with(view as Object)
             {
                 if(Label(label).text == _label)
-					Label(label).text = '';
-				
-                gotoAndStop('focus');	
+                    Label(label).text = '';
+                
+                gotoAndStop('focus');   
             }
         }
 
@@ -38,7 +38,7 @@ package cc.milkshape.framework.forms.widgets
                     label.text = _label;
                 }
                 gotoAndStop('blur');
-            }	
+            }   
         }
     }
 }

@@ -74,7 +74,7 @@ package cc.milkshape.framework.forms
         public function getWidget(key:String):WidgetForm
         {
             if(_widgetSchema.containsKey(key))
-				return _widgetSchema.get(key);
+                return _widgetSchema.get(key);
             throw new WidgetException(WidgetException.WIDGET_NOT_FOUND.replace('{{__name__}}', key));
         }
 
