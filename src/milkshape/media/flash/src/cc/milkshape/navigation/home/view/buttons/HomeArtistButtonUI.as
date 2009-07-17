@@ -15,9 +15,9 @@ package cc.milkshape.navigation.home.view.buttons
 		private static var _pair:Boolean = true;
 		private var _overStatut:Boolean;
 		private var _profile:Object;
-		public function HomeArtistButtonUI(profile:Object, owner:Plugin=null, name:String=null, mc:DisplayObject=null)
+		public function HomeArtistButtonUI(profile:Object, owner:Plugin=null, name:String=null)
 		{
-			super(owner, name, mc);
+			super(owner, name, new HomeArtistClp());
 			with(view as HomeArtistClp)
 			{
 				buttonMode = true;

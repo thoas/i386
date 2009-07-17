@@ -13,9 +13,9 @@ package cc.milkshape.navigation.home.view
 	
 	public class WelcomeTextUI extends AbstractView
 	{
-		public function WelcomeTextUI(owner:Plugin=null, name:String=null, mc:DisplayObject=null)
+		public function WelcomeTextUI(owner:Plugin=null, name:String=null)
 		{
-			super(owner, name, mc);
+			super(owner, name, new WelcomeTextClp());
 			with(view as WelcomeTextClp)
 			{
 				moreInfoBtn.buttonMode = true;
