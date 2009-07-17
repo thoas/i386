@@ -88,13 +88,14 @@ package cc.milkshape.account
 		
 		private function _goToIssueHandler(e:MouseEvent):void
 		{
+			/*
 			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
 				url: Constance.ISSUE_SWF, 
 				background: false,
 				posX: Constance.ISSUE_POSX, 
 				posY: Constance.ISSUE_POSY,  
 				params: {slug: _issueSlug, focusX: _posX, focusY: _posY}
-			}));
+			}));*/
 		}
 
 	}

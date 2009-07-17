@@ -10,6 +10,7 @@ package cc.milkshape.navigation.generic.view
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	public class PreviewUI extends AbstractView

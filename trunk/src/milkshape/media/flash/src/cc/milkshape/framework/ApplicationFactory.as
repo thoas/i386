@@ -13,6 +13,7 @@ package cc.milkshape.framework
 	public class ApplicationFactory extends AbstractLocator
 	{
 		private static var _oI:ApplicationFactory;
+		private static var _isConfigLoaded:Boolean = false;
 		public static function getInstance():ApplicationFactory
 		{
 			if(!_oI) 
@@ -38,7 +39,15 @@ package cc.milkshape.framework
 				getLogger().debug(item.key + " -> " + item.value);
 				beanFactory.register(String(item.key), String(item.value));
 			}
+			_isConfigLoaded = true;
 			broadcastEvent(new ApplicationEvent(ApplicationEvent.LOADED));
+		}
+		
+		override public function register(name:String, o:Object):Boolean
+		{
+			if(_isConfigLoaded)
+				broadcastEvent(new ApplicationEvent(ApplicationEvent.LOADED));
+			return super.register(name, o);
 		}
 	}
 }

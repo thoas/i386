@@ -40,12 +40,14 @@ package cc.milkshape.navigation.issue.view
 		
 		override protected function _overHandler(e:MouseEvent):void
 		{
-			(view as IssuePreviewClp).over.alpha = 0;
+			if(view)
+				(view as IssuePreviewClp).over.alpha = 0;
 		}
 		
 		override protected function _outHandler(e:MouseEvent):void
 		{
-			(view as IssuePreviewClp).over.alpha = 0.7;
+			if(view)
+				(view as IssuePreviewClp).over.alpha = 0.7;
 		}
 	}
 }
