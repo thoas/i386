@@ -13,7 +13,7 @@ package cc.milkshape.framework.forms.widgets
 
         public function WidgetFormList(access:PrivateConstructorAccess)
         {
-        };
+        }
     }
 }
 

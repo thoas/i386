@@ -17,7 +17,7 @@ package cc.milkshape.framework
         public static function getInstance():ApplicationFactory
         {
             if(!_oI) 
-				_oI = new ApplicationFactory(new PrivateConstructorAccess());
+                _oI = new ApplicationFactory(new PrivateConstructorAccess());
             return _oI;
         }
 
@@ -45,7 +45,7 @@ package cc.milkshape.framework
         override public function register(name:String, o:Object):Boolean
         {
             if(_isConfigLoaded)
-				broadcastEvent(new ApplicationEvent(ApplicationEvent.LOADED));
+                broadcastEvent(new ApplicationEvent(ApplicationEvent.LOADED));
             return super.register(name, o);
         }
     }

@@ -17,7 +17,7 @@ package cc.milkshape.framework.forms.widgets
         {
             super.focus(e);
             if(_password)
-				(view as InputClp).label.displayAsPassword = true;
+                (view as InputClp).label.displayAsPassword = true;
         }
 
         public function get text():String
@@ -29,7 +29,7 @@ package cc.milkshape.framework.forms.widgets
         {
             super.blur(e);
             if(!(view as InputClp).label.text.length)
-				(view as InputClp).label.displayAsPassword = false;
+                (view as InputClp).label.displayAsPassword = false;
         }
     }
 }

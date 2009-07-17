@@ -19,36 +19,36 @@ package cc.milkshape.framework.forms.widgets
             _item = item;
             _overStatus = false;
             _label = label;
-			
+            
             with(view as Object) {
                 item.addChild(_item);
-				
+                
                 buttonMode = true;
                 stop();
                 _item.stop();
-				
+                
                 addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
                 addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
-				
+                
                 Label(label).autoSize = TextFieldAutoSize.LEFT;
-                Label(label).text = _label;	
+                Label(label).text = _label; 
             }
         }
 
         protected function _overHandler(e:MouseEvent):void
         {
             _overStatus = true;
-			
+            
             if (!(view as MovieClip).hasEventListener(Event.ENTER_FRAME))
-				(view as MovieClip).addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
+                (view as MovieClip).addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
         }
 
         protected function _outHandler(e:MouseEvent):void
         {
             _overStatus = false;
-			
+            
             if (!(view as MovieClip).hasEventListener(Event.ENTER_FRAME))
-				(view as MovieClip).addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
+                (view as MovieClip).addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
         }
 
         protected function _enterFrameHandler(e:Event):void

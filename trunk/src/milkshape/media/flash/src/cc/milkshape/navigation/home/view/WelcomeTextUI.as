@@ -16,15 +16,15 @@ package cc.milkshape.navigation.home.view
             super(owner, name, new WelcomeTextClp());
             with(view as WelcomeTextClp) {
                 moreInfoBtn.buttonMode = true;
-                moreInfoBtn.addEventListener(MouseEvent.CLICK, _clickHandler);	
+                moreInfoBtn.addEventListener(MouseEvent.CLICK, _clickHandler);  
             }
         }
 
         private function _clickHandler(e:MouseEvent):void
         {
             EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.loadApplication, {
-				url: BeanFactory.getInstance().locate('ABOUT_SWF') as String
-			}));
+                url: BeanFactory.getInstance().locate('ABOUT_SWF') as String
+            }));
         }
     }
 }

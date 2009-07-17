@@ -45,10 +45,10 @@ package cc.milkshape.navigation.home.view
             _currentIssues = new HomeCurrentIssuesClp();
             _completeIssue = new HomeCompleteIssueClp();
             _lastArtists = new HomeLastArtistsUI(getOwner(), UIList.HOME_LAST_ARTISTS);
-			
+            
             _header = new PreloaderWiper();
             _header.loadMedia(BeanFactory.getInstance().locate('HEADER_IMG_URL') as String);
-				
+                
             _welcomeText = new WelcomeTextUI(getOwner(), UIList.WELCOME_TEXT);
             
             _mask = new Sprite();
@@ -56,16 +56,16 @@ package cc.milkshape.navigation.home.view
             _mask.graphics.drawRect(0, 0, view.stage.stageWidth, 402);
             _mask.graphics.endFill();
             _header.mask = _mask;
-			
+            
             with(view as MovieClip) {
                 addChild(_header);
                 addChild(_welcomeText.view);
                 addChild(_currentIssues);
-                addChild(_completeIssue);	
+                addChild(_completeIssue);   
             }
-			
+            
             _placeElements();
-			
+            
             EventBroadcaster.getInstance().broadcastEvent(new BasicEvent(PrivateEventList.onLoadIssuesHomeUI, this));
             EventBroadcaster.getInstance().broadcastEvent(new BasicEvent(PrivateEventList.onLoadProfilesHomeUI, this));
         }
@@ -91,15 +91,15 @@ package cc.milkshape.navigation.home.view
             if(o.current_issues.length > 0) {
                 _currentIssues.preview1.addChild((new HomeIssuePreviewUI(o.current_issues[0], getOwner(), UIList.HOME_ISSUE_PREVIEW_CURRENT_1)).view);
                 if(o.current_issues.length > 1)
-					_currentIssues.preview2.addChild((new HomeIssuePreviewUI(o.current_issues[1], getOwner(), UIList.HOME_ISSUE_PREVIEW_CURRENT_2)).view);	
+                    _currentIssues.preview2.addChild((new HomeIssuePreviewUI(o.current_issues[1], getOwner(), UIList.HOME_ISSUE_PREVIEW_CURRENT_2)).view);  
             }
             _currentIssues.allIssues.addChild(new SmallButton(BeanFactory.getInstance().locate('ALL_ISSUES') as String, new PlusItem()));
-			
+            
             if(o.complete_issues.length > 0) {
-                _completeIssue.preview1.addChild((new HomeIssuePreviewUI(o.complete_issues[0], getOwner(), UIList.HOME_ISSUE_PREVIEW_COMPLETE)).view);	
+                _completeIssue.preview1.addChild((new HomeIssuePreviewUI(o.complete_issues[0], getOwner(), UIList.HOME_ISSUE_PREVIEW_COMPLETE)).view);  
             }
             _completeIssue.allIssues.addChild(new SmallButton(BeanFactory.getInstance().locate('ALL_ISSUES') as String, new PlusItem()));
-			
+            
             _currentIssues.allIssues.addEventListener(MouseEvent.CLICK, _clickHandler);
             _completeIssue.allIssues.addEventListener(MouseEvent.CLICK, _clickHandler);
         }
@@ -107,8 +107,8 @@ package cc.milkshape.navigation.home.view
         private function _clickHandler(e:MouseEvent):void
         {
             EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.loadApplication, {
-				url: BeanFactory.getInstance().locate('ISSUES_SWF') as String
-			}));
+                url: BeanFactory.getInstance().locate('ISSUES_SWF') as String
+            }));
         }
 
         private function _resizeHandler(e:Event):void

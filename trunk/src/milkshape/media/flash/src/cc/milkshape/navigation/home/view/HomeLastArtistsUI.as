@@ -26,7 +26,7 @@ package cc.milkshape.navigation.home.view
             var decalX:int = 0;
             var decalY:int = 0;
             var artistButton:HomeArtistButtonUI;
-			
+            
             for each(var o:Object in a) {
                 artistButton = new HomeArtistButtonUI(o, getOwner(), UIList.HOME_ARTISTS_BUTTON + "_" + o.user.username);
                 if(decalX + artistButton.view.width > 225) {
@@ -38,17 +38,17 @@ package cc.milkshape.navigation.home.view
                 decalX += artistButton.view.width + 10; 
                 (view as HomeLastArtistsClp).preview1.addChild(artistButton.view);
             }
-			
+            
             _allArtistBtn = new SmallButton(BeanFactory.getInstance().locate('ALL_ARTISTS') as String, new PlusItem());
             _allArtistBtn.addEventListener(MouseEvent.CLICK, _clickHandler);
-            (view as HomeLastArtistsClp).allArtists.addChild(_allArtistBtn);		
+            (view as HomeLastArtistsClp).allArtists.addChild(_allArtistBtn);        
         }
 
         private function _clickHandler(e:MouseEvent):void
         {
             EventBroadcaster.getInstance().broadcastEvent(new ObjectEvent(PrivateEventList.loadApplication, {
-				url: BeanFactory.getInstance().locate('ARTISTS_SWF') as String
-			}));
+                url: BeanFactory.getInstance().locate('ARTISTS_SWF') as String
+            }));
         }
     }
 }
