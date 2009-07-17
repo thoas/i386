@@ -9,7 +9,6 @@ package cc.milkshape.grid.process.files
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
 	import flash.net.URLRequest;
-	import flash.net.URLVariables;
 
 	public class SquareProcessFile extends FileReference
 	{

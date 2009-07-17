@@ -11,8 +11,6 @@ package
 	import com.bourre.events.EventChannel;
 	import com.bourre.plugin.ChannelExpert;
 	
-	import flash.display.MovieClip;
-
 	public class Contact extends Application
 	{
 		public function Contact()

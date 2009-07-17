@@ -4,8 +4,6 @@ package cc.milkshape.account
 	import cc.milkshape.framework.buttons.SmallButton;
 	import cc.milkshape.framework.buttons.UnderlineButton;
 	import cc.milkshape.preloader.PreloaderKb;
-	import cc.milkshape.preloader.events.PreloaderEvent;
-	import cc.milkshape.utils.Constance;
 	
 	import flash.events.MouseEvent;
 

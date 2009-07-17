@@ -6,7 +6,6 @@ package cc.milkshape.navigation.about.view
 	import com.bourre.plugin.Plugin;
 	
 	import flash.display.DisplayObject;
-	
 	public class ContactFormUI extends FormUI
 	{
 		public function ContactFormUI(owner:Plugin=null, name:String=null, mc:DisplayObject=null)

@@ -10,7 +10,6 @@ package cc.milkshape.navigation.about.cmd
 	import com.bourre.remoting.events.BasicResultEvent;
 	
 	import flash.events.Event;
-	
 	public class OnSubmitContactFormUI extends ServerAbstractCommand
 	{
 		override public function execute(e:Event = null):void

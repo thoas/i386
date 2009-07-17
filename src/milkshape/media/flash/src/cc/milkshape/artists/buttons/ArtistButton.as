@@ -1,8 +1,5 @@
 package cc.milkshape.artists.buttons
 {
-	import cc.milkshape.preloader.events.PreloaderEvent;
-	import cc.milkshape.utils.Constance;
-	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
@@ -13,7 +10,7 @@ package cc.milkshape.artists.buttons
 		private var _siteBtn:SiteButton;
 		private var _posX:int;
 		private var _posY:int;
-		private var _issueSlug:String
+		private var _issueSlug:String;
 		
 		public function ArtistButton(artistName:String, posX:int, posY:int, issueSlug:String)
 		{
@@ -64,7 +61,7 @@ package cc.milkshape.artists.buttons
 			}
 			
 			if(currentLabel == 'end2')
-				gotoAndStop('start')
+				gotoAndStop('start');
 				
 			if (currentLabel == 'start' || currentLabel == 'end')
 			{

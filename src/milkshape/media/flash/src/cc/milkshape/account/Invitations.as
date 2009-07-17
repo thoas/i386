@@ -37,7 +37,6 @@ package cc.milkshape.account
 		private function _invitationSent(e:InvitationEvent):void
 		{
 			var form:InvitationForm = e.invitationForm;
-			var values:Object = form.values();
 			_invitationForms = _invitationForms.splice(_invitationForms.indexOf(form), 1);
 			formContainer.removeChild(form);
 			_invitationController.invitations();

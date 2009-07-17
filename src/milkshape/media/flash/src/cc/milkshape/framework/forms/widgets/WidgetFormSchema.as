@@ -15,7 +15,7 @@ package cc.milkshape.framework.forms.widgets
 					put(keyWidget, widgets[keyWidget]);
 					view[keyWidget].addChild((widgets[keyWidget] as WidgetForm).view);
 				} 	
-			}
-		}
-	}
+            }
+        }
+    }
 }
