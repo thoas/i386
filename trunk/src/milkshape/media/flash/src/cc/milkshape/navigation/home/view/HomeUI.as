@@ -45,12 +45,12 @@ package cc.milkshape.navigation.home.view
 
 			_currentIssues = new HomeCurrentIssuesClp();
 			_completeIssue = new HomeCompleteIssueClp();
-			_lastArtists = new HomeLastArtistsUI(getOwner(), UIList.HOME_LAST_ARTISTS, new HomeLastArtistsClp());
+			_lastArtists = new HomeLastArtistsUI(getOwner(), UIList.HOME_LAST_ARTISTS);
 			
 			_header = new PreloaderWiper();
 			_header.loadMedia(BeanFactory.getInstance().locate('HEADER_IMG_URL') as String);
 				
-			_welcomeText = new WelcomeTextUI(getOwner(), UIList.WELCOME_TEXT, new WelcomeTextClp());
+			_welcomeText = new WelcomeTextUI(getOwner(), UIList.WELCOME_TEXT);
             
 			_mask = new Sprite();
 			_mask.graphics.beginFill(0x000000);
@@ -91,15 +91,15 @@ package cc.milkshape.navigation.home.view
 		{
 			if(o.current_issues.length > 0)
 			{
-				_currentIssues.preview1.addChild((new HomeIssuePreviewUI(o.current_issues[0], getOwner(), UIList.HOME_ISSUE_PREVIEW_CURRENT_1, new HomeIssuePreviewClp())).view);
+				_currentIssues.preview1.addChild((new HomeIssuePreviewUI(o.current_issues[0], getOwner(), UIList.HOME_ISSUE_PREVIEW_CURRENT_1)).view);
 				if(o.current_issues.length > 1)
-					_currentIssues.preview2.addChild((new HomeIssuePreviewUI(o.current_issues[1], getOwner(), UIList.HOME_ISSUE_PREVIEW_CURRENT_2, new HomeIssuePreviewClp())).view);	
+					_currentIssues.preview2.addChild((new HomeIssuePreviewUI(o.current_issues[1], getOwner(), UIList.HOME_ISSUE_PREVIEW_CURRENT_2)).view);	
 			}
 			_currentIssues.allIssues.addChild(new SmallButton(BeanFactory.getInstance().locate('ALL_ISSUES') as String, new PlusItem()));
 			
 			if(o.complete_issues.length > 0)
 			{
-				_completeIssue.preview1.addChild((new HomeIssuePreviewUI(o.complete_issues[0], getOwner(), UIList.HOME_ISSUE_PREVIEW_COMPLETE, new HomeIssuePreviewClp())).view);	
+				_completeIssue.preview1.addChild((new HomeIssuePreviewUI(o.complete_issues[0], getOwner(), UIList.HOME_ISSUE_PREVIEW_COMPLETE)).view);	
 			}
 			_completeIssue.allIssues.addChild(new SmallButton(BeanFactory.getInstance().locate('ALL_ISSUES') as String, new PlusItem()));
 			

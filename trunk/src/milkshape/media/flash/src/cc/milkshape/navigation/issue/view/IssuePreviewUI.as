@@ -1,23 +1,19 @@
 package cc.milkshape.navigation.issue.view
 {
-	import cc.milkshape.navigation.generic.PrivateEventList;
 	import cc.milkshape.navigation.generic.view.PreviewUI;
 	import cc.milkshape.preloader.PreloaderWiper;
 	
-	import com.bourre.events.EventBroadcaster;
-	import com.bourre.events.ObjectEvent;
 	import com.bourre.ioc.bean.BeanFactory;
 	import com.bourre.plugin.Plugin;
-	import com.bourre.view.AbstractView;
 	
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	
 	public class IssuePreviewUI extends PreviewUI
 	{
-		public function IssuePreviewUI(issue:Object, owner:Plugin=null, name:String=null, mc:DisplayObject=null)
+		public function IssuePreviewUI(issue:Object, owner:Plugin=null, name:String=null)
 		{
-			super(owner, name, mc);
+			super(owner, name, new IssuePreviewClp());
 			var thumbUrl:String = issue.thumb_url ? issue.thumb_url:BeanFactory.getInstance().locate('DEFAULT_ISSUE_THUMB') as String;
 			var img:PreloaderWiper = new PreloaderWiper();
 			_issue = issue;

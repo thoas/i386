@@ -1,15 +1,10 @@
 package cc.milkshape.navigation.home.view
 {
-	import cc.milkshape.preloader.PreloaderWiper;
-	import cc.milkshape.preloader.events.PreloaderEvent;
-	import cc.milkshape.navigation.generic.PrivateEventList;
 	import cc.milkshape.navigation.generic.view.PreviewUI;
+	import cc.milkshape.preloader.PreloaderWiper;
 	
 	import com.bourre.ioc.bean.BeanFactory;
-	import com.bourre.events.EventBroadcaster;
-	import com.bourre.events.ObjectEvent;
 	import com.bourre.plugin.Plugin;
-	import com.bourre.view.AbstractView;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -19,9 +14,9 @@ package cc.milkshape.navigation.home.view
 	{
 		private var _overStatut:Boolean;
 		
-		public function HomeIssuePreviewUI(issue:Object, owner:Plugin=null, name:String=null, mc:DisplayObject=null):void
+		public function HomeIssuePreviewUI(issue:Object, owner:Plugin=null, name:String=null):void
 		{
-			super(owner, name, mc);
+			super(owner, name, new HomeIssuePreviewClp());
 			_issue = issue;
 			_overStatut = false;
 			

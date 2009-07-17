@@ -44,7 +44,7 @@ package cc.milkshape.navigation.issue.view
 			
 			for(i = 0; i < o.current_issues.length; i++)
 			{ 
-				issuePreview = new IssuePreviewUI(o.current_issues[i], getOwner(), UIList.ISSUE_PREVIEW_CURRENT + '_' + i, new IssuePreviewClp());
+				issuePreview = new IssuePreviewUI(o.current_issues[i], getOwner(), UIList.ISSUE_PREVIEW_CURRENT + '_' + i);
 				issuePreview.view.x = 1000;
 				new GTween(issuePreview.view, 0.5, { x: i * 239 }, { ease:Cubic.easeInOut, delay: i * 0.04 });
 				(view as IssuesClp).currentContainer.addChild(issuePreview.view);
@@ -53,7 +53,7 @@ package cc.milkshape.navigation.issue.view
 			_nbCompleteIssues = o.complete_issues.length;
 			for(i = 0; i < _nbCompleteIssues; i++)
 			{
-				issuePreview = new IssuePreviewUI(o.complete_issues[i], getOwner(), UIList.ISSUE_PREVIEW_COMPLETE + '_' + i, new IssuePreviewClp());
+				issuePreview = new IssuePreviewUI(o.complete_issues[i], getOwner(), UIList.ISSUE_PREVIEW_COMPLETE + '_' + i);
 				if(i < 4)
 				{
 					issuePreview.view.x = 1000;

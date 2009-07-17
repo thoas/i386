@@ -17,9 +17,9 @@ package cc.milkshape.navigation.home.view
 	public class HomeLastArtistsUI extends AbstractView
 	{
 		private var _allArtistBtn:SmallButton;
-		public function HomeLastArtistsUI(owner:Plugin=null, name:String=null, mc:DisplayObject=null)
+		public function HomeLastArtistsUI(owner:Plugin=null, name:String=null)
 		{
-			super(owner, name, mc);
+			super(owner, name, new HomeLastArtistsClp());
 		}
 		
 		public function init(a:Array):void
@@ -30,7 +30,7 @@ package cc.milkshape.navigation.home.view
 			
 			for each(var o:Object in a)
 			{
-				artistButton = new HomeArtistButtonUI(o, getOwner(), UIList.HOME_ARTISTS_BUTTON + "_" + o.user.username, new HomeArtistClp());
+				artistButton = new HomeArtistButtonUI(o, getOwner(), UIList.HOME_ARTISTS_BUTTON + "_" + o.user.username);
 				if(decalX + artistButton.view.width > 225)
 				{
 					decalX = 0;
