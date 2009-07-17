@@ -43,7 +43,7 @@ package cc.milkshape.navigation.home.view
 		{
 			_overStatut = true;
 			
-			if (!(view as HomeIssuePreviewClp).hasEventListener(Event.ENTER_FRAME))
+			if (view && !(view as HomeIssuePreviewClp).hasEventListener(Event.ENTER_FRAME))
 				(view as HomeIssuePreviewClp).addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
 		}
 		
@@ -51,7 +51,7 @@ package cc.milkshape.navigation.home.view
 		{
 			_overStatut = false;
 			
-			if (!(view as HomeIssuePreviewClp).hasEventListener(Event.ENTER_FRAME))
+			if (view && !(view as HomeIssuePreviewClp).hasEventListener(Event.ENTER_FRAME))
 				(view as HomeIssuePreviewClp).addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
 		}
 		

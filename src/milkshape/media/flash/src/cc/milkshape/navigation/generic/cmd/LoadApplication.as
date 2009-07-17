@@ -1,5 +1,7 @@
 package cc.milkshape.navigation.generic.cmd
 {
+	import cc.milkshape.framework.ApplicationFactory;
+	import cc.milkshape.navigation.generic.ApplicationList;
 	import cc.milkshape.preloader.events.PreloaderEvent;
 	
 	import com.bourre.commands.AbstractCommand;
@@ -12,7 +14,9 @@ package cc.milkshape.navigation.generic.cmd
 	{
 		override public function execute(e:Event = null):void
 		{
-			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, (e as ObjectEvent).getTarget()));
+			(ApplicationFactory.getInstance().locate(ApplicationList.MAIN) as Main).loadSwf(
+				new PreloaderEvent(PreloaderEvent.LOAD, (e as ObjectEvent).getTarget())
+			);
 		}
 	}
 }

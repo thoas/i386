@@ -28,9 +28,11 @@ package cc.milkshape.user
 				function(result:Object):void
 				{
 					dispatchEvent(new LoginEvent(LoginEvent.LOGOUT, result));
+					/*
 					Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
 						url: Constance.HOME_SWF, posX:0, posY:60
 					}));
+					*/
 				}
 			, _onFault);
 			Gateway.getInstance().call("account.logout", _responder);

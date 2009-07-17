@@ -163,13 +163,14 @@ package cc.milkshape.grid.process
 		
 		private function _reload(e:MouseEvent):void
 		{
+			/*
 			Main.getInstance().loadSwf(new PreloaderEvent(PreloaderEvent.LOAD, {
 				url: Constance.ISSUE_SWF, 
 				background: false,
 				posX: Constance.ISSUE_POSX, 
 				posY: Constance.ISSUE_POSY,  
 				params: {slug: _gridModel.issueSlug, focusX: _gridModel.focusX, focusY: _gridModel.focusY}
-			}));
+			}));*/
 		}
 		
 		private function _showOpenForm(e:SquareFormEvent):void

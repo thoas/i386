@@ -61,13 +61,13 @@ def pyamf_format(func):
         return result
     return wrapped
 
-def pyamf_errors(errors=None):
+def pyamf_errors(errors=[]):
     return {
         'success': False,
         'errors': list(error for error in errors)
     }
 
-def pyamf_success(data=None):
+def pyamf_success(data=[]):
     return {
         'success': True,
         'data': data

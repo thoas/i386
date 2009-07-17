@@ -20,7 +20,7 @@ package
 			super(ApplicationList.CONTACT, this);
 		}
 		
-		override protected function _applicationLoaded(e:ApplicationEvent):void
+		override public function applicationLoadedHandler(e:ApplicationEvent):void
 		{
 			var container:ContactClp = new ContactClp();
 			
