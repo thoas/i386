@@ -14,8 +14,8 @@ class SquareForm(ModelForm):
         background_image = self.cleaned_data['background_image']
         if not background_image is None:
             if not background_image.content_type in settings.ALLOWED_EXTENSIONS:
-                raise forms.ValidationError(_('Mimetype %s not allowed')\
-                                            % background_image.content_type)
+                raise forms.ValidationError(_('Mimetype %s not allowed') % 
+                                            background_image.content_type)
         return background_image
 
     def save(self):

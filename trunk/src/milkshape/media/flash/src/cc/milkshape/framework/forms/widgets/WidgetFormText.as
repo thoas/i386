@@ -1,7 +1,10 @@
 package cc.milkshape.framework.forms.widgets
 {
     import com.bourre.plugin.Plugin;
-
+    
+    import fl.controls.Label;
+    
+    import flash.text.TextField;    
     import flash.display.DisplayObject;
     import flash.events.FocusEvent;
     public class WidgetFormText extends WidgetForm
@@ -13,7 +16,7 @@ package cc.milkshape.framework.forms.widgets
             super(owner, name + '_' + label, mc);
             _label = label;
             with(view as Object) {
-                Label(label).text = _label;
+                TextField(label).text = _label;
                 stop();
                 addEventListener(FocusEvent.FOCUS_IN, focus);
                 addEventListener(FocusEvent.FOCUS_OUT, blur);
@@ -24,8 +27,8 @@ package cc.milkshape.framework.forms.widgets
         {   
             with(view as Object)
             {
-                if(Label(label).text == _label)
-                    Label(label).text = '';
+                if(TextField(label).text == _label)
+                    TextField(label).text = '';
                 
                 gotoAndStop('focus');   
             }
@@ -34,8 +37,8 @@ package cc.milkshape.framework.forms.widgets
         public function blur(e:FocusEvent = null):void
         {
             with(view as Object) {
-                if(!label.text.length) {
-                    label.text = _label;
+                if(!TextField(label).text.length) {
+                    TextField(label).text = _label;
                 }
                 gotoAndStop('blur');
             }   

@@ -28,5 +28,13 @@ try:
         ('Thomas Poblete', 'thomas.pob@gmail.com'),
         ('Arnaud Guiheneuf', 'arnaud.guiheneuf@gmail.com'),
     )
+    
+    CACHE_ROOT = join(PROJECT_ROOT, 'cache')
+    CACHE_BACKEND = 'file://%s' % CACHE_ROOT
+    
+    MIDDLEWARE_CLASSES = (
+        'django.middleware.cache.UpdateCacheMiddleware',
+        'django.middleware.cache.FetchFromCacheMiddleware',
+    ) + MIDDLEWARE_CLASSES
 except ImportError:
     pass

@@ -91,20 +91,24 @@ class IssueManager(models.Manager):
         return found.values()
 
 class Issue(models.Model):
-    title = models.CharField(_('title'), max_length=255)
-    text_presentation = models.TextField(_('text_presentation'), blank=True, null=True)
-    nb_case_x = models.IntegerField(_('nb_case_x'))
-    nb_case_y = models.IntegerField(_('nb_case_y'))
+    title = models.CharField(_('title'), max_length=255, help_text=_('Issue\'s title?'))
+    text_presentation = models.TextField(_('text_presentation'), help_text=_('Issue\'s text presentation?'),
+                                         blank=True, null=True)
+    nb_case_x = models.IntegerField(_('nb_case_x'), help_text=_('How much squares in x?'))
+    nb_case_y = models.IntegerField(_('nb_case_y'), help_text=_('How much squares in y?'))
     show_disable_square = models.BooleanField(_('show_disable_square'), default=0)
-    nb_step = models.IntegerField(_('nb_step'), default=settings.DEFAULT_NB_STEP)
-    size = models.IntegerField(_('size'), default=settings.DEFAULT_SIZE)
-    margin = models.IntegerField(_('margin'), default=settings.DEFAULT_MARGIN)
+    nb_step = models.IntegerField(_('nb_step'), help_text=_('How much steps during the scroll?'),
+                                  default=settings.DEFAULT_NB_STEP)
+    size = models.IntegerField(_('size'), help_text=_('Creation\'s size?'),
+                               default=settings.DEFAULT_SIZE)
+    margin = models.IntegerField(_('margin'), help_text=('Margin\'s size?'),
+                                 default=settings.DEFAULT_MARGIN)
     
     # DateField makes an error on pyamf
     date_created = models.DateTimeField(_('date_creation'), auto_now_add=True)
     date_finished = models.DateTimeField(_('date_finished'), blank=True, null=True)
-    max_participation = models.IntegerField(_('max_participation'),\
-        default=settings.DEFAULT_MAX_PARTICIPATION)
+    max_participation = models.IntegerField(_('max_participation'),
+                                            default=settings.DEFAULT_MAX_PARTICIPATION)
     slug = models.SlugField(unique=True)
     
     constraint_text = models.TextField(_('constraint_text'), blank=True, null=True)

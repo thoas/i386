@@ -26,8 +26,8 @@ class AbstractSquareManager(models.Manager):
         # do not hit database
         if not self.neighbors_dict.has_key(square.pk) or force_insert:
             self.neighbors_dict[square.pk] = self.filter(issue=square.issue, coord__in=list(str(key)\
-                for key in square.neighbors.keys()))\
-                    .order_by('pos_x', 'pos_y')
+                for key in square.neighbors.keys())).order_by(
+                    'pos_x', 'pos_y')
         return self.neighbors_dict[square.pk]
 
 class SquareManager(AbstractSquareManager):
@@ -40,8 +40,8 @@ class SquareOpenManager(AbstractSquareManager):
         neighbors.append(tuple((square.pos_x, square.pos_y)))
         
         logging.info('standby set to %d for %s' % (is_standby, neighbors))
-        self.filter(issue=square.issue, coord__in=list(str(key)\
-            for key in neighbors)).update(is_standby=is_standby)
+        self.filter(issue=square.issue, coord__in=list(str(key) for key in neighbors)).update(
+            is_standby=is_standby)
 
 class AbstractSquare(models.Model):
     pos_x = models.IntegerField(_('pos_x'))
@@ -58,9 +58,8 @@ class AbstractSquare(models.Model):
 
     @property
     def neighbors(self):
-        if not hasattr(self, '_neighbors'):
-            self._neighbors = dict((tuple((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)\
-                for i in range(LEN_POS))
+        self._neighbors = dict((tuple((self.pos_x + POS_X[i], self.pos_y + POS_Y[i])), i)
+                               for i in range(LEN_POS))
         return self._neighbors
 
 class Square(AbstractSquare):
@@ -101,8 +100,8 @@ class Square(AbstractSquare):
             image_clone = image.copy()
             width = height = step
             image_clone.thumbnail((width, height))
-            thumb_path = join(self.issue.upload_thumb_path(), '%s_%s.%s'\
-                            % (str(step), self.background_image, THUMB_EXTENSION_IMAGE))
+            thumb_path = join(self.issue.upload_thumb_path(), '%s_%s.%s' % \
+                              (str(step), self.background_image, THUMB_EXTENSION_IMAGE))
             logging.info(thumb_path)
 
             try:
@@ -168,8 +167,8 @@ class Square(AbstractSquare):
     
         self.template_name = self.formatted_background_image
 
-        image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size_with_double_margin,\
-                    self.issue.size_with_double_margin), DEFAULT_TEMPLATE_BACKGROUND_COLOR)
+        image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size_with_double_margin,
+                          self.issue.size_with_double_margin), DEFAULT_TEMPLATE_BACKGROUND_COLOR)
 
         neighbors_keys = self.neighbors
         logging.info(neighbors_keys)
@@ -183,9 +182,9 @@ class Square(AbstractSquare):
             index = neighbors_keys[coord_tuple]
             im = Image.open(neighbor.background_image_path())
 
-            logging.debug('%s -> %s (%s)' %\
-                    (self.issue.crop_pos[index],\
-                        self.issue.paste_pos[index], LITERAL[index]))
+            logging.debug('%s -> %s (%s)' %
+                          (self.issue.crop_pos[index],
+                           self.issue.paste_pos[index], LITERAL[index]))
 
             crop = im.crop(self.issue.crop_pos[index])
             image.paste(crop, self.issue.paste_pos[index])
@@ -217,7 +216,8 @@ class Square(AbstractSquare):
             
             logging.info('rebuilding %s' % neighbor_path)
             image = Image.open(neighbor_path)
-            image.paste(template_full.crop(self.issue.paste_pos[index]), self.issue.crop_pos[index])
+            image.paste(template_full.crop(self.issue.paste_pos[index]),
+                        self.issue.crop_pos[index])
             
             image.save(neighbor_path, format=image.format, quality=QUALITY_IMAGE)
             
@@ -232,7 +232,8 @@ class Square(AbstractSquare):
         
         # create square side by side with overlap
         for x, y in neighbors_keys.keys():
-            if (x >= 0 and x < self.issue.nb_case_x) and (y >= 0 and y < self.issue.nb_case_y):
+            if (x >= 0 and x < self.issue.nb_case_x) and \
+               (y >= 0 and y < self.issue.nb_case_y):
                 index = neighbors_keys[tuple((x, y))]
                 
                 # create square in database with no user set
@@ -249,8 +250,8 @@ class Square(AbstractSquare):
                     issue=self.issue
                 )
                 
-                image, thumbs = new_square.build_background_image(template_full.crop(self.issue.paste_pos[index]),\
-                                    self.issue.crop_pos[index])
+                image, thumbs = new_square.build_background_image(template_full.crop(self.issue.paste_pos[index]),
+                                                                  self.issue.crop_pos[index])
                 
     def save(self, force_insert=False, force_update=False):
         if self.user:
@@ -274,17 +275,18 @@ class Square(AbstractSquare):
             template_full = Image.open(template_full_path)
 
             # create background_image_path with with template_full 
-            image, thumbs = self.build_background_image(template_full.crop(self.issue.creation_position_crop),\
-                                self.issue.creation_position_paste)
+            image, thumbs = self.build_background_image(template_full.crop(self.issue.creation_position_crop),
+                                                        self.issue.creation_position_paste)
             
             # update neighbors with overlap
             self.populate_neighbors(template_full)
 
     def build_background_image(self, im_crop, paste_pos):
-        image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size, self.issue.size), DEFAULT_TEMPLATE_BACKGROUND_COLOR)
+        image = Image.new(DEFAULT_IMAGE_MODE, (self.issue.size, self.issue.size),
+                          DEFAULT_TEMPLATE_BACKGROUND_COLOR)
         image.paste(im_crop, paste_pos)
-        image.save(self.background_image_path(),\
-                        format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
+        image.save(self.background_image_path(),
+                   format=FORMAT_IMAGE, quality=QUALITY_IMAGE)
         image.name = self.formatted_background_image
 
         logging.info(self.background_image_path())
@@ -297,9 +299,8 @@ class Square(AbstractSquare):
         super(Square, self).delete()
     
     def template(self):
-        if not hasattr(self, '_template'):
-            self._template = Image.open(self.template_path())
-            self._template.filename = self.template_name
+        self._template = Image.open(self.template_path())
+        self._template.filename = self.template_name
         return self._template
     
     def template_path(self):
@@ -315,7 +316,8 @@ class Square(AbstractSquare):
     def layer_name(self, step):
         if not self._layer_dict.has_key(step):
             x, y = self.pos(step)
-            self._layer_dict[step] = '%d_%d__%d__%s.%s' % (x, y, step, self.issue.slug, THUMB_EXTENSION_IMAGE)
+            self._layer_dict[step] = '%d_%d__%d__%s.%s' % \
+                                      (x, y, step, self.issue.slug, THUMB_EXTENSION_IMAGE)
         return self._layer_dict[step]
     
     def pos(self, step):
@@ -328,10 +330,12 @@ class Square(AbstractSquare):
         return join(self.issue.layer_path(), self.layer_name(step))
     
     def background_image_thumb_path(self, size):
-        return join(self.issue.upload_thumb_path(), '%s_%s' % (size, self.background_image))
+        return join(self.issue.upload_thumb_path(), '%s_%s' % \
+                                                     (size, self.background_image))
     
     def background_image_thumb_url_step(self, size):
-        return '%s/%d_%s.%s' % (self.issue.upload_thumb_url(), size, self.background_image, THUMB_EXTENSION_IMAGE)
+        return '%s/%d_%s.%s' % (self.issue.upload_thumb_url(), size,
+                                self.background_image, THUMB_EXTENSION_IMAGE)
     
     @property
     def thumb_url(self):
@@ -352,29 +356,31 @@ class Square(AbstractSquare):
     def formatted_background_image(self):
         if not hasattr(self, '_formatted_background_image'):
             now = datetime.now().strftime('%Y-%m-%d--%H-%M-%S')
-            self._formatted_background_image = 'x%s_y%s__%s__%s.%s' %\
-                                    (self.pos_x, self.pos_y, self.issue.slug, now, EXTENSION_IMAGE)
+            self._formatted_background_image = 'x%s_y%s__%s__%s.%s' % \
+                                                (self.pos_x, self.pos_y,
+                                                 self.issue.slug, now, EXTENSION_IMAGE)
             if self.user:
-                self._formatted_background_image = '%s__%s'\
-                    % (self.user.username, self.formatted_background_image)
+                self._formatted_background_image = '%s__%s' % \
+                                                    (self.user.username,
+                                                     self.formatted_background_image)
         return self._formatted_background_image
     
     @property
     def layers(self):
-        if not hasattr(self, '_layers'):
-            self._urls = {}
-            for step in self.issue.steps:
-                pos_x, pos_y = self.pos(step)
-                self._urls[step] = {
-                    'url': self.layer_url(step), 
-                    'pos_x': pos_x, 
-                    'pos_y': pos_y
-                }
-        return self._urls
+        self._layers = {}
+        for step in self.issue.steps:
+            pos_x, pos_y = self.pos(step)
+            self._layers[step] = {
+                'url': self.layer_url(step), 
+                'pos_x': pos_x, 
+                'pos_y': pos_y
+            }
+        return self._layers
     
     @property
     def neighbors_keys(self):
-        return list(({'pos_x': pos_x, 'pos_y': pos_y}) for pos_x, pos_y in self.neighbors)
+        return list(({'pos_x': pos_x, 'pos_y': pos_y})
+                    for pos_x, pos_y in self.neighbors)
 
     @models.permalink
     def get_absolute_url(self):

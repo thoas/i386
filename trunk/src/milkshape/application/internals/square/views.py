@@ -28,14 +28,14 @@ def _book(request, pos_x, pos_y, issue_slug):
     try:
         try:
             # Q() object raise an error when at the bottom : non-keyword arg after keyword arg
-            square = Square.objects.get(Q(user__isnull=True) | Q(user=request.user),\
+            square = Square.objects.get(Q(user__isnull=True) | Q(user=request.user),
                         pos_x=pos_x, pos_y=pos_y, issue=issue)
             
             if not square.user:
                 square.user = request.user
                 square.save()
         except Square.DoesNotExist:
-            square = Square.objects.create(pos_x=pos_x, pos_y=pos_y, issue=issue,\
+            square = Square.objects.create(pos_x=pos_x, pos_y=pos_y, issue=issue,
                         user=request.user, status=0)
         if not square.status:
             SquareOpen.objects.neighbors_standby(square_open, True)
@@ -60,7 +60,6 @@ def _release(request, pos_x, pos_y, issue_slug):
     square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
     square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug, status=0)
     SquareOpen.objects.neighbors_standby(square_open, False)
-    print square
     if square.background_image:
         square.user = None
         square.save()
@@ -84,7 +83,7 @@ def fill(request, pos_x, pos_y, issue_slug):
     # http://groups.google.com/group/django-developers/browse_thread/thread/818c2ee766550426/e311d8fe6a04bb22
     # no get_object_or_404 with select_related()
     try:
-        square = Square.objects.select_related('user', 'issue').get(pos_x=pos_x,\
+        square = Square.objects.select_related('user', 'issue').get(pos_x=pos_x,
                     pos_y=pos_y, user=request.user, issue=issue)
     except Square.DoesNotExist:
         raise Http404
@@ -108,7 +107,7 @@ def fill(request, pos_x, pos_y, issue_slug):
                 transaction.rollback()
             else:
                 transaction.commit()
-            #return HttpResponseRedirect(reverse('issue', kwargs={'slug': issue.slug }))
+            return HttpResponseRedirect(reverse('issue', kwargs={'slug': issue.slug }))
     else:
         form = SquareForm(instance=square)
     return render_to_response('fill.html', {
@@ -125,8 +124,8 @@ def _fill(request, pos_x, pos_y, issue_slug, background_image):
     # http://groups.google.com/group/django-developers/browse_thread/thread/818c2ee766550426/e311d8fe6a04bb22
     # no get_object_or_404 with select_related()
     try:
-        square = Square.objects.select_related('user', 'issue').get(pos_x=pos_x,\
-                    pos_y=pos_y, user=request.user, issue=issue)
+        square = Square.objects.select_related('user', 'issue').get(
+                    pos_x=pos_x, pos_y=pos_y, user=request.user, issue=issue)
     except Square.DoesNotExist:
         return False
 
@@ -178,8 +177,9 @@ def __template(request, template):
     response.write(buffer.getvalue())
     return response
 
-def _squares_full_by_issues(request):
-    squares = Square.objects.select_related('issue', 'user').filter(status=True).order_by('issue__id')
+def _full_by_issues(request):
+    squares = Square.objects.select_related('issue', 'user').filter(
+                status=True).order_by('issue__id')
     datas = []
     issues = {}
     for square in squares:
@@ -191,10 +191,3 @@ def _squares_full_by_issues(request):
             issues[square.issue.id] = len(datas) - 1
         datas[issues[square.issue.id]]['squares'].append(square)
     return datas
-
-#def square(request, action, pos_x, pos_y, issue_slug):
-#    logging.debug('x: %s - y: %s - issue: %s' % (pos_x, pos_y, issue_slug))
-#    issue = get_object_or_404(Issue, slug=issue_slug)
-#    square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue=issue)
-    #getattr(__import__(__name__), action)(request, issue, issue_slug)
-#    return globals()[action](request, issue, square_open)

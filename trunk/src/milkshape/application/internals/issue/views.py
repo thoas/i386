@@ -5,16 +5,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy as _
 
-from misc.views import MultiResponse
+from misc.views import MultiResponse, pyamf_format
 from issue.models import Issue
 from square.models import Square, SquareOpen
 
-from misc.views import pyamf_format
-
 def _issues(request):
     """docstring for issues"""
-    
-    return Issue.objects.all()
+    return {
+        'issues': Issue.objects.all()
+    }
 
 def _issue(request, slug):
     """docstring for issues"""
@@ -39,8 +38,8 @@ def issues(request, format, template_name):
 @MultiResponse()
 def issue(request, slug, format, template_name):
     datas = _issue(request, slug)
-    datas['t_squares_open'] = dict((square_open.coord, square_open) for square_open in datas['squares_open'])
-    datas['t_squares'] = dict((square.coord, square) for square in datas['squares'])
+    datas['square_open_list'] = dict((square_open.coord, square_open) for square_open in datas['squares_open'])
+    datas['square_list'] = dict((square.coord, square) for square in datas['squares'])
     return datas
 
 def _last_issues(request):
