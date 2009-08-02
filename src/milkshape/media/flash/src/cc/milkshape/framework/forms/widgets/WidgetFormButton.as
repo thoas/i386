@@ -1,7 +1,9 @@
 package cc.milkshape.framework.forms.widgets
 {
     import com.bourre.plugin.Plugin;
-
+    
+    import flash.text.TextField;
+    
     import flash.display.DisplayObject;
     import flash.display.MovieClip;
     import flash.events.Event;
@@ -30,8 +32,8 @@ package cc.milkshape.framework.forms.widgets
                 addEventListener(MouseEvent.MOUSE_OVER, _overHandler);
                 addEventListener(MouseEvent.MOUSE_OUT, _outHandler);
                 
-                Label(label).autoSize = TextFieldAutoSize.LEFT;
-                Label(label).text = _label; 
+                TextField(label).autoSize = TextFieldAutoSize.LEFT;
+                TextField(label).text = _label; 
             }
         }
 

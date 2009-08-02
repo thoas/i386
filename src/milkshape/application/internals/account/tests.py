@@ -12,4 +12,3 @@ class IssueTestCase(unittest.TestCase):
 
     def testGatewayLogin(self):
         values = self.service.login("thoas", "toto")
-        print values

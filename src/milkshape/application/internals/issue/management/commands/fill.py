@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import Image
-import unittest
 import sys
 import random
 
@@ -15,15 +14,14 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.template import defaultfilters
-
+from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
-from issue.models import Issue
-from square.models import Square, SquareOpen
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-BASE_ROOT = dirname(abspath(__file__))
+from issue.models import Issue
+from square.models import Square, SquareOpen
 
 RESERVED_USERNAMES = (
     'matthieu benoit lisa camille pierre-alexandre maxime gauthier philippe '
@@ -34,6 +32,11 @@ RESERVED_USERNAMES = (
 DEFAULT_PASSWORD = 'toto'
 
 class Command(BaseCommand):
+    option_list = BaseCommand.option_list + (
+        make_option('--default_password', action='store', dest='default_password', default=DEFAULT_PASSWORD,
+            help='Set a default password when users are created'),
+    )
+    help = "Create an issue with an Image, this script crops it and build layers and thumbs"
     def handle(self, *args, **options):
         image_root = args[0]
         self.accounts = []
@@ -42,40 +45,20 @@ class Command(BaseCommand):
         self.width, self.height = self.image.size
         
         
-        print 'Issue\'s title?'
-        title = sys.stdin.readline()
-        
-        print 'Issue\'s text presentation?'
-        text_presentation = sys.stdin.readline()
-        
-        print 'How much squares in x?'
-        nb_case_x = sys.stdin.readline()
-        
-        print 'How much squares in y?'
-        nb_case_y = sys.stdin.readline()
-        
-        print 'How much steps during the scroll?'
-        nb_step = sys.stdin.readline()
-        
-        print 'Creation\'s size?'
-        size = sys.stdin.readline()
-        
-        print 'Margin\'s size?'
-        margin = sys.stdin.readline()
+        kwargs = dict((field.verbose_name, sys.stdin.readline())\
+                    for field in Issue._meta.fields if field.help_text)
+        """
+        for field in Issue._meta.fields:
+            if field.help_text:
+                kwargs[field.verbose_name] = sys.stdin.readline()
+        """
         
         print 'How much squares to fill?'
         self.until_fill = sys.stdin.readline()
+        
+        kwargs['slug'] = defaultfilters.slugify(kwargs['title'])
                     
-        self.issue, created = Issue.objects.get_or_create(
-            title=title,
-            text_presentation=text_presentation,
-            nb_case_x=int(nb_case_x),
-            nb_case_y=int(nb_case_y),
-            nb_step=int(nb_step),
-            slug=defaultfilters.slugify(title),
-            size=int(size),
-            margin=int(margin)
-        )
+        self.issue, created = Issue.objects.get_or_create(**kwargs)
         
         square_open, created = SquareOpen.objects.get_or_create(
             pos_x=0,
@@ -83,8 +66,6 @@ class Command(BaseCommand):
             issue=self.issue
         )
         
-        
-        #self.issue = Issue.objects.get(slug="5x5")
         self.template_size = self.issue.size + (self.issue.margin * 2)
         
         self.max_square_x = ceil(self.width / self.issue.size)
@@ -98,7 +79,7 @@ class Command(BaseCommand):
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
-                user = User.objects.create_user(username, settings.EMAIL_HOST_USER, DEFAULT_PASSWORD)
+                user = User.objects.create_user(username, settings.EMAIL_HOST_USER, options.get('default_password'))
             user.is_staff = True
             user.save()
             self.accounts.append(user)
@@ -106,7 +87,7 @@ class Command(BaseCommand):
         self.process()
     
     def process(self):
-        squares_open = self.__squares_open()
+        squares_open = self._squares_open()
         for square_open in squares_open:
             user = random.choice(self.accounts)
             result = self.client.login(username=user.username, password=DEFAULT_PASSWORD)
@@ -114,7 +95,7 @@ class Command(BaseCommand):
                 self.book(square_open.pos_x, square_open.pos_y)
                 self.fill(square_open.pos_x, square_open.pos_y)
                 self.client.logout()
-        if self.__squares_open().count() > 0:
+        if self._squares_open().count() > 0:
             self.process()
 
     def book(self, pos_x, pos_y):
@@ -124,7 +105,7 @@ class Command(BaseCommand):
             'issue_slug': self.issue.slug
         }))
     
-    def __squares_open(self):
+    def _squares_open(self):
         return SquareOpen.objects.filter(
             is_standby=False, 
             issue=self.issue, 
@@ -179,6 +160,7 @@ class Command(BaseCommand):
             'pos_y': pos_y,
             'issue_slug': self.issue.slug
         }), {'background_image': f})
+        
         self.cpt += 1
         if self.cpt >= self.until_fill:
             exit()

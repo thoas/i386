@@ -29,12 +29,17 @@ class IssueAdminForm(forms.ModelForm):
         return issue
 
 class IssueAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title', 'date_finished',)}
+    prepopulated_fields = {
+        'slug': ('title', 'date_finished',)
+    }
     list_display = ('title', 'text_presentation', 'nb_case_x', 'nb_case_y')
     
     form = IssueAdminForm
 
     class Media:
-        js = ['%s/tiny_mce/tiny_mce.js' % settings.MEDIA_URL, '%s/tiny_mce/init.js' % settings.MEDIA_URL]
+        js = [
+            '%s/tiny_mce/tiny_mce.js' % settings.MEDIA_URL,
+            '%s/tiny_mce/init.js' % settings.MEDIA_URL
+        ]
 
 admin.site.register(Issue, IssueAdmin)

@@ -14,9 +14,9 @@
         {% for i in nb_case_x %}
         {% captureas coord %}({{ i }}, {{ j }}){% endcaptureas %}
         <td>
-            {% if coord in t_squares_open %}
+            {% if coord in square_open_list %}
             <a href="{% url square_book pos_x=i pos_y=j issue_slug=issue.slug %}">
-                {% with t_squares|get:coord as square %}
+                {% with square_list|get:coord as square %}
                     <div class="opened">
                     {% if square.background_image %}
                         <img src="{{ square|background_image_thumb_url:100 }}" />
@@ -27,14 +27,13 @@
                 {% endwith %}
             </a>
             {% else %}
-                {% if coord in t_squares %}
-                    {% with t_squares|get:coord as square %}
+                {% if coord in square_list %}
+                    {% with square_list|get:coord as square %}
                         {% if square.user == user %}
                             {% if not square.status %}
                                 <div class="fill">
                                     <a href="{% url square_fill pos_x=i pos_y=j issue_slug=issue.slug %}">
                                 {% if square.background_image %}
-
                                         <img src="{{ square|background_image_thumb_url:100 }}" />
                                 {% else %}
                                     {{ coord }}

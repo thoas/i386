@@ -18,6 +18,7 @@ class SquareTestCase(unittest.TestCase):
     ACCT_EMAIL = 'hello@milkshape.cc'
     
     def setUp(self):
+        self.client = Client()
         self.issue, self.created = Issue.objects.get_or_create(
             title='4x4', 
             text_presentation='10x10', 
@@ -36,21 +37,21 @@ class SquareTestCase(unittest.TestCase):
     def testBookProcess(self):
         print '|-- Book process'
         self.square_open, self.created = SquareOpen.objects.get_or_create(pos_x=0, pos_y=0, issue=self.issue)
-        self.__testBookProcess()
+        self._testBookProcess()
     
-    def __testBookProcess(self):
+    def _testBookProcess(self):
         squares_open = SquareOpen.objects.filter(is_standby=False, issue=self.issue)
         for square_open in squares_open:     
             print '|   |-- Processing (%d, %d)' % (square_open.pos_x, square_open.pos_y)       
-            self.__testBookSquare(square_open.pos_x, square_open.pos_y)
-            self.__testFillSquare(square_open.pos_x, square_open.pos_y)
+            self._testBookSquare(square_open.pos_x, square_open.pos_y)
+            self._testFillSquare(square_open.pos_x, square_open.pos_y)
         if SquareOpen.objects.filter(is_standby=False, issue=self.issue).count() > 0:
-            self.__testBookProcess()
+            self._testBookProcess()
     
-    def __testBookSquare(self, pos_x, pos_y):
-        c = Client()
-        result = c.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
-        response = c.get(reverse('square_book', kwargs={
+    def _testBookSquare(self, pos_x, pos_y):
+        self.client = Client()
+        result = self.client.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
+        response = self.client.get(reverse('square_book', kwargs={
             'pos_x': pos_x, 
             'pos_y': pos_y, 
             'issue_slug': self.issue.slug
@@ -60,11 +61,10 @@ class SquareTestCase(unittest.TestCase):
         self.assertEquals(response.status_code, 200)
         print '|   |   |-- booked'
     
-    def __testFillSquare(self, pos_x, pos_y):
-        c = Client()
-        result = c.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
+    def _testFillSquare(self, pos_x, pos_y):
+        result = self.client.login(username=self.ACCT_USERNAME, password=self.ACCT_PASSWORD)
         f = open(join(settings.CLI_ROOT, 'push', 'template.jpg'))
-        response = c.post(reverse('square_fill', kwargs={
+        response = self.client.post(reverse('square_fill', kwargs={
             'pos_x': pos_x,
             'pos_y': pos_y,
             'issue_slug': self.issue.slug

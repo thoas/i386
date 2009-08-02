@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from os.path import join, dirname, abspath
 
 PROJECT_ROOT = dirname(abspath(__file__)) + '/..'
@@ -12,16 +14,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-# Local time zone for this installation. Choices can be found here:
-# http://www.postgresql.org/docs/8.1/static/datetime-keywords.html#DATETIME-TIMEZONE-SET-TABLE
-# although not all variations may be possible on all operating systems.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
 TIME_ZONE = 'Europe/Paris'
 
-# Language code for this installation. All choices can be found here:
-# http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
-# http://blogs.law.harvard.edu/tech/stories/storyReader$15
 LANGUAGE_CODE = 'fr'
 
 LANGUAGE_BIDI = True
@@ -41,19 +35,15 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-#    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
-#    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'account.middleware.LocaleMiddleware',
+    'pagination.middleware.PaginationMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )
-
-#CACHE_ROOT = join(PROJECT_ROOT, 'cache')
-#CACHE_BACKEND = 'file://%s' % CACHE_ROOT
 
 ROOT_URLCONF = 'urls'
 
@@ -69,9 +59,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'misc.context_processors.contact_email',
     'misc.context_processors.site_name',
-    
-    #'notification.context_processors.notification',
-    #'announcements.context_processors.site_wide_announcements',
+    'notification.context_processors.notification',
+    'announcements.context_processors.site_wide_announcements',
 )
 
 INSTALLED_APPS = (
@@ -83,12 +72,13 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     
     # external
-    'notification', # must be first
+    'notification',
     'emailconfirmation',
     'announcements',
     'timezones',
+    'pagination',
     
-    # internal (for now)
+    # internal
     'issue',
     'square',
     'profiles',
@@ -117,6 +107,7 @@ EMAIL_HOST_USER = 'hello@milkshape.cc'
 EMAIL_HOST_PASSWORD = 'development'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_SUBJECT_PREFIX = '[#mılkshape] '
 CONTACT_EMAIL = EMAIL_HOST_USER
 SITE_NAME = 'milkshape'
 
@@ -153,9 +144,9 @@ DEFAULT_NB_STEP = 6
 DEFAULT_INVITATION_FIRST_NAME = 'Anonymous'
 DEFAULT_INVITATION_LAST_NAME = 'Anonymous'
 DEFAULT_TIME = 3
-
 DEFAULT_MIMETYPE = 'text/html'
 DEFAULT_FORMAT = 'html'
+
 ALLOWED_FORMAT = {
     'json': 'applicaiton/json',
     'xml': 'applicaiton/xml',

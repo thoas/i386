@@ -16,7 +16,7 @@ package cc.milkshape.artists
 					dispatchEvent(new ArtistsEvent(ArtistsEvent.SQUARES_BY_ISSUES_LOADED, result));
 				},
 			_onFault);
-			Gateway.getInstance().call('square.squares_full_by_issues', _responder);
+			Gateway.getInstance().call('square.full_by_issues', _responder);
 		}	
 	}
 }

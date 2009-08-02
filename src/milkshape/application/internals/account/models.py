@@ -21,9 +21,8 @@ class Account(models.Model):
         return self.user.username
 
 def create_account(sender, instance=None, **kwargs):
-    if instance is None:
-        return
-    account, created = Account.objects.get_or_create(user=instance)
+    if instance:
+        account, created = Account.objects.get_or_create(user=instance)
 
 post_save.connect(create_account, sender=User)
 
