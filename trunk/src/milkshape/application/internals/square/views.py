@@ -13,7 +13,6 @@ from django.db.models import Q
 from square.models import Square, SquareOpen
 from issue.models import Issue
 from square.forms import SquareForm
-from issue.views import issue
 
 MIMETYPE_IMAGE = 'image/tiff'
 
@@ -49,13 +48,6 @@ def _book(request, pos_x, pos_y, issue_slug):
     return False
 
 @login_required
-def book(request, pos_x, pos_y, issue_slug):
-    result = _book(request, pos_x, pos_y, issue_slug)
-    if result:
-        return __template(request, result.template())
-    return templates('templates.html')
-
-@login_required
 def _release(request, pos_x, pos_y, issue_slug):
     square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
     square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug, status=0)
@@ -68,53 +60,6 @@ def _release(request, pos_x, pos_y, issue_slug):
         square.delete()
         return True
     return False
-    
-@login_required
-def release(request, pos_x, pos_y, issue_slug):
-    _release(request, pos_x, pos_y, issue_slug)
-    return HttpResponseRedirect(reverse('square_templates'))
-
-
-@transaction.commit_manually
-def fill(request, pos_x, pos_y, issue_slug):
-    issue = get_object_or_404(Issue, slug=issue_slug)
-    square_open = get_object_or_404(SquareOpen, pos_x=pos_x, pos_y=pos_y, issue=issue)
-    
-    # http://groups.google.com/group/django-developers/browse_thread/thread/818c2ee766550426/e311d8fe6a04bb22
-    # no get_object_or_404 with select_related()
-    try:
-        square = Square.objects.select_related('user', 'issue').get(pos_x=pos_x,
-                    pos_y=pos_y, user=request.user, issue=issue)
-    except Square.DoesNotExist:
-        raise Http404
-    
-    if request.method == 'POST':
-        square.status = 1
-        form = SquareForm(request.POST, request.FILES, instance=square)
-        if form.is_valid():
-            transaction.commit()
-            try:
-                square = form.save()
-                
-                # upload good, now allow book square open
-                SquareOpen.objects.neighbors_standby(square_open, False)
-                
-                # delete old square open
-                square_open.delete()
-            except Exception, error:
-                print error
-                logging.error(error)
-                transaction.rollback()
-            else:
-                transaction.commit()
-            return HttpResponseRedirect(reverse('issue', kwargs={'slug': issue.slug }))
-    else:
-        form = SquareForm(instance=square)
-    return render_to_response('fill.html', {
-        'square': square,
-        'issue': issue,
-        'form': form
-    }, context_instance=RequestContext(request))
 
 @transaction.commit_manually
 def _fill(request, pos_x, pos_y, issue_slug, background_image):
@@ -155,27 +100,9 @@ def _fill(request, pos_x, pos_y, issue_slug, background_image):
         return False
 
 @login_required
-def templates(request, template_name):
-    return render_to_response(template_name, {
-        'participations_by_issues': request.user.get_profile().participations_by_issues()
-    }, context_instance=RequestContext(request))
-
-@login_required
-def template(request, pos_x, pos_y, issue_slug):
-    square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
-    return __template(request, square.template())
-
-@login_required
 def _template(request, pos_x, pos_y, issue_slug):
     square = get_object_or_404(Square, pos_x=pos_x, pos_y=pos_y, issue__slug=issue_slug)
     return square.template_url
-
-def __template(request, template):
-    buffer = Square.buffer(template)
-    response = HttpResponse(mimetype=MIMETYPE_IMAGE)
-    response['Content-Disposition'] = 'attachment; filename=%s' % template.filename
-    response.write(buffer.getvalue())
-    return response
 
 def _full_by_issues(request):
     squares = Square.objects.select_related('issue', 'user').filter(

@@ -8,6 +8,7 @@ from django.utils.translation import get_language_from_request, ugettext_lazy as
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 
 from timezones.fields import TimeZoneField
 
@@ -52,8 +53,7 @@ class InvitationManager(models.Manager):
         subject = render_to_string('email_invitation_subject.txt', context)
         message = render_to_string('email_invitation_message.txt', context)
         try:
-            pass
-            #send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email], priority='high')
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [invitation_instance.email])
         except socket.error, msg:
             print 'error (%s) for %s' % (msg, invitation_instance.email)
 

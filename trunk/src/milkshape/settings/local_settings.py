@@ -2,7 +2,7 @@
 
 from os.path import dirname, abspath
 
-SITE_ID = 1
+SITE_ID = 2
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 EMAIL_DEBUG = DEBUG
@@ -39,7 +39,7 @@ try:
         'debug_toolbar.panels.logger.LoggingPanel',
     )
     
-	
+      
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False
     }

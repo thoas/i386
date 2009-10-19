@@ -11,9 +11,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-
-from emailconfirmation.utils import get_send_mail
-send_mail = get_send_mail()
+from django.core.mail import send_mail
 
 class EmailAddressManager(models.Manager):
     
@@ -74,8 +72,7 @@ def create_email_address(sender, instance=None, **kwargs):
         return
     email_address, created = EmailAddress.objects.get_or_create(user=instance, email=instance.email, primary=True)
     if created:
-        pass
-        #EmailConfirmation.objects.send_confirmation(email_address)
+        EmailConfirmation.objects.send_confirmation(email_address)
 
 post_save.connect(create_email_address, sender=User)
 
@@ -97,9 +94,9 @@ class EmailConfirmationManager(models.Manager):
         salt = sha.new(str(random())).hexdigest()[:5]
         confirmation_key = sha.new(salt + email_address.email).hexdigest()
         current_site = Site.objects.get_current()
-        activate_url = u"http://%s%s" % (
+        activate_url = u"http://%s" % (
             unicode(current_site.domain),
-            reverse("emailconfirmation.views.confirm_email", args=(confirmation_key,))
+            #reverse("emailconfirmation.views.confirm_email", args=(confirmation_key,))
         )
         context = {
             "user": email_address.user,
@@ -110,7 +107,7 @@ class EmailConfirmationManager(models.Manager):
         subject = render_to_string("emailconfirmation/email_confirmation_subject.txt", context)
         message = render_to_string("emailconfirmation/email_confirmation_message.txt", context)
         try:
-            send_mail(subject, message, settings.EMAIL_HOST_USER, [email_address.email], priority="high")
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [email_address.email])
         except socket.error, msg:
             print 'error (%s) for %s' % (msg, email_address.email)
         return self.create(email_address=email_address, sent=datetime.now(), confirmation_key=confirmation_key)

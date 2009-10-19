@@ -40,7 +40,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'account.middleware.LocaleMiddleware',
-    'pagination.middleware.PaginationMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
 )
@@ -57,10 +56,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
-    'misc.context_processors.contact_email',
     'misc.context_processors.site_name',
-    'notification.context_processors.notification',
-    'announcements.context_processors.site_wide_announcements',
 )
 
 INSTALLED_APPS = (
@@ -72,11 +68,8 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     
     # external
-    'notification',
     'emailconfirmation',
-    'announcements',
     'timezones',
-    'pagination',
     
     # internal
     'issue',
@@ -109,7 +102,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = '[#mılkshape] '
 CONTACT_EMAIL = EMAIL_HOST_USER
-SITE_NAME = 'milkshape'
+SITE_NAME = '#milkshape'
 
 LOGIN_URL = '/account/login'
 LOGOUT_URL = '/account/logout'
