@@ -3,7 +3,6 @@ package cc.milkshape.navigation.home.view
     import cc.milkshape.navigation.generic.view.PreviewUI;
     import cc.milkshape.preloader.PreloaderWiper;
 
-    import com.bourre.ioc.bean.BeanFactory;
     import com.bourre.plugin.Plugin;
 
     import flash.events.Event;
@@ -18,7 +17,8 @@ package cc.milkshape.navigation.home.view
             _issue = issue;
             _overStatut = false;
             
-            var thumbUrl:String = issue.thumb_url ? issue.thumb_url : BeanFactory.getInstance().locate('DEFAULT_ISSUE_THUMB') as String;
+			if(issue.thumb_url)
+				_thumbUrl = issue.thumb_url;
             var img:PreloaderWiper = new PreloaderWiper();
             
             with(view as HomeIssuePreviewClp) {
@@ -27,7 +27,7 @@ package cc.milkshape.navigation.home.view
                 
                 titleClp.label.text = issue.title;
                 infoClp.label.htmlText = issue.text_presentation;
-                img.loadMedia(thumbUrl);
+                img.loadMedia(_thumbUrl);
                 bg.addChild(img);
             }
         }
