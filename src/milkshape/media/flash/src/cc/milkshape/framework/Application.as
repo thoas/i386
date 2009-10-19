@@ -8,12 +8,10 @@ package cc.milkshape.framework
     import flash.display.Sprite;
     import flash.events.Event;
 
-    import nl.demonsters.debugger.MonsterDebugger;
     public class Application extends Sprite
     {
         public function Application(name:String = null, type:Object = null):void
         {
-            new MonsterDebugger(this);
             addEventListener(Event.REMOVED_FROM_STAGE, applicationDisabledHandler);
             Logger.getInstance().addLogListener(AirLoggerLayout.getInstance());
             ApplicationFactory.getInstance().addEventListener(ApplicationEvent.LOADED, type.applicationLoadedHandler);

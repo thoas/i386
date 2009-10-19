@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <items>
 	<item>
-		<key>SITE_URL</key>
-		<value><![CDATA[http://localhost:8000/]]></value>
-	</item>
-	<item>
-		<key>GATEWAY_URL</key>
-		<value><![CDATA[http://localhost:8000/gateway/]]></value>
-	</item>
-	<item>
 		<key>HEADER_IMG_URL</key>
-		<value><![CDATA[http://localhost:8000/media/flash/bin-debug/assets/bg.jpg]]></value>
+		<value><![CDATA[bg.jpg]]></value>
 	</item>
 	<item>
 		<key>DEFAULT_ISSUE_THUMB</key>
-		<value><![CDATA[http://localhost:8000/media/flash/bin-debug/assets/vignette_pattern.jpg]]></value>
+		<value><![CDATA[vignette_pattern.jpg]]></value>
 	</item>
 	<item>
 		<key>ALL_ISSUES</key>

@@ -26,7 +26,7 @@ package cc.milkshape.framework
             super();
             var loader:XMLLoader = new XMLLoader();
             loader.addEventListener(XMLLoaderEvent.onLoadInitEVENT, _onLoaded);
-            loader.load(new URLRequest(Constance.CONSTANCE_XML_ROOT));
+            loader.load(new URLRequest(BeanFactory.getInstance().locate("ASSET_URL") + "/constance.xml"));
         }
 
         private function _onLoaded(e:XMLLoaderEvent):void
