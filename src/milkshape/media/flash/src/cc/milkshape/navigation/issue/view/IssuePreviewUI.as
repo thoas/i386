@@ -3,7 +3,6 @@ package cc.milkshape.navigation.issue.view
     import cc.milkshape.navigation.generic.view.PreviewUI;
     import cc.milkshape.preloader.PreloaderWiper;
 
-    import com.bourre.ioc.bean.BeanFactory;
     import com.bourre.plugin.Plugin;
 
     import flash.events.MouseEvent;
@@ -12,7 +11,9 @@ package cc.milkshape.navigation.issue.view
         public function IssuePreviewUI(issue:Object, owner:Plugin = null, name:String = null)
         {
             super(owner, name, new IssuePreviewClp());
-            var thumbUrl:String = issue.thumb_url ? issue.thumb_url : BeanFactory.getInstance().locate('DEFAULT_ISSUE_THUMB') as String;
+			if(issue.thumb_url)
+				_thumbUrl = issue.thumb_url;
+			
             var img:PreloaderWiper = new PreloaderWiper();
             _issue = issue;
             with(view as IssuePreviewClp) {
@@ -26,7 +27,7 @@ package cc.milkshape.navigation.issue.view
                 scheduleClp.scheduleLabel.text = 'OPENED ' + issue.date_created.month + '.' + issue.date_created.date + '.' + issue.date_created.fullYear;
                 pastilleClp.textClp.label.text = '#' + issue.id;
                 
-                img.loadMedia(thumbUrl);
+                img.loadMedia(_thumbUrl);
                 loaderClp.addChild(img);
             }
         }

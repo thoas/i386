@@ -1,22 +1,24 @@
 package cc.milkshape.navigation.generic.view
 {
     import cc.milkshape.navigation.generic.PrivateEventList;
-
+    
     import com.bourre.events.EventBroadcaster;
     import com.bourre.events.ObjectEvent;
     import com.bourre.ioc.bean.BeanFactory;
     import com.bourre.plugin.Plugin;
     import com.bourre.view.AbstractView;
-
+    
     import flash.display.DisplayObject;
     import flash.display.MovieClip;
     import flash.events.MouseEvent;
     public class PreviewUI extends AbstractView
     {
         protected var _issue:Object;
+		protected var _thumbUrl:String;
 
         public function PreviewUI(owner:Plugin = null, name:String = null, mc:DisplayObject = null)
         {
+			_thumbUrl = BeanFactory.getInstance().locate('ASSETS_URL') + '/' + BeanFactory.getInstance().locate('DEFAULT_ISSUE_THUMB');
             super(owner, name, mc);
             with(view as MovieClip) {
                 addEventListener(MouseEvent.ROLL_OVER, _overHandler);
