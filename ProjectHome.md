@@ -1,0 +1,1 @@
+#mılkshape est une expérience de création collaborative sur Internet pour favoriser, via des processus de créations originaux, la collaboration entre artistes, la mise en commun de ces créations de nouveaux comportements chez les créateurs.
